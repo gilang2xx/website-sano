@@ -84,10 +84,10 @@ const Home: React.FC = () => {
     style={{ maxWidth: 'none' }} // Membuka batasan lebar
   >
     {/* KHUSUS SAFARI / MAC / IPHONE (Format MOV HEVC) */}
-    <source src="/sano-hero-mac-1.mov" type='video/quicktime; codecs="hvc1"' />
+    <source src="/sano-hero-mac.mov" type='video/quicktime; codecs="hvc1"' />
     
     {/* KHUSUS CHROME / WINDOWS / ANDROID (Format WebM) */}
-    <source src="/sano-hero-mac.webm" type="video/webm" />
+    <source src="/sano-hero-android.webm" type="video/webm" />
     
     {/* Fallback jika browser tua */}
     Browser Anda tidak mendukung video.
