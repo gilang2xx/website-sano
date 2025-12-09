@@ -110,45 +110,6 @@ const Layanan: React.FC = () => {
                    </div>
                 </div>
              </ScrollReveal>
-
-             {/* CARD 3: SANO CLEAN */}
-             <ScrollReveal delay={200}>
-                <div className="group bg-white dark:bg-bg-surface rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden h-full flex flex-col hover:-translate-y-2 transition-transform duration-300">
-                   <div className="aspect-[4/3] relative overflow-hidden">
-                      <img 
-                        src="/pelayanan-sanoklin.png" 
-                        alt="Sano Cleaning Service" 
-                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                      />
-                      <div className="absolute inset-0 bg-teal-900/10 group-hover:bg-transparent transition-colors"></div>
-                   </div>
-                   <div className="p-8 flex-grow flex flex-col">
-                      <h3 className="text-2xl font-bold text-teal-600 dark:text-white mb-3">Sano Klin</h3>
-                      <p className="text-slate-600 dark:text-slate-400 text-sm mb-6 leading-relaxed">
-                         Jasa pembersihan mendalam (deep cleaning) untuk membasmi kuman, tungau, dan noda membandel.
-                      </p>
-                      <div className="space-y-3 mb-8 flex-grow">
-                         <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-2">Cakupan Layanan:</h4>
-                         <ul className="space-y-3">
-                            {['Hydro Allergen Vacuum (Sedot Tungau)', 'Cuci Basah (Shampooing & Spotting)', 'Basmi Noda & Bau Apek', 'Sterilisasi UV & Fogging'].map((item, i) => (
-                               <li key={i} className="flex items-start gap-3 text-sm text-slate-700 dark:text-slate-300">
-                                  <CheckCircle2 size={18} className="text-teal-500 shrink-0 mt-0.5" />
-                                  <span>{item}</span>
-                               </li>
-                            ))}
-                         </ul>
-                      </div>
-                      <a 
-                        href="https://wa.me/6289528011264?text=Halo%20Sano,%20saya%20mau%20pesan%20jasa%20Sano%20Clean"
-                        target="_blank"
-                        rel="noreferrer" 
-                        className="w-full py-4 bg-teal-600 hover:bg-teal-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-teal-200 dark:hover:shadow-none"
-                      >
-                         <MessageCircle size={20} /> Konsultasi via WA
-                      </a>
-                   </div>
-                </div>
-             </ScrollReveal>
           </div>
         </div>
       </section>

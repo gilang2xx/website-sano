@@ -1,21 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const HERO_TEXTS = [
+const heroContent = [
   {
     id: 1,
-    text: "Bangun Tidur Pegal?",
-    highlight: "Sakit Pinggang & Leher Kaku?"
+    main: "Bangun Tidur Kepala Pusing? Pegal?",
+    highlight: "Sakit Pinggang? Leher Kaku?"
   },
   {
     id: 2,
-    text: "Bukan salah badanmu.",
-    highlight: "Masalahnya ada di kasurmu."
+    main: "Bukan Salah Badanmu.",
+    highlight: "Masalahnya ada di Matras mu."
   },
   {
     id: 3,
-    text: "Upgrade ke 'Kasur Sehat'.",
-    highlight: "Tulang Aman, Tidur Nyaman."
+    main: "Upgrade ke 'Matras Sehat'",
+    highlight: "'Tulang Aman', Tidur Nyaman"
   }
 ];
 
@@ -24,28 +24,37 @@ const AnimatedHeroText: React.FC = () => {
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setIndex((prevIndex) => (prevIndex + 1) % HERO_TEXTS.length);
-    }, 4000); // 4 seconds per slide
+      setIndex((prevIndex) => (prevIndex + 1) % heroContent.length);
+    }, 4000);
 
     return () => clearInterval(timer);
   }, []);
 
   return (
-    <div className="min-h-[180px] md:min-h-[220px] flex items-center justify-center text-center mb-6">
-      <AnimatePresence mode="wait">
-        <motion.h1
-          key={HERO_TEXTS[index].id}
-          initial={{ y: 20, opacity: 0, filter: 'blur(10px)' }}
-          animate={{ y: 0, opacity: 1, filter: 'blur(0px)' }}
-          exit={{ y: -20, opacity: 0, filter: 'blur(10px)' }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-          className="text-4xl md:text-6xl font-extrabold text-white leading-tight"
+    // PERBAIKAN 1: Gunakan min-h agar tinggi menyesuaikan jika teks panjang di HP
+    <div className="relative min-h-[200px] flex items-center justify-start">
+      <AnimatePresence mode='wait'>
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="w-full text-left"
         >
-          {HERO_TEXTS[index].text}
-          <span className="block text-blue-100 mt-2">
-            {HERO_TEXTS[index].highlight}
-          </span>
-        </motion.h1>
+          {/* PERBAIKAN 2: Styling Teks Utama */}
+          <h1 className="font-bold text-white leading-tight">
+            {/* Main Text: Putih */}
+            <span className="block text-3xl md:text-5xl lg:text-6xl mb-2">
+              {heroContent[index].main}
+            </span>
+            
+            {/* Highlight Text: Biru Muda (Agar kontras) */}
+            <span className="block text-3xl md:text-5xl lg:text-6xl text-blue-200">
+              {heroContent[index].highlight}
+            </span>
+          </h1>
+        </motion.div>
       </AnimatePresence>
     </div>
   );

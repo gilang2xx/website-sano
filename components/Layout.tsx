@@ -152,14 +152,24 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           </div>
 
           <div>
-            <h4 className="text-lg font-bold mb-6 text-primary-light">Layanan Kami</h4>
-            <ul className="space-y-3 text-slate-400 text-sm">
-              <li><NavLink to="/layanan" className="hover:text-white transition-colors">Service & Repair</NavLink></li>
-              <li><NavLink to="/layanan" className="hover:text-white transition-colors">Upgrade Matras</NavLink></li>
-              <li><NavLink to="/layanan" className="hover:text-white transition-colors">Custom Size</NavLink></li>
-              <li><NavLink to="/layanan" className="hover:text-white transition-colors">Cuci Matras</NavLink></li>
-            </ul>
-          </div>
+  <h4 className="text-lg font-bold mb-6 text-primary-light">Layanan Kami</h4>
+  
+  {/* Menggunakan space-y-2 agar list yang panjang ini lebih rapi & hemat tempat */}
+  <ul className="space-y-2 text-slate-400 text-sm">
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Service Fondasi Matras</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Upgrade Fondasi</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Upgrade Lapisan Matras</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Paket Upgrade Fondasi + Lapisan</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Full Upgrade Matras (Fondasi + Lapisan + Kain)</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Penyesuaian Tekstur (Empuk/Keras)</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Upgrade Latex</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Upgrade Memory Foam</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Ganti Kain</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Service Divan & Sandaran</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Custom Size (Potong/Tambah)</NavLink></li>
+    <li><NavLink to="/layanan" className="hover:text-white transition-colors">Kasur Sewa</NavLink></li>
+  </ul>
+</div>
 
           <div>
             <h4 className="text-lg font-bold mb-6 text-primary-light">Kontak</h4>

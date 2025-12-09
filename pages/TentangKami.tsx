@@ -1,6 +1,23 @@
 import React from 'react';
 import ScrollReveal from '../components/ScrollReveal';
-import { Award, ShieldCheck, Sparkles, User } from 'lucide-react';
+// Copy ini dan timpa import lucide-react yang lama di file TentangKami.tsx
+import { 
+  // Icon standar yang mungkin sudah ada
+  ArrowRight, Shield, Star, CheckCircle, Play, BedDouble, Armchair, User,
+  
+  // ICON BARU UNTUK 11 POIN (Wajib Ditambahkan)
+  Award, 
+  Eye, 
+  Microscope, 
+  Stethoscope, 
+  BrickWall, 
+  Layers, 
+  Gem, 
+  Wrench, 
+  Wallet, 
+  HeartPulse, 
+  BadgeCheck 
+} from 'lucide-react';
 
 const TentangKami: React.FC = () => {
   return (
@@ -43,13 +60,17 @@ const TentangKami: React.FC = () => {
                    </h2>
                    <div className="space-y-6 text-slate-600 dark:text-slate-300 text-lg leading-relaxed">
                       <p>
-                         SANO+ hadir dari sebuah keresahan sederhana: mengapa kita harus membuang kasur atau sofa yang hanya rusak sedikit, lalu mengeluarkan biaya mahal untuk membeli yang baru?
+                        Sano Care hadir dari sebuah keresahan nyata: banyak orang bangun tidur dengan keluhan seperti pegal-pegal, pusing, sakit pinggang, nyeri punggung, hingga rasa tidak nyaman sepanjang hari. Tanpa disadari, sebagian besar masalah ini berakar dari kasur yang tidak lagi bekerja dengan benar—mulai dari struktur yang rusak, terlalu tenggelam, hingga terlalu keras dan tidak sesuai kebutuhan tubuh.
                       </p>
                       <p>
-                         Kami percaya bahwa setiap furniture memiliki potensi untuk diperbarui. Dengan teknik restorasi yang tepat dan pemahaman mendalam tentang struktur tulang belakang (ergonomi), kami tidak hanya memperbaiki tampilan fisik, tetapi juga mengembalikan fungsi kesehatan dari kasur Anda.
+                         Kami percaya: sesuatu yang diperbaiki dan di-upgrade berdasarkan problem sebelumnya jauh lebih efektif dalam mengatasi akar masalah sekaligus menyempurnakan kenyamanan tidur.
                       </p>
+                      Dengan teknik restorasi yang tepat, didukung pemahaman mendalam tentang anatomi tulang belakang, karakteristik material, dan cara kerja setiap lapisan kasur, kami tidak hanya memperbaiki tampilan fisik—tetapi juga mengembalikan fungsi kesehatan kasur Anda dalam jangka panjang.
+<p></p>
+
                       <p className="font-medium text-slate-900 dark:text-white">
-                         "Hemat biaya, kurangi limbah, dan bangun tidur dengan tubuh yang lebih segar. Itulah janji kami."
+                         Hemat biaya, menyelesaikan keluhan, memastikan kenyamanan, dan menghadirkan tidur berkualitas sehingga Anda bangun lebih segar.
+Itulah komitmen kami kepada Anda.
                       </p>
                    </div>
 
@@ -69,54 +90,171 @@ const TentangKami: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 2: NILAI KAMI */}
-      <section className="py-20 bg-bg-light dark:bg-bg-surface">
-         <div className="container mx-auto px-6">
-            <ScrollReveal className="text-center mb-16">
-               <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
-                  Kenapa Memilih <span className="text-primary">SANO+?</span>
-               </h2>
-               <p className="text-slate-500 dark:text-slate-400">Standar kualitas yang kami pegang teguh dalam setiap pengerjaan.</p>
-            </ScrollReveal>
+      {/* =========================================================
+          SECTION: KENAPA MEMILIH SANO+ (11 POINTS)
+         ========================================================= */}
+      <section className="py-20 px-4 bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+        <div className="container mx-auto max-w-7xl">
+          
+          {/* Header Section */}
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
+              Kenapa Memilih <span className="text-blue-600">SANO+ ?</span>
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+              Standar kualitas tinggi, ilmiah, dan transparan yang kami pegang teguh dalam setiap pengerjaan.
+            </p>
+          </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-               <ScrollReveal delay={0}>
-                  <div className="bg-white dark:bg-bg-dark p-8 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 h-full hover:-translate-y-2 transition-transform duration-300">
-                     <div className="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center mb-6 text-primary dark:text-blue-400">
-                        <Award size={32} />
-                     </div>
-                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Keahlian (Expertise)</h3>
-                     <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                        Didukung oleh teknisi berpengalaman lebih dari 3 tahun yang spesifik menangani berbagai merek kasur premium (King Koil, Serta, Florence, dll).
-                     </p>
-                  </div>
-               </ScrollReveal>
-
-               <ScrollReveal delay={100}>
-                  <div className="bg-white dark:bg-bg-dark p-8 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 h-full hover:-translate-y-2 transition-transform duration-300">
-                     <div className="w-14 h-14 bg-teal-50 dark:bg-teal-900/30 rounded-2xl flex items-center justify-center mb-6 text-teal-600 dark:text-teal-400">
-                        <ShieldCheck size={32} />
-                     </div>
-                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Transparansi (Honesty)</h3>
-                     <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                        Kami memberikan diagnosa jujur di awal. Estimasi harga transparan tanpa biaya tersembunyi. Jika komponen masih bagus, kami katakan bagus.
-                     </p>
-                  </div>
-               </ScrollReveal>
-
-               <ScrollReveal delay={200}>
-                  <div className="bg-white dark:bg-bg-dark p-8 rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 h-full hover:-translate-y-2 transition-transform duration-300">
-                     <div className="w-14 h-14 bg-orange-50 dark:bg-orange-900/30 rounded-2xl flex items-center justify-center mb-6 text-orange-500 dark:text-orange-400">
-                        <Sparkles size={32} />
-                     </div>
-                     <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-3">Higienis (Hygiene)</h3>
-                     <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
-                        Proses pengerjaan dilakukan dengan standar kebersihan tinggi. Workshop kami bersih, dan setiap kasur melalui proses sterilisasi sebelum dikirim kembali.
-                     </p>
-                  </div>
-               </ScrollReveal>
+          {/* Grid 11 Kartu */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            
+            {/* 1. KEAHLIAN */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6 group-hover:scale-110 transition-transform">
+                <Award size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">1. Keahlian (Expertise)</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                Didukung oleh teknisi berpengalaman lebih dari 10 tahun mengenai material & teknologi matras, fondasi dan ketahanan matras, diagnosis kerusakan, hingga anatomi tidur dari berbagai merek kasur premium (King Koil, Serta, Lady Americana, dll).
+              </p>
             </div>
-         </div>
+
+            {/* 2. TRANSPARANSI */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+              <div className="w-12 h-12 bg-cyan-100 dark:bg-cyan-900/30 rounded-xl flex items-center justify-center text-cyan-600 dark:text-cyan-400 mb-6 group-hover:scale-110 transition-transform">
+                <Eye size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">2. Transparansi (Honesty)</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                Harga transparan di awal, update proses service by foto & video, serta saran rekomendasi yang tepat berdasarkan diagnosa keluhan, fisik, dan uji texture. Kesehatan Anda prioritas kami.
+              </p>
+            </div>
+
+            {/* 3. ANALISIS ILMIAH */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-xl flex items-center justify-center text-purple-600 dark:text-purple-400 mb-6 group-hover:scale-110 transition-transform">
+                <Microscope size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">3. Analisis Struktur Tidur Ilmiah</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                Kami menilai kondisi matras berdasarkan anatomi tulang belakang, distribusi tekanan, dan gaya tidur. Solusi bukan asal-asalan, melainkan menyasar akar keluhan sesuai konsep matras sehat.
+              </p>
+            </div>
+
+            {/* 4. DIAGNOSA AKURAT */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+              <div className="w-12 h-12 bg-red-100 dark:bg-red-900/30 rounded-xl flex items-center justify-center text-red-600 dark:text-red-400 mb-6 group-hover:scale-110 transition-transform">
+                <Stethoscope size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">4. Diagnosa Akurat & Terukur</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                Setiap matras diperiksa detail: tingkat tenggelam, kekerasan, hilangnya elastisitas, hingga usia bahan. Hasilnya: rekomendasi upgrade yang tepat, bukan tebakan.
+              </p>
+            </div>
+
+            {/* 5. FONDASI KUAT */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+              <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-400 mb-6 group-hover:scale-110 transition-transform">
+                <BrickWall size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">5. Fondasi Standar 20 Tahun</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                Kami memastikan fondasi matras selalu kokoh, stabil, dan tahan lama, sehingga kenyamanan bertahan jangka panjang.
+              </p>
+            </div>
+
+            {/* 6. LAPISAN SESUAI BODY */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+              <div className="w-12 h-12 bg-indigo-100 dark:bg-indigo-900/30 rounded-xl flex items-center justify-center text-indigo-600 dark:text-indigo-400 mb-6 group-hover:scale-110 transition-transform">
+                <Layers size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">6. Lapisan Sesuai Berat Badan</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed mb-2">
+                Bahan (Busa, Rebonded, Latex, Memory Foam) disesuaikan langsung dengan:
+              </p>
+              <ul className="text-slate-500 dark:text-slate-400 text-sm list-disc pl-4 space-y-1">
+                <li>Berat Badan</li>
+                <li>Bentuk Tubuh</li>
+                <li>Kebiasaan Tidur</li>
+              </ul>
+              <p className="text-slate-500 dark:text-slate-400 text-sm mt-2 font-medium">
+                Hasil: Tidak terlalu keras, tidak tenggelam. Pas!
+              </p>
+            </div>
+
+            {/* 7. MATERIAL PREMIUM */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+              <div className="w-12 h-12 bg-pink-100 dark:bg-pink-900/30 rounded-xl flex items-center justify-center text-pink-600 dark:text-pink-400 mb-6 group-hover:scale-110 transition-transform">
+                <Gem size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">7. Material Premium Terverifikasi</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                Kami hanya menggunakan bahan standar densitas tinggi, tahan lama, minim penurunan kualitas, aman dan higienis. Tidak ada bahan murahan, tidak ada kompromi.
+              </p>
+            </div>
+
+            {/* 8. TEKNIK RESTORASI PROFESIONAL */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+              <div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center text-orange-600 dark:text-orange-400 mb-6 group-hover:scale-110 transition-transform">
+                <Wrench size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">8. Teknik Restorasi Profesional</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                Bukan tukang biasa. Teknisi kami paham struktur kasur, teknik perbaikan khusus, dan standar pengerjaan rapi. Matras tidak hanya diperbaiki—tapi dipulihkan.
+              </p>
+            </div>
+
+            {/* 9. HEMAT BIAYA */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group">
+              <div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center text-teal-600 dark:text-teal-400 mb-6 group-hover:scale-110 transition-transform">
+                <Wallet size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">9. Lebih Hemat dari Beli Baru</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                Dengan upgrade Sano Care, Anda mendapatkan kualitas seperti kasur baru premium dengan harga jauh lebih hemat 50–80%.
+              </p>
+            </div>
+
+            {/* 10. HILANGKAN KELUHAN (Span 2 kolom di tablet agar rapi) */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group md:col-span-2 lg:col-span-1">
+              <div className="w-12 h-12 bg-rose-100 dark:bg-rose-900/30 rounded-xl flex items-center justify-center text-rose-600 dark:text-rose-400 mb-6 group-hover:scale-110 transition-transform">
+                <HeartPulse size={24} />
+              </div>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">10. Fokus: Hilangkan Keluhan</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm mb-3">
+                Kami menyelesaikan masalah:
+              </p>
+              <div className="grid grid-cols-2 gap-2 text-xs font-medium text-slate-600 dark:text-slate-300 mb-3">
+                <span className="flex items-center gap-1">✔ Pegal-pegal</span>
+                <span className="flex items-center gap-1">✔ Kualitas buruk</span>
+                <span className="flex items-center gap-1">✔ Sakit pinggang</span>
+                <span className="flex items-center gap-1">✔ Kasur tenggelam</span>
+                <span className="flex items-center gap-1">✔ Nyeri punggung</span>
+                <span className="flex items-center gap-1">✔ Terlalu keras</span>
+              </div>
+              <p className="text-slate-500 dark:text-slate-400 text-sm font-bold">
+                Tujuan: Anda bangun segar tanpa rasa sakit.
+              </p>
+            </div>
+
+            {/* 11. GARANSI (Span 1 kolom terakhir) */}
+            <div className="bg-white dark:bg-slate-800 p-8 rounded-3xl shadow-sm hover:shadow-xl transition-all duration-300 border border-slate-100 dark:border-slate-700 group md:col-span-1 lg:col-span-2 flex flex-col justify-center">
+              <div className="flex items-start gap-4">
+                <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-xl flex items-center justify-center text-green-600 dark:text-green-400 shrink-0 group-hover:scale-110 transition-transform">
+                  <BadgeCheck size={24} />
+                </div>
+                <div>
+                  <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">11. Garansi Keamanan & Kenyamanan</h3>
+                  <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
+                    Memberikan rasa aman dengan garansi kekokohan fondasi, kekuatan lapisan, dan kenyamanan setelah upgrade. Bukan sekadar janji—fakta yang kami pertanggungjawabkan.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
       </section>
 
       {/* SECTION 3: STATISTICS BAR */}
