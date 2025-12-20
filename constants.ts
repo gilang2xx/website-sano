@@ -3,6 +3,7 @@ import { ServiceItem, BeforeAfterItem, TestimonialItem } from './types';
 export const NAV_LINKS = [
   { name: 'Home', path: '/' },
   { name: 'Layanan', path: '/layanan' },
+  { name: 'Harga', path: '/pricelist' },
   { name: 'Tentang Kami', path: '/tentang-kami' },
   { name: 'Before & After', path: '/before-after' },
   { name: 'Kontak', path: '/kontak' },

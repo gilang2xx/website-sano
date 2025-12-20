@@ -37,18 +37,18 @@ const Kontak: React.FC = () => {
                  </div>
               </div>
               <div className="p-10 lg:p-16 bg-white dark:bg-bg-dark">
-                 <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8">Kirim Pesan</h2>
+                 <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8">Kirim Keluhan</h2>
                  <form className="space-y-6" onSubmit={(e) => e.preventDefault()}>
                     <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Lengkap</label><input type="text" className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
                     <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nomor WhatsApp</label><input type="tel" className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
-                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Pesan</label><textarea rows={4} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all"></textarea></div>
-                    <button type="submit" className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">Kirim Pesan <Send size={18} /></button>
+                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Keluhan</label><textarea rows={4} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all"></textarea></div>
+                    <button type="submit" className="w-full bg-primary hover:bg-primary-dark text-white font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">Kirim Keluhan <Send size={18} /></button>
                  </form>
               </div>
            </div>
         </div>
         <div className="mt-12 h-96 w-full rounded-3xl overflow-hidden shadow-lg">
-           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d126920.2449514785!2d106.75628628469831!3d-6.229728025238257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f3e945e34b9d%3A0x5371bf0fdad786a2!2sJakarta%20Selatan%2C%20Kota%20Jakarta%20Selatan%2C%20Daerah%20Khusus%20Ibukota%20Jakarta!5e0!3m2!1sid!2sid!4v1689654321000!5m2!1sid!2sid" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Map Location" className="filter grayscale hover:grayscale-0 transition-all duration-500"></iframe>
+           <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d991.2311852704305!2d106.78333276966158!3d-6.403697499599185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMjQnMTMuMyJTIDEwNsKwNDcnMDIuMyJF!5e0!3m2!1sen!2sid!4v1766138288503!5m2!1sen!2sid" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Map Location" className="filter grayscale hover:grayscale-0 transition-all duration-500"></iframe>
         </div>
       </div>
     </div>

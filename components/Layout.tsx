@@ -35,19 +35,23 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <NavLink to="/" className="block group select-none shrink-0 -ml-3 md:-ml-4">
   <div className="h-8 md:h-10 flex items-center">
     
-    {/* 1. LOGO LIGHT MODE (Muncul saat terang, Hilang saat gelap) */}
-    <img
-      src="/sano-light.png"   // Pastikan ada garis miring di depan
-      alt="SANO Logo"
-      className="h-8 md:h-14 w-auto object-contain block dark:hidden" 
-    />
+    {/* 1. LOGO LIGHT MODE (Muncul saat terang) */}
+              <img
+                src="/sanocare-light.png"
+                alt="SANO Logo"
+                // GANTI JADI INI:
+                // h-8 (Kecil di HP) | md:h-10 (Standar di Laptop)
+                // Hapus margin minus (-ml) agar posisinya pas
+                className="h-8 md:h-10 w-auto object-contain block dark:hidden" 
+              />
 
-    {/* 2. LOGO DARK MODE (Hilang saat terang, Muncul saat gelap) */}
-    <img
-      src="/sano-dark.png"    // Pastikan file ini ada di folder public
-      alt="SANO Logo Dark"
-      className="h-8 md:h-14 w-auto object-contain hidden dark:block"
-    />
+              {/* 2. LOGO DARK MODE (Muncul saat gelap) */}
+              <img
+                src="/sanocare-dark.png"
+                alt="SANO Logo Dark"
+                // Samakan ukurannya
+                className="h-8 md:h-10 w-auto object-contain hidden dark:block"
+              />
   </div>
           </NavLink>
 
@@ -141,7 +145,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
              <div className="flex items-center gap-2 mb-4">
               {/* BRAND LOGO FOR FOOTER */}
               <img
-              src="/sano-dark.png"  // Gunakan logo yang teksnya PUTIH
+              src="/sanocare-dark.png"  // Gunakan logo yang teksnya PUTIH
               // alt="SANO Logo"
               // className="h-8 w-auto object-contain"
               />
@@ -189,18 +193,38 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             </ul>
           </div>
           
-           <div>
+           {/* KOLOM 4: JAM OPERASIONAL */}
+          <div>
             <h4 className="text-lg font-bold mb-6 text-primary-light">Jam Operasional</h4>
-             <ul className="space-y-2 text-slate-400 text-sm">
-                <li className="flex justify-between"><span>Senin - Jumat</span> <span className="text-white">08:00 - 17:00</span></li>
-                <li className="flex justify-between"><span>Sabtu</span> <span className="text-white">08:00 - 15:00</span></li>
-                <li className="flex justify-between"><span>Minggu</span> <span className="text-secondary">Tutup</span></li>
-             </ul>
-             <div className="mt-6 flex gap-4">
-                <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-primary transition-colors text-white">
-                  <Instagram size={20} />
-                </a>
-             </div>
+            
+            {/* 1. Jam Workshop (Toko Fisik) */}
+            <div className="mb-6">
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Workshop</p>
+              <ul className="space-y-2 text-slate-400 text-sm">
+                <li className="flex justify-between"><span>Senin - Jumat</span><span>08:00 - 17:00</span></li>
+                <li className="flex justify-between"><span>Sabtu</span><span>08:00 - 15:00</span></li>
+                <li className="flex justify-between"><span>Minggu</span><span className="text-red-400">Tutup</span></li>
+              </ul>
+            </div>
+
+            {/* 2. Jam Konsultasi (Online/WA) - BARU */}
+            <div className="mb-6">
+              <p className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Konsultasi Online</p>
+              <ul className="space-y-2 text-slate-400 text-sm">
+                <li className="flex justify-between items-center bg-white/5 p-2 rounded-lg border border-white/10">
+                  <span>Setiap Hari</span>
+                  <span className="font-bold text-green-400">08:00 - 22:00</span>
+                </li>
+              </ul>
+            </div>
+
+            {/* 3. Social Media */}
+            <div className="flex gap-4">
+               {/* Pastikan link instagramnya diisi */}
+               <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-colors text-white">
+                 <Instagram size={20} />
+               </a>
+            </div>
           </div>
         </div>
         <div className="container mx-auto px-6 mt-16 pt-8 border-t border-slate-800 text-center text-slate-500 text-xs">

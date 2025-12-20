@@ -9,16 +9,23 @@ import Kontak from './pages/Kontak';
 import KlinikMatras from './pages/KlinikMatras';
 import KlinikSofa from './pages/KlinikSofa';
 import SanoClean from './pages/SanoClean';
+import Pricelist from './pages/Pricelist';
 
 const App: React.FC = () => {
   return (
     <Layout>
       <Routes>
+        {/* Halaman Utama */}
         <Route path="/" element={<Home />} />
+        
+        {/* Halaman Menu Utama */}
         <Route path="/layanan" element={<Layanan />} />
+        <Route path="/pricelist" element={<Pricelist />} />
         <Route path="/tentang-kami" element={<TentangKami />} />
         <Route path="/before-after" element={<BeforeAfter />} />
         <Route path="/kontak" element={<Kontak />} />
+
+        {/* Halaman Detail Layanan */}
         <Route path="/klinik-matras" element={<KlinikMatras />} />
         <Route path="/klinik-sofa" element={<KlinikSofa />} />
         <Route path="/sano-clean" element={<SanoClean />} />

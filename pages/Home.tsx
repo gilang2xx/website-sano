@@ -1,7 +1,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { NavLink } from 'react-router-dom';
-import { 
+import {
+  // Icon yang sudah ada sebelumnya
   ArrowRight,
   Activity,
   Star,
@@ -16,14 +17,13 @@ import {
   Moon,
   Frown,
   MessageCircle,
-  // Wrench,  <-- HAPUS INI JIKA SUDAH ADA DI BAWAH
   Home as HomeIcon,
   ArrowUpRight,
   Calculator,
   X,
   Check,
   Camera,
-  Video, // <--- JANGAN LUPA KOMA DISINI
+  Video,
   Award,
   Eye,
   Microscope,
@@ -35,7 +35,16 @@ import {
   Wallet,
   HeartPulse,
   CreditCard,
-  BadgeCheck
+  BadgeCheck,
+
+  // --- ICON BARU YANG WAJIB DITAMBAHKAN (Agar tidak merah) ---
+  ArrowDown,
+  Lightbulb,
+  Banknote,
+  Zap, 
+  Crown, 
+  CheckCircle2 
+  // -------------------------------
 } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import AnimatedHeroText from '../components/AnimatedHeroText';
@@ -67,7 +76,7 @@ const Home: React.FC = () => {
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
                   <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
                 </span>
-                Solusi #1 Kesehatan Tidur
+                Klinik Matras 'Solusi #1 Kesehatan Tidur'
               </div>
 
               {/* Headline Animasi */}
@@ -108,8 +117,8 @@ const Home: React.FC = () => {
                // GANTI DENGAN: object-cover w-full h-full
                 className="w-full h-full object-cover" 
                > 
-                <source src="/sano-hero-illustration-mac.mov" type="video/quicktime; codecs='hvc1'" />
-                 <source src="/sano-hero-illustration-android.webm" type="video/webm" />
+                <source src="/sano-hero-illustration.mov" type="video/quicktime; codecs='hvc1'" />
+                 <source src="/sano-hero-illustration.webm" type="video/webm" />
              </video>
                </div>
                  <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur p-3 rounded-xl shadow-lg flex items-center gap-3">
@@ -253,7 +262,7 @@ const Home: React.FC = () => {
                   Konsep <span className="text-primary">Matras Sehat</span>
                </h2>
                <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
-                  Matras yang seimbang, bukan hanya empuk tapi yang bisa support kesehatan tidurmu.
+                  Investasi Terbaik Adalah Tidur Anda. Jangan korbankan kesehatan demi keempukan semata. Temukan keseimbangan sempurna antara kenyamanan tidur dan perlindungan tulang belakang untuk jangka panjang.
                </p>
             </ScrollReveal>
 
@@ -265,16 +274,32 @@ const Home: React.FC = () => {
                   <div className="bg-gradient-to-r from-secondary to-primary p-[3px] rounded-[2.5rem] shadow-xl">
                      <div className="bg-white dark:bg-slate-900 rounded-[2.5rem] p-8 h-full relative overflow-hidden">
                         <div className="absolute top-6 right-6 bg-white dark:bg-slate-800 rounded-full p-2 shadow-sm border border-slate-100 dark:border-slate-700">
-                           <X className="text-red-500" size={24} />
+                           <div className="absolute top-6 right-6 bg-white dark:bg-slate-800 rounded-full p-2 shadow-sm border border-slate-100 dark:border-slate-700 z-20">
+                            <X className="text-red-500" size={24} />
+                            </div>
                         </div>
+                        {/* --- GANTI BAGIAN GAMBAR KIRI DENGAN INI --- */}
                         <div className="w-full h-48 bg-slate-50 dark:bg-slate-800 rounded-2xl mb-6 flex items-center justify-center border border-slate-200 dark:border-slate-700 overflow-hidden">
-                           <img 
-                           src="/konsep-terlaluempuk.png" 
-                           alt="Hammocking" 
-                           className="w-full h-full object-cover" 
-                           />
-                        </div>
-                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Matras <span className="text-primary dark:text-blue-400">Terlalu Empuk</span></h3>
+                         {/* ... di dalam div pembungkus ... */}
+                  <video
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline // <--- WAJIB UNTUK IPHONE
+                  >
+                    {/* PRIORITAS 1: SAFARI / MAC (Format HEVC .mov) */}
+                    <source src="/video-matt-empuk.mov" type='video/quicktime; codecs="hvc1"' />
+                    
+                    {/* PRIORITAS 2: CHROME / WINDOWS (Format MP4/WebM) */}
+                    <source src="/video-matt-empuk.webm" type="video/webm" />
+
+                    {/* Fallback Image */}
+                    <img src="/konsep-terlaluempuk.jpg" className="w-full h-full object-cover" alt="Too Soft" />
+                  </video>
+                  {/* ... */}
+                           </div>
+                        <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Matras <span className="text-primary dark:text-blue-400">Terlalu Tenggelam</span></h3>
                         <p className="text-xs font-bold text-slate-400 mb-4 uppercase tracking-wider"></p>
                         <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
                            Membuat posisi tubuh/tulang tidak natural, karena terlalu tenggelam
@@ -292,21 +317,31 @@ const Home: React.FC = () => {
     <div className="bg-primary rounded-[2.5rem] p-8 h-full relative overflow-hidden text-white">
       
       {/* Icon Check di Pojok Kanan Atas */}
-      <div className="absolute top-6 right-6 bg-white rounded-full p-2 shadow-sm">
-         <Check className="text-primary" size={24} />
-      </div>
+      <div className="absolute top-6 right-6 bg-white rounded-full p-2 shadow-sm z-20">
+  {/* ^^^ Tambahkan 'z-20' di sini ^^^ */}
+  <Check className="text-primary" size={24} />
+</div>
 
       {/* Bagian Video */}
       <div className="w-full h-48 bg-white/10 rounded-2xl mb-6 flex items-center justify-center border border-white/20 overflow-hidden">
-        <video 
-          className="w-full h-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-        >
-          <source src="/konsep-sehat.mp4" type="video/mp4" />
-        </video>
+        {/* ... di dalam div pembungkus ... */}
+                  <video
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline // <--- WAJIB UNTUK IPHONE
+                  >
+                    {/* PRIORITAS 1: SAFARI / MAC (Format HEVC .mov) */}
+                    <source src="/video-matt-sehat.mov" type='video/quicktime; codecs="hvc1"' />
+                    
+                    {/* PRIORITAS 2: CHROME / WINDOWS (Format MP4/WebM) */}
+                    <source src="/video-matt-sehat.webm" type="video/webm" />
+                    
+                    {/* Fallback Image */}
+                    <img src="/konsep-terlaluempuk.jpg" className="w-full h-full object-cover" alt="Too Soft" />
+                  </video>
+                  {/* ... */}
       </div>
 
       {/* Bagian Teks & Tombol */}
@@ -330,13 +365,27 @@ const Home: React.FC = () => {
                         <div className="absolute top-6 right-6 bg-white dark:bg-slate-800 rounded-full p-2 shadow-sm border border-slate-100 dark:border-slate-700">
                            <X className="text-red-500" size={24} />
                         </div>
-                        <div className="w-full h-48 bg-slate-50 dark:bg-slate-800 rounded-2xl mb-6 flex items-center justify-center border border-slate-200 dark:border-slate-700 overflow-hidden">
-                           <img 
-                           src="/konsep-terlalukeras.png" 
-                            alt="Too Hard" 
-                            className="w-full h-full object-cover" 
-                            />
-                            </div>
+                        {/* --- GANTI BAGIAN GAMBAR KANAN DENGAN INI --- */}
+<div className="w-full h-48 bg-slate-50 dark:bg-slate-800 rounded-2xl mb-6 flex items-center justify-center border border-slate-200 dark:border-slate-700 overflow-hidden">
+  {/* ... di dalam div pembungkus ... */}
+                  <video 
+                    className="w-full h-full object-cover"
+                    autoPlay
+                    loop
+                    muted
+                    playsInline // <--- WAJIB UNTUK IPHONE
+                  >
+                    {/* PRIORITAS 1: SAFARI / MAC */}
+                    <source src="/video-matt-keras.mov" type='video/quicktime; codecs="hvc1"' />
+                    
+                    {/* PRIORITAS 2: CHROME / WINDOWS */}
+                    <source src="/video-matt-keras.webm" type="video/webm" />
+                    
+                    {/* Fallback Image */}
+                    <img src="/konsep-terlalukeras.jpg" className="w-full h-full object-cover" alt="Too Hard" />
+                  </video>
+                  {/* ... */}
+</div>
                         <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">Matras <span className="text-primary dark:text-blue-400">Terlalu Keras</span></h3>
                         <p className="text-xs font-bold text-slate-400 mb-4 uppercase tracking-wider"></p>
                         <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
@@ -365,9 +414,9 @@ const Home: React.FC = () => {
 
            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {[
-                  { title: "Kepala Pusing", desc: "Posisi tulang belakang yang tidak lurus menyebabkan tekanan berlebih pada sendi dan otot.", img: "/dampak-kasur-slpunggung.png" },
-                  { title: "Sakit Leher, Punggung & Pinggang", desc: "Sering terbangun di malam hari karena pegas yang menusuk atau gatal akibat tungau.", img: "/dampak-kasur-stidur.png" },
-                  { title: "Saraf Kejepit", desc: "Kurang tidur nyenyak berdampak langsung pada produktivitas dan emosi sepanjang hari.", img: "/dampak-kasur-mood.png" }
+                  { title: "Badan pegal, Kepala pusing, Sakit leher", desc: "Gejala awal dampak masalah matras anda, reaksi otot, tendon, syaraft akibat tekanan dan hambatan selama tidur.", img: "/dampak-kasur-slpunggung.png" },
+                  { title: "Sakit Pinggang & Punggung", desc: "Sakit pinggang dan punggung saat bangun tidur hampir selalu berkaitan dengan ketidakstabilan postur tulang belakang selama tidur, dan kondisi matras adalah faktor paling dominan.", img: "/dampak-kasur-stidur.png" },
+                  { title: "Saraf Kejepit", desc: "dampak paling besar dalam jangka waktu tertentu, nyeri menusuk saat ada gerakan, panas akibat bantalan bermasalah dan terjadi tonjolan yang mengganggu saraf.", img: "/dampak-kasur-mood.png" }
               ].map((item, i) => (
                   <ScrollReveal key={i} delay={i * 100}>
                      <div className="relative h-[28rem] rounded-[2.5rem] overflow-hidden group shadow-2xl">
@@ -381,6 +430,141 @@ const Home: React.FC = () => {
                   </ScrollReveal>
               ))}
            </div>
+        </div>
+      </section>
+
+{/* =========================================================
+          SECTION: SOLUSI YANG ANDA PIKIRKAN (REALITY CHECK)
+         ========================================================= */}
+      <section className="py-20 px-4 bg-white dark:bg-slate-900 relative overflow-hidden">
+        
+        {/* Background Pattern Hiasan */}
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px] opacity-30 pointer-events-none"></div>
+
+        <div className="container mx-auto max-w-6xl relative z-10">
+          
+          {/* --- BAGIAN 1: 5 SOLUSI UMUM --- */}
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
+              Solusi yang Mungkin <span className="text-blue-600">Anda Pikirkan?</span>
+            </h2>
+            <p className="text-slate-500 text-lg">
+              Banyak orang mencoba cara ini, namun seringkali masalah kembali lagi.
+            </p>
+          </div>
+
+          {/* GRID 5 KARTU */}
+          <div className="flex flex-wrap justify-center gap-6 mb-20">
+            
+            {/* 1. DOKTER */}
+            <div className="w-full md:w-[30%] bg-slate-50 dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 text-center hover:shadow-lg transition-all group">
+              <div className="w-16 h-16 mx-auto bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform text-blue-500">
+                <Stethoscope size={32} />
+              </div>
+              <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Cek ke Dokter?</h3>
+              <p className="text-sm text-slate-500">
+                Dokter mengobati gejala tubuh, tapi apakah penyebab utamanya (tempat tidur) diperbaiki?
+              </p>
+            </div>
+
+            {/* 2. PIJAT */}
+            <div className="w-full md:w-[30%] bg-slate-50 dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 text-center hover:shadow-lg transition-all group">
+              <div className="w-16 h-16 mx-auto bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform text-orange-500">
+                <Activity size={32} />
+              </div>
+              <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Pijat / Fisioterapi?</h3>
+              <p className="text-sm text-slate-500">
+                Badan enak sesaat, tapi malamnya tidur di kasur yang rusak lagi. Sakitnya akan kembali.
+              </p>
+            </div>
+
+            {/* 3. KASUR ORTHOPEDIC */}
+            <div className="w-full md:w-[30%] bg-slate-50 dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 text-center hover:shadow-lg transition-all group">
+              <div className="w-16 h-16 mx-auto bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform text-purple-500">
+                <BedDouble size={32} />
+              </div>
+              <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Beli Kasur Orthopedic?</h3>
+              <p className="text-sm text-slate-500">
+                Seringkali label "Orthopedic" di pasaran hanya gimmick marketing tanpa standar medis yang jelas.
+              </p>
+            </div>
+
+            {/* 4. KASUR MAHAL */}
+            <div className="w-full md:w-[30%] bg-slate-50 dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 text-center hover:shadow-lg transition-all group">
+              <div className="w-16 h-16 mx-auto bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform text-green-500">
+                <Banknote size={32} />
+              </div>
+              <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Beli Kasur Mahal?</h3>
+              <p className="text-sm text-slate-500">
+                Mahal belum tentu cocok. Kasur puluhan juta pun bisa bikin sakit pinggang jika tidak sesuai postur Anda.
+              </p>
+            </div>
+
+            {/* 5. KASUR KERAS */}
+            <div className="w-full md:w-[30%] bg-slate-50 dark:bg-slate-800 p-6 rounded-3xl border border-slate-100 dark:border-slate-700 text-center hover:shadow-lg transition-all group">
+              <div className="w-16 h-16 mx-auto bg-white dark:bg-slate-700 rounded-full flex items-center justify-center shadow-sm mb-4 group-hover:scale-110 transition-transform text-slate-600">
+                <BrickWall size={32} />
+              </div>
+              <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Ganti Kasur Keras?</h3>
+              <p className="text-sm text-slate-500">
+                Mitos lama. Kasur terlalu keras justru menekan bahu & panggul, menghambat aliran darah.
+              </p>
+            </div>
+
+          </div>
+
+
+          {/* --- BAGIAN 2: THE REALITY CHECK (FOCUS POINTER) --- */}
+          <div className="relative mt-8">
+            
+            {/* Visual Arrow Pointer (Mengarahkan mata ke bawah) */}
+            <div className="flex justify-center -mb-7 relative z-20">
+              <div className="bg-yellow-400 text-slate-900 p-3 rounded-full shadow-[0_0_20px_rgba(250,204,21,0.6)] animate-bounce border-4 border-white dark:border-slate-900">
+                <ArrowDown size={32} strokeWidth={3} />
+              </div>
+            </div>
+
+            {/* Container Utama (Dark Box) */}
+            <div className="relative bg-gradient-to-br from-slate-900 via-blue-900 to-slate-900 rounded-[2.5rem] p-8 md:p-14 text-center text-white shadow-2xl overflow-hidden border-t-4 border-yellow-400">
+              
+              {/* Background Glow */}
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-2/3 h-1/2 bg-blue-500/20 blur-[100px] -z-0"></div>
+
+              {/* WARNING TEXT */}
+              <div className="relative z-10 mb-8">
+                <h3 className="text-xl md:text-3xl font-medium leading-relaxed text-slate-200">
+                  "Semua ini <span className="text-red-400 font-bold underline decoration-wavy decoration-red-400/50 underline-offset-8">belum tentu solusi tepat</span> jika Anda belum tahu pasti masalahnya dan solusi yang ditawarkan."
+                </h3>
+              </div>
+
+              {/* Divider Garis */}
+              <div className="w-24 h-1 bg-white/20 mx-auto rounded-full mb-8"></div>
+
+              {/* LOGIC TEXT */}
+              <div className="relative z-10 mb-10 max-w-3xl mx-auto">
+                <p className="text-lg md:text-xl text-blue-100 font-light leading-relaxed">
+                  Apapun solusinya, jika saat tidur <strong className="text-white font-bold bg-white/10 px-2 py-1 rounded">tetap dibengkokkan tulangnya</strong>, maka dampaknya akan tetap terasa.
+                </p>
+              </div>
+
+              {/* HERO SOLUTION (Kotak Putih) */}
+              <div className="relative z-10 inline-block w-full max-w-2xl">
+                <div className="flex flex-col md:flex-row items-center gap-5 bg-white text-blue-900 px-8 py-6 rounded-2xl shadow-[0_10px_40px_-10px_rgba(255,255,255,0.3)] transform hover:scale-105 transition-transform duration-300">
+                  <div className="bg-blue-100 p-4 rounded-full shrink-0">
+                    <Lightbulb size={36} className="text-blue-600" fill="currentColor" />
+                  </div>
+                  <div className="text-center md:text-left">
+                    <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">THE SOLUTION</p>
+                    <p className="text-xl md:text-2xl font-black leading-tight text-slate-900">
+                      Sano Care hadir memahami dan membantu masalah matras Anda.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -505,7 +689,183 @@ const Home: React.FC = () => {
 </div>
         </div>
       </section>
+{/* =========================================================
+          SECTION: JAMINAN GARANSI & BENEFIT (SAFETY SECTION)
+         ========================================================= */}
+      <section className="py-20 px-4 bg-slate-50 dark:bg-slate-900 relative overflow-hidden">
+        
+        <div className="container mx-auto max-w-6xl relative z-10">
+          
+          {/* Header */}
+          <div className="text-center mb-16">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs font-bold uppercase tracking-wider mb-4">
+              <ShieldCheck size={16} /> Jaminan Kepuasan Pelanggan
+            </div>
+            <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
+              Tenang, Kami <span className="text-blue-600">Bergaransi Resmi</span>
+            </h2>
+            <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
+              Pilih paket perlindungan yang sesuai dengan kebutuhan Anda. Kami menjamin kualitas pengerjaan dan material terbaik.
+            </p>
+          </div>
 
+          {/* COMPARISON CARDS */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+
+            {/* --- KARTU 1: STANDARD (Clean & Minimalist) --- */}
+            <div className="bg-white dark:bg-slate-800 rounded-[2.5rem] p-8 border border-slate-200 dark:border-slate-700 shadow-lg hover:shadow-xl transition-all relative overflow-hidden group">
+              <div className="absolute top-0 left-0 w-full h-2 bg-slate-400"></div>
+              
+              <div className="flex items-center gap-4 mb-8">
+                <div className="p-3 bg-slate-100 dark:bg-slate-700 rounded-2xl text-slate-600 dark:text-slate-300">
+                  <ShieldCheck size={32} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-slate-900 dark:text-white">Paket Standard</h3>
+                  <p className="text-slate-500 text-sm">Untuk kenyamanan sehari-hari</p>
+                </div>
+              </div>
+
+              {/* List Benefit */}
+              <ul className="space-y-6">
+                {/* Garansi Ketahanan */}
+                <li className="flex items-start gap-4">
+                  <div className="mt-1"><CheckCircle2 size={20} className="text-slate-400" /></div>
+                  <div>
+                    <p className="text-sm text-slate-500 font-bold uppercase tracking-wider">Garansi Ketahanan (Amblas)</p>
+                    <p className="text-lg font-bold text-slate-800 dark:text-white">10 Tahun</p>
+                  </div>
+                </li>
+                {/* Garansi Lapisan */}
+                <li className="flex items-start gap-4">
+                  <div className="mt-1"><CheckCircle2 size={20} className="text-slate-400" /></div>
+                  <div>
+                    <p className="text-sm text-slate-500 font-bold uppercase tracking-wider">Garansi Busa (Kempes)</p>
+                    <p className="text-lg font-bold text-slate-800 dark:text-white">5 Tahun</p>
+                  </div>
+                </li>
+                {/* Garansi Kenyamanan */}
+                <li className="flex items-start gap-4">
+                  <div className="mt-1"><CheckCircle2 size={20} className="text-slate-400" /></div>
+                  <div>
+                    <p className="text-sm text-slate-500 font-bold uppercase tracking-wider">Trial Kenyamanan</p>
+                    <p className="text-lg font-bold text-slate-800 dark:text-white">7 Hari</p>
+                    <p className="text-xs text-slate-400">Jika tidak sesuai keluhan, kami revisi.</p>
+                  </div>
+                </li>
+                {/* Waktu Pengerjaan */}
+                <li className="flex items-start gap-4">
+                  <div className="mt-1"><Clock size={20} className="text-slate-400" /></div>
+                  <div>
+                    <p className="text-sm text-slate-500 font-bold uppercase tracking-wider">Waktu Pengerjaan</p>
+                    <p className="text-lg font-bold text-slate-800 dark:text-white">7 Hari Kerja</p>
+                  </div>
+                </li>
+                {/* Konsultasi */}
+                <li className="flex items-start gap-4">
+                  <div className="mt-1"><HeartPulse size={20} className="text-slate-400" /></div>
+                  <div>
+                    <p className="text-sm text-slate-500 font-bold uppercase tracking-wider">Fokus Solusi</p>
+                    <p className="text-lg font-bold text-slate-800 dark:text-white">Peningkatan Kenyamanan</p>
+                    <p className="text-xs text-slate-400">(General Comfort / Tanpa Sakit Berat)</p>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            {/* --- KARTU 2: PREMIUM (Highlight & Glowing) --- */}
+            <div className="bg-gradient-to-b from-blue-600 to-blue-800 rounded-[2.5rem] p-8 text-white shadow-2xl relative overflow-hidden transform md:-translate-y-4 md:scale-105 border-4 border-blue-400/30">
+              
+              {/* Badge Rekomendasi */}
+              <div className="absolute top-6 right-6 bg-yellow-400 text-blue-900 text-xs font-black px-3 py-1 rounded-full uppercase tracking-wide flex items-center gap-1 shadow-lg">
+                <Crown size={14} /> Recommended
+              </div>
+
+              <div className="flex items-center gap-4 mb-8">
+                <div className="p-3 bg-white/10 rounded-2xl text-yellow-300 border border-white/20 backdrop-blur-md">
+                  <Crown size={32} />
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white">Paket Premium</h3>
+                  <p className="text-blue-200 text-sm">Solusi terbaik untuk kesehatan</p>
+                </div>
+              </div>
+
+              {/* List Benefit */}
+              <ul className="space-y-6">
+                {/* Garansi Ketahanan */}
+                <li className="flex items-start gap-4 p-3 bg-white/10 rounded-xl border border-white/10 backdrop-blur-sm">
+                  <div className="mt-1"><ShieldCheck size={20} className="text-yellow-300" /></div>
+                  <div>
+                    <p className="text-xs text-blue-200 font-bold uppercase tracking-wider">Garansi Ketahanan (Amblas)</p>
+                    <p className="text-xl font-black text-white">20 Tahun</p>
+                  </div>
+                </li>
+                {/* Garansi Lapisan */}
+                <li className="flex items-start gap-4">
+                  <div className="mt-1"><CheckCircle2 size={20} className="text-blue-300" /></div>
+                  <div>
+                    <p className="text-xs text-blue-200 font-bold uppercase tracking-wider">Garansi Busa (Kempes)</p>
+                    <p className="text-xl font-bold text-white">10 Tahun</p>
+                  </div>
+                </li>
+                {/* Garansi Kenyamanan */}
+                <li className="flex items-start gap-4">
+                  <div className="mt-1"><CheckCircle2 size={20} className="text-blue-300" /></div>
+                  <div>
+                    <p className="text-xs text-blue-200 font-bold uppercase tracking-wider">Trial Kenyamanan</p>
+                    <p className="text-xl font-bold text-white">30 Hari</p>
+                    <p className="text-xs text-blue-200">Garansi kepuasan extra panjang.</p>
+                  </div>
+                </li>
+                {/* Waktu Pengerjaan */}
+                <li className="flex items-start gap-4">
+                  <div className="mt-1"><Zap size={20} className="text-yellow-300" /></div>
+                  <div>
+                    <p className="text-xs text-blue-200 font-bold uppercase tracking-wider">Waktu Pengerjaan</p>
+                    <p className="text-xl font-bold text-white">3 Hari (Prioritas)</p>
+                  </div>
+                </li>
+                {/* Konsultasi */}
+                <li className="flex items-start gap-4">
+                  <div className="mt-1"><HeartPulse size={20} className="text-red-300" /></div>
+                  <div>
+                    <p className="text-xs text-blue-200 font-bold uppercase tracking-wider">Fokus Solusi</p>
+                    <p className="text-xl font-bold text-white">Keluhan Nyeri & Orthopedic</p>
+                    <p className="text-xs text-blue-200">(Khusus kasus Saraf Kejepit / Sakit Punggung)</p>
+                  </div>
+                </li>
+              </ul>
+
+              {/* CTA Button Premium */}
+              <div className="mt-8">
+                <a href="https://wa.me/6285166662896?text=Halo%20Sano,%20saya%20tertarik%20Paket%20Premium" target="_blank" rel="noreferrer" className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors">
+                  Pilih Paket Premium
+                </a>
+              </div>
+
+            </div>
+
+          </div>
+          
+          {/* Trust Banner Bottom */}
+          <div className="mt-16 bg-blue-50 dark:bg-slate-800 rounded-2xl p-6 flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8 text-center border border-blue-100 dark:border-slate-700">
+             <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">KAMI MENJAMIN:</p>
+             <div className="flex gap-2 items-center text-slate-700 dark:text-slate-300 font-bold">
+                <ShieldCheck className="text-green-500" size={20}/> Keaslian Material
+             </div>
+             <div className="hidden md:block w-px h-6 bg-slate-300"></div>
+             <div className="flex gap-2 items-center text-slate-700 dark:text-slate-300 font-bold">
+                <ShieldCheck className="text-green-500" size={20}/> Kerapihan Jahitan
+             </div>
+             <div className="hidden md:block w-px h-6 bg-slate-300"></div>
+             <div className="flex gap-2 items-center text-slate-700 dark:text-slate-300 font-bold">
+                <ShieldCheck className="text-green-500" size={20}/> Transparansi Harga
+             </div>
+          </div>
+
+        </div>
+      </section>
       {/* 6. BEFORE & AFTER SECTION */}
       <section className="py-24 bg-gradient-to-br from-primary via-[#3B82F6] to-[#60A5FA] dark:from-slate-900 dark:to-indigo-900 text-white relative overflow-hidden">
         <div className="container mx-auto px-6 relative z-10">

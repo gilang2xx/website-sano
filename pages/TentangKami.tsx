@@ -35,57 +35,50 @@ const TentangKami: React.FC = () => {
         </div>
       </section>
 
-      {/* SECTION 1: OUR STORY */}
+      {/* SECTION 1: OUR STORY (TEXT ONLY) */}
       <section className="py-16 bg-white dark:bg-bg-dark">
         <div className="container mx-auto px-6">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-             
-             {/* LEFT: IMAGE REAL */}
-             <ScrollReveal>
-                <div className="w-full aspect-[4/3] rounded-[2rem] overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 relative group">
-                   <img 
-                      src="/sano-masjuri.png" 
-                      alt="Workshop Sano Care" 
-                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
-                   />
-                   <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors"></div>
+          
+          {/* Ubah layout jadi satu kolom rapi di tengah */}
+          <div className="max-w-4xl mx-auto text-center md:text-left">
+
+            {/* BAGIAN TEKS */}
+            <ScrollReveal delay={200}>
+              <div>
+                <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-6">
+                  Mengembalikan Kenyamanan Tidur <span className="text-primary">Keluarga Indonesia</span>
+                </h2>
+                
+                <div className="space-y-6 text-slate-600 dark:text-slate-300 text-lg leading-relaxed text-justify">
+                  <p>
+                    <span className="font-bold text-primary">Sano Care</span> hadir dari sebuah keresahan nyata: banyak orang bangun tidur dengan keluhan seperti pegal-pegal, pusing, sakit pinggang, hingga rasa tidak nyaman sepanjang hari.
+                  </p>
+                  <p>
+                    Kami percaya: sesuatu yang diperbaiki dan di-upgrade berdasarkan problem sebelumnya jauh lebih efektif dalam mengatasi akar masalah sekaligus menyempurnakan kenyamanan tidur.
+                  </p>
+                  <p>
+                    Dengan teknik restorasi yang tepat, didukung pemahaman mendalam tentang anatomi tulang belakang, karakteristik material, dan cara kerja setiap lapisan kasur, kami tidak hanya memperbaiki tampilan fisik—tetapi juga mengembalikan fungsi kesehatan kasur Anda.
+                  </p>
                 </div>
-             </ScrollReveal>
 
-             {/* RIGHT: STORY TEXT */}
-             <ScrollReveal delay={200}>
-                <div>
-                   <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-6 leading-tight">
-                      Mengembalikan Kenyamanan Tidur <span className="text-primary">Keluarga Indonesia</span>
-                   </h2>
-                   <div className="space-y-6 text-slate-600 dark:text-slate-300 text-lg leading-relaxed">
-                      <p>
-                        Sano Care hadir dari sebuah keresahan nyata: banyak orang bangun tidur dengan keluhan seperti pegal-pegal, pusing, sakit pinggang, nyeri punggung, hingga rasa tidak nyaman sepanjang hari. Tanpa disadari, sebagian besar masalah ini berakar dari kasur yang tidak lagi bekerja dengan benar—mulai dari struktur yang rusak, terlalu tenggelam, hingga terlalu keras dan tidak sesuai kebutuhan tubuh.
-                      </p>
-                      <p>
-                         Kami percaya: sesuatu yang diperbaiki dan di-upgrade berdasarkan problem sebelumnya jauh lebih efektif dalam mengatasi akar masalah sekaligus menyempurnakan kenyamanan tidur.
-                      </p>
-                      Dengan teknik restorasi yang tepat, didukung pemahaman mendalam tentang anatomi tulang belakang, karakteristik material, dan cara kerja setiap lapisan kasur, kami tidak hanya memperbaiki tampilan fisik—tetapi juga mengembalikan fungsi kesehatan kasur Anda dalam jangka panjang.
-<p></p>
+                <p className="font-medium text-slate-900 dark:text-white mt-8 text-lg">
+                  Hemat biaya, menyelesaikan keluhan, memastikan kenyamanan. Itulah komitmen kami kepada Anda.
+                </p>
 
-                      <p className="font-medium text-slate-900 dark:text-white">
-                         Hemat biaya, menyelesaikan keluhan, memastikan kenyamanan, dan menghadirkan tidur berkualitas sehingga Anda bangun lebih segar.
-Itulah komitmen kami kepada Anda.
-                      </p>
-                   </div>
-
-                   {/* SIGNATURE */}
-                   <div className="mt-10 flex items-center gap-4 border-t border-slate-100 dark:border-slate-800 pt-8">
-                      <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
-                         <User size={24} />
-                      </div>
-                      <div>
-                         <p className="font-handwriting text-2xl text-slate-800 dark:text-white font-bold sign-font">Founder SANO+</p>
-                         <p className="text-sm text-slate-500 dark:text-slate-400">Head Technician & Sleep Consultant</p>
-                      </div>
-                   </div>
+                {/* SIGNATURE */}
+                <div className="mt-12 flex flex-col md:flex-row items-center md:items-start gap-4 border-t border-slate-100 dark:border-slate-800 pt-8">
+                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
+                    <User size={24} />
+                  </div>
+                  <div>
+                    <p className="font-handwriting text-2xl text-slate-800 dark:text-white font-bold sign-font">Founder SANO+</p>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">Head Technician & Sleep Consultant</p>
+                  </div>
                 </div>
-             </ScrollReveal>
+
+              </div>
+            </ScrollReveal>
+
           </div>
         </div>
       </section>
