@@ -20,7 +20,7 @@ const KlinikMatras: React.FC = () => {
     },
     { 
       title: "Upgrade Fondasi Non Per Matras Sehat", 
-      desc: "Penggantian atau penguatan pegas (spring) untuk mengembalikan daya pantul maksimal.", 
+      desc: "Penguatan matras yang membuat kokoh, aman, dan maksimal untuk support kesehatan tidur kamu.", 
       icon: <Zap />,
       isBestSeller: true // <--- BEST SELLER 1
     },
