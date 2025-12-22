@@ -71,14 +71,42 @@ const Home: React.FC = () => {
 
             {/* A. KOLOM KIRI: TEKS (RATA KIRI) */}
             <div className="text-left relative z-30">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 border border-white/20 text-white text-xs font-bold uppercase tracking-wider mb-6 backdrop-blur-md">
-                <span className="relative flex h-2 w-2">
-                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                  <span className="relative inline-flex rounded-full h-2 w-2 bg-cyan-400"></span>
-                </span>
-                Klinik Matras 'Solusi #1 Kesehatan Tidur'
-              </div>
+              {/* --- NEW HIGHLIGHT BADGE (NEON GLASS STYLE) --- */}
+              <motion.div 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.1 }}
+                className="relative inline-block mb-8 group"
+              >
+                {/* 1. Background Glow */}
+                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-full blur opacity-25 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
+                
+                {/* 2. Container Utama */}
+                <div className="relative px-6 py-3 md:px-8 md:py-3 bg-slate-900/40 backdrop-blur-xl border border-white/20 rounded-full flex items-center gap-3 md:gap-4 shadow-2xl ring-1 ring-white/10 cursor-default">
+                  
+                  {/* Animated Dot */}
+                  <span className="relative flex h-3 w-3 md:h-4 md:w-4 shrink-0">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-3 w-3 md:h-4 md:w-4 bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"></span>
+                  </span>
 
+                  {/* Teks Utama */}
+                  <div className="text-white font-medium tracking-wide text-xs md:text-base whitespace-nowrap">
+                    <span className="opacity-90">KLINIK MATRAS</span>
+                    
+                    {/* Divider */}
+                    <span className="mx-2 md:mx-3 text-white/30">|</span>
+                    
+                    {/* Highlight Text */}
+                    <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-white drop-shadow-sm tracking-wider">
+                      SOLUSI #1
+                    </span>
+                    
+                    <span className="ml-2 opacity-90">KESEHATAN TIDUR</span>
+                  </div>
+
+                </div>
+              </motion.div>
               {/* Headline Animasi */}
 <div className="mb-2 relative z-30">
    <AnimatedHeroText />
@@ -124,8 +152,7 @@ const Home: React.FC = () => {
                  <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur p-3 rounded-xl shadow-lg flex items-center gap-3">
                     <div className="bg-green-100 p-2 rounded-full text-green-600"><Shield size={20} /></div>
                     <div>
-                      <div className="text-xl font-bold text-slate-800 leading-none">1200+</div>
-                      <div className="text-[10px] font-bold text-slate-500 uppercase">Projects</div>
+
                     </div>
                  </div>
               </div>
@@ -866,43 +893,62 @@ const Home: React.FC = () => {
 
         </div>
       </section>
-      {/* 6. BEFORE & AFTER SECTION */}
-      <section className="py-24 bg-gradient-to-br from-primary via-[#3B82F6] to-[#60A5FA] dark:from-slate-900 dark:to-indigo-900 text-white relative overflow-hidden">
-        <div className="container mx-auto px-6 relative z-10">
-           <ScrollReveal className="flex flex-col md:flex-row justify-between items-end mb-16 gap-6">
-              <div>
-                 <span className="text-secondary font-bold tracking-widest uppercase text-sm mb-2 block">Real Results</span>
-                 <h2 className="text-3xl md:text-5xl font-extrabold leading-tight">Before & After SANO<br/></h2>
-              </div>
-              <NavLink to="/before-after" className="px-8 py-3 rounded-full border border-white/30 hover:bg-white hover:text-primary-dark transition-all font-bold flex items-center gap-2">
-                 Lihat Galeri Lengkap <ArrowRight size={18} />
-              </NavLink>
-           </ScrollReveal>
+      {/* =========================================================
+          6. GALERI KASUR SEHAT (INSPIRASI)
+         ========================================================= */}
+      <section className="py-24 bg-gradient-to-br from-primary via-[#3B82F6] to-[#60A5FA] dark:from-slate-900 dark:to-slate-800 relative overflow-hidden">
+        
+        {/* Background Hiasan */}
+        <div className="absolute inset-0 bg-white/5 opacity-5 blur-xl -z-10"></div>
 
-           <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-              {BEFORE_AFTER_DATA.slice(0, 2).map((item, idx) => (
-                 <ScrollReveal key={item.id} delay={idx * 100}>
-                    <div className="bg-white dark:bg-bg-surface rounded-3xl overflow-hidden shadow-xl p-6 text-slate-900 dark:text-white">
-                       <div className="flex gap-4 mb-6">
-                          {/* BEFORE */}
-                          <div className="w-1/2 aspect-[4/3] rounded-2xl border-2 border-dashed border-red-300 dark:border-red-900 bg-red-50 dark:bg-red-900/10 relative overflow-hidden group">
-                             <div className="absolute top-2 left-2 z-10 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-md">BEFORE</div>
-                             <img src={item.beforeImg} alt="Before" className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" />
-                          </div>
-                          {/* AFTER */}
-                          <div className="w-1/2 aspect-[4/3] rounded-2xl border-2 border-dashed border-green-300 dark:border-green-900 bg-green-50 dark:bg-green-900/10 relative overflow-hidden group">
-                             <div className="absolute top-2 right-2 z-10 bg-secondary text-white text-[10px] font-bold px-2 py-1 rounded shadow-md">AFTER</div>
-                             <img src={item.afterImg} alt="After" className="w-full h-full object-cover" />
-                          </div>
-                       </div>
-                       <div>
-                          <h3 className="text-xl font-bold mb-1">{item.title}</h3>
-                          <p className="text-slate-500 dark:text-slate-400 text-xs md:text-sm line-clamp-2">{item.description}</p>
-                       </div>
-                    </div>
-                 </ScrollReveal>
-              ))}
-           </div>
+        <div className="container mx-auto px-6 relative z-10">
+          
+          {/* Header Section */}
+          <div className="text-center text-white mb-16">
+            <h2 className="text-3xl md:text-5xl font-extrabold mb-4">
+              Galeri <span className="text-cyan-300">Matras Sehat</span>
+            </h2>
+            <p className="max-w-2xl mx-auto text-lg text-blue-100">
+              Kenyamanan dan kesehatan yang telah kami ciptakan untuk pelanggan kami.
+            </p>
+          </div>
+
+          {/* GALLERY GRID */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            {[
+              { id: 1, title: "", img: "/sano-mattsehat-2.png" }, // Ganti dengan gambar
+              { id: 2, title: "", img: "/sano-mattsehat-1.png" }, // Ganti dengan gambar
+              { id: 3, title: "", img: "/sano-mattsehat-3.png" }, // Ganti dengan gambar
+            ].map((item, idx) => (
+              <motion.div 
+                key={item.id}
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1, duration: 0.5 }}
+                className="group relative bg-white dark:bg-slate-800 rounded-[2.5rem] overflow-hidden shadow-xl hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
+              >
+                {/* Gambar Utama */}
+                <div className="h-64 relative overflow-hidden">
+                  <img 
+                    src={item.img} // Gunakan src dari data di atas
+                    alt={item.title} 
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" 
+                  />
+                  {/* Overlay Gradient */}
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                </div>
+
+                {/* Konten Bawah */}
+                <div className="absolute bottom-0 left-0 w-full p-6 text-white">
+                  <h3 className="text-xl font-bold mb-1">{item.title}</h3>
+                  <p className="text-sm text-slate-300"></p>
+                </div>
+              </motion.div>
+            ))}
+
+          </div>
+
         </div>
       </section>
 
