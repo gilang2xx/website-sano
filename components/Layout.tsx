@@ -41,6 +41,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="bg-white dark:bg-slate-900/95 backdrop-blur-sm rounded-full shadow-xl px-6 py-3 md:px-8 flex items-center justify-between border border-slate-100 dark:border-slate-800">
           
           {/* 1. LOGO LIGHT MODE (Smaller Size) */}
+             <NavLink 
+            to="/" 
+            className="block group select-none shrink-0 cursor-pointer"
+            onClick={() => window.scrollTo(0, 0)} // Tambahan: Scroll ke atas saat diklik
+          >
              <img
                 src="/sanocare-light.png"
                 alt="SANO Logo"
@@ -56,6 +61,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 // Samakan ukurannya
                 className="h-6 md:h-9 w-auto object-contain hidden dark:block"
               />
+              </NavLink>
 
           {/* Desktop Nav */}
           <nav className="hidden md:flex items-center gap-1">
@@ -225,7 +231,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ul className="space-y-4 text-slate-400 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-secondary shrink-0 mt-0.5" />
-                <span>Jl. Raya Keadilan No. 63, Rangkapan Jaya Baru, Kota Depok, Jawa Barat</span>
+                <span>Jl. Raya Keadilan, Gg Asrama Polri, No. 81, RT 5/12, Pancoran Mas, Kota Depok, Jawa Barat</span>
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-secondary shrink-0" />

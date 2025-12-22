@@ -20,7 +20,7 @@ const App: React.FC = () => {
         
         {/* Halaman Menu Utama */}
         <Route path="/layanan" element={<Layanan />} />
-        <Route path="/pricelist" element={<Pricelist />} />
+        {/* <Route path="/pricelist" element={<Pricelist />} /> */}
         <Route path="/tentang-kami" element={<TentangKami />} />
         <Route path="/before-after" element={<BeforeAfter />} />
         <Route path="/kontak" element={<Kontak />} />

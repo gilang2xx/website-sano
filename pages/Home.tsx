@@ -71,38 +71,46 @@ const Home: React.FC = () => {
 
             {/* A. KOLOM KIRI: TEKS (RATA KIRI) */}
             <div className="text-left relative z-30">
-              {/* --- NEW HIGHLIGHT BADGE (NEON GLASS STYLE) --- */}
+              {/* --- NEW HIGHLIGHT BADGE (RESPONSIVE FIX) --- */}
               <motion.div 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.1 }}
-                className="relative inline-block mb-8 group"
+                className="relative inline-block mb-6 md:mb-8 group max-w-full"
               >
                 {/* 1. Background Glow */}
                 <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-full blur opacity-25 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
                 
-                {/* 2. Container Utama */}
-                <div className="relative px-6 py-3 md:px-8 md:py-3 bg-slate-900/40 backdrop-blur-xl border border-white/20 rounded-full flex items-center gap-3 md:gap-4 shadow-2xl ring-1 ring-white/10 cursor-default">
+                {/* 2. Container Utama (Glass Effect) */}
+                {/* Perbaikan: px-4 di HP (lebih hemat tempat), px-8 di Laptop */}
+                <div className="relative px-4 py-2 md:px-8 md:py-3 bg-slate-900/40 backdrop-blur-xl border border-white/20 rounded-full flex items-center gap-3 md:gap-4 shadow-2xl ring-1 ring-white/10 cursor-default w-fit max-w-full">
                   
                   {/* Animated Dot */}
-                  <span className="relative flex h-3 w-3 md:h-4 md:w-4 shrink-0">
+                  <span className="relative flex h-2 w-2 md:h-4 md:w-4 shrink-0">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-3 w-3 md:h-4 md:w-4 bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 md:h-4 md:w-4 bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"></span>
                   </span>
 
                   {/* Teks Utama */}
-                  <div className="text-white font-medium tracking-wide text-xs md:text-base whitespace-nowrap">
-                    <span className="opacity-90">KLINIK MATRAS</span>
+                  {/* Perbaikan: 
+                      - whitespace-normal (boleh wrap di HP) 
+                      - md:whitespace-nowrap (satu baris di Laptop)
+                      - text-[10px] (kecil di HP agar muat)
+                  */}
+                  <div className="text-white font-medium tracking-wide text-[10px] sm:text-xs md:text-base lg:text-lg whitespace-normal md:whitespace-nowrap leading-tight">
+                    <span className="opacity-90 font-bold">KLINIK MATRAS</span>
                     
-                    {/* Divider */}
-                    <span className="mx-2 md:mx-3 text-white/30">|</span>
+                    {/* Divider (Hilang di layar sangat kecil, muncul di tablet/laptop) */}
+                    <span className="hidden sm:inline mx-1 md:mx-3 text-white/30">|</span>
+                    {/* Ganti baris di HP yang sangat kecil */}
+                    <span className="sm:hidden block w-full h-0"></span> 
                     
                     {/* Highlight Text */}
                     <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-white drop-shadow-sm tracking-wider">
-                      SOLUSI #1
+                      SOLUSI #1 
                     </span>
                     
-                    <span className="ml-2 opacity-90">KESEHATAN TIDUR</span>
+                    <span className="ml-1 md:ml-2 opacity-90">KESEHATAN TIDUR</span>
                   </div>
 
                 </div>

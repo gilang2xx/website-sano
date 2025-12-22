@@ -1,59 +1,83 @@
 import React from 'react';
-import { BEFORE_AFTER_DATA } from '../constants';
-import ScrollReveal from '../components/ScrollReveal';
+import { ImagePlus, BadgeCheck } from 'lucide-react';
 
 const BeforeAfter: React.FC = () => {
-  const galleryData = [...BEFORE_AFTER_DATA, ...BEFORE_AFTER_DATA]; 
+
+  // DATA DUMMY (Nanti tinggal ganti title dan desc-nya saat sudah ada foto)
+  const projects = [
+    { id: 1, title: "Restorasi Spring Bed Rusak", desc: "Penggantian pegas patah dan kain cover premium." },
+    { id: 2, title: "Upgrade ke Latex", desc: "Penambahan lapisan natural latex 5cm untuk kenyamanan." },
+    { id: 3, title: "Ganti Kain Cover Mewah", desc: "Peremajaan tampilan dengan kain knitting 3D." },
+    { id: 4, title: "Custom Size King", desc: "Modifikasi ukuran dari Queen ke King size." },
+    { id: 5, title: "Perbaikan Sofa Kulit", desc: "Ganti kulit sofa yang pecah-pecah menjadi baru." },
+    { id: 6, title: "Deep Cleaning Matras", desc: "Pembersihan total noda membandel dan tungau." },
+  ];
 
   return (
-    <div className="pb-24">
-       <section className="bg-primary-dark text-white py-20 relative overflow-hidden">
-        <div className="absolute inset-0 bg-slate-900/50"></div>
-        <div className="container mx-auto px-6 relative z-10">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Galeri Transformasi</h1>
-          <p className="text-blue-200 text-lg max-w-2xl">
-            Panduan dokumentasi proyek restorasi. Berikut adalah contoh hasil pengerjaan kami dalam format perbandingan.
-          </p>
+    <div className="pt-32 pb-24 min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
+      
+      {/* HEADER */}
+      <div className="container mx-auto px-6 text-center mb-16">
+        <div className="inline-block px-4 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mb-4">
+          Portofolio
         </div>
-      </section>
+        <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-6">
+          Galeri <span className="text-[#3B62AA]">Transformasi</span>
+        </h1>
+        <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
+          Lihat bukti nyata pengerjaan kami. (Halaman ini menggunakan placeholder sementara menunggu dokumentasi proyek terbaru).
+        </p>
+      </div>
 
-      <div className="container mx-auto px-6 mt-16">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
-           {galleryData.map((item, idx) => (
-             <ScrollReveal key={`${item.id}-${idx}`} delay={idx * 50}>
-                <div className="bg-white dark:bg-bg-surface rounded-3xl overflow-hidden shadow-xl border border-slate-100 dark:border-slate-800 p-6">
-                   <div className="flex gap-4 mb-6">
-                      {/* BEFORE */}
-                      <div className="w-1/2 aspect-[4/3] rounded-2xl border-2 border-dashed border-red-300 dark:border-red-900 bg-red-50 dark:bg-red-900/10 relative overflow-hidden group">
-                         <div className="absolute top-2 left-2 z-10 bg-red-600 text-white text-[10px] font-bold px-2 py-1 rounded shadow-md">BEFORE</div>
-                         <img 
-                           src={item.beforeImg} 
-                           alt={`Before ${item.title}`} 
-                           className="w-full h-full object-cover grayscale transition-all duration-500 group-hover:grayscale-0" 
-                         />
-                      </div>
-                      {/* AFTER */}
-                      <div className="w-1/2 aspect-[4/3] rounded-2xl border-2 border-dashed border-green-300 dark:border-green-900 bg-green-50 dark:bg-green-900/10 relative overflow-hidden group">
-                         <div className="absolute top-2 right-2 z-10 bg-secondary text-white text-[10px] font-bold px-2 py-1 rounded shadow-md">AFTER</div>
-                         <img 
-                           src={item.afterImg} 
-                           alt={`After ${item.title}`} 
-                           className="w-full h-full object-cover" 
-                         />
-                      </div>
-                   </div>
-                   <div>
-                      <div className="flex justify-between items-start mb-2">
-                         <h3 className="font-bold text-lg md:text-xl text-slate-900 dark:text-white leading-tight">{item.title}</h3>
-                         <span className="text-[10px] font-bold px-2 py-1 bg-blue-50 dark:bg-slate-700 rounded text-primary dark:text-blue-300 uppercase tracking-wider shrink-0 ml-2">{item.category}</span>
-                      </div>
-                      <p className="text-slate-500 dark:text-text-muted text-sm leading-relaxed">{item.description}</p>
-                   </div>
+      {/* GRID PROJECT PLACEHOLDERS */}
+      <div className="container mx-auto px-6 max-w-7xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          {projects.map((project) => (
+            <div 
+              key={project.id}
+              className="bg-white dark:bg-slate-800 rounded-[2rem] p-6 shadow-lg border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-all duration-300"
+            >
+              {/* AREA FOTO BEFORE & AFTER */}
+              <div className="grid grid-cols-2 gap-4 mb-6">
+                
+                {/* 1. PLACEHOLDER BEFORE */}
+                <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-900 rounded-xl border-2 border-dashed border-red-300 flex flex-col items-center justify-center text-center p-4 group cursor-pointer hover:bg-red-50 dark:hover:bg-slate-800 transition-colors">
+                  <div className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">BEFORE</div>
+                  <ImagePlus className="text-slate-400 mb-2 group-hover:text-red-400 transition-colors" size={32} />
+                  <p className="text-xs text-slate-400 font-mono">Upload Foto Rusak<br/>(600x450px)</p>
                 </div>
-             </ScrollReveal>
-           ))}
+
+                {/* 2. PLACEHOLDER AFTER */}
+                <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-900 rounded-xl border-2 border-dashed border-green-300 flex flex-col items-center justify-center text-center p-4 group cursor-pointer hover:bg-green-50 dark:hover:bg-slate-800 transition-colors">
+                  <div className="absolute top-3 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">AFTER</div>
+                  <ImagePlus className="text-slate-400 mb-2 group-hover:text-green-400 transition-colors" size={32} />
+                  <p className="text-xs text-slate-400 font-mono">Upload Foto Bagus<br/>(600x450px)</p>
+                </div>
+
+              </div>
+
+              {/* KETERANGAN PROJECT */}
+              <div className="flex justify-between items-start">
+                <div>
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">
+                    {project.title}
+                  </h3>
+                  <p className="text-sm text-slate-500 dark:text-slate-400">
+                    {project.desc}
+                  </p>
+                </div>
+                <div className="bg-blue-50 dark:bg-slate-700 p-2 rounded-full text-[#3B62AA] dark:text-blue-400">
+                  <BadgeCheck size={24} />
+                </div>
+              </div>
+
+            </div>
+          ))}
+
         </div>
       </div>
+
     </div>
   );
 };
