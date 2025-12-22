@@ -13,13 +13,13 @@ const KlinikMatras: React.FC = () => {
   // Saya tambahkan properti 'isBestSeller: true' KHUSUS untuk 2 layanan pilihan Anda
   const services = [
     { 
-      title: "Paket Fondasi + Lapisan", 
+      title: "Paket Fondasi + Lapisan Matras Sehat", 
       desc: "Kombo hemat: Perbaikan struktur dalam sekaligus penggantian lapisan kenyamanan.", 
       icon: <Settings />,
       isBestSeller: true // <--- BEST SELLER 2
     },
     { 
-      title: "Upgrade Fondasi Per Matras", 
+      title: "Upgrade Fondasi Non Per Matras Sehat", 
       desc: "Penggantian atau penguatan pegas (spring) untuk mengembalikan daya pantul maksimal.", 
       icon: <Zap />,
       isBestSeller: true // <--- BEST SELLER 1
