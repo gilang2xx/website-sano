@@ -20,7 +20,7 @@ const Kontak: React.FC = () => {
                  <div className="space-y-8">
                     <div className="flex items-start gap-4">
                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0"><MapPin size={24} /></div>
-                       <div><h4 className="font-bold text-lg mb-1">Alamat</h4><p className="text-blue-100">Jl. Raya Keadilan No. 63, Rangakapan Jaya Baru, Kota Depok, Jawa Barat</p></div>
+                       <div><h4 className="font-bold text-lg mb-1">Alamat</h4><p className="text-blue-100">Jl. Raya Keadilan, Gg Asrama Polri, No. 81, RT 5/12, Pancoran Mas, Kota Depok, Jawa Barat</p></div>
                     </div>
                     <div className="flex items-start gap-4">
                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0"><Phone size={24} /></div>
