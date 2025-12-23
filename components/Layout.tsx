@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { 
-  Menu, X, Phone, MapPin, Mail, Instagram, 
-  ChevronDown // <--- Tambahkan Icon Panah Bawah
+  Menu, X, Phone, MapPin, Mail, Instagram, ChevronDown,
+  Facebook // <--- Pastikan ini sudah ditambahkan agar tidak merah
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { NAV_LINKS } from '../constants';
@@ -267,14 +267,27 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </ul>
             </div>
 
-            <div className="flex gap-4">
-               <a href="#" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-colors text-white">
-                 <Instagram size={20} />
+            {/* Social Media Icons */}
+            <div className="flex gap-4 mt-6">
+               {/* Instagram */}
+               <a href="https://www.instagram.com/sanocare" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-pink-600 transition-colors text-white group" title="Instagram">
+                 <Instagram size={20} className="group-hover:scale-110 transition-transform" />
+               </a>
+               {/* Facebook */}
+               <a href="https://www.facebook.com/SanoCareOfficial" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 transition-colors text-white group" title="Facebook">
+                 <Facebook size={20} className="group-hover:scale-110 transition-transform" />
+               </a>
+               {/* TikTok */}
+               <a href="https://www.tiktok.com/@sanocare" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-black hover:border hover:border-slate-600 transition-colors text-white group" title="TikTok">
+                 <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="group-hover:scale-110 transition-transform"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" /></svg>
                </a>
             </div>
+
           </div>
 
         </div>
+
+        {/* Copyright */}
         <div className="container mx-auto px-6 mt-16 pt-8 border-t border-slate-800 text-center text-slate-500 text-sm">
           &copy; {new Date().getFullYear()} KLINIK MATTRESS by SANO CARE. All rights reserved.
         </div>

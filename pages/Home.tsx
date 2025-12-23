@@ -158,7 +158,7 @@ const Home: React.FC = () => {
              </video>
                </div>
                  <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur p-3 rounded-xl shadow-lg flex items-center gap-3">
-                    <div className="bg-green-100 p-2 rounded-full text-green-600"><Shield size={20} /></div>
+                    
                     <div>
 
                     </div>
@@ -182,7 +182,7 @@ const Home: React.FC = () => {
                   loop
                   muted
                   playsInline
-                  className="w-full h-auto object-contain drop-shadow-2xl mix-blend-screen scale-110 md:scale-125 mx-auto"
+                  className="w-full h-auto object-contain drop-shadow-2xl mix-blend-screen scale-110 md:scale-120 mx-auto"
                 >
                   <source src="/sano-hero-mac.mov" type='video/quicktime; codecs="hvc1"' />
                   <source src="/sano-hero-android.webm" type="video/webm" />
