@@ -38,7 +38,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       
       {/* Floating Pill Navbar */}
       <header className="fixed top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 transition-all duration-300">
-        <div className="bg-white dark:bg-slate-900/95 backdrop-blur-sm rounded-full shadow-xl px-6 py-3 md:px-8 flex items-center justify-between border border-slate-100 dark:border-slate-800">
+        <div className="bg-white dark:bg-slate-900/95 backdrop-blur-sm rounded-full shadow-xl px-6 py-3 md:px-8 flex items-center gap-4 border border-slate-100 dark:border-slate-800">
           
           {/* 1. LOGO LIGHT MODE (Smaller Size) */}
              <NavLink 
@@ -64,7 +64,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </NavLink>
 
           {/* Desktop Nav */}
-          <nav className="hidden md:flex items-center gap-1">
+          <nav className="hidden md:flex items-center gap-1 ml-auto">
             {NAV_LINKS.map((link) => {
               
               // --- LOGIKA DROPDOWN KHUSUS MENU "LAYANAN" ---
