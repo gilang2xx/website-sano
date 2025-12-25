@@ -48,7 +48,7 @@ const Kontak: React.FC = () => {
            </div>
         </div>
         <div className="mt-12 h-96 w-full rounded-3xl overflow-hidden shadow-lg">
-           <iframe src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d991.2311852704305!2d106.78333276966158!3d-6.403697499599185!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zNsKwMjQnMTMuMyJTIDEwNsKwNDcnMDIuMyJF!5e0!3m2!1sen!2sid!4v1766138288503!5m2!1sen!2sid" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Map Location" className="filter grayscale hover:grayscale-0 transition-all duration-500"></iframe>
+           <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d507510.411991499!2d106.20719207343748!3d-6.403652099999994!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69e914bf9be9ef%3A0x20b7a81c2eee9782!2sKLINIK%20MATRAS%20by%20SANO%20CARE!5e0!3m2!1sen!2sid!4v1766639164800!5m2!1sen!2sid" width="100%" height="100%" style={{ border: 0 }} allowFullScreen loading="lazy" referrerPolicy="no-referrer-when-downgrade" title="Map Location" className="filter grayscale hover:grayscale-0 transition-all duration-500"></iframe>
         </div>
       </div>
     </div>

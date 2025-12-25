@@ -65,16 +65,7 @@ const TentangKami: React.FC = () => {
                   Hemat biaya, menyelesaikan keluhan, memastikan kenyamanan. Itulah komitmen kami kepada Anda.
                 </p>
 
-                {/* SIGNATURE */}
-                <div className="mt-12 flex flex-col md:flex-row items-center md:items-start gap-4 border-t border-slate-100 dark:border-slate-800 pt-8">
-                  <div className="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white">
-                    <User size={24} />
-                  </div>
-                  <div>
-                    <p className="font-handwriting text-2xl text-slate-800 dark:text-white font-bold sign-font">Founder SANO+</p>
-                    <p className="text-sm text-slate-500 dark:text-slate-400">Head Technician & Sleep Consultant</p>
-                  </div>
-                </div>
+               
 
               </div>
             </ScrollReveal>
