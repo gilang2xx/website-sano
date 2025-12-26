@@ -16,20 +16,20 @@ const ArtikelDetail: React.FC = () => {
 
     // ARTIKEL 1: DAMPAK KASUR RUSAK
     "dampak-kasur-rusak": {
-      title: "Waspada! 3 Tanda Fatal Tubuh Anda Menolak Matras",
+      title: "Waspada! Efek Kasur Rusak bagi Kesehatan Tulang Belakang",
       date: "26 Des 2023",
       readTime: "5 Menit Baca",
       image: "/dampak-kasur-slpunggung.png",
       content: (
         <>
           <p className="lead text-xl font-medium text-slate-700 dark:text-slate-200 mb-6">
-            Pernahkah Anda bangun tidur bukannya segar, malah merasa seperti habis dipukuli? Leher kaku, pinggang nyeri, atau bahkan kesemutan menjalar?
+            Pernahkah kamu bangun tidur bukannya segar, malah merasa seperti habis dipukuli? Leher kaku, pinggang nyeri, atau bahkan kesemutan menjalar?
           </p>
           <hr className="border-slate-200 dark:border-slate-700 my-8"/>
           
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4">1. Fase Awal: Leher Kaku & Pusing</h2>
           <p className="mb-4 text-slate-600 dark:text-slate-300">
-            Saat matras terlalu empuk, bahu Anda tenggelam, membuat leher tertekuk ke atas. Ini memicu ketegangan otot.
+            Saat matras terlalu empuk, bahu kamu tenggelam, membuat leher tertekuk ke atas. Ini memicu ketegangan otot.
           </p>
 
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 mt-8">2. Fase Lanjut: Sakit Pinggang</h2>
@@ -39,7 +39,7 @@ const ArtikelDetail: React.FC = () => {
 
           <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-4 mt-8">3. Fase Bahaya: Saraf Kejepit (HNP)</h2>
           <p className="mb-4 text-slate-600 dark:text-slate-300">
-            Bantalan tulang belakang bisa menonjol dan menekan saraf. Jangan tidur di lantai keras, Anda butuh matras yang Firm tapi nyaman (Latex/Memory Foam).
+            Bantalan tulang belakang bisa menonjol dan menekan saraf. Jangan tidur di lantai keras, kamu butuh matras yang Firm tapi nyaman (Latex/Memory Foam).
           </p>
         </>
       )
@@ -58,7 +58,7 @@ const ArtikelDetail: React.FC = () => {
           </p>
 
           <div className="bg-slate-100 dark:bg-slate-800 p-4 border-l-4 border-blue-500 mb-8 italic text-slate-600 dark:text-slate-400">
-            "Kualitas tidur Anda ditentukan oleh seberapa baik matras menjaga tulang belakang tetap dalam posisi netral (Neutral Spine Alignment) saat Anda tidak sadar."
+            "Kualitas tidur kamu ditentukan oleh seberapa baik matras menjaga tulang belakang tetap dalam posisi netral (Neutral Spine Alignment) saat kamu tidak sadar."
           </div>
 
           <p className="mb-8">
@@ -82,7 +82,7 @@ const ArtikelDetail: React.FC = () => {
           </p>
           <ul className="list-disc pl-5 space-y-2 mb-6 text-slate-700 dark:text-slate-300">
             <li><strong>Dampak Ortopedi:</strong> Tulang belakang melengkung (Kyphosis/Scoliosis buatan) sepanjang malam.</li>
-            <li><strong>Respon Tubuh:</strong> Otot punggung bawah (Lumbar) akan tegang berusaha menahan posisi agar tidak patah. Inilah sebabnya Anda bangun dengan rasa pegal di pinggang.</li>
+            <li><strong>Respon Tubuh:</strong> Otot punggung bawah (Lumbar) akan tegang berusaha menahan posisi agar tidak patah. Inilah sebabnya kamu bangun dengan rasa pegal di pinggang.</li>
             <li><strong>Sirkulasi Udara:</strong> Tubuh yang "tertelan" matras akan memerangkap panas, membuat tidur tidak nyenyak (gerah).</li>
           </ul>
 
@@ -103,7 +103,7 @@ const ArtikelDetail: React.FC = () => {
           <ul className="list-disc pl-5 space-y-2 mb-6 text-slate-700 dark:text-slate-300">
             <li><strong>Pressure Points:</strong> Bahu dan Panggul menerima tekanan ekstrem karena tidak bisa masuk ke dalam matras.</li>
             <li><strong>Sirkulasi Darah:</strong> Tekanan tinggi pada titik tumpu menghambat aliran darah kapiler, menyebabkan kesemutan dan mati rasa (numbness).</li>
-            <li><strong>Kualitas Tidur:</strong> Anda akan sering bolak-balik (tossing and turning) secara tidak sadar untuk mencari posisi nyaman, merusak fase Deep Sleep.</li>
+            <li><strong>Kualitas Tidur:</strong> kamu akan sering bolak-balik (tossing and turning) secara tidak sadar untuk mencari posisi nyaman, merusak fase Deep Sleep.</li>
           </ul>
 
           <hr className="border-slate-200 dark:border-slate-700 my-8"/>
@@ -135,7 +135,7 @@ const ArtikelDetail: React.FC = () => {
 
             <h3 className="text-xl font-bold text-center mb-4">Mengapa SANO CARE Berbeda?</h3>
             <p className="mb-6 text-center">
-              Kami tidak menjual "satu matras untuk semua". Kami merestorasi matras Anda dengan menyesuaikan <strong>Berat Badan</strong> dan <strong>Posisi Tidur</strong> Anda.
+              Kami tidak menjual "satu matras untuk semua". Kami merestorasi matras kamu dengan menyesuaikan <strong>Berat Badan</strong> dan <strong>Posisi Tidur</strong> kamu.
             </p>
 
             <div className="text-center">
@@ -202,7 +202,7 @@ const ArtikelDetail: React.FC = () => {
         {/* CTA Box */}
         <div className="mt-16 bg-blue-600 rounded-3xl p-8 text-center text-white shadow-xl">
            <h3 className="text-2xl font-bold mb-2">Konsultasi Gratis?</h3>
-           <p className="mb-6 opacity-90">Tanyakan solusi untuk matras Anda sekarang.</p>
+           <p className="mb-6 opacity-90">Tanyakan solusi untuk matras Kamu sekarang.</p>
            <a href="https://wa.me/6285166662896" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold hover:scale-105 transition-transform">
               <MessageCircle size={20} /> Chat WhatsApp
            </a>
