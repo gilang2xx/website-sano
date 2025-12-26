@@ -43,7 +43,13 @@ import {
   Banknote,
   Zap, 
   Crown, 
-  CheckCircle2 
+  AlertCircle, 
+  Scissors,
+  Feather,
+  Ruler,
+  
+  CheckCircle2, 
+  Link
   // -------------------------------
 } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
@@ -53,197 +59,232 @@ import { TESTIMONIALS, BEFORE_AFTER_DATA } from '../constants';
 
 
 const Home: React.FC = () => {
-     const [isDarkMode, setIsDarkMode] = React.useState(false); 
+  const [isDarkMode, setIsDarkMode] = React.useState(false);
+
+ // DATA MASALAH (Disederhanakan jadi 3 Poin Utama)
+  const painPoints = [
+    // 1. MASALAH RINGAN (Leher & Kepala)
+    {
+      title: "Kepala Pusing, Pegal & Sakit Leher",
+      desc: "Gejala awal akibat tekanan kasur tidak merata. Otot leher & bahu tegang semalaman tanpa rileksasi.",
+      // Ganti nama file video ini jika sudah punya videonya
+      videoWebm: "/video-sakitkepalaleher.webm", 
+      videoMov: "/video-sakitkepalaleher.mov",
+      // Gambar ini PASTI MUNCUL jika video di atas belum ada di folder public
+      img: "/dampak-kasur-slpunggung.png", 
+      colSpan: "md:col-span-1",
+      color: "from-cyan-600",
+      link: "/artikel/dampak-kasur-rusak"
+    },
+    
+    // 2. MASALAH MENENGAH (Pinggang)
+    {
+      title: "Sakit Pinggang & Punggung",
+      desc: "Pinggang terasa patah saat bangun. Tanda kasur sudah amblas dan tidak menopang tulang belakang dengan lurus.",
+      videoWebm: "/video-sakitpinggang.webm",
+      videoMov: "/video-sakitpinggang.mov",
+      // Gambar berbeda untuk kartu tengah 
+      colSpan: "md:col-span-1",
+      color: "from-orange-600",
+      link: "/artikel/dampak-kasur-rusak"
+    },
+
+    // 3. MASALAH BERAT (Saraf)
+    {
+      title: "Saraf Kejepit (HNP)",
+      desc: "BAHAYA! Nyeri menjalar parah. Akibat fatal membiarkan posisi tidur salah bertahun-tahun.",
+      videoWebm: "/videos-sarafkejepit.webm",
+      videoMov: "/videos-sarafkejepit.mov",
+      // Gambar berbeda untuk kartu kanan
+      colSpan: "md:col-span-1",
+      color: "from-red-700",
+      link: "/artikel/dampak-kasur-rusak"
+    }
+  ];
+
   return (
     <>
       {/* =========================================================
-          1. HERO SECTION (FULL CODE - FIXED CENTER POSITION)
+          SECTION: PAIN POINTS (MASALAH)
+          Support: Light Mode (Slate-50) & Dark Mode (Slate-900)
          ========================================================= */}
-      <section className="relative pt-32 pb-0 md:pt-40 overflow-visible bg-gradient-to-br from-[#3B82F6] via-[#2563EB] to-[#1D4ED8] dark:from-slate-900 dark:to-slate-800 z-20">
+      <section className="relative pt-36 pb-10 md:pt-48 bg-slate-50 dark:bg-slate-900 overflow-hidden transition-colors duration-300">
         
-        {/* Background Hiasan */}
-        <div className="absolute top-0 right-0 w-[800px] h-[800px] bg-white/5 rounded-full blur-[120px] -z-10"></div>
+        {/* Background Effects */}
+        <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-blue-100/50 via-slate-50 to-slate-50 dark:from-blue-900/20 dark:via-slate-900 dark:to-slate-900 z-0"></div>
         
-        <div className="container mx-auto px-6 relative">
+        <div className="container mx-auto px-6 relative z-10">
           
-          {/* --- BAGIAN 1: GRID ATAS (TEKS KIRI - GLASS KANAN) --- */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-10">
-
-            {/* A. KOLOM KIRI: TEKS (RATA KIRI) */}
-            <div className="text-left relative z-30">
-              {/* --- NEW HIGHLIGHT BADGE (RESPONSIVE FIX) --- */}
-              <motion.div 
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, delay: 0.1 }}
-                className="relative inline-block mb-6 md:mb-8 group max-w-full"
-              >
-                {/* 1. Background Glow */}
-                <div className="absolute -inset-1 bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-500 rounded-full blur opacity-25 group-hover:opacity-60 transition duration-1000 group-hover:duration-200"></div>
-                
-                {/* 2. Container Utama (Glass Effect) */}
-                {/* Perbaikan: px-4 di HP (lebih hemat tempat), px-8 di Laptop */}
-                <div className="relative px-4 py-2 md:px-8 md:py-3 bg-slate-900/40 backdrop-blur-xl border border-white/20 rounded-full flex items-center gap-3 md:gap-4 shadow-2xl ring-1 ring-white/10 cursor-default w-fit max-w-full">
-                  
-                  {/* Animated Dot */}
-                  <span className="relative flex h-2 w-2 md:h-4 md:w-4 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 md:h-4 md:w-4 bg-cyan-500 shadow-[0_0_10px_rgba(6,182,212,0.8)]"></span>
-                  </span>
-
-                  {/* Teks Utama */}
-                  {/* Perbaikan: 
-                      - whitespace-normal (boleh wrap di HP) 
-                      - md:whitespace-nowrap (satu baris di Laptop)
-                      - text-[10px] (kecil di HP agar muat)
-                  */}
-                  <div className="text-white font-medium tracking-wide text-[10px] sm:text-xs md:text-base lg:text-lg whitespace-normal md:whitespace-nowrap leading-tight">
-                    <span className="opacity-90 font-bold">KLINIK MATRAS</span>
-                    
-                    {/* Divider (Hilang di layar sangat kecil, muncul di tablet/laptop) */}
-                    <span className="hidden sm:inline mx-1 md:mx-3 text-white/30">|</span>
-                    {/* Ganti baris di HP yang sangat kecil */}
-                    <span className="sm:hidden block w-full h-0"></span> 
-                    
-                    {/* Highlight Text */}
-                    <span className="font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-white drop-shadow-sm tracking-wider">
-                      SOLUSI #1 
-                    </span>
-                    
-                    <span className="ml-1 md:ml-2 opacity-90">KESEHATAN TIDUR</span>
-                  </div>
-
-                </div>
-              </motion.div>
-              {/* Headline Animasi */}
-<div className="mb-2 relative z-30">
-   <AnimatedHeroText />
-</div>
-
-              <p className="text-blue-50 text-lg md:text-xl mb-10 max-w-lg leading-relaxed font-medium opacity-90">
-                Solusi hemat kembalikan kesehatan dan kenyamanan tidur Anda tanpa perlu beli yang baru.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-4 mb-10">
-                <a href="https://wa.me/6285166662896" target="_blank" rel="noreferrer" className="px-8 py-4 bg-white text-blue-600 rounded-full font-bold shadow-xl hover:shadow-white/20 hover:scale-105 transition-all flex items-center justify-center gap-2">
-                  Konsultasi Gratis <ArrowRight size={20} />
-                </a>
-                <NavLink to="/layanan" className="px-9 py-4 bg-white/10 border border-white/20 text-white rounded-full font-bold hover:bg-white/20 transition-all backdrop-blur-md flex items-center justify-center">
-                  Lihat Layanan
-                </NavLink>
-              </div>
-
-              <div className="flex items-center gap-6 pt-6 border-t border-white/10">
-                 <div className="flex items-center gap-2 text-white font-semibold text-sm"><Shield className="w-5 h-5 text-cyan-300" /> Terpercaya</div>
-                 <div className="flex items-center gap-2 text-white font-semibold text-sm"><Star className="w-5 h-5 text-cyan-300" /> Kualitas Premium</div>
-              </div>
+          {/* HEADER */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 border border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/30 dark:text-red-400 text-xs font-bold uppercase tracking-wider mb-6 animate-pulse">
+              <AlertCircle size={14} /> Apakah Kamu Merasakan Ini?
             </div>
-
-            {/* B. KOLOM KANAN: GLASS FRAME DEKORASI (Hidden di HP) */}
-            <div className="relative w-full flex justify-center lg:justify-end z-20 mt-8 lg:mt-0">
-            <div className="relative w-full max-w-md lg:max-w-2xl aspect-[4/3] bg-white/10 backdrop-blur-xl border border-white/20 rounded-[2rem] shadow-2xl overflow-hidden mx-auto lg:mr-0">                 <div className="absolute top-0 left-0 w-full h-12 bg-white/5 border-b border-white/10 flex items-center px-6 gap-2 z-20">
-                    <div className="w-3 h-3 rounded-full bg-red-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-yellow-400"></div>
-                    <div className="w-3 h-3 rounded-full bg-green-400"></div>
-                 </div>
-                <div className="w-full h-full"> 
-              <video 
-                autoPlay loop muted playsInline 
-                // HAPUS: opacity-40 mix-blend-overlay
-               // GANTI DENGAN: object-cover w-full h-full
-                className="w-full h-full object-cover" 
-               > 
-                <source src="/sano-hero-illustration.mov" type="video/quicktime; codecs='hvc1'" />
-                 <source src="/sano-hero-illustration.webm" type="video/webm" />
-             </video>
-               </div>
-                 <div className="absolute bottom-6 right-6 bg-white/90 backdrop-blur p-3 rounded-xl shadow-lg flex items-center gap-3">
-                    
-                    <div>
-
-                    </div>
-                 </div>
-              </div>
-            </div>
-
+            
+            <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight mb-4 max-w-4xl mx-auto">
+              Bangun Tidur Bukannya Segar, <br className="hidden md:block" />
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
+                Malah Sakit Semua?
+              </span>
+              <br />
+              <span className="text-2xl md:text-3xl text-slate-500 dark:text-slate-400 font-bold mt-3 block">
+                Itu Tanda Dampak Kasur Tidak Sehat!
+              </span>
+            </h1>
           </div>
 
-
-          {/* --- BAGIAN 2: VIDEO KASUR JUMBO (TENGAH & MENINDIH BAWAH) --- */}
-          {/* FIX: Menggunakan flex justify-center agar kasur selalu di tengah */}
-          <div className="relative w-full flex justify-center z-40 -mb-24 md:-mb-48 mt-12 lg:mt-0 pointer-events-none">
-             
-             {/* Container Kasur: Max width dibatasi agar tidak terlalu lebar di layar ultra-wide */}
-             <div className="w-[115%] md:w-[90%] max-w-5xl relative flex justify-center items-center">
-                
-                {/* 1. Video Kasur (mx-auto untuk memaksa ke tengah) */}
-                <video
-                  autoPlay
-                  loop
-                  muted
-                  playsInline
-                  className="w-full h-auto object-contain drop-shadow-2xl mix-blend-screen scale-110 md:scale-120 mx-auto"
+          {/* BENTO GRID MASALAH (VIDEO + TEKS FIX) */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+            {painPoints.map((item, idx) => (
+              <NavLink 
+                to={item.link}
+                key={idx}
+                className={`relative group overflow-hidden rounded-[2rem] h-80 shadow-xl dark:shadow-2xl border border-slate-200 dark:border-white/10 cursor-pointer ${item.colSpan}`}
+              >
+                <motion.div 
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: idx * 0.1 }}
+                  viewport={{ once: true }}
+                  className="w-full h-full relative"
                 >
-                  <source src="/sano-hero-mac.mov" type='video/quicktime; codecs="hvc1"' />
-                  <source src="/sano-hero-android.webm" type="video/webm" />
-                  <img src="/hero-section.png" className="w-full h-full object-contain" alt="Hero" />
-                </video>
-
-                {/* 2. Badge Kiri */}
-                <div className="absolute bottom-20 left-4 md:bottom-32 md:left-0 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl z-50 animate-bounce flex items-center gap-3 border bg-white border-white pointer-events-auto">
-                  <div className="bg-green-100 p-2 rounded-full text-green-600"><Shield size={24} /></div>
-                  <div className="text-left">
-                    <div className="text-xl md:text-2xl font-bold text-blue-600 leading-none">1200+</div>
-                    <div className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-wide">Order</div>
+                  
+                  {/* --- LAYER 1: VIDEO/GAMBAR (PALING BAWAH z-0) --- */}
+                  <div className="absolute inset-0 w-full h-full bg-slate-900 z-0">
+                    <video
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      poster={item.img} // PENTING: Gambar muncul dulu sebelum video load
+                      // object-cover: Kunci agar tidak gepeng (dia akan crop otomatis)
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80"
+                      // Style manual untuk memaksa browser menuruti object-cover
+                      style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                    >
+                      <source src={item.videoMov} type='video/quicktime; codecs="hvc1"' />
+                      <source src={item.videoWebm} type="video/webm" />
+                    </video>
                   </div>
-                </div>
+                  
+                  {/* --- LAYER 2: GRADIENT OVERLAY (TENGAH z-10) --- */}
+                  {/* Membuat teks terbaca jelas */}
+                  <div className={`absolute bottom-0 left-0 w-full h-[70%] bg-gradient-to-t ${item.color} to-transparent opacity-90 z-10`}></div>
+                  <div className="absolute bottom-0 left-0 w-full h-1/2 bg-gradient-to-t from-black/90 to-transparent z-10"></div>
 
-                {/* 3. Badge Kanan */}
-                <div className="absolute bottom-24 right-4 md:bottom-40 md:right-0 p-3 md:p-4 rounded-xl md:rounded-2xl shadow-xl z-50 flex items-center gap-3 border bg-white border-white pointer-events-auto">
-                  <div className="bg-cyan-100 p-2 rounded-full text-cyan-600"><Star size={24} fill="currentColor" /></div>
-                  <div className="text-left">
-                    <div className="text-lg md:text-xl font-bold text-slate-800 leading-none">3 TH</div>
-                    <div className="text-[10px] md:text-xs font-bold text-slate-500 uppercase tracking-wide">Pengalaman</div>
+                  {/* --- LAYER 3: TEKS KONTEN (PALING ATAS z-20) --- */}
+                  <div className="absolute bottom-0 left-0 w-full p-6 md:p-8 text-white z-20">
+                    <h3 className="text-xl md:text-2xl font-bold mb-2 leading-tight drop-shadow-lg">
+                      {item.title}
+                    </h3>
+                    
+                    <p className="text-white/90 text-xs md:text-sm font-medium leading-relaxed mb-3 line-clamp-2 drop-shadow-md">
+                      {item.desc}
+                    </p>
+                    
+                    <div className="flex items-center gap-2 text-[10px] font-bold uppercase tracking-wider text-yellow-300 opacity-90 group-hover:opacity-100 transition-opacity">
+                      Lihat Solusi <ArrowRight size={12}/>
+                    </div>
                   </div>
-                </div>
 
-             </div>
+                </motion.div>
+              </NavLink>
+            ))}
           </div>
 
         </div>
       </section>
-      
+
+
       {/* =========================================================
-          2. PELAYANAN UTAMA (LAYER BAWAH - Z-INDEX 10)
-          Ini adalah Frame Besar yang "Ketindihan" Kasur
+          2. SOLUTION BANNER & LAYANAN UTAMA
          ========================================================= */}
-      <section className="relative z-10 pb-24 px-4 bg-gradient-to-b from-[#1D4ED8] to-white dark:to-slate-900">
+      <section className="relative z-10 w-full bg-slate-900">
         
-        {/* CONTAINER FRAME PUTIH/GLASS */}
-        <div className="container mx-auto bg-white/10 backdrop-blur-xl border border-white/20 rounded-t-[3rem] md:rounded-[5rem] shadow-2xl overflow-hidden relative">
-          
-          {/* Background Frame */}
-          <div className="absolute top-0 left-0 w-full h-full bg-white/80 dark:bg-slate-900/90 -z-10"></div>
+        {/* A. GAMBAR BANNER UTAMA */}
+        <div className="relative w-full h-[500px] md:h-[600px] group overflow-hidden">
+          {/* Gambar Background */}
+          <img 
+            src="/sano-matras.jpg" 
+            alt="Solusi Kasur Sano" 
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105"
+          />
+          {/* Overlay Gelap */}
+          <div className="absolute inset-0 bg-black/40 z-10"></div>
+          <div className="absolute top-0 left-0 w-full h-32 bg-gradient-to-b from-slate-900 to-transparent z-10"></div>
 
-          {/* Padding Top Besar (pt-48) supaya judul tidak ketutup pantat kasur */}
-          <div className="pt-32 md:pt-56 pb-12 px-6 md:px-12 text-center">
-            
-            <div className="mb-16 relative z-10">
-              <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-4">
-                Pelayanan <span className="text-blue-600 dark:text-blue-400">Utama</span>
+          {/* Konten Tengah Banner */}
+          <div className="absolute inset-0 flex flex-col justify-center items-center text-center px-4 z-20">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.8 }}
+              className="max-w-5xl"
+            >
+              <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-8 leading-tight drop-shadow-2xl">
+                Solusi Hemat Kembalikan <br/>
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-400 filter drop-shadow-lg">
+                  Kesehatan dan Kenyamanan
+                </span> <br/>
+                Tidur Kamu Tanpa Perlu Beli Baru.
               </h2>
-              <p className="text-slate-600 dark:text-slate-300 text-lg md:text-xl max-w-2xl mx-auto">
-                Solusi lengkap untuk kenyamanan tidur Anda.
-              </p>
-            </div>
+              
+              <a 
+                href="https://wa.me/6285166662896"
+                target="_blank"
+                rel="noreferrer"
+                className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg md:text-xl text-white transition-all transform hover:scale-105 overflow-hidden"
+              >
+                <div className="absolute inset-0 bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-500 opacity-90 group-hover:opacity-100 transition-opacity"></div>
+                <div className="absolute -inset-3 bg-cyan-400/30 blur-xl group-hover:blur-2xl transition-all"></div>
+                <div className="absolute inset-0 rounded-full border border-white/30"></div>
+                <div className="relative flex items-center gap-3 z-10">
+                   <MessageCircle size={24} className="animate-pulse" /> 
+                   Konsultasi Gratis Sekarang
+                </div>
+              </a>
+            </motion.div>
+          </div>
+        </div>
 
-            {/* GRID 2 KOLOM (Matras & Sofa) */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {/* B. VALUE PROPOSITION + LAYANAN GRID (DIGABUNG DI SINI) */}
+        <div className="relative -mt-12 rounded-t-[3rem] z-30 bg-white dark:bg-slate-900 shadow-[0_-10px_40px_rgba(0,0,0,0.1)] transition-colors duration-300 pb-24">
+          
+          {/* 1. Value Prop Text */}
+          <div className="container mx-auto max-w-4xl pt-20 pb-16 px-6 text-center">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              <div className="inline-block px-4 py-1.5 rounded-full bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mb-6">
+                KLINIK MATRAS by SANO CARE PROMISE
+              </div>
+
+              <h3 className="text-2xl md:text-4xl font-extrabold text-slate-800 dark:text-white mb-6 leading-snug">
+                Wujudkan <span className="text-[#3B62AA] dark:text-blue-400">#TidurSehat</span> Versi Kamu!
+              </h3>
+              
+              <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl leading-relaxed">
+                Berpengalaman mengerjakan berbagai jenis kerusakan matras (pegas, busa, kain) agar kembali 
+                <span className="font-bold text-slate-900 dark:text-white"> nyaman, higienis, dan sehat </span> 
+                sesuai kebutuhan tubuh Kamu. Mulai dari diagnosa, perbaikan, hingga hasil akhir yang presisi.
+              </p>
+
+              <div className="w-24 h-1.5 bg-gradient-to-r from-blue-400 to-[#3B62AA] mx-auto mt-12 rounded-full mb-16"></div>
+            </motion.div>
+          </div>
+
+          {/* 2. LAYANAN UTAMA GRID (Klinik Matras & Sofa) */}
+          <div className="container mx-auto px-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
               
               {/* Card 1: Klinik Matras */}
               <NavLink to="/klinik-matras" className="group block h-full">
                 <div className="h-full bg-white dark:bg-slate-800 rounded-[2.5rem] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-slate-100 dark:border-slate-700 relative text-left">
-                  <div className="h-64 relative overflow-hidden">
+                  <div className="h-72 relative overflow-hidden">
                     <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors z-10"></div>
                     <img src="/pelayanan-matras.png" alt="Klinik Matras" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                     <div className="absolute top-6 right-6 bg-white dark:bg-slate-700 p-3 rounded-full shadow-lg z-20 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
@@ -256,7 +297,7 @@ const Home: React.FC = () => {
                     </div>
                     <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Klinik Matras</h3>
                     <p className="text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
-                      Perbaikan pegas, ganti kain, dan upgrade latex.
+                      Restorasi fondasi, lapisan, kain dengan konsep matras sehat.
                     </p>
                   </div>
                 </div>
@@ -265,7 +306,7 @@ const Home: React.FC = () => {
               {/* Card 2: Klinik Sofa */}
               <NavLink to="/klinik-sofa" className="group block h-full">
                 <div className="h-full bg-white dark:bg-slate-800 rounded-[2.5rem] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-slate-100 dark:border-slate-700 relative text-left">
-                  <div className="h-64 relative overflow-hidden">
+                  <div className="h-72 relative overflow-hidden">
                     <div className="absolute inset-0 bg-orange-900/10 group-hover:bg-transparent transition-colors z-10"></div>
                     <img src="/pelayanan-sofa.png" alt="Klinik Sofa" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
                      <div className="absolute top-6 right-6 bg-white dark:bg-slate-700 p-3 rounded-full shadow-lg z-20 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
@@ -278,17 +319,17 @@ const Home: React.FC = () => {
                     </div>
                     <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Klinik Sofa</h3>
                     <p className="text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
-                      Restorasi sofa, ganti kulit, dan custom sofa.
+                      Restorasi sofa, upgrade kenyamanan (lapisan), ganti kulit dan custom sofa.
                     </p>
                   </div>
                 </div>
               </NavLink>
 
-            </div> {/* Penutup Grid */}
-          </div> {/* Penutup Padding */}
-        </div> {/* Penutup Container Frame */}
-      </section> {/* Penutup Section */}
+            </div>
+          </div>
 
+        </div>
+      </section>
       {/* 3. KONSEP MATRAS SEHAT */}
       <section className="py-24 bg-blue-50 dark:bg-slate-800/30">
          <div className="container mx-auto px-6">
@@ -297,7 +338,7 @@ const Home: React.FC = () => {
                   Konsep <span className="text-primary">Matras Sehat</span>
                </h2>
                <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
-                  Investasi Terbaik Adalah Tidur Anda. Jangan korbankan kesehatan demi keempukan semata. Temukan keseimbangan sempurna antara kenyamanan tidur dan perlindungan tulang belakang untuk jangka panjang.
+                  Investasi Terbaik Adalah Tidur Kamu. Jangan korbankan kesehatan demi keempukan semata. Temukan keseimbangan sempurna antara kenyamanan tidur dan perlindungan tulang belakang untuk jangka panjang.
                </p>
             </ScrollReveal>
 
@@ -339,9 +380,12 @@ const Home: React.FC = () => {
                         <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
                            Membuat posisi tubuh/tulang tidak natural, karena terlalu tenggelam
                         </p>
-                        <button className="w-full py-3 bg-primary text-white rounded-full font-bold text-sm hover:bg-primary-dark transition-colors">
-                           Learn more →
-                        </button>
+                        <NavLink 
+                          to="/artikel/konsep-matras-sehat" 
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold text-sm hover:bg-blue-50 transition-colors"
+                          >
+                           Pelajari Lebih Lanjut <ArrowRight size={16} />
+                          </NavLink>
                      </div>
                   </div>
                </ScrollReveal>
@@ -386,9 +430,12 @@ const Home: React.FC = () => {
         Fondasi Kokoh dengan lapisan sesuai berat badan kamu, menjaga tulang pada posisi natural tanpa tekanan dalam jangka waktu yang panjang.
       </p>
 
-      <button className="w-full py-3 bg-white text-primary rounded-full font-bold text-sm hover:bg-blue-50 transition-colors flex items-center justify-center gap-2">
-        Learn more <ArrowRight size={16} />
-      </button>
+      <NavLink 
+      to="/artikel/konsep-matras-sehat" 
+      className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold text-sm hover:bg-blue-50 transition-colors"
+      >
+       Pelajari Lebih Lanjut <ArrowRight size={16} />
+      </NavLink>
 
     </div>
   </div>
@@ -426,9 +473,12 @@ const Home: React.FC = () => {
                         <p className="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-6">
                            Memberikan tekanan pada leher, bahu, pinggang, yang menyebabkan nyeri & kaku.
                         </p>
-                        <button className="w-full py-3 bg-primary text-white rounded-full font-bold text-sm hover:bg-primary-dark transition-colors">
-                           Learn more →
-                        </button>
+                        <NavLink 
+                          to="/artikel/konsep-matras-sehat" 
+                          className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold text-sm hover:bg-blue-50 transition-colors"
+                          >
+                           Pelajari Lebih Lanjut <ArrowRight size={16} />
+                          </NavLink>
                      </div>
                   </div>
                </ScrollReveal>
@@ -437,39 +487,8 @@ const Home: React.FC = () => {
          </div>
       </section>
 
-      {/* 4. DAMPAK MATRAS TIDAK SEHAT */}
-      <section className="py-24 bg-slate-50 dark:bg-bg-surface relative">
-        <div className="container mx-auto px-6">
-           <ScrollReveal className="text-center mb-16">
-              <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-4">
-                 Dampak Matras <span className="text-primary">Tidak Sehat</span>
-              </h2>
-              <p className="text-slate-600 dark:text-slate-400 text-lg">Masalah Matras yang tidak sehat dapat memicu gangguan kesehatan.</p>
-           </ScrollReveal>
-
-           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {[
-                  { title: "Badan pegal, Kepala pusing, Sakit leher", desc: "Gejala awal dampak masalah matras anda, reaksi otot, tendon, syaraft akibat tekanan dan hambatan selama tidur.", img: "/dampak-kasur-slpunggung.png" },
-                  { title: "Sakit Pinggang & Punggung", desc: "Sakit pinggang dan punggung saat bangun tidur hampir selalu berkaitan dengan ketidakstabilan postur tulang belakang selama tidur, dan kondisi matras adalah faktor paling dominan.", img: "/dampak-kasur-stidur.png" },
-                  { title: "Saraf Kejepit", desc: "dampak paling besar dalam jangka waktu tertentu, nyeri menusuk saat ada gerakan, panas akibat bantalan bermasalah dan terjadi tonjolan yang mengganggu saraf.", img: "/dampak-kasur-mood.png" }
-              ].map((item, i) => (
-                  <ScrollReveal key={i} delay={i * 100}>
-                     <div className="relative h-[28rem] rounded-[2.5rem] overflow-hidden group shadow-2xl">
-                        <img src={item.img} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 grayscale group-hover:grayscale-0" />
-                        <div className="absolute inset-0 bg-gradient-to-t from-primary-dark/90 via-primary-dark/30 to-transparent opacity-90"></div>
-                        <div className="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 p-6 rounded-3xl text-white transform translate-y-2 group-hover:translate-y-0 transition-transform">
-                           <h3 className="text-xl font-bold mb-2">{item.title}</h3>
-                           <p className="text-xs text-white/80 leading-relaxed">{item.desc}</p>
-                        </div>
-                     </div>
-                  </ScrollReveal>
-              ))}
-           </div>
-        </div>
-      </section>
-
 {/* =========================================================
-          SECTION: SOLUSI YANG ANDA PIKIRKAN (REALITY CHECK)
+          SECTION: SOLUSI YANG Kamu PIKIRKAN (REALITY CHECK)
          ========================================================= */}
       <section className="py-20 px-4 bg-white dark:bg-slate-900 relative overflow-hidden">
         
@@ -481,7 +500,7 @@ const Home: React.FC = () => {
           {/* --- BAGIAN 1: 5 SOLUSI UMUM --- */}
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white mb-4">
-              Solusi yang Mungkin <span className="text-blue-600">Anda Pikirkan?</span>
+              Solusi yang Mungkin <span className="text-blue-600">Kamu Pikirkan?</span>
             </h2>
             <p className="text-slate-500 text-lg">
               Banyak orang mencoba cara ini, namun seringkali masalah kembali lagi.
@@ -531,7 +550,7 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Beli Kasur Mahal?</h3>
               <p className="text-sm text-slate-500">
-                Mahal belum tentu cocok. Kasur puluhan juta pun bisa bikin sakit pinggang jika tidak sesuai postur Anda.
+                Mahal belum tentu cocok. Kasur puluhan juta pun bisa bikin sakit pinggang jika tidak sesuai postur Kamu.
               </p>
             </div>
 
@@ -568,7 +587,7 @@ const Home: React.FC = () => {
               {/* WARNING TEXT */}
               <div className="relative z-10 mb-8">
                 <h3 className="text-xl md:text-3xl font-medium leading-relaxed text-slate-200">
-                  "Semua ini <span className="text-red-400 font-bold underline decoration-wavy decoration-red-400/50 underline-offset-8">belum tentu solusi tepat</span> jika Anda belum tahu pasti masalahnya dan solusi yang ditawarkan."
+                  "Semua ini <span className="text-red-400 font-bold underline decoration-wavy decoration-red-400/50 underline-offset-8">belum tentu solusi tepat</span> jika kamu belum tahu pasti masalahnya dan solusi yang ditawarkan."
                 </h3>
               </div>
 
@@ -591,7 +610,7 @@ const Home: React.FC = () => {
                   <div className="text-center md:text-left">
                     <p className="text-xs font-bold uppercase tracking-widest text-blue-400 mb-1">THE SOLUTION</p>
                     <p className="text-xl md:text-2xl font-black leading-tight text-slate-900">
-                      Sano Care hadir memahami dan membantu masalah matras Anda.
+                      Klinik Matras hadir memahami dan membantu masalah matras Kamu.
                     </p>
                   </div>
                 </div>
@@ -610,7 +629,7 @@ const Home: React.FC = () => {
               <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-4">
                  Cara Kerja <span className="text-primary">Kami</span>
               </h2>
-              <p className="text-slate-500 text-lg">Proses transparan dan mudah untuk kenyamanan Anda</p>
+              <p className="text-slate-500 text-lg">Proses transparan dan mudah untuk kenyamanan Kamu</p>
            </ScrollReveal>
 
            {/* DESKTOP WAVY LAYOUT */}
@@ -664,7 +683,7 @@ const Home: React.FC = () => {
                  </div>
                  <div className="mt-6 text-center w-48 bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm p-4 rounded-xl shadow-lg">
                     <h4 className="font-bold text-lg text-slate-900 dark:text-white">Jemput Barang</h4>
-                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Tim kami menjemput Matras ke lokasi Anda.</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400 mt-1">Tim kami menjemput Matras ke lokasi Kamu.</p>
                  </div>
               </div>
 
@@ -698,7 +717,7 @@ const Home: React.FC = () => {
   {[
     { title: 'Konsultasi', icon: MessageCircle, desc: 'Chat kami & kirim foto' },
     { title: 'Estimasi', icon: Calculator, desc: 'Dapatkan penawaran' },
-    { title: 'Jemput', icon: Truck, desc: 'Kami ambil Matras Anda' },
+    { title: 'Jemput', icon: Truck, desc: 'Kami ambil Matras Kamu' },
     { title: 'Proses', icon: Wrench, desc: 'Restorasi profesional' },
     
     // --- BAGIAN BARU DITAMBAHKAN DI SINI ---
@@ -740,7 +759,7 @@ const Home: React.FC = () => {
               Tenang, Kami <span className="text-blue-600">Bergaransi Resmi</span>
             </h2>
             <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
-              Pilih paket perlindungan yang sesuai dengan kebutuhan Anda. Kami menjamin kualitas pengerjaan dan material terbaik.
+              Pilih paket perlindungan yang sesuai dengan kebutuhan kamu. Kami menjamin kualitas pengerjaan dan material terbaik.
             </p>
           </div>
 
@@ -926,7 +945,7 @@ const Home: React.FC = () => {
             
             {[
               { id: 1, title: "", img: "/sano-mattsehat-2.png" }, // Ganti dengan gambar
-              { id: 2, title: "", img: "/sano-mattsehat-1.png" }, // Ganti dengan gambar
+              { id: 2, title: "", img: "/sano-mattsehat-1.jpg" }, // Ganti dengan gambar
               { id: 3, title: "", img: "/sano-mattsehat-3.png" }, // Ganti dengan gambar
             ].map((item, idx) => (
               <motion.div 
@@ -992,10 +1011,10 @@ const Home: React.FC = () => {
           <ScrollReveal>
             <div className="bg-gradient-to-r from-primary to-blue-600 rounded-[3rem] p-12 md:p-20 text-center relative overflow-hidden shadow-2xl">
               <h2 className="text-3xl md:text-5xl font-extrabold text-white mb-6 relative z-10">
-                Jangan Biarkan Matras <br className="hidden md:block" /> Mengganggu Kesehatan Anda
+                Jangan Biarkan Matras <br className="hidden md:block" /> Mengganggu Kesehatan Kamu
               </h2>
               <p className="text-blue-100 text-xl mb-10 max-w-2xl mx-auto relative z-10">
-                Konsultasikan keluhan dampak bangun tidur dan fisik matras anda sekarang!
+                Konsultasikan keluhan dampak bangun tidur dan fisik matras kamu sekarang!
               </p>
               <div className="flex flex-col md:flex-row justify-center items-center gap-6 relative z-10">
                 <a 

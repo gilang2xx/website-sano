@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Layanan from './pages/Layanan';
+import Artikel from './pages/Artikel.tsx';
+import ArtikelDetail from './pages/ArtikelDetail';
 import TentangKami from './pages/TentangKami';
 import BeforeAfter from './pages/BeforeAfter';
 import Kontak from './pages/Kontak';
@@ -21,6 +23,8 @@ const App: React.FC = () => {
         {/* Halaman Menu Utama */}
         <Route path="/layanan" element={<Layanan />} />
         {/* <Route path="/pricelist" element={<Pricelist />} /> */}
+        <Route path="/artikel" element={<Artikel />} />
+        <Route path="/artikel/:slug" element={<ArtikelDetail />} />
         <Route path="/tentang-kami" element={<TentangKami />} />
         <Route path="/before-after" element={<BeforeAfter />} />
         <Route path="/kontak" element={<Kontak />} />
