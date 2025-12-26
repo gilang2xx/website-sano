@@ -65,24 +65,32 @@ const Home: React.FC = () => {
   const painPoints = [
     // 1. MASALAH RINGAN (Leher & Kepala)
     {
-      title: "Kepala Pusing, Pegal & Sakit Leher",
-      desc: "Gejala awal akibat tekanan kasur tidak merata. Otot leher & bahu tegang semalaman tanpa rileksasi.",
-      // Ganti nama file video ini jika sudah punya videonya
-      videoWebm: "/video-sakitkepalaleher.webm", 
-      videoMov: "/video-sakitkepalaleher.mov",
-      // Gambar ini PASTI MUNCUL jika video di atas belum ada di folder public
-      img: "/dampak-kasur-slpunggung.png", 
-      colSpan: "md:col-span-1",
-      color: "from-cyan-600",
-      link: "/artikel/dampak-kasur-rusak"
+    title: "Kepala Pusing, Pegal & Sakit Leher",
+    desc: "Gejala awal akibat tekanan kasur tidak merata...",
+    
+    // Video
+    videoWebm: "/video-sakitkepalaleher.webm",
+    videoMov: "/video-sakitkepalaleher.mov",
+    
+    // TAMBAHKAN INI (Thumbnail khusus untuk video)
+    videoPoster: "/dampak-kasur-slpunggung.jpg", 
+
+    // Gambar fallback (yang sudah ada)
+    img: "/dampak-kasur-slpunggung.png",
+    colSpan: "md:col-span-1",
+    color: "from-cyan-600",
+    link: "/artikel/dampak-kasur-rusak"
     },
     
     // 2. MASALAH MENENGAH (Pinggang)
     {
       title: "Sakit Pinggang & Punggung",
       desc: "Pinggang terasa patah saat bangun. Tanda kasur sudah amblas dan tidak menopang tulang belakang dengan lurus.",
+       // Video
       videoWebm: "/video-sakitpinggang.webm",
       videoMov: "/video-sakitpinggang.mov",
+      // TAMBAHKAN INI (Thumbnail khusus untuk video)
+    videoPoster: "/dampak-kasur-kirijpg", 
       // Gambar berbeda untuk kartu tengah 
       colSpan: "md:col-span-1",
       color: "from-orange-600",
@@ -95,6 +103,8 @@ const Home: React.FC = () => {
       desc: "BAHAYA! Nyeri menjalar parah. Akibat fatal membiarkan posisi tidur salah bertahun-tahun.",
       videoWebm: "/videos-sarafkejepit.webm",
       videoMov: "/videos-sarafkejepit.mov",
+        // TAMBAHKAN INI (Thumbnail khusus untuk video)
+    videoPoster: "/dampak-kasur-tengah.jpg", 
       // Gambar berbeda untuk kartu kanan
       colSpan: "md:col-span-1",
       color: "from-red-700",
