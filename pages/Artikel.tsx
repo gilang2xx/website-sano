@@ -9,24 +9,68 @@ const Artikel: React.FC = () => {
     // ARTIKEL 1
     {
       id: 1,
-      slug: "dampak-kasur-rusak",
-      title: "Waspada! Ini Dampak Kasur Tidak Sehat Bagi Tubuh Anda",
-      category: "Kesehatan Tidur",
+      slug: "klinik-matras-by-sano-care",
+      title: "Klinik Matras by SANO CARE: Solusi Tidur Sehat dari Akar Permasalahan",
+      category: "Klinik Matras by Sano Care",
       date: "26 Des 2025",
       image: "/dampak-kasur-slpunggung.png", 
-      desc: "Jangan anggap remeh. Mulai dari bangun tidur leher kaku, sakit pinggang, hingga risiko fatal saraf kejepit (HNP). Simak penjelasan medisnya di sini."
+      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya."
     },
     
-    // ARTIKEL 2 (YANG SEBELUMNYA HILANG)
+    // ARTIKEL 2 
     {
       id: 2,
-      slug: "konsep-matras-sehat", // <--- Slug ini harus sama dengan di ArtikelDetail
+      slug: "konsep-matras-sehat", 
       title: "Apa Definisi 'Matras Sehat' yang Sebenarnya?",
       category: "Edukasi",
       date: "27 Des 2025",
-      image: "/sano-matras.jpg", // Ganti dengan gambar yang sesuai
+      image: "/sano-matras.jpg", 
       desc: "Banyak orang salah kaprah mengira kasur sehat itu harus mahal atau sangat empuk. Padahal kuncinya ada pada struktur penopang tulang belakang."
-    }
+    },
+
+    // ARTIKEL 3
+    {
+      id: 3,
+      slug: "dampak-kasur-rusak",
+      title: "Solusi Tidur Sehat dari Akar Permasalahan Kasur",
+      category: "Edukasi",
+      date: "28 Des 2025",
+      image: "/tips-merawat-kasur.jpg", 
+      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah."
+    },
+
+    // ARTIKEL 4
+    {
+      id: 4,
+      slug: "dampak-jangka-panjang-kasur-salah",
+      title: "Dampak Jangka Panjang Menggunakan Kasur yang Salah: Bahaya yang Mengintai di Balik Tidur Anda",
+      category: "Edukasi",
+      date: "28 Des 2025",
+      image: "/tips-merawat-kasur.jpg", 
+      desc: "Kerusakan struktur kasur atau struktur tidak sesuai dengan tubuh yang dibiarkan bertahun-tahun akan memaksa tubuh beradaptasi secara tidak alami."
+    },
+
+    // ARTIKEL 5 
+    {
+      id: 5,
+      slug: "mengenal-struktur-kasur",
+      title: "Mengenal Struktur Kasur dari Dalam: Mengapa Komponen Matras Menentukan Kesehatan Anda?",
+      category: "Edukasi",
+      date: "29 Des 2025",
+      image: "/tips-merawat-kasur.jpg", 
+      desc: "Struktur komponen dalam kasur: fondasi, lapisan kenyamanan, dan kain penutup. Bagaimana masing-masing berkontribusi pada kesehatan tidur Anda."
+    },
+    
+    // ARTIKEL 6
+    {
+      id: 6, 
+      slug: "kasur-ortopedik-untuk-tidur-sehat",
+      title: "Kasur Ortopedik untuk Tidur Sehat",
+      category: "Edukasi",
+      date: "30 Des 2025",
+      image: "/tips-merawat-kasur.jpg", 
+      desc: "Apa itu kasur ortopedik dan bagaimana kasur ini dirancang khusus untuk mendukung kesehatan tulang belakang serta mengurangi nyeri punggung."
+    },
   ];
 
   return (
