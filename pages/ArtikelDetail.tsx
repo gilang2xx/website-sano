@@ -23,7 +23,7 @@ const ArtikelDetail: React.FC = () => {
       title: "Klinik Matras by SANO CARE: Hadir untuk Menolong dari Dampak Kasur yang Salah",
       date: "26 Des 2025",
       readTime: "5 Menit Baca",
-      image: "/hero-section.png", // Gambar Utama
+      image: "/foto-karyawan.jpg", // Gambar Utama
       content: (
         <>
           <p className="lead text-xl font-medium text-slate-700 dark:text-slate-200 mb-6">
@@ -80,7 +80,7 @@ const ArtikelDetail: React.FC = () => {
       title: "Apa Itu Matras Sehat? Membedah Konsep Utama Menurut Klinik Matras by Sano Care",
       date: "27 Des 2025",
       readTime: "6 Menit Baca",
-      image: "/hero-section.png", // Gambar Utama Artikel
+      image: "/sano-matras.jpg", // Gambar Utama Artikel
       content: (
         <>
           {/* INTRO */}
@@ -94,12 +94,6 @@ const ArtikelDetail: React.FC = () => {
           {/* GAMBAR 1 */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">
              {/* Menggunakan video konsep sehat sebagai ilustrasi tulang belakang lurus */}
-             <video autoPlay loop muted playsInline className="w-full object-cover">
-                <source src="/konsep-sehat.mp4" type="video/mp4" />
-             </video>
-             <figcaption className="text-center text-xs text-slate-400 mt-3 italic">
-               Ilustrasi: Konsep matras sehat menjaga tulang belakang lurus/sejajar.
-             </figcaption>
           </figure>
 
           <hr className="border-slate-200 dark:border-slate-800 my-10"/>
@@ -158,8 +152,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 2 (INFOGRAFIS PLACEHOLDER) */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/pelayanan-matras.png" alt="Infografis 3 Pilar" className="w-full object-cover h-64" />
-             <figcaption className="text-center text-xs text-slate-400 mt-2 italic">3 Pilar utama Matras Sehat Sano Care.</figcaption>
+ <img src="/prinsip-matras-sehat.jpg" alt="3 Prinsip Matras S" className="w-full object-cover" />             <figcaption className="text-center text-xs text-slate-400 mt-2 italic">3 Pilar utama Matras Sehat Sano Care.</figcaption>
           </figure>
 
           {/* KRITERIA */}
@@ -190,7 +183,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 3 (HASIL JADI) */}
           <figure className="my-12 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/pelayanan-sofa.png" alt="Hasil Restorasi Sano Care" className="w-full object-cover" />
+             <img src="/restoras-kasur.jpg" alt="Hasil Restorasi Sano Care" className="w-full object-cover" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Hasil restorasi matras sehat profesional Sano Care.</figcaption>
           </figure>
 
@@ -204,7 +197,7 @@ const ArtikelDetail: React.FC = () => {
             </p>
             
             <a 
-              href="https://wa.me/6289528011264?text=Halo%20Sano,%20saya%20ingin%20konsultasi%20tentang%20konsep%20Matras%20Sehat."
+              href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20konsultasi%20tentang%20konsep%20Matras%20Sehat."
               target="_blank"
               rel="noreferrer" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-green-500 text-white rounded-full font-bold shadow-lg hover:bg-green-600 transition-all hover:scale-105"
@@ -221,7 +214,7 @@ const ArtikelDetail: React.FC = () => {
       title: "Awas! Kasur Anda Mungkin Sedang Merusak Tulang Belakang: Inilah Alasannya",
       date: "28 Des 2025",
       readTime: "7 Menit Baca",
-      image: "/dampak-kasur-stidur.png", // Gambar cover yang relevan
+      image: "/kasur-merusak-tulang.jpg", // Gambar cover yang relevan
       content: (
         <>
           {/* INTRO */}
@@ -342,7 +335,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 3 */}
           <figure className="my-8 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/hero-section.png" alt="Hasil Restorasi Kasur" className="w-full object-cover" />
+             <img src="/foto-karyawan.jpg" alt="Hasil Restorasi Kasur" className="w-full object-cover" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Layanan restorasi matras sehat profesional Sano Care.</figcaption>
           </figure>
 
@@ -353,7 +346,7 @@ const ArtikelDetail: React.FC = () => {
               Apakah Anda sering bangun dengan rasa nyeri? Jangan tunggu hingga menjadi saraf kejepit. Hubungi tim ahli kami untuk analisa kasur dan tubuh Anda secara profesional.
             </p>
             <a 
-              href="https://wa.me/6289528011264?text=Halo%20Sano,%20saya%20ingin%20analisa%20kasur%20karena%20ada%20keluhan%20sakit."
+              href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20analisa%20kasur%20karena%20ada%20keluhan%20sakit."
               target="_blank"
               rel="noreferrer" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 transition-all hover:scale-105"
@@ -370,7 +363,7 @@ const ArtikelDetail: React.FC = () => {
       title: "Bahaya Mengintai di Balik Tidur: Dampak Jangka Panjang Kasur Salah",
       date: "28 Des 2025",
       readTime: "7 Menit Baca",
-      image: "/dampak-kasur-mood.png",
+      image: "/dampak-kasur-salah.jpg",
       content: (
         <>
           {/* INTRO */}
@@ -481,7 +474,7 @@ const ArtikelDetail: React.FC = () => {
              </p>
              
              {/* CTA Button */}
-             <a href="https://wa.me/6289528011264?text=Halo%20Sano,%20saya%20ingin%20cek%20kondisi%20kasur%20saya" 
+             <a href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20cek%20kondisi%20kasur%20saya" 
                 className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-900 rounded-full font-bold hover:scale-105 transition-transform shadow-lg">
                 <MessageCircle size={20} /> Cek Kondisi Kasur Saya
              </a>
@@ -504,7 +497,7 @@ const ArtikelDetail: React.FC = () => {
       title: "Mengenal Struktur Kasur dari Dalam: Mengapa Komponen Matras Menentukan Kesehatan Anda?",
       date: "29 Des 2025",
       readTime: "8 Menit Baca",
-      image: "/pelayanan-matras.png", // Gambar Cover
+      image: "/komponen-kasur.jpg", // Gambar Cover
       content: (
         <>
           {/* INTRO */}
@@ -639,7 +632,7 @@ const ArtikelDetail: React.FC = () => {
             <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm">
                Apakah kasur Anda sudah terasa tenggelam? Itu tandanya ada komponen di dalamnya yang mengalami kelelahan material.
             </p>
-            <a href="https://wa.me/6289528011264?text=Halo%20Sano,%20saya%20ingin%20cek%20komponen%20dalam%20kasur%20saya" 
+            <a href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20cek%20komponen%20dalam%20kasur%20saya" 
                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 transition-all hover:scale-105">
                <MessageCircle size={20} /> Diagnosa Gratis
             </a>
@@ -656,7 +649,7 @@ const ArtikelDetail: React.FC = () => {
       title: "Kasur Orthopedic vs Matras Sehat: Manakah yang Benar-benar Baik untuk Tubuh?",
       date: "30 Des 2025",
       readTime: "7 Menit Baca",
-      image: "/konsep-terlalukeras.jpg", // Gambar cover
+      image: "/ortomedic-vs-sehat.jpg", // Gambar cover
       content: (
         <>
           {/* INTRO */}
@@ -730,7 +723,7 @@ const ArtikelDetail: React.FC = () => {
                <li>Matras Sehat SANO CARE memastikan keseimbangan antara <strong>Fondasi Kuat</strong> dan <strong>Lapisan Adaptif</strong>.</li>
                <li>Matras Sehat bukan keras atau empuk — tetapi <strong>TEPAT & PRESISI</strong> sesuai berat tubuh.</li>
              </ul>
-             <a href="https://wa.me/6289528011264?text=Halo%20Sano,%20saya%20ingin%20konsultasi%20matras%20sehat" 
+             <a href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20konsultasi%20matras%20sehat" 
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white text-blue-900 rounded-full font-bold hover:scale-105 transition-transform shadow-lg">
                 <MessageCircle size={20} /> Konsultasi Gratis
              </a>

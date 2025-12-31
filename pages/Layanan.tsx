@@ -11,7 +11,7 @@ const Layanan: React.FC = () => {
         <div className="container mx-auto px-6 relative z-10 text-center">
           <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Layanan Kami</h1>
           <p className="text-slate-300 max-w-2xl mx-auto text-lg">
-             Kami menyediakan solusi komprehensif untuk segala kebutuhan furniture Anda, mulai dari perbaikan struktural hingga perawatan kebersihan berkala.
+             Kami menyediakan solusi komprehensif untuk segala kebutuhan furniture Kamu, mulai dari perbaikan struktural hingga perawatan kebersihan berkala.
           </p>
         </div>
       </section>
@@ -26,7 +26,7 @@ const Layanan: React.FC = () => {
                 Layanan Komprehensif <span className="text-primary">SANO+</span>
              </h2>
              <p className="text-slate-600 dark:text-slate-400 text-lg">
-                Pilih solusi perbaikan dan perawatan yang sesuai dengan kebutuhan furniture Anda.
+                Pilih solusi perbaikan dan perawatan yang sesuai dengan kebutuhan furniture Kamu.
              </p>
           </ScrollReveal>
 
@@ -61,7 +61,7 @@ const Layanan: React.FC = () => {
                          </ul>
                       </div>
                       <a 
-                        href="https://wa.me/6289528011264?text=Halo%20Sano,%20saya%20mau%20konsultasi%20layanan%20Klinik%20Matras" 
+                        href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20mau%20konsultasi%20layanan%20Klinik%20Matras" 
                         target="_blank"
                         rel="noreferrer"
                         className="w-full py-4 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-blue-200 dark:hover:shadow-none"
@@ -100,7 +100,7 @@ const Layanan: React.FC = () => {
                          </ul>
                       </div>
                       <a 
-                        href="https://wa.me/6289528011264?text=Halo%20Sano,%20saya%20mau%20konsultasi%20layanan%20Klinik%20Sofa"
+                        href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20mau%20konsultasi%20layanan%20Klinik%20Sofa"
                         target="_blank"
                         rel="noreferrer" 
                         className="w-full py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-orange-200 dark:hover:shadow-none"

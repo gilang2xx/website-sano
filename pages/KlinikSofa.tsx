@@ -14,7 +14,7 @@ const KlinikSofa: React.FC = () => {
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-orange-200 text-sm font-semibold mb-4 border border-white/20"><Armchair size={14} /><span>Interior & Furniture Restoration</span></div>
              <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">Klinik Sofa</h1>
              <p className="text-slate-200 max-w-xl text-lg mb-8">Restorasi sofa dan divan kesayangan Anda agar kembali cantik, kokoh, dan sesuai dengan estetika interior ruangan.</p>
-             <a href="https://wa.me/6289528011264?text=Halo%20Admin,%20saya%20mau%20tanya%20harga%20untuk%20Custom/Service%20Sofa." target="_blank" rel="noreferrer" className="bg-white text-orange-900 font-bold px-8 py-3 rounded-full hover:bg-orange-50 transition-colors inline-block">Konsultasi Sofa</a>
+             <a href="https://wa.me/6285187283900?text=Halo%20Admin,%20saya%20mau%20tanya%20harga%20untuk%20Custom/Service%20Sofa." target="_blank" rel="noreferrer" className="bg-white text-orange-900 font-bold px-8 py-3 rounded-full hover:bg-orange-50 transition-colors inline-block">Konsultasi Sofa</a>
           </div>
           <div className="flex-1 flex justify-end">
              <div className="w-full max-w-md h-64 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 relative">
@@ -49,7 +49,7 @@ const KlinikSofa: React.FC = () => {
                       <div className="md:col-span-8 p-8 md:py-12 md:pr-12 flex flex-col justify-center">
                          <div className="flex items-center gap-4 mb-4"><div className="w-12 h-12 bg-orange-100 dark:bg-orange-900/30 rounded-xl flex items-center justify-center"><IconComponent size={24} className="text-orange-600 dark:text-orange-400" /></div><h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">{service.title}</h2></div>
                          <p className="text-slate-600 dark:text-text-muted text-lg mb-6 leading-relaxed">{service.description}</p>
-                         <a href={`https://wa.me/6289528011264?text=Halo%20Sano%20Care,%20saya%20tertarik%20dengan%20layanan%20${encodeURIComponent(service.title)}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-orange-600 dark:text-orange-400 font-bold hover:underline">Info Harga {service.title} <ArrowRight size={20} /></a>
+                         <a href={`https://wa.me/6285187283900?text=Halo%20Sano%20Care,%20saya%20tertarik%20dengan%20layanan%20${encodeURIComponent(service.title)}`} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-orange-600 dark:text-orange-400 font-bold hover:underline">Info Harga {service.title} <ArrowRight size={20} /></a>
                       </div>
                    </div>
                 </ScrollReveal>

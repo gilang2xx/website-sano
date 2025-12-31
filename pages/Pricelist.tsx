@@ -68,7 +68,7 @@ const Pricelist: React.FC = () => {
         </h1>
         
         <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
-          Pilih paket restorasi terbaik untuk kenyamanan tidur Anda.
+          Pilih paket restorasi terbaik untuk kenyamanan tidur Kamu.
         </p>
       </div>
 
@@ -79,7 +79,7 @@ const Pricelist: React.FC = () => {
           {services.map((service) => (
             <a 
               key={service.id}
-              href={`https://wa.me/6285166662896?text=Halo%20Sano,%20saya%20tertarik%20dengan%20paket%20${service.title}`}
+              href={`https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20dengan%20paket%20${service.title}`}
               target="_blank"
               rel="noreferrer"
               // Jika Premium, kartu lebih besar sedikit (scale-105 di desktop)
@@ -188,7 +188,7 @@ const Pricelist: React.FC = () => {
             </p>
 
             <a 
-              href="https://wa.me/6285166662896?text=Halo%20Sano,%20boleh%20minta%20daftar%20harga%20lengkap%20untuk%20layanan%20lainnya?"
+              href="https://wa.me/6285187283900?text=Halo%20Sano,%20boleh%20minta%20daftar%20harga%20lengkap%20untuk%20layanan%20lainnya?"
               target="_blank" 
               rel="noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-[#3B62AA] text-white rounded-full font-bold shadow-lg hover:bg-blue-700 transition-all hover:scale-105"

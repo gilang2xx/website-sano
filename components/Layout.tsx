@@ -206,7 +206,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               />
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
-              Solusi terbaik untuk kenyamanan tidur Anda. Kami memperbaiki, memodifikasi, dan merawat matras Anda dengan standar kesehatan tertinggi.
+              Solusi terbaik untuk kenyamanan tidur Kamu. Kami memperbaiki, memodifikasi, dan merawat matras Kamu dengan standar kesehatan tertinggi.
             </p>
           </div>
 
@@ -293,7 +293,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </footer>
       <a
-        href="https://wa.me/6285166662896?text=Halo%20Sano,%20saya%20tertarik%20konsultasi"
+        href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20konsultasi"
         target="_blank"
         rel="noreferrer"
         className="fixed bottom-6 right-6 z-[100] group"

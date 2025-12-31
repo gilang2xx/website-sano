@@ -13,8 +13,8 @@ const SanoClean: React.FC = () => {
           <div className="flex-1">
              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 text-teal-200 text-sm font-semibold mb-4 border border-white/20"><Sparkles size={14} /><span>Deep Cleaning Service</span></div>
              <h1 className="text-4xl md:text-5xl font-extrabold mb-4 leading-tight">Sano Clean</h1>
-             <p className="text-slate-200 max-w-xl text-lg mb-8">Jaga kebersihan soft furniture Anda dari debu, tungau, dan bakteri. Keluarga sehat berawal dari kasur dan sofa yang bersih.</p>
-             <a href="https://wa.me/6289528011264?text=Halo%20Sano%20Clean,%20saya%20mau%20booking%20jadwal%20Deep%20Cleaning." target="_blank" rel="noreferrer" className="bg-white text-teal-800 font-bold px-8 py-3 rounded-full hover:bg-teal-50 transition-colors inline-block">Pesan Jasa Cuci</a>
+             <p className="text-slate-200 max-w-xl text-lg mb-8">Jaga kebersihan soft furniture Kamu dari debu, tungau, dan bakteri. Keluarga sehat berawal dari kasur dan sofa yang bersih.</p>
+             <a href="https://wa.me/6285187283900?text=Halo%20Sano%20Clean,%20saya%20mau%20booking%20jadwal%20Deep%20Cleaning." target="_blank" rel="noreferrer" className="bg-white text-teal-800 font-bold px-8 py-3 rounded-full hover:bg-teal-50 transition-colors inline-block">Pesan Jasa Cuci</a>
           </div>
           <div className="flex-1 flex justify-end">
              <div className="w-full max-w-md h-64 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 relative">
@@ -49,7 +49,7 @@ const SanoClean: React.FC = () => {
                       <div className="md:col-span-8 p-8 md:py-12 md:pr-12 flex flex-col justify-center">
                          <div className="flex items-center gap-4 mb-4"><div className="w-12 h-12 bg-teal-100 dark:bg-teal-900/30 rounded-xl flex items-center justify-center"><IconComponent size={24} className="text-teal-600 dark:text-teal-400" /></div><h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white">{service.title}</h2></div>
                          <p className="text-slate-600 dark:text-text-muted text-lg mb-6 leading-relaxed">{service.description}</p>
-                         <a href="https://wa.me/6289528011264?text=Halo%20Sano%20Clean,%20saya%20mau%20booking%20jadwal%20Deep%20Cleaning." target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold hover:underline">Booking {service.title} <ArrowRight size={20} /></a>
+                         <a href="https://wa.me/6285187283900?text=Halo%20Sano%20Clean,%20saya%20mau%20booking%20jadwal%20Deep%20Cleaning." target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-teal-600 dark:text-teal-400 font-bold hover:underline">Booking {service.title} <ArrowRight size={20} /></a>
                       </div>
                    </div>
                 </ScrollReveal>

@@ -241,7 +241,7 @@ const Home: React.FC = () => {
               </h2>
               
               <a 
-                href="https://wa.me/6285166662896"
+                href="https://wa.me/6285187283900"
                 target="_blank"
                 rel="noreferrer"
                 className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg md:text-xl text-white transition-all transform hover:scale-105 overflow-hidden"
@@ -903,7 +903,7 @@ const Home: React.FC = () => {
 
               {/* CTA Button Premium */}
               <div className="mt-8">
-                <a href="https://wa.me/6285166662896?text=Halo%20Sano,%20saya%20tertarik%20Paket%20Premium" target="_blank" rel="noreferrer" className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors">
+                <a href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20Paket%20Premium" target="_blank" rel="noreferrer" className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors">
                   Pilih Paket Premium
                 </a>
               </div>
@@ -1028,7 +1028,7 @@ const Home: React.FC = () => {
               </p>
               <div className="flex flex-col md:flex-row justify-center items-center gap-6 relative z-10">
                 <a 
-                  href="https://wa.me/6289528011264?text=Halo%20Sano%20Care,%20saya%20ingin%20konsultasi%20mengenai%20kasur%20saya."
+                  href="https://wa.me/6285187283900?text=Halo%20Sano%20Care,%20saya%20ingin%20konsultasi%20mengenai%20kasur%20saya."
                   target="_blank"
                   rel="noreferrer" 
                   className="bg-white text-primary font-bold px-10 py-4 rounded-full hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"

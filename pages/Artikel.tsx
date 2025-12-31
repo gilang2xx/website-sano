@@ -13,7 +13,7 @@ const Artikel: React.FC = () => {
       title: "Klinik Matras by SANO CARE: Solusi Tidur Sehat dari Akar Permasalahan",
       category: "Klinik Matras by Sano Care",
       date: "26 Des 2025",
-      image: "/dampak-kasur-slpunggung.png", 
+      image: "/foto-karyawan.jpg", 
       desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya."
     },
     
@@ -32,10 +32,10 @@ const Artikel: React.FC = () => {
     {
       id: 3,
       slug: "dampak-kasur-rusak",
-      title: "Solusi Tidur Sehat dari Akar Permasalahan Kasur",
+      title: "Awas! Kasur Anda Mungkin Sedang Merusak Tulang Belakang",
       category: "Edukasi",
       date: "28 Des 2025",
-      image: "/tips-merawat-kasur.jpg", 
+      image: "/kasur-merusak-tulang.jpg", 
       desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah."
     },
 
@@ -46,7 +46,7 @@ const Artikel: React.FC = () => {
       title: "Dampak Jangka Panjang Menggunakan Kasur yang Salah: Bahaya yang Mengintai di Balik Tidur Anda",
       category: "Edukasi",
       date: "28 Des 2025",
-      image: "/tips-merawat-kasur.jpg", 
+      image: "/dampak-kasur-salah.jpg", 
       desc: "Kerusakan struktur kasur atau struktur tidak sesuai dengan tubuh yang dibiarkan bertahun-tahun akan memaksa tubuh beradaptasi secara tidak alami."
     },
 
@@ -57,7 +57,7 @@ const Artikel: React.FC = () => {
       title: "Mengenal Struktur Kasur dari Dalam: Mengapa Komponen Matras Menentukan Kesehatan Anda?",
       category: "Edukasi",
       date: "29 Des 2025",
-      image: "/tips-merawat-kasur.jpg", 
+      image: "/komponen-kasur.jpg", 
       desc: "Struktur komponen dalam kasur: fondasi, lapisan kenyamanan, dan kain penutup. Bagaimana masing-masing berkontribusi pada kesehatan tidur Anda."
     },
     
@@ -65,10 +65,10 @@ const Artikel: React.FC = () => {
     {
       id: 6, 
       slug: "kasur-ortopedik-untuk-tidur-sehat",
-      title: "Kasur Ortopedik untuk Tidur Sehat",
+      title: "Perbedaan Kasur Ortopedik dan Kasur Biasa: Mana yang Lebih Baik untuk Tidur Sehat?",
       category: "Edukasi",
       date: "30 Des 2025",
-      image: "/tips-merawat-kasur.jpg", 
+      image: "/ortomedic-vs-sehat.jpg", 
       desc: "Apa itu kasur ortopedik dan bagaimana kasur ini dirancang khusus untuk mendukung kesehatan tulang belakang serta mengurangi nyeri punggung."
     },
   ];

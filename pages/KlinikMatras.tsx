@@ -41,12 +41,12 @@ const KlinikMatras: React.FC = () => {
     },
     { 
       title: "Full Upgrade (All in)", 
-      desc: "Renovasi total! Kasur lama Anda disulap menjadi 100% baru luar dalam.", 
+      desc: "Renovasi total! Kasur lama Kamu disulap menjadi 100% baru luar dalam.", 
       icon: <Crown /> 
     },
     { 
       title: "Ubah Tekstur (Empuk/Keras)", 
-      desc: "Menyesuaikan tingkat kekerasan kasur (Soft/Hard) sesuai kenyamanan punggung Anda.", 
+      desc: "Menyesuaikan tingkat kekerasan kasur (Soft/Hard) sesuai kenyamanan punggung Kamu.", 
       icon: <Settings /> 
     },
     { 
@@ -211,7 +211,7 @@ const KlinikMatras: React.FC = () => {
           className="mt-20 text-center"
         >
           <a 
-            href="https://wa.me/6285166662896"
+            href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20konsultasi%20tentang%20layanan%20Klinik%20Matras."
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-bold shadow-xl shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-1 transition-all"
           >
             Konsultasi Gratis dengan Ahli
