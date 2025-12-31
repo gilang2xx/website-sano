@@ -14,7 +14,7 @@ const KlinikMatras: React.FC = () => {
   const services = [
     { 
       title: "Paket Fondasi + Lapisan Matras Sehat", 
-      desc: "Kombo hemat: Rekoonstruksi atau perbaikan struktur kasur menjadi matras sehat.", 
+      desc: "Kombo hemat: Rekonstruksi atau perbaikan struktur kasur menjadi matras sehat.", 
       icon: <Settings />,
       isBestSeller: true // <--- BEST SELLER 2
     },
