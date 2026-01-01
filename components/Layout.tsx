@@ -196,7 +196,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               </li>
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-secondary shrink-0" />
-                <span>+62 851 6666 2896</span>
+                <span>0851 8728 3900</span>
               </li>
               <li className="flex items-center gap-3">
                 <Mail size={18} className="text-secondary shrink-0" />
