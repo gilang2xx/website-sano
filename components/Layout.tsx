@@ -253,12 +253,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
       <div 
         className="fixed bottom-6 right-6 z-[100] group cursor-pointer"
         onClick={() => {
-          // 1. LAPOR KE GOOGLE ADS
-          if (typeof window !== 'undefined' && (window as any).gtag) {
-            (window as any).gtag('event', 'conversion', {
-                'send_to': 'AW-123456789/LabelKonversiAnda' 
-            });
-          }
+         // 1. LAPOR KE GOOGLE ANALYTICS (GA4)
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+        (window as any).gtag('event', 'click_whatsapp', {
+        'event_category': 'contact',
+        'event_label': 'floating_wa_button'
+        });
+        }
           // 2. BUKA WHATSAPP
           window.open("https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20konsultasi", "_blank");
         }}
