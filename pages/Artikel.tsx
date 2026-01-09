@@ -65,7 +65,7 @@ const Artikel: React.FC = () => {
     {
       id: 6, 
       slug: "kasur-ortopedik-untuk-tidur-sehat",
-      title: "Perbedaan Kasur Ortopedik dan Kasur Biasa: Mana yang Lebih Baik untuk Tidur Sehat?",
+      title: "Perbedaan Kasur Ortopedik dan Matras Sehat: Mana yang Lebih Baik untuk Tidur Sehat?",
       category: "Edukasi",
       date: "30 Des 2025",
       image: "/ortomedic-vs-sehat.jpg", 

@@ -3,14 +3,44 @@ import { ImagePlus, BadgeCheck } from 'lucide-react';
 
 const BeforeAfter: React.FC = () => {
 
-  // DATA DUMMY (Nanti tinggal ganti title dan desc-nya saat sudah ada foto)
+  // 1. TAMBAHKAN PROPERTY 'beforeImg' DAN 'afterImg' DI SINI
   const projects = [
-    { id: 1, title: "Restorasi Spring Bed Rusak", desc: "Penggantian pegas patah dan kain cover premium." },
-    { id: 2, title: "Upgrade ke Latex", desc: "Penambahan lapisan natural latex 5cm untuk kenyamanan." },
-    { id: 3, title: "Ganti Kain Cover Mewah", desc: "Peremajaan tampilan dengan kain knitting 3D." },
-    { id: 4, title: "Custom Size King", desc: "Modifikasi ukuran dari Queen ke King size." },
-    { id: 5, title: "Perbaikan Sofa Kulit", desc: "Ganti kulit sofa yang pecah-pecah menjadi baru." },
-    { id: 6, title: "Deep Cleaning Matras", desc: "Pembersihan total noda membandel dan tungau." },
+    { 
+      id: 1, 
+      title: "Upgrade Fondasi Non Per Matras Sehat", 
+      desc: "Pergantian fondasi matras sehat full busa dengan material berkualitas tinggi.",
+      beforeImg: "/before-1.jpg", // Pastikan nama file sesuai yg ada di folder public
+      afterImg: "/after-1.jpg"
+    },
+    { 
+      id: 2, 
+      title: "Upgrade Fondasi + Lapisan Matras Sehat", 
+      desc: "Perkokoh Fondasi & Penambahan lapisan pillow top untuk kenyamanan.",
+      beforeImg: "/before-2.jpg", // Ganti dengan nama file foto ke-2
+      afterImg: "/after-2.jpg"
+    },
+    { 
+      id: 3, 
+      title: "Full Upgrade dengan Kain Knitting 3D", 
+      desc: "Upgrade fondasi dan ganti kain knitting 3D.",
+      beforeImg: "/before-3.jpg", // Ganti dengan nama file foto ke-3
+      afterImg: "/after-3.jpg"
+    },
+    { 
+      id: 4, 
+      title: "Full Upgrade dengan Kain Knitting 3D", 
+      desc: "Upgrade fondasi dan ganti kain knitting 3D.",
+      beforeImg: "/before-4.jpg",
+      afterImg: "/after-4.jpg"
+    },
+    { 
+      id: 5, 
+      title: "Potong Ukuran", 
+      desc: "Potong ukuran dengan mesin potong professional.",
+      beforeImg: "/before-5.jpg",
+      afterImg: "/after-5.jpg"
+    },
+    // Tambahkan object baru di sini kalau mau nambah foto lagi
   ];
 
   return (
@@ -32,44 +62,58 @@ const BeforeAfter: React.FC = () => {
       {/* GRID PROJECT PLACEHOLDERS */}
       <div className="container mx-auto px-6 max-w-7xl">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          
+
           {projects.map((project) => (
             <div 
               key={project.id}
-              className="bg-white dark:bg-slate-800 rounded-[2rem] p-6 shadow-lg border border-slate-200 dark:border-slate-700 hover:shadow-xl transition-all duration-300"
+              className="bg-white dark:bg-slate-800 rounded-[2rem] p-6 shadow-lg border border-slate-100 dark:border-slate-700/50"
             >
               {/* AREA FOTO BEFORE & AFTER */}
               <div className="grid grid-cols-2 gap-4 mb-6">
                 
-                {/* 1. PLACEHOLDER BEFORE */}
-                <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-900 rounded-xl border-2 border-dashed border-red-300 flex flex-col items-center justify-center text-center p-4 group cursor-pointer hover:bg-red-50 dark:hover:bg-slate-800 transition-colors">
-                  <div className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">BEFORE</div>
-                  <ImagePlus className="text-slate-400 mb-2 group-hover:text-red-400 transition-colors" size={32} />
-                  <p className="text-xs text-slate-400 font-mono">Upload Foto Rusak<br/>(600x450px)</p>
+                {/* 1. FOTO BEFORE (DINAMIS) */}
+                <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-900 rounded-2xl overflow-hidden group">
+                  <div className="absolute top-3 left-3 bg-red-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">
+                    BEFORE
+                  </div>
+                  {/* Perhatikan bagian src={project.beforeImg} di bawah ini */}
+                  <img 
+                    src={project.beforeImg} 
+                    alt={`Before ${project.title}`} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                 </div>
 
-                {/* 2. PLACEHOLDER AFTER */}
-                <div className="relative aspect-[4/3] bg-slate-100 dark:bg-slate-900 rounded-xl border-2 border-dashed border-green-300 flex flex-col items-center justify-center text-center p-4 group cursor-pointer hover:bg-green-50 dark:hover:bg-slate-800 transition-colors">
-                  <div className="absolute top-3 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm">AFTER</div>
-                  <ImagePlus className="text-slate-400 mb-2 group-hover:text-green-400 transition-colors" size={32} />
-                  <p className="text-xs text-slate-400 font-mono">Upload Foto Bagus<br/>(600x450px)</p>
+                {/* 2. FOTO AFTER (DINAMIS) */}
+                <div className="relative aspect-[4/3] bg-green-500/10 dark:bg-green-900/20 rounded-2xl overflow-hidden group">
+                  <div className="absolute top-3 right-3 bg-green-500 text-white text-[10px] font-bold px-2 py-1 rounded shadow-sm z-10">
+                    AFTER
+                  </div>
+                  {/* Perhatikan bagian src={project.afterImg} di bawah ini */}
+                  <img 
+                    src={project.afterImg} 
+                    alt={`After ${project.title}`} 
+                    className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                  />
                 </div>
 
               </div>
 
-              {/* KETERANGAN PROJECT */}
+              {/* KETERANGAN PROJECT (Tetap sama) */}
               <div className="flex justify-between items-start">
-                <div>
-                  <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">
-                    {project.title}
-                  </h3>
-                  <p className="text-sm text-slate-500 dark:text-slate-400">
-                    {project.desc}
-                  </p>
-                </div>
-                <div className="bg-blue-50 dark:bg-slate-700 p-2 rounded-full text-[#3B62AA] dark:text-blue-400">
-                  <BadgeCheck size={24} />
-                </div>
+                 {/* ... isinya sama dengan codingan lama ... */}
+                 <div>
+                    <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-1">
+                      {project.title}
+                    </h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400">
+                      {project.desc}
+                    </p>
+                 </div>
+                 {/* Icon BadgeCheck */}
+                 <div className="bg-blue-50 dark:bg-slate-700 p-2 rounded-full text-[#3B62AA] dark:text-blue-400">
+                    <BadgeCheck size={24} />
+                 </div>
               </div>
 
             </div>
@@ -77,7 +121,6 @@ const BeforeAfter: React.FC = () => {
 
         </div>
       </div>
-
     </div>
   );
 };

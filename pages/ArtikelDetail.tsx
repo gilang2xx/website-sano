@@ -77,7 +77,7 @@ const ArtikelDetail: React.FC = () => {
 
     // ARTIKEL 2: KONSEP MATRAS SEHAT (UPDATED CONTENT)
     "konsep-matras-sehat": {
-      title: "Apa Itu Matras Sehat? Membedah Konsep Utama Menurut Klinik Matras by Sano Care",
+      title: "Apa Definisi 'Matras Sehat' yang Sebenarnya?",
       date: "27 Des 2025",
       readTime: "6 Menit Baca",
       image: "/sano-matras.jpg", // Gambar Utama Artikel
@@ -360,7 +360,7 @@ const ArtikelDetail: React.FC = () => {
 
     // ARTIKEL 4: DAMPAK JANGKA PANJANG (UPDATED CONTENT)
     "dampak-jangka-panjang-kasur-salah": {
-      title: "Bahaya Mengintai di Balik Tidur: Dampak Jangka Panjang Kasur Salah",
+      title: "Dampak Jangka Panjang Menggunakan Kasur yang Salah: Bahaya yang Mengintai di Balik Tidur Anda",
       date: "28 Des 2025",
       readTime: "7 Menit Baca",
       image: "/dampak-kasur-salah.jpg",
@@ -646,7 +646,7 @@ const ArtikelDetail: React.FC = () => {
     // ARTIKEL 6: ORTHOPEDIC VS MATRAS SEHAT (UPDATED CONTENT)
     // =================================================================
     "kasur-ortopedik-untuk-tidur-sehat": {
-      title: "Kasur Orthopedic vs Matras Sehat: Manakah yang Benar-benar Baik untuk Tubuh?",
+      title: "Perbedaan Kasur Ortopedik dan Matras Sehat: Mana yang Lebih Baik untuk Tidur Sehat?",
       date: "30 Des 2025",
       readTime: "7 Menit Baca",
       image: "/ortomedic-vs-sehat.jpg", // Gambar cover
