@@ -24,7 +24,7 @@ const Kontak: React.FC = () => {
                     </div>
                     <div className="flex items-start gap-4">
                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0"><Phone size={24} /></div>
-                       <div><h4 className="font-bold text-lg mb-1">Telepon / WhatsApp</h4><p className="text-blue-100">+62 851 6666 2896</p></div>
+                       <div><h4 className="font-bold text-lg mb-1">Telepon / WhatsApp</h4><p className="text-blue-100">0851 8728 3900</p></div>
                     </div>
                     <div className="flex items-start gap-4">
                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0"><Mail size={24} /></div>

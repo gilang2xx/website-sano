@@ -112,28 +112,45 @@ export const CLEAN_SERVICES: ServiceItem[] = [
 ];
 
 
-export const TESTIMONIALS: TestimonialItem[] = [
+export const TESTIMONIALS = [
   {
-    id: '1',
-    name: 'Budi Santoso',
-    role: 'Homeowner',
-    content: 'Kasur lama saya yang sudah kempes jadi seperti baru lagi! Layanan antar-jemputnya sangat membantu.',
+    id: 1,
+    name: "Ratna Gumilang",
+    role: "Local Guide",
+    desc: "ingin cerita sedikit dari pengalman saya, saya ibu-ibu umur 58 th, awalnya bingung bgn tidur sering sakit pinggang, kemudian leher jg, saya cek ke dokter dan kata dokter penyebabnya adalah kasur yang udah lama, dan fondasinya rusak",
     rating: 5,
+    date: "1 months ago", // Tambahan biar mirip
+    photoUrl: "https://lh3.googleusercontent.com/a-/ALV-UjWpGZKHRBLe84-GS77JcX1ss56E-pslv7UAI17XgvWst4qCZGc=w72-h72-p-rp-mo-br100" // Ganti foto asli/dummy
   },
   {
-    id: '2',
-    name: 'Siti Aminah',
-    role: 'Ibu Rumah Tangga',
-    content: 'Awalnya ragu mau beli baru atau service. Ternyata service di Klinik Mattress hasilnya jauh lebih hemat dan kualitas premium.',
+    id: 2,
+    name: "Farhan A",
+    role: "Local Guide",
+    desc: "Kasur saya dulu benar-benar amblas — sekarang jauh lebih kokoh, nyaman, dan rasanya bahkan lebih baik dari kasur baru di mall karena saya sempat cari-cari kasur baru di mall dan sempat tergoda kasur in thebox di online tapi ga yakin. sano mantap pokonya, sukses terus.",
     rating: 5,
+    date: "1 months ago",
+    photoUrl: "https://www.google.com/maps/contrib/109053876835925262176/reviews?hl=en-GB" 
   },
   {
-    id: '3',
-    name: 'Hendrawan',
-    role: 'Pengusaha Hotel',
-    content: 'Sangat profesional. Kami upgrade 10 unit kasur hotel dan hasilnya sangat memuaskan tamu kami.',
+    id: 2,
+    name: "Krisna Shanti",
+    role: "Local Guide",
+    desc: "Sangat bagus sekali, saya sudah mencoba nya dan cocok dg yg dibutuhkan ..sangat membantu .. terima kasih 🙏",
     rating: 5,
+    date: "1 months ago",
+    photoUrl: "https://lh3.googleusercontent.com/..." 
   },
+  {
+    id: 2,
+    name: "Su Jannah",
+    role: "Local Guide",
+    desc: "Pekerjaannya rapi dan berkualitas. Sempat berfikir mau ganti spring bed karena ada per yg patah.",
+    rating: 5,
+    date: "2 months ago",
+    photoUrl: "https://lh3.googleusercontent.com/..." 
+  },
+  
+  // ...
 ];
 
 export const BEFORE_AFTER_DATA: BeforeAfterItem[] = [

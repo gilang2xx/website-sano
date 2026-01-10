@@ -55,6 +55,9 @@ import {
 import ScrollReveal from '../components/ScrollReveal';
 import AnimatedHeroText from '../components/AnimatedHeroText';
 import { TESTIMONIALS, BEFORE_AFTER_DATA } from '../constants';
+// Ensure the file exists or correct the path if necessary
+// Ensure the correct path to the GoogleReviewSection component
+import GoogleReviewSection from '../components/GoogleReviewSection'; // Check if the file exists
 
 
 
@@ -986,30 +989,7 @@ const Home: React.FC = () => {
       </section>
 
       {/* 7. TESTIMONIALS */}
-      <section className="py-24 bg-white dark:bg-bg-dark">
-         <div className="container mx-auto px-6">
-            <ScrollReveal className="text-center mb-16">
-               <h2 className="text-3xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-4">Kata Mereka</h2>
-               <p className="text-slate-500 text-lg">Ribuan pelanggan puas dengan tidur yang lebih berkualitas</p>
-            </ScrollReveal>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-               {TESTIMONIALS.map((testi, idx) => (
-                  <ScrollReveal key={testi.id} delay={idx * 50} className="bg-bg-light dark:bg-bg-surface p-8 rounded-3xl border border-slate-100 dark:border-slate-800 relative group hover:shadow-xl transition-all">
-                     <div className="flex gap-1 mb-6">
-                        {[...Array(5)].map((_, i) => (
-                           <Star key={i} size={18} className="fill-yellow-400 text-yellow-400" />
-                        ))}
-                     </div>
-                     <p className="text-slate-600 dark:text-slate-300 mb-8 leading-relaxed italic">"{testi.content}"</p>
-                     <div>
-                        <h4 className="font-bold text-slate-900 dark:text-white text-lg">{testi.name}</h4>
-                        <p className="text-sm text-primary dark:text-primary-light font-medium">{testi.role}</p>
-                     </div>
-                  </ScrollReveal>
-               ))}
-            </div>
-         </div>
-      </section>
+      <GoogleReviewSection />
 
       {/* 8. CTA SECTION */}
       <section className="py-24 bg-bg-light dark:bg-bg-dark">
