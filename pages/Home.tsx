@@ -76,7 +76,7 @@ const Home: React.FC = () => {
     videoMp4: "/video-sakitkepalaleher.mp4",
     
     // TAMBAHKAN INI (Thumbnail khusus untuk video)
-    videoPoster: "/dampak-kasur-slpunggung.jpg", 
+    videoPoster: "/dampak-kasur-kiri.jpg", 
 
     // Gambar fallback (yang sudah ada)
     img: "/dampak-kasur-slpunggung.png",
@@ -93,7 +93,7 @@ const Home: React.FC = () => {
       videoWebm: "/video-sakitpinggang.webm",
       videoMp4: "/video-sakitpinggang.mp4",
       // TAMBAHKAN INI (Thumbnail khusus untuk video)
-    videoPoster: "/dampak-kasur-kirijpg", 
+    videoPoster: "/dampak-kasur-tengah.jpg", 
       // Gambar berbeda untuk kartu tengah 
       colSpan: "md:col-span-1",
       color: "from-orange-600",
@@ -107,7 +107,7 @@ const Home: React.FC = () => {
       videoWebm: "/videos-sarafkejepit.webm",
       videoMp4: "/videos-sarafkejepit.mp4",
         // TAMBAHKAN INI (Thumbnail khusus untuk video)
-    videoPoster: "/dampak-kasur-tengah.jpg", 
+    videoPoster: "/dampak-kasur-slpunggung.jpg", 
       // Gambar berbeda untuk kartu kanan
       colSpan: "md:col-span-1",
       color: "from-red-700",
