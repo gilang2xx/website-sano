@@ -79,7 +79,7 @@ const Home: React.FC = () => {
     videoPoster: "/dampak-kasur-kiri.jpg", 
 
     // Gambar fallback (yang sudah ada)
-    img: "/dampak-kasur-slpunggung.png",
+    img: "/dampak-kasur-kiri.jpg",
     colSpan: "md:col-span-1",
     color: "from-cyan-600",
     link: "/artikel/dampak-kasur-rusak"
