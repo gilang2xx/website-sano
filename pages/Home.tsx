@@ -151,12 +151,8 @@ const Home: React.FC = () => {
                 key={idx}
                 className={`relative group overflow-hidden rounded-[2rem] h-80 shadow-xl dark:shadow-2xl border border-slate-200 dark:border-white/10 cursor-pointer ${item.colSpan}`}
               >
-                <motion.div 
-                  initial={{ opacity: 0, y: 30 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: idx * 0.1 }}
-                  viewport={{ once: true }}
-                  className="w-full h-full relative"
+                <div
+                className="w-full h-full relative group transition-all duration-300 hover:scale-[1.02]"
                 >
                   
                   {/* --- LAYER 1: VIDEO/GAMBAR (PALING BAWAH z-0) --- */}
@@ -172,7 +168,7 @@ const Home: React.FC = () => {
                       // Style manual untuk memaksa browser menuruti object-cover
                       style={{ objectFit: 'cover', width: '100%', height: '100%' }}
                     >
-                      <source src={item.videoMov} type='video/quicktime; codecs="hvc1"' />
+                      <source src={item.videoMp4} type="video/mp4" />
                       <source src={item.videoWebm} type="video/webm" />
                     </video>
                   </div>
@@ -197,7 +193,7 @@ const Home: React.FC = () => {
                     </div>
                   </div>
 
-                </motion.div>
+                </div>
               </NavLink>
             ))}
           </div>
