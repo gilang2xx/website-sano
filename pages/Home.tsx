@@ -70,7 +70,7 @@ const Home: React.FC = () => {
     
     // Video
     videoWebm: "/video-sakitkepalaleher.webm",
-    videoMov: "/video-sakitkepalaleher.mov",
+    videoMp4: "/video-sakitkepalaleher.mp4",
     
     // TAMBAHKAN INI (Thumbnail khusus untuk video)
     videoPoster: "/dampak-kasur-slpunggung.jpg", 
@@ -88,7 +88,7 @@ const Home: React.FC = () => {
       desc: "Pinggang terasa patah saat bangun. Tanda kasur sudah amblas dan tidak menopang tulang belakang dengan lurus.",
        // Video
       videoWebm: "/video-sakitpinggang.webm",
-      videoMov: "/video-sakitpinggang.mov",
+      videoMp4: "/video-sakitpinggang.mp4",
       // TAMBAHKAN INI (Thumbnail khusus untuk video)
     videoPoster: "/dampak-kasur-kirijpg", 
       // Gambar berbeda untuk kartu tengah 
@@ -102,7 +102,7 @@ const Home: React.FC = () => {
       title: "Saraf Kejepit (HNP)",
       desc: "BAHAYA! Nyeri menjalar parah. Akibat fatal membiarkan posisi tidur salah bertahun-tahun.",
       videoWebm: "/videos-sarafkejepit.webm",
-      videoMov: "/videos-sarafkejepit.mov",
+      videoMp4: "/videos-sarafkejepit.mp4",
         // TAMBAHKAN INI (Thumbnail khusus untuk video)
     videoPoster: "/dampak-kasur-tengah.jpg", 
       // Gambar berbeda untuk kartu kanan
