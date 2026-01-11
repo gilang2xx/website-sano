@@ -63,7 +63,17 @@ import GoogleReviewSection from '../components/GoogleReviewSection'; // Check if
 
 const Home: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = React.useState(false);
-
+  const handleWAClick = () => {
+    // Cek apakah Google Analytics sudah dimuat di browser
+    if (typeof window !== 'undefined' && (window as any).gtag) {
+      (window as any).gtag('event', 'klik_whatsapp', {
+        'event_category': 'Kontak',
+        'event_label': 'Tombol WA Utama',
+        'value': 1
+      });
+      console.log("Tracking WA Sent!"); // Cuma buat ngecek di console
+    }
+  };
  // DATA MASALAH (Disederhanakan jadi 3 Poin Utama)
   const painPoints = [
     // 1. MASALAH RINGAN (Leher & Kepala)
@@ -903,6 +913,7 @@ const Home: React.FC = () => {
               {/* CTA Button Premium */}
               <div className="mt-8">
                 <a href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20Paket%20Premium" target="_blank" rel="noreferrer" className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors">
+                onClick={handleWAClick}
                   Pilih Paket Premium
                 </a>
               </div>
@@ -1005,6 +1016,7 @@ const Home: React.FC = () => {
               <div className="flex flex-col md:flex-row justify-center items-center gap-6 relative z-10">
                 <a 
                   href="https://wa.me/6285187283900?text=Halo%20Sano%20Care,%20saya%20ingin%20konsultasi%20mengenai%20kasur%20saya."
+                  onClick={handleWAClick}
                   target="_blank"
                   rel="noreferrer" 
                   className="bg-white text-primary font-bold px-10 py-4 rounded-full hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
