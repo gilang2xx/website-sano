@@ -66,7 +66,7 @@ const Home: React.FC = () => {
   const handleWAClick = () => {
     // Cek apakah Google Analytics sudah dimuat di browser
     if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'klik_whatsapp', {
+      (window as any).gtag('event', 'click_whatsapp', {
         'event_category': 'Kontak',
         'event_label': 'Tombol WA Utama',
         'value': 1
