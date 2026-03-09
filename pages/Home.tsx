@@ -641,6 +641,56 @@ const Home: React.FC = () => {
         </div>
       </section>
 
+      {/* =========================================================
+          SECTION: BRAND LOGOS (SOCIAL PROOF)
+         ========================================================= */}
+      <section className="py-16 bg-white dark:bg-slate-900 border-y border-slate-100 dark:border-slate-800 overflow-hidden">
+        <div className="container mx-auto px-6">
+          <ScrollReveal className="text-center mb-12">
+            <p className="text-sm font-bold text-slate-400 dark:text-slate-500 uppercase tracking-widest">
+              DIPERCAYA MERESTORASI BERBAGAI MERK MATRAS TERNAMA
+            </p>
+          </ScrollReveal>
+
+          {/* LOGO GRID (Format 2 Baris, Lebih Besar) */}
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-10 md:gap-16 lg:gap-20 max-w-5xl mx-auto place-items-center">
+
+            {/* Efek: Grayscale, Opacity rendah. Saat hover: Berwarna, Opacity 100%, Sedikit membesar */}
+            
+            {/* 1. King Koil */}
+            <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
+              <img src="/logo-kingkoil.png" alt="King Koil" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+            </div>
+
+            {/* 2. Serta */}
+            <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
+              <img src="/logo-serta.png" alt="Serta" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+            </div>
+
+            {/* 3. Lady Americana */}
+            <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
+              <img src="/logo-ladyamericana.png" alt="Lady Americana" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+            </div>
+
+            {/* 4. Elite */}
+            <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
+              <img src="/logo-elite.png" alt="Elite" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+            </div>
+
+            {/* 5. Florence */}
+            <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
+              <img src="/logo-florence.png" alt="Florence" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+            </div>
+
+            {/* 6. Spring Air */}
+            <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
+              <img src="/logo-springair.png" alt="Spring Air" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+            </div>
+
+          </div>
+        </div>
+      </section>
+
       {/* 5. CARA KERJA KAMI */}
       <section className="py-24 bg-slate-50 dark:bg-bg-dark overflow-hidden">
         <div className="container mx-auto px-6">
@@ -912,8 +962,22 @@ const Home: React.FC = () => {
 
               {/* CTA Button Premium */}
               <div className="mt-8">
-                <a href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20Paket%20Premium" target="_blank" rel="noreferrer" className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors">
-                onClick={handleWAClick}
+                <a 
+                  href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20Paket%20Premium" 
+                  target="_blank" 
+                  rel="noreferrer"
+                  onClick={() => {
+                    // Lapor ke Google Analytics saat diklik
+                    if (typeof window !== 'undefined' && (window as any).gtag) {
+                      (window as any).gtag('event', 'click_whatsapp', {
+                        'event_category': 'Kontak',
+                        'event_label': 'Home WA - Paket Premium',
+                        'value': 1
+                      });
+                    }
+                  }}
+                  className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors"
+                >
                   Pilih Paket Premium
                 </a>
               </div>

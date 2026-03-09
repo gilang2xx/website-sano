@@ -20,6 +20,37 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const location = useLocation();
 
+// 1. State untuk membuka/menutup menu CS
+  const [showCSMenu, setShowCSMenu] = useState(false);
+
+  // 2. Fungsi ketika salah satu CS dipilih
+  const handleCSClick = (nomorWA: string, namaCS: string) => {
+    // Lapor ke Tracking (GTM & GA4)
+    if (typeof window !== 'undefined') {
+      // Untuk GTM (Data Layer Lama)
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push({
+        'event': 'click_whatsapp'
+      });
+
+      // Untuk GA4 (Agar detail CS 1 / CS 2 terbaca)
+      if ((window as any).gtag) {
+        (window as any).gtag('event', 'click_whatsapp', {
+          'event_category': 'Kontak',
+          'event_label': `Floating WA - ${namaCS}`,
+          'value': 1
+        });
+      }
+    }
+
+    // Buka WhatsApp
+    const pesan = encodeURIComponent("Halo Sano, saya tertarik konsultasi");
+    window.open(`https://wa.me/${nomorWA}?text=${pesan}`, "_blank");
+
+    // Tutup menu otomatis
+    setShowCSMenu(false);
+  };
+
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 20);
@@ -192,13 +223,32 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
             <ul className="space-y-4 text-slate-400 text-sm">
               <li className="flex items-start gap-3">
                 <MapPin size={18} className="text-secondary shrink-0 mt-0.5" />
-                <span>Jl. Raya Keadilan, Gg Asrama Polri, No. 81, RT 5/12, Pancoran Mas, Kota Depok, Jawa Barat</span>
+                <span className="leading-relaxed">Jl. Raya Keadilan, Gg Asrama Polri, No. 81, RT 5/12, Pancoran Mas, Kota Depok, Jawa Barat</span>
               </li>
+              
+              {/* Nomor CS 1 */}
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-secondary shrink-0" />
-                <span>0851 8728 3900</span>
+                <button 
+                  onClick={() => handleCSClick('6285166662896', 'Footer CS 1')} 
+                  className="hover:text-white hover:underline transition-all text-left"
+                >
+                  0851 6666 2896 (CS 1)
+                </button>
               </li>
+
+              {/* Nomor CS 2 */}
               <li className="flex items-center gap-3">
+                <Phone size={18} className="text-secondary shrink-0" />
+                <button 
+                  onClick={() => handleCSClick('6285187283900', 'Footer CS 2')} 
+                  className="hover:text-white hover:underline transition-all text-left"
+                >
+                  0851 8728 3900 (CS 2)
+                </button>
+              </li>
+
+              <li className="flex items-center gap-3 mt-2">
                 <Mail size={18} className="text-secondary shrink-0" />
                 <span>sanocareofficial@gmail.com</span>
               </li>
@@ -249,32 +299,61 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
       </footer>
 
-      {/* FLOATING WHATSAPP BUTTON (STILL / TANPA ANIMASI GERAK) */}
-      <div 
-        className="fixed bottom-6 right-6 z-[100] group cursor-pointer"
-        onClick={() => {
-         // 1. LAPOR KE GOOGLE ANALYTICS (GA4)
-        if (typeof window !== 'undefined' && (window as any).gtag) {
-        (window as any).gtag('event', 'click_whatsapp', {
-        'event_category': 'contact',
-        'event_label': 'floating_wa_button'
-        });
-        }
-          // 2. BUKA WHATSAPP
-          window.open("https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20konsultasi", "_blank");
-        }}
-      >
-        {/* HAPUS: Span animate-ping yang bikin berdenyut */}
+      {/* =========================================================
+          FLOATING WHATSAPP BUTTON (DENGAN PILIHAN CS 1 & 2)
+         ========================================================= */}
+      <div className="fixed bottom-6 right-6 z-[100] flex flex-col items-end">
         
-        {/* Efek Glow Halus (Hanya muncul saat kursor diarahkan/Hover) */}
-        <div className="absolute inset-0 rounded-full bg-green-400 blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+        {/* KOTAK MENU CS (Muncul saat showCSMenu bernilai true) */}
+        {showCSMenu && (
+          <div className="mb-4 bg-white border border-slate-200 rounded-2xl shadow-2xl p-4 w-56 flex flex-col gap-3 transform transition-all origin-bottom-right animate-in fade-in slide-in-from-bottom-5">
+            <div className="text-center border-b border-slate-100 pb-3 mb-1">
+              <p className="text-sm font-extrabold text-slate-800">Pilih Customer Service</p>
+              <p className="text-[10px] text-slate-500">Kami siap membantu kamu</p>
+            </div>
+            
+            {/* Tombol CS 1 */}
+            <button 
+              onClick={() => handleCSClick('6285166662896', 'CS 1')}
+              className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-3 rounded-xl text-sm font-bold transition-transform hover:scale-105 shadow-md"
+            >
+              Hubungi ADMIN 1
+            </button>
 
-        {/* Tombol Utama (Diam/Still) */}
-        <div className="relative bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform group-hover:scale-110 flex items-center justify-center border-2 border-white/20">
-          <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white" className="fill-current">
-            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
-          </svg>
+            {/* Tombol CS 2 */}
+            <button 
+              onClick={() => handleCSClick('6285187283900', 'CS 2')}
+              className="flex items-center justify-center gap-2 bg-green-500 hover:bg-green-600 text-white py-2.5 px-3 rounded-xl text-sm font-bold transition-transform hover:scale-105 shadow-md"
+            >
+              Hubungi ADMIN 2
+            </button>
+          </div>
+        )}
+
+        {/* TOMBOL HIJAU UTAMA (Bulat) */}
+        <div 
+          className="relative group cursor-pointer"
+          onClick={() => setShowCSMenu(!showCSMenu)} // Fungsi Buka/Tutup Menu
+        >
+          {/* Efek Glow Halus */}
+          <div className="absolute inset-0 rounded-full bg-green-400 blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
+
+          {/* Icon WhatsApp */}
+          <div className="relative bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-2xl transition-all duration-300 transform group-hover:scale-110 flex items-center justify-center border-2 border-white/20">
+            {/* Jika menu terbuka, ganti icon jadi 'X' (Silang), jika tutup icon WA */}
+            {showCSMenu ? (
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+              </svg>
+            ) : (
+              <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="white" className="fill-current">
+                <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/>
+              </svg>
+            )}
+          </div>
         </div>
+
       </div>
 
     </div>

@@ -29,7 +29,7 @@ const TentangKami: React.FC = () => {
              <span className="text-primary dark:text-secondary font-bold tracking-widest uppercase text-sm mb-4 block">Our Profile</span>
              <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 dark:text-white mb-4">Tentang Kami</h1>
              <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">
-                Mengenal lebih dekat siapa di balik kenyamanan tidur Anda.
+                Mengenal lebih dekat siapa di balik kenyamanan tidur Kamu.
              </p>
            </ScrollReveal>
         </div>
@@ -57,12 +57,12 @@ const TentangKami: React.FC = () => {
                     Kami percaya: sesuatu yang diperbaiki dan di-upgrade berdasarkan problem sebelumnya jauh lebih efektif dalam mengatasi akar masalah sekaligus menyempurnakan kenyamanan tidur.
                   </p>
                   <p>
-                    Dengan teknik restorasi yang tepat, didukung pemahaman mendalam tentang anatomi tulang belakang, karakteristik material, dan cara kerja setiap lapisan kasur, kami tidak hanya memperbaiki tampilan fisik—tetapi juga mengembalikan fungsi kesehatan kasur Anda.
+                    Dengan teknik restorasi yang tepat, didukung pemahaman mendalam tentang anatomi tulang belakang, karakteristik material, dan cara kerja setiap lapisan kasur, kami tidak hanya memperbaiki tampilan fisik—tetapi juga mengembalikan fungsi kesehatan kasur Kamu.
                   </p>
                 </div>
 
                 <p className="font-medium text-slate-900 dark:text-white mt-8 text-lg">
-                  Hemat biaya, menyelesaikan keluhan, memastikan kenyamanan. Itulah komitmen kami kepada Anda.
+                  Hemat biaya, menyelesaikan keluhan, memastikan kenyamanan. Itulah komitmen kami kepada Kamu.
                 </p>
 
                
@@ -111,7 +111,7 @@ const TentangKami: React.FC = () => {
               </div>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">2. Transparansi (Honesty)</h3>
               <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-                Harga transparan di awal, update proses service by foto & video, serta saran rekomendasi yang tepat berdasarkan diagnosa keluhan, fisik, dan uji texture. Kesehatan Anda prioritas kami.
+                Harga transparan di awal, update proses service by foto & video, serta saran rekomendasi yang tepat berdasarkan diagnosa keluhan, fisik, dan uji texture. Kesehatan Kamu prioritas kami.
               </p>
             </div>
 
@@ -196,7 +196,7 @@ const TentangKami: React.FC = () => {
               </div>
               <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">9. Lebih Hemat dari Beli Baru</h3>
               <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
-                Dengan upgrade Sano Care, Anda mendapatkan kualitas seperti kasur baru premium dengan harga jauh lebih hemat 50–80%.
+                Dengan upgrade Sano Care, Kamu mendapatkan kualitas seperti kasur baru premium dengan harga jauh lebih hemat 50–80%.
               </p>
             </div>
 
@@ -218,7 +218,7 @@ const TentangKami: React.FC = () => {
                 <span className="flex items-center gap-1">✔ Terlalu keras</span>
               </div>
               <p className="text-slate-500 dark:text-slate-400 text-sm font-bold">
-                Tujuan: Anda bangun segar tanpa rasa sakit.
+                Tujuan: Kamu bangun segar tanpa rasa sakit.
               </p>
             </div>
 

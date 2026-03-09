@@ -7,10 +7,10 @@ const BeforeAfter: React.FC = () => {
   const projects = [
     { 
       id: 1, 
-      title: "Upgrade Fondasi Non Per Matras Sehat", 
-      desc: "Pergantian fondasi matras sehat full busa dengan material berkualitas tinggi.",
-      beforeImg: "/before-1.jpg", // Pastikan nama file sesuai yg ada di folder public
-      afterImg: "/after-1.jpg"
+      title: "Full Upgrade All-in-One", 
+      desc: "Renovasi total! Kasur lama Kamu disulap menjadi 100% baru sehat dan nyaman luar dalam dengan upgrade fondasi dan ganti kain knitting 3D.",
+      beforeImg: "/before-10.jpg", // Pastikan nama file sesuai yg ada di folder public
+      afterImg: "/after-10.jpg"
     },
     { 
       id: 2, 
@@ -21,20 +21,48 @@ const BeforeAfter: React.FC = () => {
     },
     { 
       id: 3, 
-      title: "Full Upgrade dengan Kain Knitting 3D", 
-      desc: "Upgrade fondasi dan ganti kain knitting 3D.",
-      beforeImg: "/before-3.jpg", // Ganti dengan nama file foto ke-3
-      afterImg: "/after-3.jpg"
+      title: "Upgrade Fondasi Non Per Matras Sehat", 
+      desc: "Penguatan matras yang membuat kokoh, aman, dan maksimal untuk support kesehatan tidur kamu.",
+      beforeImg: "/before-9.jpg", // Ganti dengan nama file foto ke-3
+      afterImg: "/after-9.jpg"
     },
     { 
       id: 4, 
-      title: "Full Upgrade dengan Kain Knitting 3D", 
-      desc: "Upgrade fondasi dan ganti kain knitting 3D.",
-      beforeImg: "/before-4.jpg",
-      afterImg: "/after-4.jpg"
+      title: "Upgrade Fondasi Non Per Matras Sehat", 
+      desc: "Penguatan matras dengan busa density 50+ yang membuat kokoh dan nyaman untuk tulang belakang.",
+      beforeImg: "/before-8.jpg",
+      afterImg: "/after-8.jpg"
     },
     { 
       id: 5, 
+      title: "Full Upgrade All-in-One", 
+      desc: "Renovasi total! Kasur lama Kamu disulap menjadi 100% baru sehat dan nyaman luar dalam dengan upgrade fondasi dan ganti kain knitting 3D.",
+      beforeImg: "/before-7.jpg",
+      afterImg: "/after-7.jpg"
+    },
+    { 
+      id: 6, 
+      title: "Full Upgrade Kasur 2 in 1", 
+      desc: "Upgrade fondasi dan ganti kain knitting 3D.",
+      beforeImg: "/before-6.jpg",
+      afterImg: "/after-6.jpg"
+    },
+    { 
+      id: 7, 
+      title: "Full Upgrade dengan Kain Knitting 3D", 
+      desc: "Upgrade fondasi dan ganti kain knitting 3D.",
+      beforeImg: "/before-11.jpg",
+      afterImg: "/after-11.jpg"
+    },
+    { 
+      id: 8, 
+      title: "Paket Fondasi + Lapisan Matras Sehat", 
+      desc: "Rekonstruksi atau perbaikan struktur kasur menjadi matras sehat.",
+      beforeImg: "/before-12.jpg",
+      afterImg: "/after-12.jpg"
+    },
+    { 
+      id: 9, 
       title: "Potong Ukuran", 
       desc: "Potong ukuran dengan mesin potong professional.",
       beforeImg: "/before-5.jpg",
