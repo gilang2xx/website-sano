@@ -25,21 +25,26 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   // 2. Fungsi ketika salah satu CS dipilih
   const handleCSClick = (nomorWA: string, namaCS: string) => {
-    // Lapor ke Tracking (GTM & GA4)
+    // Lapor ke Tracking (GTM, GA4, & TIKTOK)
     if (typeof window !== 'undefined') {
-      // Untuk GTM (Data Layer Lama)
+      // Untuk GTM (Data Layer)
       (window as any).dataLayer = (window as any).dataLayer || [];
       (window as any).dataLayer.push({
         'event': 'click_whatsapp'
       });
 
-      // Untuk GA4 (Agar detail CS 1 / CS 2 terbaca)
+      // Untuk GA4
       if ((window as any).gtag) {
         (window as any).gtag('event', 'click_whatsapp', {
           'event_category': 'Kontak',
           'event_label': `Floating WA - ${namaCS}`,
           'value': 1
         });
+      }
+
+      // ---> INI TAMBAHAN KODE TIKTOK <---
+      if ((window as any).ttq) {
+        (window as any).ttq.track('Contact');
       }
     }
 

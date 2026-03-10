@@ -71,6 +71,11 @@ const Home: React.FC = () => {
         'event_label': 'Tombol WA Utama',
         'value': 1
       });
+
+      // ---> INI TAMBAHAN KODE TIKTOK <---
+      if ((window as any).ttq) {
+        (window as any).ttq.track('Contact');
+      }
       console.log("Tracking WA Sent!"); // Cuma buat ngecek di console
     }
   };
@@ -975,6 +980,10 @@ const Home: React.FC = () => {
                         'value': 1
                       });
                     }
+                    // ---> INI TAMBAHAN KODE TIKTOK <---
+                      if ((window as any).ttq) {
+                        (window as any).ttq.track('Contact');
+                 }
                   }}
                   className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors"
                 >
