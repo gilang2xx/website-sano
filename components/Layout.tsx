@@ -33,6 +33,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         'event': 'click_whatsapp'
       });
 
+      // Untuk Meta Pixel      if ((window as any).fbq) {
+      if ((window as any).fbq) {
+        (window as any).fbq('track', 'Contact');
+      }
+
       // Untuk GA4
       if ((window as any).gtag) {
         (window as any).gtag('event', 'click_whatsapp', {
