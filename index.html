@@ -3,21 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- GANTI BARIS INI: Masukkan logo ke folder public dulu -->
     <link rel="icon" type="image/png" href="/sano-logomarks-whitebg.png" />
     <link rel="apple-touch-icon" href="/sano-logomarks-whitebg.png" />
     <title>KLINIK MATRAS by SANO CARE</title>
-     <!-- Google tag (gtag.js) -->
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-3JYN7ZL8DE"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-3JYN7ZL8DE');
     </script>
-    <!-- --------------------------------------- -->
-        <!-- Meta Pixel Code -->
+
     <script>
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -33,11 +30,9 @@
     <noscript><img height="1" width="1" style="display:none"
     src="https://www.facebook.com/tr?id=934367175857999&ev=PageView&noscript=1"
     /></noscript>
-    <!-- End Meta Pixel Code -->
-
-    <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
     <script>
       tailwind.config = {
         darkMode: 'class',
@@ -47,63 +42,40 @@
               sans: ['"Plus Jakarta Sans"', 'sans-serif'],
             },
             colors: {
-              primary: {
-                DEFAULT: '#2064B7',
-                light: '#C6DBF2',
-                dark: '#164A88',
-              },
-              secondary: {
-                DEFAULT: '#6ECDC5',
-                light: '#C9F1ED',
-                dark: '#357872',
-              },
-              bg: {
-                light: '#F7F9FB',
-                dark: '#0F141A',
-                surface: '#1A232C',
-              },
-              text: {
-                dark: '#E7ECF2',
-                muted: '#9BA5B4',
-              }
+              primary: { DEFAULT: '#2064B7', light: '#C6DBF2', dark: '#164A88' },
+              secondary: { DEFAULT: '#6ECDC5', light: '#C9F1ED', dark: '#357872' },
+              bg: { light: '#F7F9FB', dark: '#0F141A', surface: '#1A232C' },
+              text: { dark: '#E7ECF2', muted: '#9BA5B4' }
             }
           }
         }
       }
     </script>
+
     <style>
       /* Custom scrollbar */
-      ::-webkit-scrollbar {
-  width: 10px;
-}
-::-webkit-scrollbar-track {
-  background: #0f172a; 
-}
-::-webkit-scrollbar-thumb {
-  background: #3b82f6; 
-  border-radius: 5px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #2563eb; 
-}
+      ::-webkit-scrollbar { width: 10px; }
+      ::-webkit-scrollbar-track { background: #0f172a; }
+      ::-webkit-scrollbar-thumb { background: #3b82f6; border-radius: 5px; }
+      ::-webkit-scrollbar-thumb:hover { background: #2563eb; }
     </style>
-  <script type="importmap">
-{
-  "imports": {
-    "react": "https://aistudiocdn.com/react@^19.2.0",
-    "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.0/client",
-    "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
-    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
-    "react-router-dom": "https://aistudiocdn.com/react-router-dom@^6.22.3",
-    "framer-motion": "https://aistudiocdn.com/framer-motion@^11.0.28",
-    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
-    "react/": "https://aistudiocdn.com/react@^19.2.0/"
-  }
-}
-</script>
-<link rel="stylesheet" href="/index.css">
 
-<link rel="stylesheet" href="/index.css">
+    <script type="importmap">
+    {
+      "imports": {
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "react-dom/client": "https://aistudiocdn.com/react-dom@^19.2.0/client",
+        "react-dom": "https://aistudiocdn.com/react-dom@^19.2.0",
+        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+        "react-router-dom": "https://aistudiocdn.com/react-router-dom@^6.22.3",
+        "framer-motion": "https://aistudiocdn.com/framer-motion@^11.0.28",
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/"
+      }
+    }
+    </script>
+
+    <link rel="stylesheet" href="/index.css">
     
     <script>
     !function (w, d, t) {
@@ -116,17 +88,8 @@
     }(window, document, 'ttq');
     </script>
     </head>
-  <body class="bg-bg-light dark:bg-bg-dark text-slate-800 dark:text-text-dark">
-    <div id="root"></div>
-    <script type="module" src="./index.tsx"></script>
-    <script type="module" src="/index.tsx"></script>
-  </body>
-</html>
-
-</head>
   <body class="bg-bg-light dark:bg-bg-dark text-slate-800 dark:text-text-dark transition-colors duration-300 antialiased selection:bg-primary selection:text-white">
     <div id="root"></div>
-    <script type="module" src="./index.tsx"></script>
-  <script type="module" src="/index.tsx"></script>
-</body>
+    <script type="module" src="/index.tsx"></script>
+  </body>
 </html>
