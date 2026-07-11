@@ -58,30 +58,13 @@ import { TESTIMONIALS, BEFORE_AFTER_DATA } from '../constants';
 // Ensure the file exists or correct the path if necessary
 // Ensure the correct path to the GoogleReviewSection component
 import GoogleReviewSection from '../components/GoogleReviewSection'; // Check if the file exists
+import { trackWhatsAppClick } from '../utils/tracking';
 
 
 const Home: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = React.useState(false);
   const handleWAClick = () => {
-    // Cek apakah Google Analytics sudah dimuat di browser
-    if (typeof window !== 'undefined' && (window as any).gtag) {
-      (window as any).gtag('event', 'click_whatsapp', {
-        'event_category': 'Kontak',
-        'event_label': 'Tombol WA Utama',
-        'value': 1
-      });
-
-      // ---> INI TAMBAHAN META PIXEL <---
-      if ((window as any).fbq) {
-        (window as any).fbq('track', 'Contact');
-      }
-
-      // ---> INI TAMBAHAN KODE TIKTOK <---
-      if ((window as any).ttq) {
-        (window as any).ttq.track('Contact');
-      }
-      console.log("Tracking WA Sent!"); // Cuma buat ngecek di console
-    }
+    trackWhatsAppClick('Tombol WA Utama');
   };
  // DATA MASALAH (Disederhanakan jadi 3 Poin Utama)
   const painPoints = [
@@ -975,24 +958,7 @@ const Home: React.FC = () => {
                   href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20Paket%20Premium" 
                   target="_blank" 
                   rel="noreferrer"
-                  onClick={() => {
-                    // Lapor ke Google Analytics saat diklik
-                    if (typeof window !== 'undefined' && (window as any).gtag) {
-                      (window as any).gtag('event', 'click_whatsapp', {
-                        'event_category': 'Kontak',
-                        'event_label': 'Home WA - Paket Premium',
-                        'value': 1
-                      });
-                    }
-                    // ---> INI TAMBAHAN META PIXEL <---
-                    if ((window as any).fbq) {
-                      (window as any).fbq('track', 'Contact');
-                    }
-                    // ---> INI TAMBAHAN KODE TIKTOK <---
-                      if ((window as any).ttq) {
-                        (window as any).ttq.track('Contact');
-                    }
-                  }}
+                  onClick={() => trackWhatsAppClick('Home WA - Paket Premium')}
                   className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors"
                 >
                   Pilih Paket Premium
