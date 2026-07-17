@@ -1,5 +1,5 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import { MetaCapiError, sendMetaLeadEvent } from './_lib/metaCapi';
+import { MetaCapiError, sendMetaLeadEvent } from './_lib/metaCapi.js';
 
 interface LeadRequestBody {
   eventId: string;
