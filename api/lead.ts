@@ -1,15 +1,18 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
 import { MetaCapiError, sendMetaLeadEvent } from './_lib/metaCapi.js';
+import { EmailNotifyError, sendLeadNotificationEmail } from './_lib/emailNotify.js';
 
 interface LeadRequestBody {
   eventId: string;
   eventSourceUrl: string;
+  name?: string;
   email?: string;
   phone?: string;
   firstName?: string;
   city?: string;
   leadType: string;
   serviceType: string;
+  message?: string;
   fbp?: string;
   fbc?: string;
 }
@@ -28,7 +31,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const body = req.body as Partial<LeadRequestBody> | undefined;
 
-  if (!body?.eventId || !body.eventSourceUrl || !body.leadType || !body.serviceType) {
+  if (!body?.eventId || !body.eventSourceUrl || !body.leadType || !body.serviceType || !body.name) {
     return res.status(400).json({ ok: false, error: 'Missing required fields' });
   }
 
@@ -38,8 +41,20 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   const userAgent = req.headers['user-agent'];
 
-  try {
-    const metaResponse = await sendMetaLeadEvent({
+  // Email is the actual lead-delivery mechanism (someone at the business has
+  // to see this), so its failure is what the caller should be told about.
+  // Meta CAPI is ad-tracking only — best-effort, logged, never blocks the lead.
+  const [emailResult, metaResult] = await Promise.allSettled([
+    sendLeadNotificationEmail({
+      name: body.name,
+      email: body.email ?? '',
+      phone: body.phone ?? '',
+      city: body.city,
+      serviceType: body.serviceType,
+      message: body.message,
+      eventSourceUrl: body.eventSourceUrl,
+    }),
+    sendMetaLeadEvent({
       eventId: body.eventId,
       eventSourceUrl: body.eventSourceUrl,
       email: body.email,
@@ -54,25 +69,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       fbp: body.fbp,
       fbc: body.fbc,
       testEventCode: process.env.META_TEST_EVENT_CODE,
-    });
+    }),
+  ]);
 
-    console.log('[meta-capi] Lead event sent', {
+  if (metaResult.status === 'fulfilled') {
+    console.log('[meta-capi] Lead event sent', { eventId: body.eventId, serviceType: body.serviceType });
+  } else {
+    const err = metaResult.reason;
+    console.error('[meta-capi] Failed to send Lead event (non-blocking)', {
       eventId: body.eventId,
-      serviceType: body.serviceType,
-      metaResponse,
+      message: err instanceof Error ? err.message : 'Unknown error',
+      metaResponse: err instanceof MetaCapiError ? err.metaResponse : undefined,
     });
-
-    return res.status(200).json({ ok: true });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : 'Unknown error';
-    const metaResponse = err instanceof MetaCapiError ? err.metaResponse : undefined;
-
-    console.error('[meta-capi] Failed to send Lead event', {
-      eventId: body.eventId,
-      message,
-      metaResponse,
-    });
-
-    return res.status(502).json({ ok: false, error: 'Failed to send conversion event' });
   }
+
+  if (emailResult.status === 'rejected') {
+    const err = emailResult.reason;
+    console.error('[email-notify] Failed to send lead notification email', {
+      eventId: body.eventId,
+      message: err instanceof Error ? err.message : 'Unknown error',
+      providerResponse: err instanceof EmailNotifyError ? err.providerResponse : undefined,
+    });
+    return res.status(502).json({ ok: false, error: 'Failed to deliver lead notification' });
+  }
+
+  console.log('[email-notify] Lead notification email sent', { eventId: body.eventId });
+  return res.status(200).json({ ok: true });
 }

@@ -38,12 +38,14 @@ const Kontak: React.FC = () => {
     setStatus('submitting');
 
     const result = await submitConsultationLead({
+      name: form.name.trim(),
       firstName: form.name.trim().split(' ')[0],
       email: form.email.trim(),
       phone: form.phone.trim(),
       city: form.city.trim(),
       leadType: 'consultation_form',
       serviceType: form.serviceType,
+      message: form.message.trim(),
     });
 
     if (result.ok) {

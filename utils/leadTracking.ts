@@ -2,12 +2,14 @@
 // Meta Conversions API using the SAME event_id, so Meta deduplicates the two
 // into a single event instead of counting it twice.
 export interface ConsultationLeadInput {
+  name: string;
   firstName: string;
   email: string;
   phone: string;
   city: string;
   leadType: string;
   serviceType: string;
+  message: string;
 }
 
 function getCookie(name: string): string | undefined {
@@ -41,10 +43,12 @@ export async function submitConsultationLead(input: ConsultationLeadInput): Prom
         eventSourceUrl,
         email: input.email,
         phone: input.phone,
+        name: input.name,
         firstName: input.firstName,
         city: input.city,
         leadType: input.leadType,
         serviceType: input.serviceType,
+        message: input.message,
         fbp: getCookie('_fbp'),
         fbc: getCookie('_fbc'),
       }),
