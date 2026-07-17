@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Phone, MapPin, Mail, Clock, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { submitConsultationLead } from '../utils/leadTracking';
 
-type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error';
+type SubmitStatus = 'idle' | 'submitting' | 'success' | 'validation_error' | 'submit_error';
 
 const SERVICE_TYPES = [
   { value: 'klinik_matras', label: 'Klinik Matras' },
@@ -31,7 +31,7 @@ const Kontak: React.FC = () => {
     e.preventDefault();
 
     if (!form.name.trim() || !form.email.trim() || !form.phone.trim()) {
-      setStatus('error');
+      setStatus('validation_error');
       return;
     }
 
@@ -50,7 +50,7 @@ const Kontak: React.FC = () => {
       setStatus('success');
       setForm({ name: '', email: '', phone: '', city: '', serviceType: SERVICE_TYPES[0].value, message: '' });
     } else {
-      setStatus('error');
+      setStatus('submit_error');
     }
   };
 
@@ -91,10 +91,10 @@ const Kontak: React.FC = () => {
               <div className="p-10 lg:p-16 bg-white dark:bg-bg-dark">
                  <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-8">Konsultasi Gratis</h2>
                  <form className="space-y-6" onSubmit={handleSubmit}>
-                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Lengkap</label><input required type="text" value={form.name} onChange={handleChange('name')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
-                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Email</label><input required type="email" value={form.email} onChange={handleChange('email')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
-                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nomor WhatsApp</label><input required type="tel" value={form.phone} onChange={handleChange('phone')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
-                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Kota</label><input type="text" value={form.city} onChange={handleChange('city')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
+                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nama Lengkap</label><input required name="name" type="text" value={form.name} onChange={handleChange('name')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
+                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Email</label><input required name="email" type="email" value={form.email} onChange={handleChange('email')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
+                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Nomor WhatsApp</label><input required name="phone" type="tel" value={form.phone} onChange={handleChange('phone')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
+                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Kota</label><input name="city" type="text" value={form.city} onChange={handleChange('city')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all" /></div>
                     <div>
                       <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Layanan yang Diminati</label>
                       <select value={form.serviceType} onChange={handleChange('serviceType')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all">
@@ -108,8 +108,11 @@ const Kontak: React.FC = () => {
                     {status === 'success' && (
                       <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-bold"><CheckCircle2 size={18} /> Terima kasih! Tim kami akan segera menghubungi Anda.</div>
                     )}
-                    {status === 'error' && (
-                      <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm font-bold"><AlertCircle size={18} /> Mohon lengkapi Nama, Email, dan Nomor WhatsApp, lalu coba lagi.</div>
+                    {status === 'validation_error' && (
+                      <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm font-bold"><AlertCircle size={18} /> Mohon lengkapi Nama, Email, dan Nomor WhatsApp.</div>
+                    )}
+                    {status === 'submit_error' && (
+                      <div className="flex items-center gap-2 text-red-600 dark:text-red-400 text-sm font-bold"><AlertCircle size={18} /> Gagal mengirim data. Silakan coba lagi atau hubungi kami langsung via WhatsApp.</div>
                     )}
 
                     <button type="submit" disabled={status === 'submitting'} className="w-full bg-primary hover:bg-primary-dark disabled:opacity-60 disabled:cursor-not-allowed text-white font-bold py-4 rounded-lg shadow-lg hover:shadow-xl transition-all flex items-center justify-center gap-2">
