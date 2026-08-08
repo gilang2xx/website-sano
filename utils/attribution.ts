@@ -1,6 +1,6 @@
 // Menangkap UTM/click-id dari URL saat orang mendarat dari iklan (Google
 // Search, PMax, dst), simpan di sessionStorage supaya bertahan sepanjang
-// kunjungan, lalu tempelkan sebagai tag singkat ke pesan WhatsApp.
+// kunjungan, lalu tempelkan sebagai tag ke pesan WhatsApp.
 //
 // KENAPA INI PERLU. Iklan yang lompat LANGSUNG ke WhatsApp (mis. Meta
 // Click-to-WhatsApp lewat link pelacakan CRM) sudah bisa dilacak dari
@@ -69,9 +69,9 @@ function getStoredRef(): RefInfo | null {
 }
 
 /**
- * Tag ringkas untuk ditempel ke pesan WA, contoh "google-cpc-brand" atau
- * "google-pmax". Return null kalau tidak ada referral tersimpan --
- * kunjungan organik/direct TIDAK diberi tag karangan.
+ * Tag ringkas, contoh "google-cpc-brand" atau "google-pmax". Return null
+ * kalau tidak ada referral tersimpan -- kunjungan organik/direct TIDAK
+ * diberi tag karangan.
  */
 export function getRefTag(): string | null {
   const ref = getStoredRef();
@@ -85,14 +85,59 @@ export function getRefTag(): string | null {
     .replace(/^-|-$/g, "");
 }
 
+// ─── Tag TAK TERLIHAT (zero-width Unicode) ──────────────────────────────
+//
+// Awalnya tag ditulis kasat mata "(ref: google-cpc)" -- customer sempat
+// lihat itu di kotak chat WA sebelum kirim. Sekarang dienkode pakai
+// karakter Unicode "zero-width" (lebar render = NOL, tidak pernah
+// terlihat di layar/font/tema manapun) supaya pesan yang dilihat customer
+// bersih 100%, tapi datanya tetap ikut terkirim dalam teks & bisa dibaca
+// ulang oleh CRM.
+//
+// ⚠️ IMPLEMENTASI INI HARUS SELALU DISAMAKAN MANUAL dengan versi decode-nya
+// di backend/src/services/leadAttribution.js (repo CRM terpisah, tidak ada
+// package bersama) -- kalau salah satu diubah, yang lain ikut diubah.
+//
+// ⚠️ RAPUH BY DESIGN (sudah didiskusikan & diterima): kalau customer
+// menghapus SEMUA teks prefilled lalu mengetik ulang dari nol, tag ini
+// ikut hilang tanpa jejak -- tidak ada encoding yang bisa selamat dari
+// itu, karena datanya nitip DI DALAM teks yang dihapus. Kalau customer
+// cuma NAMBAH di belakang (paling umum -- WA taruh kursor di ujung),
+// tag tetap aman: marker START/END dicari DI MANA SAJA dalam teks, tidak
+// diwajibkan persis di ujung kalimat.
+//
+// SENGAJA pakai String.fromCharCode(kode hex), BUKAN karakter invisible
+// ditempel langsung di source -- karakter literal gampang rusak/hilang
+// kalau lewat editor, git, atau konversi encoding lain, dan mustahil
+// diperiksa dengan mata (persis masalahnya: tidak kelihatan!).
+// fromCharCode(0x200B) selalu utuh apa adanya, bisa dibaca siapa pun yang
+// buka file ini, dan gampang dicocokkan manual dengan versi decode di
+// backend/src/services/leadAttribution.js.
+const REF_ALPHABET = "abcdefghijklmnopqrstuvwxyz0123456789-";
+const BIT0 = String.fromCharCode(0x200b);                             // ZERO WIDTH SPACE     -> bit 0
+const BIT1 = String.fromCharCode(0x200c);                             // ZERO WIDTH NON-JOINER -> bit 1
+const START_MARK = String.fromCharCode(0x200d) + String.fromCharCode(0x200d); // ZERO WIDTH JOINER x2 -> penanda mulai
+const END_MARK = String.fromCharCode(0x2060) + String.fromCharCode(0x2060);   // WORD JOINER x2       -> penanda selesai
+
+function encodeInvisibleTag(tag: string): string {
+  let payload = "";
+  for (const ch of tag) {
+    const idx = REF_ALPHABET.indexOf(ch);
+    if (idx === -1) continue; // karakter di luar alfabet -- lewati, jangan gagal total
+    const bits = idx.toString(2).padStart(6, "0");
+    for (const bit of bits) payload += bit === "1" ? BIT1 : BIT0;
+  }
+  return START_MARK + payload + END_MARK;
+}
+
 /**
  * Bangun URL wa.me lengkap dari pesan dasar yang SUDAH ADA di tiap
  * halaman (jangan diseragamkan -- pesan spesifik per halaman itu berguna
  * buat sales tahu konteksnya). Kalau tidak ada referral tersimpan, pesan
- * dikembalikan APA ADANYA -- tidak ada tag kosong yang menempel.
+ * dikembalikan APA ADANYA -- tidak ada tag tersembunyi yang menempel.
  */
 export function buildWaHref(baseMessage: string, phone: string = "6285187283900"): string {
   const tag = getRefTag();
-  const pesan = tag ? `${baseMessage} (ref: ${tag})` : baseMessage;
+  const pesan = tag ? `${baseMessage}${encodeInvisibleTag(tag)}` : baseMessage;
   return `https://wa.me/${phone}?text=${encodeURIComponent(pesan)}`;
 }
