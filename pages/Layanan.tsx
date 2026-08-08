@@ -1,6 +1,7 @@
 import React from 'react';
 import ScrollReveal from '../components/ScrollReveal';
 import { CheckCircle2, MessageCircle, ArrowRight } from 'lucide-react';
+import { buildWaHref } from '../utils/attribution';
 
 const Layanan: React.FC = () => {
   return (
@@ -61,7 +62,7 @@ const Layanan: React.FC = () => {
                          </ul>
                       </div>
                       <a 
-                        href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20mau%20konsultasi%20layanan%20Klinik%20Matras" 
+                        href={buildWaHref("Halo Sano, saya mau konsultasi layanan Klinik Matras")}
                         target="_blank"
                         rel="noreferrer"
                         className="w-full py-4 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-blue-200 dark:hover:shadow-none"
@@ -100,7 +101,7 @@ const Layanan: React.FC = () => {
                          </ul>
                       </div>
                       <a 
-                        href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20mau%20konsultasi%20layanan%20Klinik%20Sofa"
+                        href={buildWaHref("Halo Sano, saya mau konsultasi layanan Klinik Sofa")}
                         target="_blank"
                         rel="noreferrer" 
                         className="w-full py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-orange-200 dark:hover:shadow-none"

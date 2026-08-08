@@ -6,6 +6,7 @@ import {
   Feather, Cloud, Hammer, MoveDiagonal, Clock, MessageCircle,
   Armchair, Star, ThumbsUp
 } from 'lucide-react';
+import { buildWaHref } from '../utils/attribution';
 
 const KlinikMatras: React.FC = () => {
 
@@ -211,7 +212,7 @@ const KlinikMatras: React.FC = () => {
           className="mt-20 text-center"
         >
           <a 
-            href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20konsultasi%20tentang%20layanan%20Klinik%20Matras."
+            href={buildWaHref("Halo Sano, saya ingin konsultasi tentang layanan Klinik Matras.")}
             className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-bold shadow-xl shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-1 transition-all"
           >
             Konsultasi Gratis dengan Ahli

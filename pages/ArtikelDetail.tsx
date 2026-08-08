@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { 
-  ArrowLeft, Calendar, Clock, MessageCircle, 
-  CheckCircle2, ShieldCheck, Zap, HeartPulse 
+import {
+  ArrowLeft, Calendar, Clock, MessageCircle,
+  CheckCircle2, ShieldCheck, Zap, HeartPulse
 } from 'lucide-react';
+import { buildWaHref } from '../utils/attribution';
 
 const ArtikelDetail: React.FC = () => {
   const { slug } = useParams();
@@ -197,7 +198,7 @@ const ArtikelDetail: React.FC = () => {
             </p>
             
             <a 
-              href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20konsultasi%20tentang%20konsep%20Matras%20Sehat."
+              href={buildWaHref("Halo Sano, saya ingin konsultasi tentang konsep Matras Sehat.")}
               target="_blank"
               rel="noreferrer" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-green-500 text-white rounded-full font-bold shadow-lg hover:bg-green-600 transition-all hover:scale-105"
@@ -346,7 +347,7 @@ const ArtikelDetail: React.FC = () => {
               Apakah Anda sering bangun dengan rasa nyeri? Jangan tunggu hingga menjadi saraf kejepit. Hubungi tim ahli kami untuk analisa kasur dan tubuh Anda secara profesional.
             </p>
             <a 
-              href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20analisa%20kasur%20karena%20ada%20keluhan%20sakit."
+              href={buildWaHref("Halo Sano, saya ingin analisa kasur karena ada keluhan sakit.")}
               target="_blank"
               rel="noreferrer" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 transition-all hover:scale-105"
@@ -474,7 +475,7 @@ const ArtikelDetail: React.FC = () => {
              </p>
              
              {/* CTA Button */}
-             <a href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20cek%20kondisi%20kasur%20saya" 
+             <a href={buildWaHref("Halo Sano, saya ingin cek kondisi kasur saya")}
                 className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-900 rounded-full font-bold hover:scale-105 transition-transform shadow-lg">
                 <MessageCircle size={20} /> Cek Kondisi Kasur Saya
              </a>
@@ -632,7 +633,7 @@ const ArtikelDetail: React.FC = () => {
             <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm">
                Apakah kasur Anda sudah terasa tenggelam? Itu tandanya ada komponen di dalamnya yang mengalami kelelahan material.
             </p>
-            <a href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20cek%20komponen%20dalam%20kasur%20saya" 
+            <a href={buildWaHref("Halo Sano, saya ingin cek komponen dalam kasur saya")}
                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 transition-all hover:scale-105">
                <MessageCircle size={20} /> Diagnosa Gratis
             </a>
@@ -723,7 +724,7 @@ const ArtikelDetail: React.FC = () => {
                <li>Matras Sehat SANO CARE memastikan keseimbangan antara <strong>Fondasi Kuat</strong> dan <strong>Lapisan Adaptif</strong>.</li>
                <li>Matras Sehat bukan keras atau empuk — tetapi <strong>TEPAT & PRESISI</strong> sesuai berat tubuh.</li>
              </ul>
-             <a href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20konsultasi%20matras%20sehat" 
+             <a href={buildWaHref("Halo Sano, saya ingin konsultasi matras sehat")}
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white text-blue-900 rounded-full font-bold hover:scale-105 transition-transform shadow-lg">
                 <MessageCircle size={20} /> Konsultasi Gratis
              </a>
@@ -768,7 +769,7 @@ const ArtikelDetail: React.FC = () => {
         <div className="mt-16 bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl p-8 text-center text-white shadow-xl">
            <h3 className="text-2xl font-bold mb-2">Konsultasikan Keluhan Anda!</h3>
            <p className="mb-6 opacity-90">Jangan tunggu hingga menjadi saraf kejepit. Hubungi kami untuk analisa profesional.</p>
-           <a href="https://wa.me/6289528011264" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold hover:scale-105 transition-transform">
+           <a href={buildWaHref("Halo Sano, saya ingin konsultasi setelah baca artikel ini.")} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold hover:scale-105 transition-transform">
               <MessageCircle size={20} /> Chat WhatsApp Sekarang
            </a>
         </div>

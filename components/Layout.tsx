@@ -7,6 +7,7 @@ import {
 import ThemeToggle from './ThemeToggle';
 import { NAV_LINKS } from '../constants';
 import { trackWhatsAppClick } from '../utils/tracking';
+import { captureAdReferral, buildWaHref } from '../utils/attribution';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -29,9 +30,10 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     // Lapor ke Tracking (GTM, GA4, Meta Pixel, & TikTok) - satu event per klik
     trackWhatsAppClick(`Floating WA - ${namaCS}`);
 
-    // Buka WhatsApp
-    const pesan = encodeURIComponent("Halo Sano, saya tertarik konsultasi");
-    window.open(`https://wa.me/${nomorWA}?text=${pesan}`, "_blank");
+    // Buka WhatsApp -- pesan ditempeli tag "(ref: ...)" otomatis KALAU
+    // pengunjung ini datang dari iklan (lihat utils/attribution.ts).
+    // Kunjungan organik/direct pesannya tetap apa adanya, tanpa tag.
+    window.open(buildWaHref("Halo Sano, saya tertarik konsultasi", nomorWA), "_blank");
 
     // Tutup menu otomatis
     setShowCSMenu(false);
@@ -44,6 +46,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // Tangkap UTM/click-id dari URL SETIAP kali route berganti -- SPA ini
+  // tidak reload penuh antar halaman, jadi ini satu-satunya titik yang
+  // pasti terpanggil untuk tiap "kedatangan" baru (termasuk kalau iklan
+  // mengarah ke /layanan atau /pricelist langsung, bukan cuma Home).
+  useEffect(() => {
+    captureAdReferral();
+  }, [location]);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);

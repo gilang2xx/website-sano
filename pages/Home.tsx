@@ -59,6 +59,7 @@ import { TESTIMONIALS, BEFORE_AFTER_DATA } from '../constants';
 // Ensure the correct path to the GoogleReviewSection component
 import GoogleReviewSection from '../components/GoogleReviewSection'; // Check if the file exists
 import { trackWhatsAppClick } from '../utils/tracking';
+import { buildWaHref } from '../utils/attribution';
 
 
 const Home: React.FC = () => {
@@ -241,8 +242,8 @@ const Home: React.FC = () => {
                 Tidur Kamu Tanpa Perlu Beli Baru.
               </h2>
               
-              <a 
-                href="https://wa.me/6285187283900"
+              <a
+                href={buildWaHref("Halo Sano, saya tertarik konsultasi gratis")}
                 target="_blank"
                 rel="noreferrer"
                 className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg md:text-xl text-white transition-all transform hover:scale-105 overflow-hidden"
@@ -955,8 +956,8 @@ const Home: React.FC = () => {
               {/* CTA Button Premium */}
               <div className="mt-8">
                 <a 
-                  href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20Paket%20Premium" 
-                  target="_blank" 
+                  href={buildWaHref("Halo Sano, saya tertarik Paket Premium")}
+                  target="_blank"
                   rel="noreferrer"
                   onClick={() => trackWhatsAppClick('Home WA - Paket Premium')}
                   className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors"
@@ -1062,7 +1063,7 @@ const Home: React.FC = () => {
               </p>
               <div className="flex flex-col md:flex-row justify-center items-center gap-6 relative z-10">
                 <a 
-                  href="https://wa.me/6285187283900?text=Halo%20Sano%20Care,%20saya%20ingin%20konsultasi%20mengenai%20kasur%20saya."
+                  href={buildWaHref("Halo Sano Care, saya ingin konsultasi mengenai kasur saya.")}
                   onClick={handleWAClick}
                   target="_blank"
                   rel="noreferrer" 

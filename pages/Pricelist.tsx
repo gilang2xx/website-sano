@@ -1,7 +1,8 @@
 import React from 'react';
-import { 
+import {
   Hammer, Wrench, Crown, ArrowRight, Tag, MessageCircle, ListPlus
 } from 'lucide-react';
+import { buildWaHref } from '../utils/attribution';
 
 const Pricelist: React.FC = () => {
 
@@ -79,7 +80,7 @@ const Pricelist: React.FC = () => {
           {services.map((service) => (
             <a 
               key={service.id}
-              href={`https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20tertarik%20dengan%20paket%20${service.title}`}
+              href={buildWaHref(`Halo Sano, saya tertarik dengan paket ${service.title}`)}
               target="_blank"
               rel="noreferrer"
               // Jika Premium, kartu lebih besar sedikit (scale-105 di desktop)
@@ -188,7 +189,7 @@ const Pricelist: React.FC = () => {
             </p>
 
             <a 
-              href="https://wa.me/6285187283900?text=Halo%20Sano,%20boleh%20minta%20daftar%20harga%20lengkap%20untuk%20layanan%20lainnya?"
+              href={buildWaHref("Halo Sano, boleh minta daftar harga lengkap untuk layanan lainnya?")}
               target="_blank" 
               rel="noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-[#3B62AA] text-white rounded-full font-bold shadow-lg hover:bg-blue-700 transition-all hover:scale-105"
