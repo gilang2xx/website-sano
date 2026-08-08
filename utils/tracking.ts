@@ -4,6 +4,11 @@
 let lastWhatsAppTrackAt = 0;
 const DEDUPE_WINDOW_MS = 800;
 
+// Single source of truth for the WhatsApp click conversion event.
+// GTM's "Tracking Konversi Google Ads" tag listens for a dataLayer push
+// with `event: 'click_whatsapp'`. Do not also call gtag('event', 'click_whatsapp', ...)
+// anywhere else — gtag() is defined in index.html as `dataLayer.push(arguments)`,
+// so calling both pushes the same conversion twice per click.
 export function trackWhatsAppClick(eventLabel: string): void {
   if (typeof window === 'undefined') return;
 
@@ -13,10 +18,6 @@ export function trackWhatsAppClick(eventLabel: string): void {
 
   const w = window as any;
 
-  // Single source of truth for the GTM/Google-tag trigger: push straight to
-  // dataLayer instead of ALSO calling gtag('event', ...), since gtag() just
-  // pushes its own arguments object into the same dataLayer and would fire
-  // the same 'click_whatsapp' trigger a second time for the same click.
   w.dataLayer = w.dataLayer || [];
   w.dataLayer.push({
     event: 'click_whatsapp',

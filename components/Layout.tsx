@@ -22,12 +22,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const location = useLocation();
 
-// 1. State untuk membuka/menutup menu CS
+  // 1. State untuk membuka/menutup menu CS
   const [showCSMenu, setShowCSMenu] = useState(false);
 
   // 2. Fungsi ketika salah satu CS dipilih
   const handleCSClick = (nomorWA: string, namaCS: string) => {
-    // Lapor ke Tracking (GTM, GA4, Meta Pixel, & TikTok) - satu event per klik
+    // Lapor ke Tracking (dataLayer -> GTM, plus Meta & TikTok pixels)
     trackWhatsAppClick(`Floating WA - ${namaCS}`);
 
     // Buka WhatsApp -- pesan ditempeli tag "(ref: ...)" otomatis KALAU
@@ -305,7 +305,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           <div className="mb-4 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl shadow-2xl p-4 w-64 flex flex-col gap-3 transform transition-all origin-bottom-right animate-in fade-in slide-in-from-bottom-5">
             <div className="text-center border-b border-slate-100 dark:border-slate-700 pb-3 mb-1">
               <p className="text-sm font-extrabold text-slate-800 dark:text-white">Pilih Customer Service</p>
-              <p className="text-[10px] text-slate-500">Pesan akan segera kami balas</p>
+              <p className="text-xs text-slate-500">Kami siap membantu Anda!</p>
             </div>
             
             {/* Tombol ADMIN 1 */}
