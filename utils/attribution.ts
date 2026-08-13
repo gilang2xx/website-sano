@@ -43,9 +43,15 @@ export function captureAdReferral(): void {
   // aslinya (halaman pertama yang didarati dari iklan) harus tetap hidup.
   if (!source && !medium && !campaign && !gclid && !fbclid) return;
 
+  // gclid & fbclid SAMA-SAMA click-id iklan berbayar -- kalau salah satu
+  // ada, medium default-nya HARUS "cpc" juga. Sebelum ini cuma gclid yang
+  // diberi default; fbclid tanpa utm_medium eksplisit jadi bertag "meta"
+  // TANPA medium, dan backend (leadSourceFromRefTag) yang medium-aware
+  // akan salah membacanya sebagai bukan-iklan.
+  const berbayar = gclid || fbclid;
   const info: RefInfo = {
     source: source || (gclid ? "google" : fbclid ? "meta" : undefined),
-    medium: medium || (gclid ? "cpc" : undefined),
+    medium: medium || (berbayar ? "cpc" : undefined),
     campaign: campaign || undefined,
     capturedAt: new Date().toISOString(),
   };
