@@ -14,6 +14,7 @@ const SanoClean = lazy(() => import('./pages/SanoClean'));
 const Pricelist = lazy(() => import('./pages/Pricelist'));
 const Artikel = lazy(() => import('./pages/Artikel'));
 const ArtikelDetail = lazy(() => import('./pages/ArtikelDetail'));
+const KebijakanPrivasi = lazy(() => import('./pages/KebijakanPrivasi'));
 
 // Komponen Loading Sementara (Muncul saat pindah halaman)
 const LoadingSpinner = () => (
@@ -39,6 +40,7 @@ const App: React.FC = () => {
           <Route path="/klinik-matras" element={<KlinikMatras />} />
           <Route path="/klinik-sofa" element={<KlinikSofa />} />
           <Route path="/sano-clean" element={<SanoClean />} />
+          <Route path="/kebijakan-privasi" element={<KebijakanPrivasi />} />
         </Routes>
       </Suspense>
     </Layout>

@@ -290,8 +290,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         </div>
 
         {/* Copyright */}
-        <div className="container mx-auto px-6 mt-16 pt-8 border-t border-slate-800 text-center text-slate-500 text-sm">
-          &copy; {new Date().getFullYear()} KLINIK MATTRESS by SANO CARE. All rights reserved.
+        <div className="container mx-auto px-6 mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
+          <span className="text-center md:text-left">
+            &copy; {new Date().getFullYear()} KLINIK MATTRESS by SANO CARE. All rights reserved.
+          </span>
+          <NavLink to="/kebijakan-privasi" className="hover:text-white transition-colors">
+            Kebijakan Privasi
+          </NavLink>
         </div>
       </footer>
 
