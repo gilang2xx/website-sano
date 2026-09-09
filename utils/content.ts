@@ -49,6 +49,7 @@ export interface BeforeAfterEntry {
   desc: string;
   beforeImg: string;
   afterImg: string;
+  date: string;
 }
 
 interface BeforeAfterFrontmatter {
@@ -56,6 +57,7 @@ interface BeforeAfterFrontmatter {
   desc: string;
   beforeImg: string;
   afterImg: string;
+  date?: string;
 }
 
 const beforeAfterFiles = import.meta.glob('/content/before-after/*.md', {
@@ -68,9 +70,12 @@ export function loadBeforeAfterEntries(): BeforeAfterEntry[] {
   return Object.entries(beforeAfterFiles)
     .map(([path, raw]) => {
       const { attributes } = fm<BeforeAfterFrontmatter>(raw);
-      return { id: slugFromPath(path), ...attributes };
+      return { id: slugFromPath(path), date: '', ...attributes };
     })
-    .sort((a, b) => a.id.localeCompare(b.id));
+    // Terbaru dulu. Entri lama (migrasi awal) dikasih tanggal urut manual
+    // di frontmatter-nya supaya urutan tampilan tetap sama seperti semula;
+    // entri baru dari CMS otomatis tanggal hari ini -> otomatis di atas.
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 }
 
 // ─── Artikel (CMS, terpisah dari 6 artikel lama yang masih hardcoded) ────

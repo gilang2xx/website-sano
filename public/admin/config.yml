@@ -20,6 +20,14 @@ collections:
       - { label: "Deskripsi Singkat", name: "desc", widget: "text" }
       - { label: "Foto Sebelum (Before)", name: "beforeImg", widget: "image" }
       - { label: "Foto Sesudah (After)", name: "afterImg", widget: "image" }
+      - label: "Tanggal (otomatis -- menentukan urutan, terbaru tampil paling atas)"
+        name: "date"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        picker_utc: true
+        default: "{{now}}"
 
   - name: "artikel"
     label: "Artikel"
