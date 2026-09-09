@@ -1,10 +1,20 @@
 import React from 'react';
 import { CLEAN_SERVICES } from '../constants';
 import ScrollReveal from '../components/ScrollReveal';
-import * as Icons from 'lucide-react';
-import { ArrowRight, Sparkles } from 'lucide-react';
+import { ArrowRight, Sparkles, Droplets, CheckCircle2, HelpCircle, Wind, type LucideIcon } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
 import { useSEO } from '../hooks/useSEO';
+
+// Peta eksplisit iconName (string, dari constants.ts) -> komponen ikon.
+// SENGAJA bukan `import * as Icons from 'lucide-react'` + akses dinamis --
+// pola itu mematikan tree-shaking karena bundler tidak bisa membuktikan
+// ikon mana yang tidak dipakai, sehingga SELURUH library (~1500 ikon,
+// ratusan KB) ikut ter-bundle. Peta eksplisit ini cuma menyeret ikon yang
+// benar-benar dipakai CLEAN_SERVICES.
+const ICON_MAP: Record<string, LucideIcon> = {
+  Sparkles,
+  Wind,
+};
 
 const SanoClean: React.FC = () => {
   useSEO({
@@ -25,11 +35,11 @@ const SanoClean: React.FC = () => {
           </div>
           <div className="flex-1 flex justify-end">
              <div className="w-full max-w-md h-64 bg-white/5 backdrop-blur-sm rounded-2xl p-6 border border-white/10 relative">
-                 <div className="absolute -top-4 -right-4 bg-teal-500 text-white p-4 rounded-xl shadow-lg"><Icons.Droplets size={32} /></div>
+                 <div className="absolute -top-4 -right-4 bg-teal-500 text-white p-4 rounded-xl shadow-lg"><Droplets size={32} /></div>
                 <h3 className="text-xl font-bold mb-4">Metode Pembersihan</h3>
                 <ul className="space-y-3">
                    {['Deep Dust Extraction', 'Wet & Dry Cleaning', 'Anti Bacterial Treatment', 'Pengeringan Cepat'].map((item, i) => (
-                      <li key={i} className="flex items-center gap-2"><Icons.CheckCircle2 className="text-teal-400" size={18} /><span className="text-slate-200 text-sm">{item}</span></li>
+                      <li key={i} className="flex items-center gap-2"><CheckCircle2 className="text-teal-400" size={18} /><span className="text-slate-200 text-sm">{item}</span></li>
                    ))}
                 </ul>
              </div>
@@ -39,7 +49,7 @@ const SanoClean: React.FC = () => {
       <div className="container mx-auto px-6 -mt-10 relative z-20">
         <div className="grid gap-8">
           {CLEAN_SERVICES.map((service, idx) => {
-             const IconComponent = (Icons as any)[service.iconName] || Icons.HelpCircle;
+             const IconComponent = ICON_MAP[service.iconName] || HelpCircle;
              const images = [
                "https://images.unsplash.com/photo-1581539250439-c96689b516dd?q=80&w=800", // Cleaning 1
                "https://images.unsplash.com/photo-1527513914613-acd5bed71623?q=80&w=800"  // Cleaning 2
