@@ -1,8 +1,14 @@
 import React from 'react';
 import { Search, Calendar, User, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useSEO } from '../hooks/useSEO';
 
 const Artikel: React.FC = () => {
+  useSEO({
+    title: 'Artikel & Edukasi Kesehatan Tidur',
+    description: 'Baca edukasi seputar kesehatan tidur, struktur matras, dan dampak kasur yang salah dari tim ahli Klinik Matras by SANO CARE.',
+    path: '/artikel',
+  });
 
   // --- DAFTAR ARTIKEL (Pastikan ada 2 item disini) ---
   const articlesList = [

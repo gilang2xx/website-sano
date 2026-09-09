@@ -5,6 +5,7 @@ import {
   CheckCircle2, ShieldCheck, Zap, HeartPulse
 } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
+import { useSEO } from '../hooks/useSEO';
 
 const ArtikelDetail: React.FC = () => {
   const { slug } = useParams();
@@ -23,6 +24,7 @@ const ArtikelDetail: React.FC = () => {
     "klinik-matras-by-sano-care": {
       title: "Klinik Matras by SANO CARE: Hadir untuk Menolong dari Dampak Kasur yang Salah",
       date: "26 Des 2025",
+      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya.",
       readTime: "5 Menit Baca",
       image: "/foto-karyawan.jpg", // Gambar Utama
       content: (
@@ -80,6 +82,7 @@ const ArtikelDetail: React.FC = () => {
     "konsep-matras-sehat": {
       title: "Apa Definisi 'Matras Sehat' yang Sebenarnya?",
       date: "27 Des 2025",
+      desc: "Banyak orang salah kaprah mengira kasur sehat itu harus mahal atau sangat empuk. Padahal kuncinya ada pada struktur penopang tulang belakang.",
       readTime: "6 Menit Baca",
       image: "/sano-matras.jpg", // Gambar Utama Artikel
       content: (
@@ -214,6 +217,7 @@ const ArtikelDetail: React.FC = () => {
     "dampak-kasur-rusak": {
       title: "Awas! Kasur Anda Mungkin Sedang Merusak Tulang Belakang: Inilah Alasannya",
       date: "28 Des 2025",
+      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah.",
       readTime: "7 Menit Baca",
       image: "/kasur-merusak-tulang.jpg", // Gambar cover yang relevan
       content: (
@@ -363,6 +367,7 @@ const ArtikelDetail: React.FC = () => {
     "dampak-jangka-panjang-kasur-salah": {
       title: "Dampak Jangka Panjang Menggunakan Kasur yang Salah: Bahaya yang Mengintai di Balik Tidur Anda",
       date: "28 Des 2025",
+      desc: "Kerusakan struktur kasur atau struktur tidak sesuai dengan tubuh yang dibiarkan bertahun-tahun akan memaksa tubuh beradaptasi secara tidak alami.",
       readTime: "7 Menit Baca",
       image: "/dampak-kasur-salah.jpg",
       content: (
@@ -497,6 +502,7 @@ const ArtikelDetail: React.FC = () => {
     "mengenal-struktur-kasur": {
       title: "Mengenal Struktur Kasur dari Dalam: Mengapa Komponen Matras Menentukan Kesehatan Anda?",
       date: "29 Des 2025",
+      desc: "Struktur komponen dalam kasur: fondasi, lapisan kenyamanan, dan kain penutup. Bagaimana masing-masing berkontribusi pada kesehatan tidur Anda.",
       readTime: "8 Menit Baca",
       image: "/komponen-kasur.jpg", // Gambar Cover
       content: (
@@ -649,6 +655,7 @@ const ArtikelDetail: React.FC = () => {
     "kasur-ortopedik-untuk-tidur-sehat": {
       title: "Perbedaan Kasur Ortopedik dan Matras Sehat: Mana yang Lebih Baik untuk Tidur Sehat?",
       date: "30 Des 2025",
+      desc: "Apa itu kasur ortopedik dan bagaimana kasur ini dirancang khusus untuk mendukung kesehatan tulang belakang serta mengurangi nyeri punggung.",
       readTime: "7 Menit Baca",
       image: "/ortomedic-vs-sehat.jpg", // Gambar cover
       content: (
@@ -737,6 +744,15 @@ const ArtikelDetail: React.FC = () => {
 
   // --- LOGIKA RENDER (TETAP SAMA) ---
   const article = articleDatabase[slug || ""];
+
+  // Dipanggil sebelum early-return di bawah supaya urutan hook tetap stabil
+  // (aturan React Hooks: tidak boleh dipanggil kondisional).
+  useSEO({
+    title: article?.title || 'Artikel Tidak Ditemukan',
+    description: article?.desc || 'Artikel yang Anda cari tidak tersedia.',
+    path: `/artikel/${slug || ''}`,
+    image: article?.image,
+  });
 
   if (!article) {
     return (

@@ -7,8 +7,15 @@ import {
   Armchair, Star, ThumbsUp
 } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
+import { useSEO } from '../hooks/useSEO';
 
 const KlinikMatras: React.FC = () => {
+  useSEO({
+    title: 'Layanan Klinik Matras — Service, Upgrade & Custom Kasur',
+    description: '16 layanan perbaikan matras: upgrade fondasi, ganti lapisan, sterilisasi tungau, hingga potong/tambah ukuran. Lihat layanan Best Seller kami dan konsultasi gratis.',
+    path: '/klinik-matras',
+    image: '/pelayanan-matras.png',
+  });
 
   // DAFTAR 16 LAYANAN
   // Saya tambahkan properti 'isBestSeller: true' KHUSUS untuk 2 layanan pilihan Anda

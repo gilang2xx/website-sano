@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Phone, MapPin, Mail, Clock, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { submitConsultationLead } from '../utils/leadTracking';
+import { useSEO } from '../hooks/useSEO';
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'validation_error' | 'submit_error';
 
@@ -11,6 +12,11 @@ const SERVICE_TYPES = [
 ];
 
 const Kontak: React.FC = () => {
+  useSEO({
+    title: 'Hubungi Kami — Konsultasi Gratis',
+    description: 'Hubungi Klinik Matras by SANO CARE via WhatsApp untuk konsultasi gratis, atau kunjungi workshop kami di Depok, Jawa Barat.',
+    path: '/kontak',
+  });
   const [form, setForm] = useState({
     name: '',
     email: '',

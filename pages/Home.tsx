@@ -60,9 +60,15 @@ import { TESTIMONIALS, BEFORE_AFTER_DATA } from '../constants';
 import GoogleReviewSection from '../components/GoogleReviewSection'; // Check if the file exists
 import { trackWhatsAppClick } from '../utils/tracking';
 import { buildWaHref } from '../utils/attribution';
+import { useSEO } from '../hooks/useSEO';
 
 
 const Home: React.FC = () => {
+  useSEO({
+    title: 'Klinik Matras by SANO CARE — Servis, Upgrade & Cuci Kasur di Depok',
+    description: 'Kembalikan kenyamanan tidur tanpa beli kasur baru. Klinik Matras by SANO CARE melayani service, upgrade, custom matras & sofa, hingga cuci kasur profesional di Depok. Konsultasi gratis via WhatsApp.',
+    path: '/',
+  });
   const [isDarkMode, setIsDarkMode] = React.useState(false);
   const handleWAClick = () => {
     trackWhatsAppClick('Tombol WA Utama');

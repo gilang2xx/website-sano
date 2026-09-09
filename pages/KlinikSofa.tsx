@@ -4,8 +4,15 @@ import ScrollReveal from '../components/ScrollReveal';
 import * as Icons from 'lucide-react';
 import { ArrowRight, Armchair } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
+import { useSEO } from '../hooks/useSEO';
 
 const KlinikSofa: React.FC = () => {
+  useSEO({
+    title: 'Klinik Sofa — Service & Custom Sofa Sesuai Selera',
+    description: 'Restorasi sofa dan divan Anda kembali cantik dan kokoh, atau wujudkan sofa custom dari nol. Pilihan kain, busa high density, dan rangka kayu oven.',
+    path: '/klinik-sofa',
+    image: '/pelayanan-sofa.png',
+  });
   return (
     <div className="pb-24">
       <section className="bg-orange-900 text-white py-20 relative overflow-hidden">

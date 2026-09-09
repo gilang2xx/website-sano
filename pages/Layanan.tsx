@@ -2,8 +2,14 @@ import React from 'react';
 import ScrollReveal from '../components/ScrollReveal';
 import { CheckCircle2, MessageCircle, ArrowRight } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
+import { useSEO } from '../hooks/useSEO';
 
 const Layanan: React.FC = () => {
+  useSEO({
+    title: 'Semua Layanan Kami — Matras, Sofa & Sano Clean',
+    description: 'Lihat seluruh layanan Klinik Matras, Klinik Sofa, dan Sano Clean dalam satu halaman. Temukan solusi yang tepat untuk kasur dan sofa Anda.',
+    path: '/layanan',
+  });
   return (
     <div className="pb-24">
       {/* HERO HEADER */}

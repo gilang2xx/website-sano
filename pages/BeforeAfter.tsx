@@ -1,7 +1,14 @@
 import React from 'react';
 import { ImagePlus, BadgeCheck } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
 const BeforeAfter: React.FC = () => {
+  useSEO({
+    title: 'Galeri Before & After — Bukti Hasil Kerja Kami',
+    description: 'Lihat transformasi nyata hasil service dan upgrade matras maupun sofa dari pelanggan SANO CARE.',
+    path: '/before-after',
+    image: '/after-10.jpg',
+  });
 
   // 1. TAMBAHKAN PROPERTY 'beforeImg' DAN 'afterImg' DI SINI
   const projects = [

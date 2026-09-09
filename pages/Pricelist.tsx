@@ -3,8 +3,14 @@ import {
   Hammer, Wrench, Crown, ArrowRight, Tag, MessageCircle, ListPlus
 } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
+import { useSEO } from '../hooks/useSEO';
 
 const Pricelist: React.FC = () => {
+  useSEO({
+    title: 'Daftar Harga Layanan Matras & Sofa',
+    description: 'Cek estimasi harga service, upgrade, dan custom matras maupun sofa di SANO CARE. Transparan sejak awal, tanpa biaya tersembunyi.',
+    path: '/pricelist',
+  });
 
   const BRAND_BLUE = "#3B62AA"; 
 

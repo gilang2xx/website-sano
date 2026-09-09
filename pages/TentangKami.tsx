@@ -18,8 +18,15 @@ import {
   HeartPulse, 
   BadgeCheck 
 } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
 const TentangKami: React.FC = () => {
+  useSEO({
+    title: 'Tentang Kami — Kenali SANO CARE',
+    description: 'Mengenal lebih dekat SANO CARE: misi, keahlian teknisi berpengalaman 10+ tahun, dan komitmen kami mengembalikan kenyamanan tidur keluarga Indonesia.',
+    path: '/tentang-kami',
+    image: '/foto-karyawan.jpg',
+  });
   return (
     <div className="pb-24">
       {/* HEADER SECTION */}

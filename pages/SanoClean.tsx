@@ -4,8 +4,14 @@ import ScrollReveal from '../components/ScrollReveal';
 import * as Icons from 'lucide-react';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
+import { useSEO } from '../hooks/useSEO';
 
 const SanoClean: React.FC = () => {
+  useSEO({
+    title: 'Sano Clean — Cuci Matras & Sofa Deep Cleaning',
+    description: 'Deep cleaning matras dan sofa dengan teknologi Hydro Allergen Vacuum untuk membasmi tungau, debu, dan noda membandel — cocok untuk penderita alergi.',
+    path: '/sano-clean',
+  });
   return (
     <div className="pb-24">
       <section className="bg-teal-800 text-white py-20 relative overflow-hidden">

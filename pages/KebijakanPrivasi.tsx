@@ -6,6 +6,7 @@ import {
   UserCheck, Clock, Baby, Globe, RefreshCw, Mail, Phone, MapPin,
   ChevronRight, AlertTriangle, Scale, ExternalLink
 } from 'lucide-react';
+import { useSEO } from '../hooks/useSEO';
 
 // Tanggal berlaku kebijakan. Perbarui saat isi kebijakan diubah.
 const LAST_UPDATED = '15 Agustus 2026';
@@ -76,6 +77,11 @@ const Bullets: React.FC<{ items: React.ReactNode[] }> = ({ items }) => (
 );
 
 const KebijakanPrivasi: React.FC = () => {
+  useSEO({
+    title: 'Kebijakan Privasi',
+    description: 'Pelajari bagaimana KLINIK MATRAS by SANO CARE mengumpulkan, menggunakan, dan melindungi data pribadi Anda sesuai UU PDP.',
+    path: '/kebijakan-privasi',
+  });
   const [activeId, setActiveId] = useState<string>(SECTIONS[0].id);
 
   // Sorot daftar isi sesuai bagian yang sedang dibaca
