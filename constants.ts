@@ -1,4 +1,4 @@
-import { ServiceItem, BeforeAfterItem, TestimonialItem } from './types';
+import { ServiceItem, TestimonialItem } from './types';
 
 export const NAV_LINKS = [
   { name: 'Home', path: '/' },
@@ -151,39 +151,4 @@ export const TESTIMONIALS = [
   },
   
   // ...
-];
-
-export const BEFORE_AFTER_DATA: BeforeAfterItem[] = [
-  {
-    id: '1',
-    title: 'Restorasi Spring Bed Rusak',
-    description: 'Penggantian pegas patah dan kain cover premium.',
-    beforeImg: 'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=600',
-    afterImg: 'https://images.unsplash.com/photo-1631049307264-da0ec9d70304?auto=format&fit=crop&q=80&w=600',
-    category: 'Repair'
-  },
-  {
-    id: '2',
-    title: 'Upgrade ke Latex',
-    description: 'Penambahan lapisan natural latex 5cm.',
-    beforeImg: 'https://images.unsplash.com/photo-1540518614846-7eded433c457?auto=format&fit=crop&q=80&w=600',
-    afterImg: 'https://images.unsplash.com/photo-1631049552057-403cdb8f0658?auto=format&fit=crop&q=80&w=600',
-    category: 'Upgrade'
-  },
-  {
-    id: '3',
-    title: 'Ganti Kain Cover Mewah',
-    description: 'Peremajaan tampilan dengan kain knitting 3D.',
-    beforeImg: 'https://images.unsplash.com/photo-1584132967334-10e028bd69f7?auto=format&fit=crop&q=80&w=600',
-    afterImg: 'https://images.unsplash.com/photo-1505693416388-b034631ac0f3?auto=format&fit=crop&q=80&w=600',
-    category: 'Cosmetic'
-  },
-  {
-    id: '4',
-    title: 'Custom Size King',
-    description: 'Modifikasi ukuran dari Queen ke King size.',
-    beforeImg: 'https://images.unsplash.com/photo-1505692952047-1a78307da8f2?auto=format&fit=crop&q=80&w=600',
-    afterImg: 'https://images.unsplash.com/photo-1629949009765-4137578b3941?auto=format&fit=crop&q=80&w=600',
-    category: 'Custom'
-  },
 ];

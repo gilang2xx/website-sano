@@ -2,6 +2,7 @@ import React from 'react';
 import { Search, Calendar, User, ArrowRight, Tag } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useSEO } from '../hooks/useSEO';
+import { loadCmsArticles, indoDateToIso } from '../utils/content';
 
 const Artikel: React.FC = () => {
   useSEO({
@@ -79,6 +80,30 @@ const Artikel: React.FC = () => {
     },
   ];
 
+  // Gabungkan 6 artikel lama (hardcoded di atas, TIDAK diubah) dengan artikel
+  // baru yang ditulis lewat /admin (content/artikel/*.md). Tanggal lama
+  // (string Indonesia) dan tanggal CMS (ISO) dikonversi ke ISO dulu ("sortDate")
+  // supaya bisa dibandingkan apple-to-apple saat diurutkan dari terbaru.
+  const legacyArticles = articlesList.map((item) => ({
+    ...item,
+    sortDate: indoDateToIso(item.date),
+  }));
+
+  const cmsArticles = loadCmsArticles().map((item) => ({
+    id: item.slug,
+    slug: item.slug,
+    title: item.title,
+    category: item.category,
+    date: item.displayDate,
+    sortDate: item.date,
+    image: item.image,
+    desc: item.desc,
+  }));
+
+  const combinedArticles = [...legacyArticles, ...cmsArticles].sort((a, b) =>
+    a.sortDate < b.sortDate ? 1 : a.sortDate > b.sortDate ? -1 : 0,
+  );
+
   return (
     <div className="pt-32 pb-24 min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">
       
@@ -99,7 +124,7 @@ const Artikel: React.FC = () => {
 
       <div className="container mx-auto px-6 max-w-6xl">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {articlesList.map((item) => (
+          {combinedArticles.map((item) => (
             <Link to={`/artikel/${item.slug}`} key={item.id} className="group bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 flex flex-col h-full cursor-pointer hover:-translate-y-2">
               <div className="w-full h-48 relative overflow-hidden">
                 <img src={item.image} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />

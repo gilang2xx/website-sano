@@ -1,10 +1,13 @@
 // Runs after `vite build` (see package.json "build" script) and writes
-// dist/sitemap.xml. Article URLs are read straight out of pages/Artikel.tsx
-// so a new /artikel/:slug entry appears in the sitemap automatically the
-// next time the site is built/deployed -- no manual sitemap editing needed.
+// dist/sitemap.xml. Two article sources are merged: (1) the 6 legacy
+// articles, read straight out of pages/Artikel.tsx source text, and (2)
+// new articles published via the CMS (content/artikel/*.md). Either way,
+// a new /artikel/:slug entry appears in the sitemap automatically the next
+// time the site is built/deployed -- no manual sitemap editing needed.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import fm from 'front-matter';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
@@ -38,7 +41,7 @@ function parseIndoDate(raw) {
   return `${year}-${month}-${day.padStart(2, '0')}`;
 }
 
-function getArticleRoutes() {
+function getLegacyArticleRoutes() {
   const source = fs.readFileSync(path.join(ROOT, 'pages/Artikel.tsx'), 'utf-8');
   // Each article object lists `slug` before `date`, e.g.:
   //   slug: "konsep-matras-sehat",
@@ -60,6 +63,28 @@ function getArticleRoutes() {
   return routes;
 }
 
+function getCmsArticleRoutes() {
+  const dir = path.join(ROOT, 'content/artikel');
+  if (!fs.existsSync(dir)) return [];
+
+  const today = new Date().toISOString().slice(0, 10);
+  return fs
+    .readdirSync(dir)
+    .filter((file) => file.endsWith('.md'))
+    .map((file) => {
+      const raw = fs.readFileSync(path.join(dir, file), 'utf-8');
+      const { attributes } = fm(raw);
+      const slug = file.replace(/\.md$/, '');
+      return {
+        path: `/artikel/${slug}`,
+        priority: '0.6',
+        changefreq: 'monthly',
+        // Tanggal artikel CMS sudah ISO dari frontmatter, tidak perlu di-parse.
+        lastmod: attributes.date || today,
+      };
+    });
+}
+
 function buildXml(routes) {
   const today = new Date().toISOString().slice(0, 10);
   const urls = routes
@@ -74,11 +99,16 @@ function buildXml(routes) {
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 }
 
-const routes = [...STATIC_ROUTES, ...getArticleRoutes()];
+const legacyArticleRoutes = getLegacyArticleRoutes();
+const cmsArticleRoutes = getCmsArticleRoutes();
+const routes = [...STATIC_ROUTES, ...legacyArticleRoutes, ...cmsArticleRoutes];
 const xml = buildXml(routes);
 
 const outDir = path.join(ROOT, 'dist');
 fs.mkdirSync(outDir, { recursive: true });
 fs.writeFileSync(path.join(outDir, 'sitemap.xml'), xml, 'utf-8');
 
-console.log(`[sitemap] Wrote dist/sitemap.xml with ${routes.length} URLs (${routes.length - STATIC_ROUTES.length} articles).`);
+console.log(
+  `[sitemap] Wrote dist/sitemap.xml with ${routes.length} URLs ` +
+  `(${legacyArticleRoutes.length} legacy articles + ${cmsArticleRoutes.length} CMS articles).`,
+);

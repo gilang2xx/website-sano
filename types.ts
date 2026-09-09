@@ -5,15 +5,6 @@ export interface ServiceItem {
   iconName: string;
 }
 
-export interface BeforeAfterItem {
-  id: string;
-  title: string;
-  description: string;
-  beforeImg: string;
-  afterImg: string;
-  category: string;
-}
-
 export interface TestimonialItem {
   id: string;
   name: string;

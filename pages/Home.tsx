@@ -54,7 +54,7 @@ import {
 } from 'lucide-react';
 import ScrollReveal from '../components/ScrollReveal';
 import AnimatedHeroText from '../components/AnimatedHeroText';
-import { TESTIMONIALS, BEFORE_AFTER_DATA } from '../constants';
+import { TESTIMONIALS } from '../constants';
 // Ensure the file exists or correct the path if necessary
 // Ensure the correct path to the GoogleReviewSection component
 import GoogleReviewSection from '../components/GoogleReviewSection'; // Check if the file exists

@@ -1,6 +1,7 @@
 import React from 'react';
 import { ImagePlus, BadgeCheck } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
+import { loadBeforeAfterEntries } from '../utils/content';
 
 const BeforeAfter: React.FC = () => {
   useSEO({
@@ -10,73 +11,9 @@ const BeforeAfter: React.FC = () => {
     image: '/after-10.jpg',
   });
 
-  // 1. TAMBAHKAN PROPERTY 'beforeImg' DAN 'afterImg' DI SINI
-  const projects = [
-    { 
-      id: 1, 
-      title: "Full Upgrade All-in-One", 
-      desc: "Renovasi total! Kasur lama Kamu disulap menjadi 100% baru sehat dan nyaman luar dalam dengan upgrade fondasi dan ganti kain knitting 3D.",
-      beforeImg: "/before-10.jpg", // Pastikan nama file sesuai yg ada di folder public
-      afterImg: "/after-10.jpg"
-    },
-    { 
-      id: 2, 
-      title: "Upgrade Fondasi + Lapisan Matras Sehat", 
-      desc: "Perkokoh Fondasi & Penambahan lapisan pillow top untuk kenyamanan.",
-      beforeImg: "/before-2.jpg", // Ganti dengan nama file foto ke-2
-      afterImg: "/after-2.jpg"
-    },
-    { 
-      id: 3, 
-      title: "Upgrade Fondasi Non Per Matras Sehat", 
-      desc: "Penguatan matras yang membuat kokoh, aman, dan maksimal untuk support kesehatan tidur kamu.",
-      beforeImg: "/before-9.jpg", // Ganti dengan nama file foto ke-3
-      afterImg: "/after-9.jpg"
-    },
-    { 
-      id: 4, 
-      title: "Upgrade Fondasi Non Per Matras Sehat", 
-      desc: "Penguatan matras dengan busa density 50+ yang membuat kokoh dan nyaman untuk tulang belakang.",
-      beforeImg: "/before-8.jpg",
-      afterImg: "/after-8.jpg"
-    },
-    { 
-      id: 5, 
-      title: "Full Upgrade All-in-One", 
-      desc: "Renovasi total! Kasur lama Kamu disulap menjadi 100% baru sehat dan nyaman luar dalam dengan upgrade fondasi dan ganti kain knitting 3D.",
-      beforeImg: "/before-7.jpg",
-      afterImg: "/after-7.jpg"
-    },
-    { 
-      id: 6, 
-      title: "Full Upgrade Kasur 2 in 1", 
-      desc: "Upgrade fondasi dan ganti kain knitting 3D.",
-      beforeImg: "/before-6.jpg",
-      afterImg: "/after-6.jpg"
-    },
-    { 
-      id: 7, 
-      title: "Full Upgrade dengan Kain Knitting 3D", 
-      desc: "Upgrade fondasi dan ganti kain knitting 3D.",
-      beforeImg: "/before-11.jpg",
-      afterImg: "/after-11.jpg"
-    },
-    { 
-      id: 8, 
-      title: "Paket Fondasi + Lapisan Matras Sehat", 
-      desc: "Rekonstruksi atau perbaikan struktur kasur menjadi matras sehat.",
-      beforeImg: "/before-12.jpg",
-      afterImg: "/after-12.jpg"
-    },
-    { 
-      id: 9, 
-      title: "Potong Ukuran", 
-      desc: "Potong ukuran dengan mesin potong professional.",
-      beforeImg: "/before-5.jpg",
-      afterImg: "/after-5.jpg"
-    },
-    // Tambahkan object baru di sini kalau mau nambah foto lagi
-  ];
+  // Sumber data: content/before-after/*.md, dikelola lewat /admin (Decap CMS).
+  // Tambah foto baru = tambah entri lewat panel admin, bukan edit file ini.
+  const projects = loadBeforeAfterEntries();
 
   return (
     <div className="pt-32 pb-24 min-h-screen bg-slate-50 dark:bg-slate-900 transition-colors duration-300">

@@ -1,11 +1,61 @@
 import React, { useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkUnwrapImages from 'remark-unwrap-images';
 import {
   ArrowLeft, Calendar, Clock, MessageCircle,
   CheckCircle2, ShieldCheck, Zap, HeartPulse
 } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
 import { useSEO } from '../hooks/useSEO';
+import { getCmsArticleBySlug, estimateReadTime } from '../utils/content';
+
+// Styling untuk artikel yang datang dari CMS (Markdown) -- meniru gaya
+// visual yang sudah dipakai 6 artikel lama (hardcoded JSX), supaya artikel
+// baru terasa konsisten meski ditulis lewat panel admin, bukan kode.
+const markdownComponents = {
+  h2: (props: React.ComponentProps<'h2'>) => (
+    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-10 mb-4" {...props} />
+  ),
+  h3: (props: React.ComponentProps<'h3'>) => (
+    <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mt-8 mb-3" {...props} />
+  ),
+  h4: (props: React.ComponentProps<'h4'>) => (
+    <h4 className="text-lg font-bold text-slate-900 dark:text-white mt-6 mb-2" {...props} />
+  ),
+  p: (props: React.ComponentProps<'p'>) => <p className="mb-6 leading-relaxed" {...props} />,
+  ul: (props: React.ComponentProps<'ul'>) => <ul className="list-disc pl-5 space-y-1 mb-6" {...props} />,
+  ol: (props: React.ComponentProps<'ol'>) => <ol className="list-decimal pl-5 space-y-1 mb-6" {...props} />,
+  strong: (props: React.ComponentProps<'strong'>) => (
+    <strong className="text-slate-900 dark:text-white font-bold" {...props} />
+  ),
+  hr: () => <hr className="border-slate-200 dark:border-slate-800 my-10" />,
+  blockquote: (props: React.ComponentProps<'blockquote'>) => (
+    <blockquote className="bg-blue-600 text-white p-6 rounded-2xl shadow-lg my-8 not-italic" {...props} />
+  ),
+  a: (props: React.ComponentProps<'a'>) => (
+    <a className="text-blue-600 dark:text-blue-400 font-semibold hover:underline" target="_blank" rel="noreferrer" {...props} />
+  ),
+  img: ({ src, alt }: React.ComponentProps<'img'>) => (
+    <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
+      <img src={src} alt={alt} className="w-full object-cover" loading="lazy" />
+      {alt && <figcaption className="text-center text-xs text-slate-400 mt-2 italic">{alt}</figcaption>}
+    </figure>
+  ),
+  table: (props: React.ComponentProps<'table'>) => (
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700 my-8">
+      <table className="w-full text-sm" {...props} />
+    </div>
+  ),
+  thead: (props: React.ComponentProps<'thead'>) => <thead className="bg-slate-50 dark:bg-slate-900/50" {...props} />,
+  th: (props: React.ComponentProps<'th'>) => (
+    <th className="px-5 py-3 text-left font-bold text-slate-900 dark:text-white" {...props} />
+  ),
+  td: (props: React.ComponentProps<'td'>) => (
+    <td className="px-5 py-3 text-slate-600 dark:text-slate-300 border-t border-slate-100 dark:border-slate-800" {...props} />
+  ),
+};
 
 const ArtikelDetail: React.FC = () => {
   const { slug } = useParams();
@@ -742,19 +792,25 @@ const ArtikelDetail: React.FC = () => {
 
   };
 
-  // --- LOGIKA RENDER (TETAP SAMA) ---
+  // --- LOGIKA RENDER ---
+  // Artikel lama (hardcoded, JSX) dan artikel baru dari CMS (Markdown,
+  // content/artikel/*.md) dicek dua-duanya lalu dinormalisasi ke bentuk
+  // tampilan yang sama, supaya wrapper (header, tanggal, CTA WA) di bawah
+  // bisa dipakai bersama tanpa duplikasi.
   const article = articleDatabase[slug || ""];
+  const cmsArticle = !article ? getCmsArticleBySlug(slug || "") : undefined;
+  const found = article || cmsArticle;
 
   // Dipanggil sebelum early-return di bawah supaya urutan hook tetap stabil
   // (aturan React Hooks: tidak boleh dipanggil kondisional).
   useSEO({
-    title: article?.title || 'Artikel Tidak Ditemukan',
-    description: article?.desc || 'Artikel yang Anda cari tidak tersedia.',
+    title: article?.title || cmsArticle?.title || 'Artikel Tidak Ditemukan',
+    description: article?.desc || cmsArticle?.desc || 'Artikel yang Anda cari tidak tersedia.',
     path: `/artikel/${slug || ''}`,
-    image: article?.image,
+    image: article?.image || cmsArticle?.image,
   });
 
-  if (!article) {
+  if (!found) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-slate-50 dark:bg-slate-900 text-center px-4">
         <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4">Artikel Tidak Ditemukan</h1>
@@ -762,6 +818,18 @@ const ArtikelDetail: React.FC = () => {
       </div>
     );
   }
+
+  const displayTitle = article ? article.title : cmsArticle!.title;
+  const displayDate = article ? article.date : cmsArticle!.displayDate;
+  const displayReadTime = article ? article.readTime : estimateReadTime(cmsArticle!.body);
+  const displayImage = article ? article.image : cmsArticle!.image;
+  const contentNode = article ? (
+    article.content
+  ) : (
+    <ReactMarkdown remarkPlugins={[remarkGfm, remarkUnwrapImages]} components={markdownComponents}>
+      {cmsArticle!.body}
+    </ReactMarkdown>
+  );
 
   return (
     <div className="pt-32 pb-24 min-h-screen bg-white dark:bg-slate-900 transition-colors">
@@ -771,16 +839,16 @@ const ArtikelDetail: React.FC = () => {
         </Link>
         <div className="mb-10 text-center">
           <div className="flex justify-center gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">
-             <span className="flex items-center gap-1"><Calendar size={14}/> {article.date}</span>
-             <span className="flex items-center gap-1"><Clock size={14}/> {article.readTime}</span>
+             <span className="flex items-center gap-1"><Calendar size={14}/> {displayDate}</span>
+             <span className="flex items-center gap-1"><Clock size={14}/> {displayReadTime}</span>
           </div>
-          <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-8 leading-tight">{article.title}</h1>
+          <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-8 leading-tight">{displayTitle}</h1>
           <div className="w-full aspect-video rounded-3xl overflow-hidden mb-8 shadow-xl">
-             <img src={article.image} className="w-full h-full object-cover" alt={article.title} />
+             <img src={displayImage} className="w-full h-full object-cover" alt={displayTitle} />
           </div>
         </div>
         <div className="prose prose-lg dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed">
-           {article.content}
+           {contentNode}
         </div>
         <div className="mt-16 bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl p-8 text-center text-white shadow-xl">
            <h3 className="text-2xl font-bold mb-2">Konsultasikan Keluhan Anda!</h3>
