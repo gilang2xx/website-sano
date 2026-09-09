@@ -9,10 +9,8 @@
 // mana" hilang total kecuali WEBSITE INI yang menempelkannya sendiri ke
 // pesan WA. Tanpa ini, PMax/Search/organik semuanya kelihatan sama di CRM.
 //
-// Situs ini SPA dengan HashRouter (index.tsx) -- UTM ada di query string
-// SEBELUM tanda '#' (mis. sanomatrassehat.com/?utm_source=google#/kontak),
-// jadi window.location.search tetap membacanya dengan benar, tidak
-// terpengaruh oleh hash routing.
+// Situs ini SPA dengan BrowserRouter (index.tsx) -- UTM tetap dibaca dari
+// window.location.search seperti biasa (mis. sanomatrassehat.com/kontak?utm_source=google).
 
 const STORAGE_KEY = "sano_ref";
 
