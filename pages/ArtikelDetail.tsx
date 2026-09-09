@@ -156,7 +156,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 2 (INFOGRAFIS PLACEHOLDER) */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
- <img src="/prinsip-matras-sehat.jpg" alt="3 Prinsip Matras S" className="w-full object-cover" />             <figcaption className="text-center text-xs text-slate-400 mt-2 italic">3 Pilar utama Matras Sehat Sano Care.</figcaption>
+ <img src="/prinsip-matras-sehat.jpg" alt="3 Prinsip Matras S" className="w-full object-cover" loading="lazy" />             <figcaption className="text-center text-xs text-slate-400 mt-2 italic">3 Pilar utama Matras Sehat Sano Care.</figcaption>
           </figure>
 
           {/* KRITERIA */}
@@ -187,7 +187,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 3 (HASIL JADI) */}
           <figure className="my-12 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/restoras-kasur.jpg" alt="Hasil Restorasi Sano Care" className="w-full object-cover" />
+             <img src="/restoras-kasur.jpg" alt="Hasil Restorasi Sano Care" className="w-full object-cover" loading="lazy" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Hasil restorasi matras sehat profesional Sano Care.</figcaption>
           </figure>
 
@@ -235,7 +235,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 1 */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/artikel-3-sub1.jpg" alt="Ilustrasi Tulang Belakang Melengkung" className="w-full object-cover" />
+             <img src="/artikel-3-sub1.jpg" alt="Ilustrasi Tulang Belakang Melengkung" className="w-full object-cover" loading="lazy" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Ilustrasi: Dampak kasur amblas terhadap posisi tulang belakang dan saraf.</figcaption>
           </figure>
 
@@ -308,7 +308,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 2 */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/dampak-kasur-mood.png" alt="Infografis Gejala Nyeri" className="w-full object-cover" />
+             <img src="/dampak-kasur-mood.png" alt="Infografis Gejala Nyeri" className="w-full object-cover" loading="lazy" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Gejala saraf kejepit dan sakit pinggang akibat kasur salah.</figcaption>
           </figure>
 
@@ -340,7 +340,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 3 */}
           <figure className="my-8 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/foto-karyawan.jpg" alt="Hasil Restorasi Kasur" className="w-full object-cover" />
+             <img src="/foto-karyawan.jpg" alt="Hasil Restorasi Kasur" className="w-full object-cover" loading="lazy" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Layanan restorasi matras sehat profesional Sano Care.</figcaption>
           </figure>
 
@@ -382,7 +382,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 1 */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/artikel-3-sub1.jpg" alt="Ilustrasi Tulang Belakang Melengkung" className="w-full object-cover" />
+             <img src="/artikel-3-sub1.jpg" alt="Ilustrasi Tulang Belakang Melengkung" className="w-full object-cover" loading="lazy" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Ilustrasi: Perbandingan tulang belakang lurus vs melengkung saat tidur.</figcaption>
           </figure>
 
@@ -438,7 +438,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 2 */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/artikel-4-kurangtidur.jpg" alt="Kelelahan Akibat Tidur Buruk" className="w-full object-cover" />
+             <img src="/artikel-4-kurangtidur.jpg" alt="Kelelahan Akibat Tidur Buruk" className="w-full object-cover" loading="lazy" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Dampak kualitas tidur buruk terhadap produktivitas kerja.</figcaption>
           </figure>
 
@@ -488,7 +488,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 3 */}
           <figure className="my-12 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/pelayanan-matras.png" alt="Teknisi Sano Care" className="w-full object-cover" />
+             <img src="/pelayanan-matras.png" alt="Teknisi Sano Care" className="w-full object-cover" loading="lazy" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Proses pengecekan dan restorasi oleh tim ahli Sano Care.</figcaption>
           </figure>
 
@@ -517,7 +517,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 1 */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">
-             <img src="/hero-section.png" alt="Struktur komponen dalam kasur: fondasi, lapisan kenyamanan, dan kain" className="w-full object-cover" />
+             <img src="/hero-section.png" alt="Struktur komponen dalam kasur: fondasi, lapisan kenyamanan, dan kain" className="w-full object-cover" loading="lazy" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Ilustrasi: Potongan lapisan kasur (Cross-Section).</figcaption>
           </figure>
 
@@ -589,7 +589,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 2 */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg border border-slate-200 dark:border-slate-700">
-             <img src="/artikel-5-lapisan.jpg" alt="Material lapisan kenyamanan matras sehat" className="w-full object-cover h-84" /> 
+             <img src="/artikel-5-lapisan.jpg" alt="Material lapisan kenyamanan matras sehat" className="w-full object-cover h-84" loading="lazy" />
              {/* Note: Menggunakan video/gambar yang ada sebagai placeholder */}
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Ilustrasi: Material lapisan kenyamanan matras sehat Sano Care.</figcaption>
           </figure>
@@ -629,7 +629,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* GAMBAR 3 */}
           <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
-             <img src="/after-2.jpg" alt="Teknisi Sano Care Sedang Merakit" className="w-full object-cover" />
+             <img src="/after-2.jpg" alt="Teknisi Sano Care Sedang Merakit" className="w-full object-cover" loading="lazy" />
              <figcaption className="text-center text-xs text-slate-400 mt-2 italic">Proses restorasi komponen kasur profesional di Sano Care.</figcaption>
           </figure>
 

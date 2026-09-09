@@ -304,7 +304,7 @@ const Home: React.FC = () => {
                 <div className="h-full bg-white dark:bg-slate-800 rounded-[2.5rem] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-slate-100 dark:border-slate-700 relative text-left">
                   <div className="h-72 relative overflow-hidden">
                     <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors z-10"></div>
-                    <img src="/pelayanan-matras.png" alt="Klinik Matras" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <img src="/pelayanan-matras.png" alt="Klinik Matras" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                     <div className="absolute top-6 right-6 bg-white dark:bg-slate-700 p-3 rounded-full shadow-lg z-20 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
                        <ArrowRight size={20} className="text-blue-600 dark:text-white"/>
                     </div>
@@ -326,7 +326,7 @@ const Home: React.FC = () => {
                 <div className="h-full bg-white dark:bg-slate-800 rounded-[2.5rem] overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 border border-slate-100 dark:border-slate-700 relative text-left">
                   <div className="h-72 relative overflow-hidden">
                     <div className="absolute inset-0 bg-orange-900/10 group-hover:bg-transparent transition-colors z-10"></div>
-                    <img src="/pelayanan-sofa.png" alt="Klinik Sofa" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" />
+                    <img src="/pelayanan-sofa.png" alt="Klinik Sofa" className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" loading="lazy" />
                      <div className="absolute top-6 right-6 bg-white dark:bg-slate-700 p-3 rounded-full shadow-lg z-20 opacity-0 group-hover:opacity-100 transition-all translate-y-4 group-hover:translate-y-0">
                        <ArrowRight size={20} className="text-orange-500 dark:text-white"/>
                     </div>
@@ -389,7 +389,7 @@ const Home: React.FC = () => {
                     <source src="/video-matt-empuk.webm" type="video/webm" />
 
                     {/* Fallback Image */}
-                    <img src="/konsep-terlaluempuk.jpg" className="w-full h-full object-cover" alt="Too Soft" />
+                    <img src="/konsep-terlaluempuk.jpg" className="w-full h-full object-cover" alt="Too Soft" loading="lazy" />
                   </video>
                   {/* ... */}
                            </div>
@@ -436,7 +436,7 @@ const Home: React.FC = () => {
                     <source src="/video-matt-sehat.webm" type="video/webm" />
                     
                     {/* Fallback Image */}
-                    <img src="/konsep-terlaluempuk.jpg" className="w-full h-full object-cover" alt="Too Soft" />
+                    <img src="/konsep-terlaluempuk.jpg" className="w-full h-full object-cover" alt="Too Soft" loading="lazy" />
                   </video>
                   {/* ... */}
       </div>
@@ -482,7 +482,7 @@ const Home: React.FC = () => {
                     <source src="/video-matt-keras.webm" type="video/webm" />
                     
                     {/* Fallback Image */}
-                    <img src="/konsep-terlalukeras.jpg" className="w-full h-full object-cover" alt="Too Hard" />
+                    <img src="/konsep-terlalukeras.jpg" className="w-full h-full object-cover" alt="Too Hard" loading="lazy" />
                   </video>
                   {/* ... */}
 </div>
@@ -658,32 +658,32 @@ const Home: React.FC = () => {
             
             {/* 1. King Koil */}
             <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
-              <img src="/logo-kingkoil.png" alt="King Koil" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+              <img src="/logo-kingkoil.png" alt="King Koil" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" loading="lazy" />
             </div>
 
             {/* 2. Serta */}
             <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
-              <img src="/logo-serta.png" alt="Serta" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+              <img src="/logo-serta.png" alt="Serta" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" loading="lazy" />
             </div>
 
             {/* 3. Lady Americana */}
             <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
-              <img src="/logo-ladyamericana.png" alt="Lady Americana" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+              <img src="/logo-ladyamericana.png" alt="Lady Americana" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" loading="lazy" />
             </div>
 
             {/* 4. Elite */}
             <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
-              <img src="/logo-elite.png" alt="Elite" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+              <img src="/logo-elite.png" alt="Elite" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" loading="lazy" />
             </div>
 
             {/* 5. Florence */}
             <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
-              <img src="/logo-florence.png" alt="Florence" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+              <img src="/logo-florence.png" alt="Florence" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" loading="lazy" />
             </div>
 
             {/* 6. Spring Air */}
             <div className="transition-all duration-300 transform hover:scale-110 cursor-default">
-              <img src="/logo-springair.png" alt="Spring Air" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" />
+              <img src="/logo-springair.png" alt="Spring Air" className="h-14 md:h-20 lg:h-24 w-auto object-contain drop-shadow-sm" loading="lazy" />
             </div>
 
           </div>
@@ -1031,10 +1031,11 @@ const Home: React.FC = () => {
               >
                 {/* Gambar Utama */}
                 <div className="h-64 relative overflow-hidden">
-                  <img 
+                  <img
                     src={item.img} // Gunakan src dari data di atas
-                    alt={item.title} 
-                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700" 
+                    alt={item.title}
+                    className="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700"
+                    loading="lazy"
                   />
                   {/* Overlay Gradient */}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>

@@ -185,7 +185,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           {/* KOLOM 1: LOGO */}
           <div className="space-y-4">
             <div className="flex items-center gap-2 mb-4">
-              <img src="/klinikmatras-dark.png" alt="SANO Logo" className="h-12 w-auto object-contain"/>
+              <img src="/klinikmatras-dark.png" alt="SANO Logo" className="h-12 w-auto object-contain" loading="lazy"/>
             </div>
             <p className="text-slate-400 text-sm leading-relaxed">
               Solusi terbaik untuk kenyamanan tidur Kamu. Kami memperbaiki, memodifikasi, dan merawat matras Kamu dengan standar kesehatan tertinggi.

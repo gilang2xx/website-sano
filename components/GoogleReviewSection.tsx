@@ -31,10 +31,11 @@ const GoogleReviewSection = () => {
           {/* BAGIAN KIRI: SUMMARY RATING */}
           <div className="w-full lg:w-1/3 flex flex-col items-center justify-center p-8 bg-slate-50 dark:bg-slate-800/50 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm text-center sticky top-24">
             <div className="flex items-center gap-2 mb-2">
-              <img 
-                src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
-                alt="Google" 
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                alt="Google"
                 className="w-8 h-8"
+                loading="lazy"
               />
               <span className="font-bold text-slate-700 dark:text-white text-xl">Google Rating</span>
             </div>
@@ -79,10 +80,11 @@ const GoogleReviewSection = () => {
                   className="bg-white dark:bg-slate-800 p-6 rounded-xl shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07)] border border-slate-100 dark:border-slate-700 relative hover:-translate-y-1 transition-transform duration-300 group block cursor-pointer"
                 >
                   {/* Logo G Kecil */}
-                  <img 
-                    src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" 
+                  <img
+                    src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
                     className="absolute top-6 right-6 w-5 h-5 opacity-50 group-hover:opacity-100 transition-opacity grayscale group-hover:grayscale-0"
                     alt="Source"
+                    loading="lazy"
                   />
 
                   {/* Profil User */}

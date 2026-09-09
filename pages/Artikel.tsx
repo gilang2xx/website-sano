@@ -102,7 +102,7 @@ const Artikel: React.FC = () => {
           {articlesList.map((item) => (
             <Link to={`/artikel/${item.slug}`} key={item.id} className="group bg-white dark:bg-slate-800 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 border border-slate-100 dark:border-slate-700 flex flex-col h-full cursor-pointer hover:-translate-y-2">
               <div className="w-full h-48 relative overflow-hidden">
-                <img src={item.image} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                <img src={item.image} alt={item.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
                 <div className="absolute top-4 left-4 bg-white/90 backdrop-blur px-3 py-1 rounded-full text-xs font-bold text-blue-600 flex items-center gap-1">
                   <Tag size={12} /> {item.category}
                 </div>

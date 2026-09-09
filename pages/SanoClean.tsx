@@ -50,7 +50,7 @@ const SanoClean: React.FC = () => {
                 <ScrollReveal key={service.id} delay={idx * 50} className="bg-white dark:bg-bg-dark rounded-3xl shadow-lg border border-slate-100 dark:border-slate-800 overflow-hidden">
                    <div className="grid grid-cols-1 md:grid-cols-12 gap-0 md:gap-8">
                       <div className="md:col-span-4 h-64 md:h-auto relative overflow-hidden group">
-                         <img src={imgSrc} alt={service.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                         <img src={imgSrc} alt={service.title} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" loading="lazy" />
                          <div className="absolute inset-0 bg-teal-600/20 group-hover:bg-transparent transition-colors"></div>
                       </div>
                       <div className="md:col-span-8 p-8 md:py-12 md:pr-12 flex flex-col justify-center">

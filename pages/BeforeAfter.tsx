@@ -112,10 +112,11 @@ const BeforeAfter: React.FC = () => {
                     BEFORE
                   </div>
                   {/* Perhatikan bagian src={project.beforeImg} di bawah ini */}
-                  <img 
-                    src={project.beforeImg} 
-                    alt={`Before ${project.title}`} 
+                  <img
+                    src={project.beforeImg}
+                    alt={`Before ${project.title}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
                   />
                 </div>
 
@@ -125,10 +126,11 @@ const BeforeAfter: React.FC = () => {
                     AFTER
                   </div>
                   {/* Perhatikan bagian src={project.afterImg} di bawah ini */}
-                  <img 
-                    src={project.afterImg} 
-                    alt={`After ${project.title}`} 
+                  <img
+                    src={project.afterImg}
+                    alt={`After ${project.title}`}
                     className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                    loading="lazy"
                   />
                 </div>
 

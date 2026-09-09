@@ -44,10 +44,11 @@ const Layanan: React.FC = () => {
              <ScrollReveal>
                 <div className="group bg-white dark:bg-bg-surface rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden h-full flex flex-col hover:-translate-y-2 transition-transform duration-300">
                    <div className="aspect-[4/3] relative overflow-hidden">
-                      <img 
-                        src="/pelayanan-matras.png" 
-                        alt="Klinik Matras Service" 
+                      <img
+                        src="/pelayanan-matras.png"
+                        alt="Klinik Matras Service"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
                       />
                       <div className="absolute inset-0 bg-blue-900/10 group-hover:bg-transparent transition-colors"></div>
                    </div>
@@ -83,10 +84,11 @@ const Layanan: React.FC = () => {
              <ScrollReveal delay={100}>
                 <div className="group bg-white dark:bg-bg-surface rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden h-full flex flex-col hover:-translate-y-2 transition-transform duration-300">
                    <div className="aspect-[4/3] relative overflow-hidden">
-                      <img 
-                        src="/pelayanan-sofa.png" 
-                        alt="Klinik Sofa Service" 
+                      <img
+                        src="/pelayanan-sofa.png"
+                        alt="Klinik Sofa Service"
                         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
                       />
                       <div className="absolute inset-0 bg-orange-900/10 group-hover:bg-transparent transition-colors"></div>
                    </div>
