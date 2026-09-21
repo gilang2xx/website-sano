@@ -7,7 +7,7 @@ import {
 import ThemeToggle from './ThemeToggle';
 import { NAV_LINKS } from '../constants';
 import { trackWhatsAppClick } from '../utils/tracking';
-import { captureAdReferral, buildWaHref } from '../utils/attribution';
+import { captureAdReferral, buildWaHref, endAttributionHydration } from '../utils/attribution';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -48,6 +48,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   useEffect(() => {
     captureAdReferral();
   }, [location]);
+
+  // Sekali saat mount (setelah hydration & effect di atas): tempelkan tag
+  // referral ke link WhatsApp yang dirender server tanpa tag. Lihat
+  // utils/attribution.ts (beginAttributionHydration).
+  useEffect(() => {
+    endAttributionHydration();
+  }, []);
 
   useEffect(() => {
     setIsMobileMenuOpen(false);
@@ -286,7 +293,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         {/* Copyright */}
         <div className="container mx-auto px-6 mt-16 pt-8 border-t border-slate-800 flex flex-col md:flex-row items-center justify-between gap-4 text-slate-500 text-sm">
           <span className="text-center md:text-left">
-            &copy; {new Date().getFullYear()} KLINIK MATTRESS by SANO CARE. All rights reserved.
+            &copy; <span suppressHydrationWarning>{new Date().getFullYear()}</span> KLINIK MATTRESS by SANO CARE. All rights reserved.
           </span>
           <NavLink to="/kebijakan-privasi" className="hover:text-white transition-colors">
             Kebijakan Privasi

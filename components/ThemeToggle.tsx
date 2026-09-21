@@ -3,25 +3,40 @@ import { Sun, Moon } from 'lucide-react';
 import { Theme } from '../types';
 
 const ThemeToggle: React.FC = () => {
-  const [theme, setTheme] = useState<Theme>(() => {
-    if (typeof window !== 'undefined') {
-      return (localStorage.getItem('theme') as Theme) || Theme.LIGHT;
-    }
-    return Theme.LIGHT;
-  });
+  // Render awal HARUS sama dengan HTML hasil prerender (server tidak punya
+  // localStorage), jadi selalu mulai dari LIGHT. Preferensi tersimpan dibaca
+  // di effect sesudah hydration. Class `dark` di <html> sudah dipasang lebih
+  // awal oleh skrip inline di index.html supaya tidak ada kilatan terang.
+  const [theme, setTheme] = useState<Theme>(Theme.LIGHT);
 
   useEffect(() => {
+    let stored: string | null = null;
+    try {
+      stored = localStorage.getItem('theme');
+    } catch {
+      // localStorage bisa diblokir (mode privat) -- pakai default terang.
+    }
+    if (stored === Theme.DARK) setTheme(Theme.DARK);
+  }, []);
+
+  const applyTheme = (next: Theme) => {
     const root = window.document.documentElement;
-    if (theme === Theme.DARK) {
+    if (next === Theme.DARK) {
       root.classList.add('dark');
     } else {
       root.classList.remove('dark');
     }
-    localStorage.setItem('theme', theme);
-  }, [theme]);
+    try {
+      localStorage.setItem('theme', next);
+    } catch {
+      // abaikan -- tema tetap berlaku untuk sesi ini.
+    }
+  };
 
   const toggleTheme = () => {
-    setTheme((prev) => (prev === Theme.LIGHT ? Theme.DARK : Theme.LIGHT));
+    const next = theme === Theme.LIGHT ? Theme.DARK : Theme.LIGHT;
+    setTheme(next);
+    applyTheme(next);
   };
 
   return (

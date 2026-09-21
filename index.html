@@ -84,6 +84,13 @@
     fbq('init', '934367175857999');
     fbq('track', 'PageView');
     </script>
+    <!-- Terapkan tema gelap tersimpan SEBELUM paint. HTML hasil prerender selalu
+         terang (server tak punya localStorage); tanpa ini pengguna mode gelap
+         melihat kilatan terang sebelum React hydrate. Logika sama dengan
+         components/ThemeToggle.tsx (kunci 'theme', nilai 'dark'). -->
+    <script>
+      try { if (localStorage.getItem('theme') === 'dark') document.documentElement.classList.add('dark'); } catch (e) {}
+    </script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     

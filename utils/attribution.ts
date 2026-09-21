@@ -62,8 +62,47 @@ export function captureAdReferral(): void {
   }
 }
 
+// ─── Hydration (prerender/SSG) ──────────────────────────────────────────
+//
+// Halaman kini dirender dulu di server saat build (tanpa sessionStorage),
+// jadi href WhatsApp di HTML statis SELALU tanpa tag. Render pertama di
+// client (hydration) harus menghasilkan href yang SAMA persis, kalau tidak
+// React memberi peringatan mismatch dan TIDAK memperbaiki atribut href itu
+// (referral iklan bisa hilang diam-diam). Maka selama hydration
+// getStoredRef() sengaja mengembalikan null; begitu hydration selesai,
+// endAttributionHydration() menempelkan tag ke semua link wa.me yang sudah
+// ada di DOM. Render sesudahnya (navigasi SPA) memakai buildWaHref biasa.
+let hydrationPending = false;
+
+/** Panggil SEBELUM hydrateRoot(). */
+export function beginAttributionHydration(): void {
+  hydrationPending = true;
+}
+
+/**
+ * Panggil SEKALI setelah hydration selesai (Layout mount) dan SETELAH
+ * captureAdReferral() untuk kunjungan ini. Menempelkan tag referral ke
+ * link wa.me yang dirender tanpa tag; no-op kalau tidak ada referral.
+ */
+export function endAttributionHydration(): void {
+  if (!hydrationPending) return;
+  hydrationPending = false;
+  if (typeof document === "undefined" || !getRefTag()) return;
+
+  document.querySelectorAll<HTMLAnchorElement>('a[href^="https://wa.me/"]').forEach((a) => {
+    try {
+      const url = new URL(a.href);
+      const text = url.searchParams.get("text");
+      if (text === null || text.includes(START_MARK)) return;
+      a.href = buildWaHref(text, url.pathname.replace(/^\//, ""));
+    } catch {
+      // href tak bisa di-parse -- biarkan apa adanya.
+    }
+  });
+}
+
 function getStoredRef(): RefInfo | null {
-  if (typeof window === "undefined") return null;
+  if (typeof window === "undefined" || hydrationPending) return null;
   try {
     const raw = sessionStorage.getItem(STORAGE_KEY);
     return raw ? JSON.parse(raw) : null;
