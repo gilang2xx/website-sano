@@ -3,7 +3,7 @@
 Tanggal: 2026-09-21 · Branch: `feat/seo-ssg-implementation`
 Referensi: [SEO_AUDIT.md](SEO_AUDIT.md), [SEO_ARCHITECTURE_PLAN.md](SEO_ARCHITECTURE_PLAN.md), [SEO_PHASE_0_REPORT.md](SEO_PHASE_0_REPORT.md)
 
-**Ringkasan:** 17 route publik kini dirender ke HTML statis saat build (title, description, canonical, OG, H1, konten utama, dan link internal ada di HTML awal), lalu di-hydrate di client. Build, `tsc`, dan uji lokal di Chrome headless lulus. **Push ke remote GAGAL** (kredensial Git tidak tersedia di sesi non-interaktif), sehingga **tidak ada Vercel Preview** dan **belum ada pengujian di lingkungan Vercel/produksi**. Tidak ada merge, push ke `main`, deploy, atau perubahan env variable.
+**Ringkasan:** 17 route publik kini dirender ke HTML statis saat build (title, description, canonical, OG, H1, konten utama, dan link internal ada di HTML awal), lalu di-hydrate di client. Build, `tsc`, dan uji lokal di Chrome headless lulus. Branch sudah di-push dan **Vercel membuat Preview Deployment yang sukses**, tetapi preview **dilindungi Vercel Deployment Protection (SSO)** sehingga **belum bisa diuji dari luar**; belum ada pengujian di lingkungan Vercel/produksi. Tidak ada merge, push ke `main`, deploy produksi, atau perubahan env variable/pengaturan deployment.
 
 ---
 
@@ -139,7 +139,17 @@ Total: 34 cek route + 18 cek fungsional = **52 lulus, 0 gagal**. Pada satu itera
 
 ## 8. Vercel Preview
 
-**Tidak tersedia.** `git push -u origin feat/seo-ssg-implementation` tertahan pada Git Credential Manager (butuh login interaktif) dan saya hentikan prosesnya; tidak ada remote-tracking ref `origin/feat/seo-ssg-implementation` (dicek lokal). Saya tidak mencoba jalur kredensial lain dan tidak mengubah pengaturan deployment. **Tindakan yang dibutuhkan dari Anda:** jalankan sendiri `git push -u origin feat/seo-ssg-implementation` dari terminal yang sudah terautentikasi (hanya branch ini; jangan `main`), lalu bagikan URL preview atau minta saya menjalankan pengujian §9 terhadapnya. Perlu dicek juga bahwa Vercel Deployment Protection tidak memblokir akses ke URL preview.
+**Push berhasil** (percobaan ke-2, non-interaktif; percobaan pertama tertahan di Git Credential Manager). Hanya branch `feat/seo-ssg-implementation` yang di-push; commit terakhir `5bb5c29`+.
+
+Status commit di GitHub (API publik, read-only): **dua project Vercel terhubung ke repo yang sama dan keduanya berstatus `success`** untuk commit `5bb5c29`:
+- `sano-website-vs` — https://vercel.com/rigss-projects/sano-website-vs/FxyWTke1WeizHmtDJihFoFP4xHSV
+- `website-sano` — https://vercel.com/rigss-projects/website-sano/uVMmVEiQRrVuirbd9TeFsaF4nDMu
+
+Build Vercel selesai tanpa error, artinya `npm run build` (termasuk SSR build + prerender) **berhasil di lingkungan build Vercel** (isi log build belum saya baca).
+
+**URL preview (alias branch) — TIDAK bisa diuji:** `https://website-sano-git-feat-seo-ssg-implementation-rigss-projects.vercel.app` dan `https://sano-website-vs-git-feat-seo-ssg-implementation-rigss-projects.vercel.app`. Semua path (`/`, `/klinik-matras`, `/url-tidak-ada`, `/sitemap.xml`, `/admin/`) menjawab **HTTP 302 ke vercel.com/sso-api** (Deployment Protection). Saya tidak mengubah pengaturan itu dan tidak mencoba melewatinya.
+
+**Tindakan yang dibutuhkan dari pemilik project:** pilih salah satu — (a) beri saya *Protection Bypass for Automation* (URL/secret sementara) untuk preview, (b) nonaktifkan proteksi khusus Preview sementara, atau (c) jalankan sendiri pengujian §9 dan kirim hasilnya. Catatan: ada **dua** project Vercel pada repo yang sama — konfirmasi mana yang melayani sanomatrassehat.com dan apakah keduanya memang disengaja.
 
 ## 9. Pengujian tertunda (butuh preview/produksi)
 
@@ -162,7 +172,7 @@ Total: 34 cek route + 18 cek fungsional = **52 lulus, 0 gagal**. Pada satu itera
 | R6 | `endAttributionHydration` menempelkan tag lewat DOM (bukan lewat React); bila React me-render ulang link dengan href sama, hasilnya konsisten | Diuji lokal; tidak diuji di WhatsApp nyata/CRM |
 | R7 | Skrip inline tema di `index.html` menambah satu skrip di `<head>` | Kecil; tidak mengubah perilaku selain mencegah kilatan |
 | R8 | `vercel.json` rewrite diubah ke `/spa-fallback.html`: bila file itu tidak terbit pada build Vercel, URL tak dikenal 404 dari Vercel (bukan 200) | Terbit dari `prerender.mjs` (terverifikasi lokal); verifikasi di preview |
-| R9 | Push/preview belum ada → seluruh bukti berasal dari mesin lokal | Terbuka (§8) |
+| R9 | Preview terlindungi SSO → bukti perilaku Vercel (routing, 404, redirect) belum ada; bukti masih dari mesin lokal + status build Vercel `success` | Terbuka (§8) |
 | R10 | Halaman masih memiliki masalah SEO dari audit (title panjang/suffix ganda, JSON-LD statis di semua halaman, tanpa 404 sungguhan, `/admin` & `/api` belum noindex, `/index.css`) | Sengaja di luar Fase 1 |
 
 ## 11. Rollback plan
@@ -179,9 +189,9 @@ Total: 34 cek route + 18 cek fungsional = **52 lulus, 0 gagal**. Pada satu itera
 
 **Kode siap; verifikasi di Vercel belum.** Rekomendasi: **jangan mulai Fase 2 sebelum preview diuji**, karena keputusan Fase 2 (hapus rewrite catch-all, `404.html`, `trailingSlash/cleanUrls`) bergantung pada perilaku Vercel yang belum terbukti (§9.1–9.2).
 
-Prasyarat: (1) Anda push branch dan bagikan URL preview (atau izinkan saya mencoba lagi bila autentikasi Git sudah diatur); (2) konfirmasi versi Node Vercel; (3) keputusan bentuk URL kanonik; (4) konfirmasi desc artikel yang tertukar bila ingin diperbaiki di fase konten.
+Prasyarat: (1) akses ke preview (bypass/nonaktifkan proteksi Preview, §8); (2) konfirmasi versi Node Vercel; (3) keputusan bentuk URL kanonik; (4) konfirmasi desc artikel yang tertukar bila ingin diperbaiki di fase konten.
 
 Isi Fase 2 (dari rencana): manifest route tunggal (`seo/routes.ts`) untuk router/prerender/sitemap, `NotFound` + `<Route path="*">` + `dist/404.html` dengan HTTP 404, hapus rewrite catch-all, sitemap dari manifest dengan `lastmod` akurat, `robots.txt` + header `X-Robots-Tag` untuk `/admin` dan `/api`, dan skrip verifikasi status/canonical semua route.
 
 ---
-*Tidak ada push ke remote yang berhasil, tidak ada merge, tidak ada deploy, tidak ada perubahan environment variable production, dan tidak ada kredensial production yang dipakai. Semua pengujian di atas dilakukan pada build lokal.*
+*Hanya branch fitur yang di-push; tidak ada merge, tidak ada deploy, tidak ada perubahan environment variable production, dan tidak ada kredensial production yang dipakai. Semua pengujian di atas dilakukan pada build lokal.*
