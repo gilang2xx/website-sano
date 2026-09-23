@@ -151,34 +151,35 @@ Build Vercel selesai tanpa error, artinya `npm run build` (termasuk SSR build + 
 
 **Tindakan yang dibutuhkan dari pemilik project:** pilih salah satu — (a) beri saya *Protection Bypass for Automation* (URL/secret sementara) untuk preview, (b) nonaktifkan proteksi khusus Preview sementara, atau (c) jalankan sendiri pengujian §9 dan kirim hasilnya. Catatan: ada **dua** project Vercel pada repo yang sama — konfirmasi mana yang melayani sanomatrassehat.com dan apakah keduanya memang disengaja.
 
-## 8b. Hasil uji di Vercel Preview (project )
+## 8b. Hasil uji di Vercel Preview (project `sano-website-vs`)
 
-Akses: Protection Bypass for Automation (dibuat pemilik project, **sementara — hapus setelah selesai**). Hanya GET/HEAD; **tidak ada POST ke **, form tidak disubmit, login admin tidak dicoba. Project  tidak bisa diuji (bypass hanya untuk ; tetap SSO 302). Host:  (deployment commit ).
+Akses: Protection Bypass for Automation (dibuat pemilik project; **sementara — hapus setelah selesai**). Hanya GET/HEAD; **tidak ada POST ke `/api/lead`**, form tidak disubmit, login admin tidak dicoba. Project `website-sano` tidak bisa diuji (bypass hanya untuk `sano-website-vs`; `website-sano` tetap 302 ke SSO). Host: `sano-website-vs-git-feat-seo-ssg-implementation-rigss-projects.vercel.app` (deployment commit `5bb5c29`).
 
 **HTTP mentah (tanpa JS), 17 route × {tanpa slash, dengan slash}:**
+
 | Pemeriksaan | Hasil |
 |---|---|
 | Status | **200 untuk semua** (34 URL), **tanpa redirect** |
-| , canonical, H1,  di HTML awal | 17/17 route:  = route, canonical =  (tanpa slash), tepat 1 , tepat 1  — baik untuk  maupun  |
-| Cache |  ( pada beranda) |
-| ,  | 200; sitemap 17 ; robots tidak berubah (Allow: /) |
-|  | 200 (shell asli, tanpa ) |
-|  dan  | keduanya 200 (Decap termuat), tanpa noindex/redirect |
-|  | 405  (fungsi hidup, sesuai kode) |
-| Header beranda |  — **ini perilaku bawaan Vercel untuk Preview**, bukan bukti perilaku produksi |
+| `data-ssg-path`, canonical, H1, `<title>` di HTML awal | 17/17 route: `data-ssg-path` = route, canonical = `https://sanomatrassehat.com<route>` (tanpa slash), tepat 1 `<h1>`, tepat 1 `<title>` — baik untuk `/x` maupun `/x/` |
+| Cache | `public, max-age=0, must-revalidate` (`x-vercel-cache: HIT` pada beranda) |
+| `/sitemap.xml`, `/robots.txt` | 200; sitemap 17 `<loc>`; robots tidak berubah (Allow: /) |
+| `/spa-fallback.html` | 200 (shell asli, tanpa `data-ssg-path`) |
+| `/admin/` dan `/admin` | keduanya 200 (Decap termuat), tanpa noindex/redirect |
+| `GET /api/lead` | 405 `{"ok":false,"error":"Method not allowed"}` (fungsi hidup, sesuai kode) |
+| Header beranda | `x-robots-tag: noindex` — **perilaku bawaan Vercel untuk Preview**, bukan bukti perilaku produksi |
 
-**URL tidak dikenal (rewrite ke ):** , , , ,  → semuanya **HTTP 200 (soft 404)**, HTML shell dengan canonical  dan title beranda (8,4 kB), tanpa konten beranda ter-prerender.  mengembalikan HTML 200 (memperkuat temuan M3).
+**URL tidak dikenal (rewrite ke `/spa-fallback.html`):** `/url-tidak-ada`, `/artikel/slug-tidak-ada`, `/klinik-matras/xyz`, `/klinik-matras.html`, `/index.css` → semuanya **HTTP 200 (soft 404)**, HTML shell dengan canonical `/` dan title beranda (±8,4 kB), tanpa konten beranda ter-prerender. `/index.css` mengembalikan HTML 200 (memperkuat temuan M3).
 
-**Browser (Chrome headless, dimuat dari Vercel; cookie bypass; pixel pihak ketiga diblok):** 17 route × desktop/mobile = **34/34 lulus** tanpa console error/warning; 15/15 uji fungsional lulus (dark mode + toggle, atribusi iklan organik vs  vs sesi tersimpan vs navigasi SPA, navigasi/back + canonical, URL tak dikenal, trailing slash). Kontrol positif mismatch dan uji form **tidak** diulang di preview (form akan memanggil API nyata).
+**Browser (Chrome headless, dimuat dari Vercel; cookie bypass; pixel pihak ketiga diblok):** 17 route × desktop/mobile = **34/34 lulus** tanpa console error/warning; 15/15 uji fungsional lulus (dark mode + toggle; atribusi iklan organik vs `utm_*` vs sesi tersimpan vs navigasi SPA; navigasi/back + canonical; URL tak dikenal; trailing slash). Kontrol positif mismatch dan uji form **tidak** diulang di preview (form akan memanggil API nyata).
 
-**Kesimpulan yang boleh diambil:** build Fase 1 berjalan di Vercel,  dilayani langsung untuk URL dengan maupun tanpa slash, dan hydration bersih di lingkungan Vercel.
+**Kesimpulan yang boleh diambil:** build Fase 1 berjalan di Vercel, `dist/<route>/index.html` dilayani langsung untuk URL dengan maupun tanpa slash, dan hydration bersih di lingkungan Vercel.
 **Belum boleh disimpulkan:** perilaku produksi (domain, www, header non-preview), 404 sungguhan, Core Web Vitals/FOUC Tailwind, Safari/Firefox/perangkat nyata, tanpa-JS di browser, admin OAuth, lead/CAPI nyata, artikel CMS nyata.
 
 **Implikasi untuk Fase 2:**
-1. **Duplikasi URL:**  dan  sama-sama 200 (self-canonical tanpa slash meredam risiko, tetapi ini dua URL crawlable). Jika memakai  untuk redirect, ** ikut terpengaruh**: Decap memuat  relatif terhadap URL halaman, sehingga di  (tanpa slash) bisa gagal — perlu pengecualian/pengujian.
-2. **Soft 404** terkonfirmasi di Vercel: perlu  + hapus rewrite catch-all (dan uji bahwa , , aset statis tetap benar).
-3. **** dijawab HTML 200 — hapus tag di  (Fase 0/2).
-4. ,  belum noindex (header  di , produksi perlu dicek karena preview selalu noindex).
+1. **Duplikasi URL:** `/x` dan `/x/` sama-sama 200 (self-canonical tanpa slash meredam risiko, tetapi ini dua URL crawlable). Bila memakai `trailingSlash: false` untuk redirect, **`/admin` ikut terpengaruh**: Decap memuat `config.yml` relatif terhadap URL halaman, sehingga di `/admin` (tanpa slash) bisa gagal — perlu pengecualian dan pengujian.
+2. **Soft 404** terkonfirmasi di Vercel: perlu `404.html` + hapus rewrite catch-all (uji bahwa `/api/*`, `/admin/`, dan aset statis tetap benar).
+3. **`/index.css`** dijawab HTML 200 — hapus tag di `index.html`.
+4. `/admin` dan `/api/*` belum noindex (header `X-Robots-Tag` di `vercel.json`; verifikasi di produksi karena preview selalu noindex).
 
 ## 9. Pengujian tertunda (butuh preview/produksi)
 
