@@ -25,11 +25,13 @@ const PAGE_LOADERS: Record<StaticRoutePath, PageLoader> = {
   '/kebijakan-privasi': () => import('./pages/KebijakanPrivasi'),
 };
 const loadArtikelDetail: PageLoader = () => import('./pages/ArtikelDetail');
+const loadNotFound: PageLoader = () => import('./pages/NotFound');
 
 const PAGES = Object.fromEntries(
   STATIC_ROUTES.map((path) => [path, lazy(PAGE_LOADERS[path])]),
 ) as Record<StaticRoutePath, React.LazyExoticComponent<React.ComponentType>>;
 const ArtikelDetail = lazy(loadArtikelDetail);
+const NotFound = lazy(loadNotFound);
 
 // Dipakai index.tsx sebelum hydrateRoot(): muat chunk halaman untuk URL saat
 // ini lebih dulu supaya hydration tidak menampilkan spinner Suspense di atas
@@ -39,9 +41,17 @@ const PRELOADERS: Array<[string, PageLoader]> = [
   [ARTICLE_ROUTE_PATTERN, loadArtikelDetail],
 ];
 
+const matchesRoute = (pathname: string) =>
+  PRELOADERS.find(([pattern]) => matchPath({ path: pattern, end: true }, pathname));
+
+/** true bila pathname cocok dengan salah satu route publik (tidak termasuk 404). */
+export function isPublicRoute(pathname: string): boolean {
+  return matchesRoute(pathname) !== undefined;
+}
+
 export function preloadRoute(pathname: string): Promise<unknown> {
-  const hit = PRELOADERS.find(([pattern]) => matchPath({ path: pattern, end: true }, pathname));
-  return hit ? hit[1]() : Promise.resolve();
+  const hit = matchesRoute(pathname);
+  return (hit ? hit[1] : loadNotFound)();
 }
 
 // Komponen Loading Sementara (Muncul saat pindah halaman)
@@ -62,6 +72,7 @@ const App: React.FC = () => {
             return <Route key={path} path={path} element={<Page />} />;
           })}
           <Route path={ARTICLE_ROUTE_PATTERN} element={<ArtikelDetail />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </Layout>

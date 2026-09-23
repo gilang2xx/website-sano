@@ -14,6 +14,7 @@ import {
   ISO_DATE_PATTERN,
   LEGACY_ARTICLES,
   SITE_URL,
+  STATIC_ROUTES,
   canonicalUrl,
   getPublicRoutes,
 } from './seo/routes';
@@ -62,7 +63,7 @@ export function listPublicRoutes(): PublicRoute[] {
   }));
 }
 
-export { renderHeadTags, canonicalUrl, SITE_URL, LEGACY_ARTICLES, indoDateToIso };
+export { renderHeadTags, canonicalUrl, SITE_URL, STATIC_ROUTES, LEGACY_ARTICLES, indoDateToIso };
 
 export interface RenderResult {
   html: string;

@@ -808,6 +808,8 @@ const ArtikelDetail: React.FC = () => {
     description: article?.desc || cmsArticle?.desc || 'Artikel yang Anda cari tidak tersedia.',
     path: `/artikel/${slug || ''}`,
     image: article?.image || cmsArticle?.image,
+    // Slug tak dikenal (mis. dibuka langsung/navigasi SPA): jangan diindeks.
+    noindex: !found,
   });
 
   if (!found) {

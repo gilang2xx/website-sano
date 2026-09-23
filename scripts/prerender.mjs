@@ -87,12 +87,9 @@ if (!fs.existsSync(SSR_ENTRY)) fatal('dist-ssr/entry-server.js tidak ada (jalank
 
 const template = fs.readFileSync(path.join(DIST, 'index.html'), 'utf-8');
 
-// Shell SPA asli (tanpa prerender) sebagai fallback rewrite. Ditulis sebelum
-// dist/index.html ditimpa. BUKAN halaman publik: tidak masuk manifest/sitemap.
-fs.writeFileSync(path.join(DIST, 'spa-fallback.html'), template, 'utf-8');
 
 const entry = await import(pathToFileURL(SSR_ENTRY).href);
-const { render, renderHeadTags, listPublicRoutes, canonicalUrl, SITE_URL, LEGACY_ARTICLES, indoDateToIso } = entry;
+const { render, renderHeadTags, listPublicRoutes, canonicalUrl, SITE_URL, STATIC_ROUTES, LEGACY_ARTICLES, indoDateToIso } = entry;
 
 // 1) Konsistensi artikel lama
 const listMap = legacyFromList(indoDateToIso);
@@ -108,6 +105,31 @@ if ([...detailSlugs].sort().join('|') !== [...manifestSlugs].sort().join('|')) {
 for (const { slug, date } of LEGACY_ARTICLES) {
   if (listMap.has(slug) && listMap.get(slug) !== date) {
     err(`tanggal artikel "${slug}" berbeda: seo/routes.ts=${date}, pages/Artikel.tsx=${listMap.get(slug)}`);
+  }
+}
+
+// 1b) vercel.json harus konsisten dengan daftar route (redirect trailing slash
+// -> tanpa slash, tanpa catch-all rewrite yang membuat soft 404).
+{
+  const vercel = JSON.parse(fs.readFileSync(path.join(ROOT, 'vercel.json'), 'utf-8'));
+  const catchAllSources = new Set(['/(.*)', '/(.+)', '/:path*', '/:path+', '/:path(.*)', '/:path(.+)']);
+  for (const rw of vercel.rewrites ?? []) {
+    if (catchAllSources.has(rw.source)) err(`vercel.json: rewrite catch-all "${rw.source}" menyebabkan soft 404 (URL tak dikenal harus 404)`);
+  }
+  const redirects = vercel.redirects ?? [];
+  const group = redirects.find((r) => r.source.startsWith('/(') && r.source.endsWith(')/') && !r.source.includes(':'));
+  const expected = STATIC_ROUTES.filter((r) => r !== '/').map((r) => r.slice(1)).sort();
+  if (!group) {
+    err('vercel.json: redirect trailing slash untuk route statis tidak ditemukan (source "/(a|b|...)/")');
+  } else {
+    const alts = group.source.slice(2, -2).split('|').sort();
+    if (alts.join('|') !== expected.join('|')) err(`vercel.json: daftar redirect trailing slash (${alts.join(', ')}) tidak sama dengan STATIC_ROUTES (${expected.join(', ')})`);
+    if (group.destination !== '/$1' || group.permanent !== true) err('vercel.json: redirect route statis harus destination "/$1" dan permanent: true');
+  }
+  const art = redirects.find((r) => r.source === '/artikel/:slug/');
+  if (!art || art.destination !== '/artikel/:slug' || art.permanent !== true) err('vercel.json: redirect "/artikel/:slug/" -> "/artikel/:slug" (permanent) tidak ada');
+  for (const r of redirects) {
+    if (/^[/](admin|api)([/]|$)/.test(r.source) || /(^|[(|])(admin|api)([|)/]|$)/.test(r.source)) err(`vercel.json: redirect tidak boleh menyentuh admin/api: ${r.source}`);
   }
 }
 
@@ -139,6 +161,7 @@ for (const route of routes) {
   const { html, head } = result;
 
   if (!head) { err(`${r}: halaman tidak memanggil useSEO (tidak ada metadata)`); continue; }
+  if (head.noindex) err(`${r}: halaman publik memanggil useSEO dengan noindex`);
   if (head.path !== r) err(`${r}: useSEO path "${head.path}" tidak sama dengan route`);
   if (/Tidak Ditemukan/.test(head.title)) err(`${r}: halaman "tidak ditemukan"`);
   if (html.includes('h-16 w-16 border-t-4 border-b-4')) err(`${r}: HTML masih berisi spinner Suspense (lazy belum ter-resolve)`);
@@ -198,6 +221,30 @@ for (const route of routes) {
   rendered.push({ route: r, page, head, lastmod: route.lastmod });
 }
 
+// 3b) Halaman 404 -> dist/404.html (status 404 dari Vercel bila tak ada rewrite catch-all)
+const NOT_FOUND_PROBE = '/halaman-tidak-ditemukan-uji';
+let notFoundPage = null;
+{
+  let nfRes;
+  try {
+    nfRes = await render(NOT_FOUND_PROBE);
+  } catch (e) {
+    fatal(`render 404 error: ${e instanceof Error ? e.stack || e.message : e}`);
+  }
+  if (!nfRes.head || !nfRes.head.noindex) err('404: halaman NotFound harus useSEO({ noindex: true })');
+  else {
+    const nfH1 = count(nfRes.html, /<h1[\s>]/g);
+    if (nfH1 !== 1) err(`404: harus tepat 1 <h1>, ditemukan ${nfH1}`);
+    if (nfRes.html.includes('h-16 w-16 border-t-4 border-b-4')) err('404: HTML masih berisi spinner Suspense');
+    if (seenTitles.has(nfRes.head.title)) err(`404: title sama dengan ${seenTitles.get(nfRes.head.title)}`);
+    notFoundPage = buildPage(template, '*', nfRes.html, renderHeadTags(nfRes.head));
+    if (count(notFoundPage, /<link rel="canonical"/g) !== 0) err('404: tidak boleh ada canonical');
+    if (count(notFoundPage, /<meta name="robots" content="noindex, nofollow"/g) !== 1) err('404: harus tepat 1 meta robots noindex');
+    if (count(notFoundPage, /<title>/g) !== 1) err('404: harus tepat 1 <title>');
+    if (count(notFoundPage, /<meta name="description"/g) !== 1) err('404: harus tepat 1 meta description');
+  }
+}
+
 // 4) Link internal harus menuju route publik / file statis yang ada
 for (const { route, page } of rendered) {
   const body = page.slice(page.indexOf('<div id="root"'));
@@ -235,8 +282,9 @@ for (const { route, page, head, lastmod } of rendered) {
     indexable: true,
   });
 }
+fs.writeFileSync(path.join(DIST, '404.html'), notFoundPage, 'utf-8');
 fs.mkdirSync(path.dirname(MANIFEST), { recursive: true });
-fs.writeFileSync(MANIFEST, JSON.stringify({ site: SITE_URL, routes: manifest }, null, 2), 'utf-8');
+fs.writeFileSync(MANIFEST, JSON.stringify({ site: SITE_URL, notFound: '404.html', routes: manifest }, null, 2), 'utf-8');
 
-console.log(`[prerender] ${manifest.length} route ter-prerender, ${warnings.length} peringatan, 0 error. Manifest: ${path.relative(ROOT, MANIFEST)}`);
+console.log(`[prerender] ${manifest.length} route ter-prerender, ${warnings.length} peringatan, 0 error. 404: dist/404.html. Manifest: ${path.relative(ROOT, MANIFEST)}`);
 for (const m of manifest) console.log(`  ${m.path.padEnd(46)} ${m.lastmod ?? '(tanpa lastmod)'}  ${m.file}`);

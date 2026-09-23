@@ -24,6 +24,8 @@ interface SEOInput {
   path: string;
   /** Path gambar root-relative (mis. "/pelayanan-matras.png") atau URL absolut. Default: hero-section.png */
   image?: string;
+  /** Halaman tidak untuk diindeks (mis. 404): meta robots noindex, TANPA canonical/og:url. */
+  noindex?: boolean;
 }
 
 /** Data <head> final untuk satu route (sudah di-resolve). */
@@ -33,13 +35,15 @@ export interface HeadData {
   description: string;
   url: string;
   image: string;
+  noindex: boolean;
 }
 
 /** Diisi entry-server.tsx saat prerender; null di browser. */
 export const HeadCollectorContext = createContext<{ current: HeadData | null } | null>(null);
 
-function resolveHead({ title, description, path, image }: SEOInput): HeadData {
+function resolveHead({ title, description, path, image, noindex }: SEOInput): HeadData {
   return {
+    noindex: noindex === true,
     path,
     title: `${title} | ${SITE_NAME}`,
     description,
@@ -62,6 +66,13 @@ function escapeAttr(value: string): string {
 export function renderHeadTags(head: HeadData): string {
   const meta = (attr: 'name' | 'property', key: string, content: string) =>
     `<meta ${attr}="${key}" content="${escapeAttr(content)}" />`;
+  if (head.noindex) {
+    return [
+      `<title>${escapeAttr(head.title)}</title>`,
+      meta('name', 'description', head.description),
+      meta('name', 'robots', 'noindex, nofollow'),
+    ].join('\n    ');
+  }
   return [
     `<title>${escapeAttr(head.title)}</title>`,
     meta('name', 'description', head.description),
@@ -100,9 +111,9 @@ function upsertLink(rel: string, href: string) {
   el.setAttribute('href', href);
 }
 
-export function useSEO({ title, description, path, image }: SEOInput) {
+export function useSEO({ title, description, path, image, noindex }: SEOInput) {
   const collector = useContext(HeadCollectorContext);
-  const head = resolveHead({ title, description, path, image });
+  const head = resolveHead({ title, description, path, image, noindex });
 
   // Server/prerender: catat data head saat render.
   if (collector) collector.current = head;
@@ -110,6 +121,16 @@ export function useSEO({ title, description, path, image }: SEOInput) {
   useEffect(() => {
     document.title = head.title;
     upsertMeta('name', 'description', head.description);
+
+    if (head.noindex) {
+      // Halaman tak untuk diindeks: noindex, dan tidak boleh ada canonical
+      // sisa halaman sebelumnya (navigasi SPA).
+      upsertMeta('name', 'robots', 'noindex, nofollow');
+      document.head.querySelector('link[rel="canonical"]')?.remove();
+      return;
+    }
+    // Halaman indexable: buang noindex sisa halaman 404 sebelumnya.
+    document.head.querySelector('meta[name="robots"]')?.remove();
     upsertLink('canonical', head.url);
 
     upsertMeta('property', 'og:type', 'website');
@@ -125,5 +146,5 @@ export function useSEO({ title, description, path, image }: SEOInput) {
     upsertMeta('name', 'twitter:description', head.description);
     upsertMeta('name', 'twitter:image', head.image);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [title, description, path, image]);
+  }, [title, description, path, image, noindex]);
 }

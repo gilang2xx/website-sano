@@ -1,7 +1,7 @@
 import React from 'react';
 import { createRoot, hydrateRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import App, { preloadRoute } from './App';
+import App, { preloadRoute, isPublicRoute } from './App';
 import { beginAttributionHydration } from './utils/attribution';
 
 const rootElement = document.getElementById('root');
@@ -26,7 +26,13 @@ const normalizePath = (p: string) => (p.length > 1 ? p.replace(/\/+$/, '') : p) 
 const ssgPath = rootElement.getAttribute('data-ssg-path');
 const currentPath = normalizePath(window.location.pathname);
 
-if (ssgPath && normalizePath(ssgPath) === currentPath && rootElement.hasChildNodes()) {
+// dist/404.html memakai penanda "*": HTML itu sah untuk URL APA PUN yang bukan
+// route publik (Vercel menyajikannya dengan status 404).
+const isSsgForThisUrl = ssgPath === '*'
+  ? !isPublicRoute(currentPath)
+  : ssgPath !== null && normalizePath(ssgPath) === currentPath;
+
+if (isSsgForThisUrl && rootElement.hasChildNodes()) {
   // href WhatsApp harus sama dengan HTML server saat hydration (lihat
   // utils/attribution.ts); Layout menempelkan tag referral setelahnya.
   beginAttributionHydration();
