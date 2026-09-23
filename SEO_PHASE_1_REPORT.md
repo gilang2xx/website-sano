@@ -151,10 +151,39 @@ Build Vercel selesai tanpa error, artinya `npm run build` (termasuk SSR build + 
 
 **Tindakan yang dibutuhkan dari pemilik project:** pilih salah satu — (a) beri saya *Protection Bypass for Automation* (URL/secret sementara) untuk preview, (b) nonaktifkan proteksi khusus Preview sementara, atau (c) jalankan sendiri pengujian §9 dan kirim hasilnya. Catatan: ada **dua** project Vercel pada repo yang sama — konfirmasi mana yang melayani sanomatrassehat.com dan apakah keduanya memang disengaja.
 
+## 8b. Hasil uji di Vercel Preview (project )
+
+Akses: Protection Bypass for Automation (dibuat pemilik project, **sementara — hapus setelah selesai**). Hanya GET/HEAD; **tidak ada POST ke **, form tidak disubmit, login admin tidak dicoba. Project  tidak bisa diuji (bypass hanya untuk ; tetap SSO 302). Host:  (deployment commit ).
+
+**HTTP mentah (tanpa JS), 17 route × {tanpa slash, dengan slash}:**
+| Pemeriksaan | Hasil |
+|---|---|
+| Status | **200 untuk semua** (34 URL), **tanpa redirect** |
+| , canonical, H1,  di HTML awal | 17/17 route:  = route, canonical =  (tanpa slash), tepat 1 , tepat 1  — baik untuk  maupun  |
+| Cache |  ( pada beranda) |
+| ,  | 200; sitemap 17 ; robots tidak berubah (Allow: /) |
+|  | 200 (shell asli, tanpa ) |
+|  dan  | keduanya 200 (Decap termuat), tanpa noindex/redirect |
+|  | 405  (fungsi hidup, sesuai kode) |
+| Header beranda |  — **ini perilaku bawaan Vercel untuk Preview**, bukan bukti perilaku produksi |
+
+**URL tidak dikenal (rewrite ke ):** , , , ,  → semuanya **HTTP 200 (soft 404)**, HTML shell dengan canonical  dan title beranda (8,4 kB), tanpa konten beranda ter-prerender.  mengembalikan HTML 200 (memperkuat temuan M3).
+
+**Browser (Chrome headless, dimuat dari Vercel; cookie bypass; pixel pihak ketiga diblok):** 17 route × desktop/mobile = **34/34 lulus** tanpa console error/warning; 15/15 uji fungsional lulus (dark mode + toggle, atribusi iklan organik vs  vs sesi tersimpan vs navigasi SPA, navigasi/back + canonical, URL tak dikenal, trailing slash). Kontrol positif mismatch dan uji form **tidak** diulang di preview (form akan memanggil API nyata).
+
+**Kesimpulan yang boleh diambil:** build Fase 1 berjalan di Vercel,  dilayani langsung untuk URL dengan maupun tanpa slash, dan hydration bersih di lingkungan Vercel.
+**Belum boleh disimpulkan:** perilaku produksi (domain, www, header non-preview), 404 sungguhan, Core Web Vitals/FOUC Tailwind, Safari/Firefox/perangkat nyata, tanpa-JS di browser, admin OAuth, lead/CAPI nyata, artikel CMS nyata.
+
+**Implikasi untuk Fase 2:**
+1. **Duplikasi URL:**  dan  sama-sama 200 (self-canonical tanpa slash meredam risiko, tetapi ini dua URL crawlable). Jika memakai  untuk redirect, ** ikut terpengaruh**: Decap memuat  relatif terhadap URL halaman, sehingga di  (tanpa slash) bisa gagal — perlu pengecualian/pengujian.
+2. **Soft 404** terkonfirmasi di Vercel: perlu  + hapus rewrite catch-all (dan uji bahwa , , aset statis tetap benar).
+3. **** dijawab HTML 200 — hapus tag di  (Fase 0/2).
+4. ,  belum noindex (header  di , produksi perlu dicek karena preview selalu noindex).
+
 ## 9. Pengujian tertunda (butuh preview/produksi)
 
-1. Perilaku Vercel untuk `dist/<route>/index.html`: apakah `/klinik-matras` (tanpa slash) langsung 200, atau redirect ke `/klinik-matras/`, atau jatuh ke `spa-fallback.html` (aman tapi tanpa manfaat SSG). **Belum terbukti** — server uji lokal saya bukan Vercel.
-2. Rewrite ke `/spa-fallback.html` bekerja di Vercel; URL tak dikenal masih 200 (soft 404) sampai Fase 2.
+1. ~~Perilaku Vercel untuk `dist/<route>/index.html`~~ — **terjawab di §8b** (200 untuk dengan/tanpa slash, tanpa redirect).
+2. ~~Rewrite ke `/spa-fallback.html`~~ — **terkonfirmasi di §8b**; URL tak dikenal 200 (soft 404) sampai Fase 2.
 3. Status HTTP, header, redirect www/trailing slash, `robots.txt`, `sitemap.xml` di domain preview/produksi.
 4. Versi Node di build Vercel dan keberhasilan `npm run build` di sana (termasuk `vite build --ssr` dan waktu build).
 5. Regresi di Vercel: form ke `/api/lead` nyata (dengan `META_TEST_EVENT_CODE` di preview), OAuth `/admin` (catatan: `api/auth.ts:9,26` meng-hardcode `sanomatrassehat.com`, jadi login admin tidak bisa diuji di domain preview), event GTM/Pixel, publish CMS.
@@ -164,7 +193,7 @@ Build Vercel selesai tanpa error, artinya `npm run build` (termasuk SSR build + 
 
 | # | Risiko | Status |
 |---|---|---|
-| R1 | Vercel tidak melayani `dir/index.html` untuk URL tanpa slash seperti diharapkan (§9.1) | Terbuka; degradasi aman (jatuh ke shell SPA seperti sekarang) |
+| R1 | Vercel tidak melayani `dir/index.html` untuk URL tanpa slash | **Tertutup** — terbukti 200 di preview (§8b); muncul risiko baru: `/x` dan `/x/` sama-sama 200 |
 | R2 | Tailwind CDN: HTML prerender terlihat sebelum CSS dibuat oleh skrip CDN → potensi kilatan tak bergaya/CLS | Belum diukur; skrip CDN sinkron di `<head>` sehingga risiko diperkirakan rendah, **perlu dicek di preview**; solusi tuntas = Tailwind build-time (di luar Fase 1) |
 | R3 | Hydration mismatch pada konten masa depan (waktu/random/`window` saat render) | Terjaga oleh uji 52 cek; belum ada lint/CI otomatis untuk ini |
 | R4 | Build CMS: artikel CMS invalid menggagalkan build (sengaja) | Perlu edukasi editor; Vercel semestinya mempertahankan deployment sebelumnya (belum diverifikasi) |
@@ -187,7 +216,7 @@ Build Vercel selesai tanpa error, artinya `npm run build` (termasuk SSR build + 
 
 ## 12. Kesiapan Fase 2
 
-**Kode siap; verifikasi di Vercel belum.** Rekomendasi: **jangan mulai Fase 2 sebelum preview diuji**, karena keputusan Fase 2 (hapus rewrite catch-all, `404.html`, `trailingSlash/cleanUrls`) bergantung pada perilaku Vercel yang belum terbukti (§9.1–9.2).
+**Siap.** Perilaku Vercel yang menjadi dasar keputusan Fase 2 sudah terverifikasi di preview (§8b). Sisa yang tetap perlu dicek di produksi/GSC ada di §9.
 
 Prasyarat: (1) akses ke preview (bypass/nonaktifkan proteksi Preview, §8); (2) konfirmasi versi Node Vercel; (3) keputusan bentuk URL kanonik; (4) konfirmasi desc artikel yang tertukar bila ingin diperbaiki di fase konten.
 
