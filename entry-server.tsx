@@ -8,29 +8,61 @@ import { StaticRouter } from 'react-router-dom/server';
 import App from './App';
 import { HeadCollectorContext, renderHeadTags } from './hooks/useSEO';
 import type { HeadData } from './hooks/useSEO';
-import { loadCmsArticles } from './utils/content';
+import { loadCmsArticles, loadBeforeAfterEntries, indoDateToIso } from './utils/content';
+import {
+  ARTICLE_SLUG_PATTERN,
+  ISO_DATE_PATTERN,
+  LEGACY_ARTICLES,
+  SITE_URL,
+  canonicalUrl,
+  getPublicRoutes,
+} from './seo/routes';
+import type { PublicRoute } from './seo/routes';
 
-/** Route publik statis. HARUS sinkron dengan <Routes> di App.tsx. */
-export const STATIC_ROUTES = [
-  '/',
-  '/layanan',
-  '/pricelist',
-  '/artikel',
-  '/tentang-kami',
-  '/before-after',
-  '/kontak',
-  '/klinik-matras',
-  '/klinik-sofa',
-  '/sano-clean',
-  '/kebijakan-privasi',
-];
-
-/** Slug artikel yang ditulis lewat CMS (content/artikel/*.md). */
-export function getCmsArticleSlugs(): string[] {
-  return loadCmsArticles().map((article) => article.slug);
+/** Normalisasi tanggal frontmatter (YAML bisa menghasilkan Date) menjadi YYYY-MM-DD, atau lempar error yang jelas. */
+function toIsoDate(value: unknown, context: string): string {
+  const iso = value instanceof Date ? value.toISOString().slice(0, 10) : String(value ?? '');
+  const parsed = new Date(`${iso}T00:00:00Z`);
+  const real = ISO_DATE_PATTERN.test(iso) && !Number.isNaN(parsed.getTime()) && parsed.toISOString().slice(0, 10) === iso;
+  if (!real) throw new Error(`${context}: tanggal tidak valid ("${String(value)}", harus YYYY-MM-DD)`);
+  return iso;
 }
 
-export { renderHeadTags };
+/**
+ * Daftar route publik final (statis + artikel lama + artikel CMS) dengan
+ * lastmod dari data konten. Divalidasi keras: slug CMS harus berformat
+ * URL-aman dan tidak bentrok dengan artikel lain, tanggal harus valid.
+ * lastmod di masa depan dibuang (tidak valid untuk sitemap).
+ */
+export function listPublicRoutes(): PublicRoute[] {
+  const today = new Date().toISOString().slice(0, 10);
+  const legacySlugs = new Set(LEGACY_ARTICLES.map((a) => a.slug));
+  const seen = new Set<string>();
+
+  const cms = loadCmsArticles().map((article) => {
+    const file = `content/artikel/${article.slug}.md`;
+    if (!ARTICLE_SLUG_PATTERN.test(article.slug)) {
+      throw new Error(`${file}: nama file/slug harus huruf kecil, angka, dan tanda hubung saja`);
+    }
+    if (legacySlugs.has(article.slug) || seen.has(article.slug)) {
+      throw new Error(`${file}: slug bentrok dengan artikel lain`);
+    }
+    seen.add(article.slug);
+    return { slug: article.slug, date: toIsoDate(article.date, file) };
+  });
+
+  const beforeAfterDates = loadBeforeAfterEntries()
+    .map((entry) => (entry.date ? toIsoDate(entry.date, `content/before-after/${entry.id}.md`) : ''))
+    .filter(Boolean)
+    .sort();
+
+  return getPublicRoutes(cms, beforeAfterDates.pop()).map((route) => ({
+    ...route,
+    lastmod: route.lastmod && route.lastmod <= today ? route.lastmod : undefined,
+  }));
+}
+
+export { renderHeadTags, canonicalUrl, SITE_URL, LEGACY_ARTICLES, indoDateToIso };
 
 export interface RenderResult {
   html: string;

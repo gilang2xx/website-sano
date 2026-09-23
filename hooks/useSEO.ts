@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect } from 'react';
+import { SITE_URL, canonicalUrl } from '../seo/routes';
 
 // Dipakai di setiap halaman untuk kasih title/description/OG tag yang UNIK per
 // route -- sebelum ini semua halaman berbagi satu <title> statis dari
@@ -12,7 +13,6 @@ import { createContext, useContext, useEffect } from 'react';
 //    HTML statis tiap route. Di browser context ini null, jadi tidak ada
 //    perubahan perilaku.
 
-const SITE_URL = 'https://sanomatrassehat.com';
 const SITE_NAME = 'KLINIK MATRAS by SANO CARE';
 const DEFAULT_IMAGE = `${SITE_URL}/hero-section.png`;
 
@@ -43,7 +43,7 @@ function resolveHead({ title, description, path, image }: SEOInput): HeadData {
     path,
     title: `${title} | ${SITE_NAME}`,
     description,
-    url: `${SITE_URL}${path}`,
+    url: canonicalUrl(path),
     image: image
       ? (image.startsWith('http') ? image : `${SITE_URL}${image}`)
       : DEFAULT_IMAGE,
