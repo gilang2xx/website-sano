@@ -3,11 +3,119 @@
 Tanggal: 2026-09-24 · Branch: `feat/seo-ssg-implementation` (11 commit di depan `main`, 0 di belakang)
 Referensi: [SEO_PHASE_2B_REPORT.md](SEO_PHASE_2B_REPORT.md), [SEO_PHASE_2A_REPORT.md](SEO_PHASE_2A_REPORT.md), [VERCEL_PRODUCTION_MAPPING.md](VERCEL_PRODUCTION_MAPPING.md)
 
-**Kesimpulan singkat:** dari sisi kode dan seluruh pemeriksaan yang bisa saya lakukan secara read-only, branch **siap untuk di-merge**. Tidak ada blocker teknis pada kode. Ada **2 blocker yang sifatnya keputusan/konfirmasi owner** (§4) dan beberapa temuan HIGH yang sebaiknya selesai sebelum merge, terutama penanganan domain sekunder. **Production belum lulus apa pun** dari sudut pandang build baru: production saat ini masih menjalankan build lama (SPA), dan hasil Preview **tidak** saya anggap sebagai bukti production. Yang dibuktikan untuk production hanyalah keadaan **sekarang** (baseline) plus jalur domain/OAuth/API yang tidak berubah oleh merge.
+**Kesimpulan singkat (versi awal; status terkini ada di §0):** dari sisi kode dan seluruh pemeriksaan yang bisa saya lakukan secara read-only, branch **siap untuk di-merge**. Tidak ada blocker teknis pada kode. Ada **2 blocker yang sifatnya keputusan/konfirmasi owner** (§4) dan beberapa temuan HIGH yang sebaiknya selesai sebelum merge, terutama penanganan domain sekunder. **Production belum lulus apa pun** dari sudut pandang build baru: production saat ini masih menjalankan build lama (SPA), dan hasil Preview **tidak** saya anggap sebagai bukti production. Yang dibuktikan untuk production hanyalah keadaan **sekarang** (baseline) plus jalur domain/OAuth/API yang tidak berubah oleh merge.
 
 **Batasan pekerjaan ini (dipatuhi):** read-only; tidak ada merge/push ke `main`, deploy production, perubahan setting Vercel, DNS, domain, env, atau project sekunder; protection tidak dimatikan; bypass secret lama tidak dipakai lagi dan tidak dicetak; tidak ada POST/lead/event iklan; sitemap tidak dikirim ulang.
 
 **Perubahan kode pada fase ini (dijelaskan lebih dulu sesuai instruksi):** hanya **satu file alat baru**, `scripts/verify-production.mjs` (permintaan tugas 7). File di folder `scripts/` tidak disajikan ke pengunjung, tidak dimuat oleh aplikasi, dan tidak mengubah build/perilaku runtime. Tidak ada perubahan UI, aset, dependency, `vercel.json`, atau konfigurasi. Tidak ada perubahan kode lain yang saya anggap diperlukan untuk rilis.
+
+---
+
+## 0. FINAL PRE-RELEASE GATE (pembaruan 2026-09-24, ±03:15 UTC)
+
+> **Catatan pembaruan:** bagian §1–§4 di bawah adalah audit sebelum owner menyimpan pengaturan project sekunder. Status terkini domain sekunder, Ignored Build Step, dan checklist akhir ada di bagian ini dan **menggantikan** temuan H-1 (domain sekunder) serta baris "Protection" sekunder di §1.
+
+### 0.1 Ringkasan keputusan
+
+| Aspek | Keputusan |
+|---|---|
+| Kode/artefak (branch `feat/seo-ssg-implementation`, HEAD `f662e15`) | **GO** — `tsc` exit 0; `npm run build` exit 0 (17 route, 0 error, `404.html`, sitemap 17 URL); skrip verifikasi 67/67 pada build lokal; `main` tidak berubah (`1b7cf8a`), branch `ahead 13, behind 0` |
+| Domain sekunder | **RESOLVED (PASS)** — terkunci dan tidak lagi membangun (§0.3) |
+| **Merge/deploy production sekarang** | **NO-GO (belum)** — bukan karena kode, melainkan **3 hal owner yang belum terbukti/terpenuhi** (§0.5): kecocokan env Production, kesiapan eksekusi rollback, dan izin eksplisit |
+
+### 0.2 Timeline bukti (UTC, 2026-09-24)
+
+| Waktu | Kejadian | Bukti |
+|---|---|---|
+| 00:31–00:32 | Push `90a3703`: **kedua** project membangun Preview | GitHub Deployments API |
+| 03:08:34 | `sano-website.vercel.app` **200 publik** (halaman, sitemap, `/admin/`, aset, `/api/lead` dieksekusi live `X-Vercel-Cache: MISS`) | probe GET/HEAD tanpa autentikasi |
+| ±03:09 | Owner melaporkan baru menekan Save "All Deployments" | pesan owner |
+| 03:09:32 | Semua path sekunder **302 → `vercel.com/sso-api`** | probe GET/HEAD |
+| 03:11:13 | Push commit kosong `f662e15` | Git |
+| 03:11:42 | `website-sano`: Preview dibangun. `sano-website-vs`: status **"Canceled by Ignored Build Step"**, **tidak ada deployment** | GitHub status + Deployments API |
+
+### 0.3 Domain sekunder — hasil uji tanpa autentikasi (TEST)
+
+`https://sano-website.vercel.app`, GET **dan** HEAD, tanpa cookie/header khusus, dengan cache-buster:
+`/`, `/klinik-matras`, `/sitemap.xml`, `/robots.txt`, `/admin/`, `/admin/config.yml`, `/api/lead`, `/hero-section.png`, `/assets/x.js` → **semuanya HTTP 302 ke `vercel.com/sso-api`** (18/18 permintaan). Body 15 byte, **0** penanda konten situs (`klinik matras`, `sanomatrassehat`, `data-ssg-path`, `id="root"`, `LocalBusiness`); `/api/lead` tidak lagi menjawab "Method not allowed". Kontrol: apex `/` tetap **200**; URL deployment produksi sekunder tetap 302 SSO. `verify-production.mjs --secondary=… --expect-secondary=protected` → **PASS**.
+Ini terbukti untuk permintaan tanpa login; tidak menguji login berhak (tidak perlu).
+
+### 0.4 Checklist akhir
+
+Label dasar bukti: **TEST** = saya uji secara teknis; **OWNER-CONFIRMED** = pernyataan owner, **bukan** bukti teknis; **NOT VERIFIED** = belum ada bukti.
+
+**Git & build**
+
+| # | Item | Status | Dasar / catatan |
+|---|---|---|---|
+| G1 | `main` belum berubah (`1b7cf8a`) | **PASS** | TEST: GitHub API + ref lokal |
+| G2 | Branch bersih, ter-push, `behind 0` (tanpa konflik), tanpa PR terbuka | **PASS** | TEST: compare API |
+| G3 | `tsc --noEmit` dan `npm run build` hijau di HEAD | **PASS** | TEST |
+| G4 | Build Preview sukses di `website-sano` untuk HEAD | **PASS** | TEST: status GitHub `success` |
+
+**Project utama `website-sano`**
+
+| # | Item | Status | Dasar / catatan |
+|---|---|---|---|
+| P1 | Production Branch = `main` | **OWNER-CONFIRMED** | Perilaku mendukung: deployment "Production" hanya muncul untuk push ke `main` (TEST, tidak sama dengan membaca setting) |
+| P2 | Ignored Build Step = Automatic | **OWNER-CONFIRMED** | TEST parsial: `vercel.json` tidak punya `ignoreCommand` (tidak menimpa dashboard) dan project ini membangun setiap push |
+| P3 | Node.js 24.x | **OWNER-CONFIRMED** | Konsisten: build sukses; versi tidak terbaca langsung |
+| P4 | Domain `sanomatrassehat.com` di project ini | **OWNER-CONFIRMED** | TEST pendukung: apex dilayani Vercel; `/api/auth` di apex punya env OAuth yang tidak ada di sekunder |
+| P5 | Target rollback: deployment Ready `1b7cf8a`, 9 Sep 2026 | **OWNER-CONFIRMED** | TEST parsial: rekaman GitHub `success` 2026-09-09 10:39:19 UTC, URL `website-sano-ewr56zx05-rigss-projects.vercel.app` masih ada (302 SSO, bukan 404) |
+| P6 | Instant Rollback **dapat dieksekusi** setelah deployment baru aktif (tombol aktif, batas paket) | **NOT VERIFIED** | Hanya terlihat di dashboard; tidak boleh saya jalankan |
+
+**Environment variable (dibandingkan dengan kebutuhan kode; hanya nama, tanpa nilai)**
+Owner **tidak melampirkan daftar/screenshot env** di pesan ini (satu-satunya gambar di sesi = dialog bypass lama), maka pencocokan ke daftar owner **tidak dapat dilakukan**.
+
+| Nama | Dipakai di | Bila hilang | Status Production |
+|---|---|---|---|
+| `GITHUB_OAUTH_CLIENT_ID` | `api/auth.ts:12`, `api/callback.ts:55` | Login CMS gagal (`/api/auth` 500) | **PASS** — TEST: `/api/auth` → 302 GitHub dengan `client_id` |
+| `GITHUB_OAUTH_CLIENT_SECRET` | `api/callback.ts:56` | Login CMS gagal di langkah callback | **NOT VERIFIED** (hanya terbukti dengan menyelesaikan login) |
+| `RESEND_API_KEY`, `LEAD_NOTIFICATION_EMAIL` | `api/_lib/emailNotify.ts:30-31` | **`/api/lead` menjawab 502; lead tidak sampai ke email** | **NOT VERIFIED** (kritis) |
+| `RESEND_FROM_EMAIL` | `emailNotify.ts:32` | Default `onboarding@resend.dev` | **NOT VERIFIED** (opsional) |
+| `META_DATASET_ID`, `META_ACCESS_TOKEN` | `api/_lib/metaCapi.ts:78-79` | Event server Meta gagal (tidak memblokir lead) | **NOT VERIFIED** |
+| `META_TEST_EVENT_CODE` | `api/lead.ts:71` | — | **NOT VERIFIED**; **tidak boleh terpasang di Production** (event masuk Test Events) |
+| `META_LEAD_CURRENCY`, `META_LEAD_DEFAULT_VALUE`, `META_LEAD_VALUE_MAP` | `metaCapi.ts:59-62` | Default IDR / 50000 / kosong | Opsional |
+| Env sisi klien / build | — | — | **PASS** — TEST: tidak ada `import.meta.env` maupun `process.env` di kode klien; tidak ada env yang dibutuhkan build |
+| `GEMINI_API_KEY` / `API_KEY` | tidak dipakai kode | — | **PASS** — TEST: tidak ada referensi; bila masih ada di dashboard boleh dihapus (LOW) |
+
+Catatan penting: **deployment baru akan menerapkan semua perubahan env sejak deployment production terakhir (9 Sep)**. Bila ada env yang diubah/dihapus sejak itu, efeknya baru muncul saat merge. Karena itu daftar env tetap perlu dicocokkan **sebelum** merge (B-1).
+
+**Project sekunder `sano-website-vs`**
+
+| # | Item | Status | Dasar / catatan |
+|---|---|---|---|
+| S1 | Ignored Build Step = "Don't build anything" (tersimpan) | **OWNER-CONFIRMED** dan **PASS (TEST)** | Push `f662e15`: `sano-website-vs: Canceled by Ignored Build Step`, tidak ada deployment; `website-sano` tetap membangun. Setting tidak terbaca langsung; efeknya terbukti |
+| S2 | Vercel Authentication = All Deployments (tersimpan) | **OWNER-CONFIRMED** dan **PASS (TEST)** | §0.3: 18/18 permintaan tanpa login → 302 SSO; 0 konten bocor |
+| S3 | `sano-website.vercel.app` tidak lagi dapat di-crawl/diakses publik | **PASS** | TEST §0.3 (sebelum 03:09 masih 200; sesudahnya terkunci) |
+| S4 | Tidak ada situs baru di sekunder saat merge | **PASS (TEST parsial)** | Build dibatalkan oleh Ignored Build Step; alias terkunci. Belum diuji pada push ke `main` (sengaja tidak dilakukan) |
+| S5 | Bypass secret lama dihapus/dirotasi | **NOT VERIFIED** | Tidak dapat diuji tanpa memakai secret lama (dilarang). Owner: konfirmasi daftar Protection Bypass (kosong/dirotasi) — secret baru jangan dibagikan di chat |
+
+**Skrip verifikasi & rollback**
+
+| # | Item | Status | Dasar / catatan |
+|---|---|---|---|
+| X1 | `verify-production.mjs` dan `verify-deployment.mjs`: sintaks valid, hanya GET/HEAD, tanpa POST, tanpa secret di berkas | **PASS** | TEST: `node --check`, grep |
+| X2 | Baseline production **sebelum merge** | **PASS** | TEST: 23/73 lulus, 50 gagal **sesuai harapan** (belum ada prerender/404 asli/redirect slash/noindex admin); domain, OAuth, `GET/HEAD /api/lead`, robots, sitemap, tracking lulus |
+| X3 | Skrip pada build baru di emulator lokal | **PASS** | TEST: 67/67 (alat bantu, **bukan** bukti Vercel/production) |
+| X4 | Skrip lulus di **production setelah merge** | **NOT VERIFIED** | Baru dapat dijalankan setelah deploy |
+| X5 | Rencana rollback terdokumentasi (§7) | **PASS** (dokumen) | Eksekusinya: lihat P6 |
+
+### 0.5 Blocker yang benar-benar tersisa
+
+| ID | Blocker | Siapa | Cara menutup |
+|---|---|---|---|
+| **B-1** | Env Production `website-sano` belum dicocokkan (khususnya `RESEND_API_KEY`, `LEAD_NOTIFICATION_EMAIL`, `GITHUB_OAUTH_CLIENT_SECRET`, `META_*`, dan **tidak adanya** `META_TEST_EVENT_CODE`); deployment baru akan menerapkan perubahan env sejak 9 Sep | Owner | Kirim screenshot Settings → Environment Variables **hanya kolom nama + centang scope** (nilai tersembunyi) untuk Production/Preview; saya cocokkan dengan tabel di atas |
+| **B-2** | Kesiapan eksekusi rollback belum terbukti (P6) | Owner | Buka deployment `1b7cf8a` (9 Sep) di `website-sano`, konfirmasi opsi **Instant Rollback/Promote tersedia (jangan diklik)**; catat batas paket bila ada |
+| **B-3** | Izin eksplisit owner untuk merge dan deploy production | Owner | Pernyataan tertulis; saya tidak akan merge/deploy sebelum itu |
+
+**Bukan blocker tetapi wajib dituntaskan:** S5 (konfirmasi bypass dirotasi/dihapus) — HIGH; uji manual login CMS dan satu lead terkontrol **hanya dengan izin terpisah** (H-3/H-4, §5 D).
+
+**Sudah tertutup di gate ini:** domain sekunder terlindungi (S2/S3), sekunder tidak membangun (S1), `main` tidak berubah (G1), kode/build/skrip siap (G3, X1–X3).
+
+### 0.6 Yang tidak dilakukan pada gate ini
+
+Tidak ada merge/push ke `main`, deploy, rollback, perubahan setting Vercel/DNS/env, POST, lead nyata, atau pemakaian bypass lama. Satu-satunya perubahan Git: satu commit kosong `f662e15` di **branch SEO** (memicu Preview `website-sano` otomatis) untuk menguji Ignored Build Step; plus pembaruan laporan ini.
 
 ---
 
