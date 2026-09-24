@@ -15,6 +15,13 @@ import { getCmsArticleBySlug, estimateReadTime } from '../utils/content';
 // visual yang sudah dipakai 6 artikel lama (hardcoded JSX), supaya artikel
 // baru terasa konsisten meski ditulis lewat panel admin, bukan kode.
 const markdownComponents = {
+  // Halaman artikel sudah punya SATU <h1> (judul artikel). Editor sering
+  // memulai isi dengan "# Judul" (tombol Heading 1 di Decap); tampilkan sebagai
+  // <h2> supaya halaman tidak punya dua H1 (buruk untuk SEO, dan build
+  // scripts/prerender.mjs menolak halaman dengan H1 ganda).
+  h1: (props: React.ComponentProps<'h2'>) => (
+    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-10 mb-4" {...props} />
+  ),
   h2: (props: React.ComponentProps<'h2'>) => (
     <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-10 mb-4" {...props} />
   ),
