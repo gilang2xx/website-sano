@@ -12,57 +12,135 @@ import { useSEO } from '../hooks/useSEO';
 import { getCmsArticleBySlug, estimateReadTime } from '../utils/content';
 
 // Styling untuk artikel yang datang dari CMS (Markdown) -- meniru gaya
-// visual yang sudah dipakai 6 artikel lama (hardcoded JSX), supaya artikel
-// baru terasa konsisten meski ditulis lewat panel admin, bukan kode.
+// visual yang sudah dipakai 6 artikel lama (hardcoded JSX: kotak callout
+// berwarna, kartu, kutipan beraksen, tabel), supaya artikel baru terasa
+// konsisten meski ditulis lewat panel admin, bukan kode. Semua aturan di sini
+// otomatis berlaku untuk artikel CMS mana pun; editor tidak perlu sintaks khusus:
+//   - paragraf yang seluruhnya **tebal** (>= 45 karakter)  -> kotak callout biru
+//   - paragraf diawali **Label:** (mis. "**Catatan:** ...")   -> kotak catatan kuning
+//   - daftar (- / 1.)                                        -> kartu
+//   - "> kutipan"                                            -> kutipan beraksen merah
+//   - paragraf pertama                                       -> teks pembuka besar (di wrapper)
+//   - tabel Markdown (| a | b |)                             -> tabel bergaya
+
+// Setiap komponen react-markdown menerima prop `node` (pohon hast). Jangan
+// pernah di-spread ke elemen DOM (sebelumnya membocorkan atribut node="[object Object]").
+interface HastNode { type: string; tagName?: string; value?: string; children?: HastNode[] }
+type MdProps<T extends React.ElementType> = React.ComponentProps<T> & { node?: HastNode };
+
+const hastText = (n?: HastNode): string =>
+  n?.type === 'text' ? (n.value ?? '') : (n?.children ?? []).map(hastText).join('');
+const contentChildren = (n?: HastNode) =>
+  (n?.children ?? []).filter((c) => !(c.type === 'text' && !(c.value ?? '').trim()));
+const isOnlyStrong = (n?: HastNode) => {
+  const kids = contentChildren(n);
+  return kids.length === 1 && kids[0].type === 'element' && kids[0].tagName === 'strong';
+};
+
+// Halaman artikel sudah punya SATU <h1> (judul artikel). Editor sering
+// memulai isi dengan "# Judul" (tombol Heading 1 di Decap); tampilkan sebagai
+// <h2> supaya halaman tidak punya dua H1 (buruk untuk SEO, dan build
+// scripts/prerender.mjs menolak halaman dengan H1 ganda).
+const MdHeading2 = ({ node, ...props }: MdProps<'h2'>) => (
+  <h2
+    className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mt-14 mb-5 pt-10 border-t border-slate-200 dark:border-slate-800 first:mt-0 first:pt-0 first:border-t-0"
+    {...props}
+  />
+);
+
 const markdownComponents = {
-  // Halaman artikel sudah punya SATU <h1> (judul artikel). Editor sering
-  // memulai isi dengan "# Judul" (tombol Heading 1 di Decap); tampilkan sebagai
-  // <h2> supaya halaman tidak punya dua H1 (buruk untuk SEO, dan build
-  // scripts/prerender.mjs menolak halaman dengan H1 ganda).
-  h1: (props: React.ComponentProps<'h2'>) => (
-    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-10 mb-4" {...props} />
+  h1: MdHeading2,
+  h2: MdHeading2,
+  h3: ({ node, ...props }: MdProps<'h3'>) => (
+    <h3
+      className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 pl-4 border-l-4 border-blue-500"
+      {...props}
+    />
   ),
-  h2: (props: React.ComponentProps<'h2'>) => (
-    <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mt-10 mb-4" {...props} />
-  ),
-  h3: (props: React.ComponentProps<'h3'>) => (
-    <h3 className="text-xl md:text-2xl font-bold text-slate-900 dark:text-white mt-8 mb-3" {...props} />
-  ),
-  h4: (props: React.ComponentProps<'h4'>) => (
+  h4: ({ node, ...props }: MdProps<'h4'>) => (
     <h4 className="text-lg font-bold text-slate-900 dark:text-white mt-6 mb-2" {...props} />
   ),
-  p: (props: React.ComponentProps<'p'>) => <p className="mb-6 leading-relaxed" {...props} />,
-  ul: (props: React.ComponentProps<'ul'>) => <ul className="list-disc pl-5 space-y-1 mb-6" {...props} />,
-  ol: (props: React.ComponentProps<'ol'>) => <ol className="list-decimal pl-5 space-y-1 mb-6" {...props} />,
-  strong: (props: React.ComponentProps<'strong'>) => (
+  p: ({ node, ...props }: MdProps<'p'>) => {
+    const text = hastText(node).trim();
+    // Kalimat kunci: seluruh paragraf tebal.
+    if (isOnlyStrong(node)) {
+      return text.length >= 45 ? (
+        <p
+          className="my-8 bg-blue-50 dark:bg-blue-900/20 border-l-4 border-blue-500 rounded-r-xl p-5 text-slate-800 dark:text-slate-100 leading-relaxed"
+          {...props}
+        />
+      ) : (
+        <p className="my-8 pl-4 border-l-4 border-blue-500 text-xl md:text-2xl font-extrabold text-blue-700 dark:text-blue-300 leading-snug" {...props} />
+      );
+    }
+    // Catatan berlabel: "**Catatan:** ...", "**Tips:** ...", dst.
+    const first = contentChildren(node)[0];
+    const label = first?.type === 'element' && first.tagName === 'strong' ? hastText(first).trim() : '';
+    if (label.length > 1 && label.length <= 30 && label.endsWith(':')) {
+      return (
+        <p
+          className="my-8 bg-amber-50 dark:bg-amber-900/20 border-l-4 border-amber-500 rounded-r-xl p-5 text-slate-700 dark:text-slate-200 leading-relaxed"
+          {...props}
+        />
+      );
+    }
+    return <p className="mb-6 leading-8 text-slate-600 dark:text-slate-300" {...props} />;
+  },
+  ul: ({ node, ...props }: MdProps<'ul'>) => (
+    <ul
+      className="my-8 list-disc space-y-3 pl-10 pr-6 py-6 bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 rounded-2xl marker:text-blue-500 text-slate-700 dark:text-slate-200"
+      {...props}
+    />
+  ),
+  ol: ({ node, ...props }: MdProps<'ol'>) => (
+    <ol
+      className="my-8 list-decimal space-y-3 pl-10 pr-6 py-6 bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 rounded-2xl marker:text-blue-500 marker:font-bold text-slate-700 dark:text-slate-200"
+      {...props}
+    />
+  ),
+  strong: ({ node, ...props }: MdProps<'strong'>) => (
     <strong className="text-slate-900 dark:text-white font-bold" {...props} />
   ),
   hr: () => <hr className="border-slate-200 dark:border-slate-800 my-10" />,
-  blockquote: (props: React.ComponentProps<'blockquote'>) => (
-    <blockquote className="bg-blue-600 text-white p-6 rounded-2xl shadow-lg my-8 not-italic" {...props} />
+  blockquote: ({ node, ...props }: MdProps<'blockquote'>) => (
+    <blockquote
+      className="my-8 bg-red-50 dark:bg-red-900/20 p-5 border-l-4 border-red-500 rounded-r-xl italic text-slate-700 dark:text-slate-300"
+      {...props}
+    />
   ),
-  a: (props: React.ComponentProps<'a'>) => (
+  a: ({ node, ...props }: MdProps<'a'>) => (
     <a className="text-blue-600 dark:text-blue-400 font-semibold hover:underline" target="_blank" rel="noreferrer" {...props} />
   ),
-  img: ({ src, alt }: React.ComponentProps<'img'>) => (
+  img: ({ src, alt }: MdProps<'img'>) => (
     <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
       <img src={src} alt={alt} className="w-full object-cover" loading="lazy" />
       {alt && <figcaption className="text-center text-xs text-slate-400 mt-2 italic">{alt}</figcaption>}
     </figure>
   ),
-  table: (props: React.ComponentProps<'table'>) => (
-    <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700 my-8">
+  table: ({ node, ...props }: MdProps<'table'>) => (
+    <div className="overflow-x-auto rounded-2xl border border-slate-200 dark:border-slate-700 shadow-lg my-8">
       <table className="w-full text-sm" {...props} />
     </div>
   ),
-  thead: (props: React.ComponentProps<'thead'>) => <thead className="bg-slate-50 dark:bg-slate-900/50" {...props} />,
-  th: (props: React.ComponentProps<'th'>) => (
+  thead: ({ node, ...props }: MdProps<'thead'>) => (
+    <thead className="bg-slate-100 dark:bg-slate-800 uppercase text-xs tracking-wide" {...props} />
+  ),
+  th: ({ node, ...props }: MdProps<'th'>) => (
     <th className="px-5 py-3 text-left font-bold text-slate-900 dark:text-white" {...props} />
   ),
-  td: (props: React.ComponentProps<'td'>) => (
+  td: ({ node, ...props }: MdProps<'td'>) => (
     <td className="px-5 py-3 text-slate-600 dark:text-slate-300 border-t border-slate-100 dark:border-slate-800" {...props} />
   ),
 };
+
+// Editor sering mengulang judul sebagai "# Judul" di awal isi; judulnya sudah tampil
+// sebagai <h1> di atas, jadi heading isi yang IDENTIK dengan judul disembunyikan.
+const normalizeTitle = (s: string) => s.replace(/\s+/g, ' ').trim().toLowerCase();
+const cmsComponentsFor = (title: string) => ({
+  ...markdownComponents,
+  h1: ({ node, ...props }: MdProps<"h2">) =>
+    normalizeTitle(hastText(node)) === normalizeTitle(title) ? null : <MdHeading2 {...props} />,
+});
 
 const ArtikelDetail: React.FC = () => {
   const { slug } = useParams();
@@ -835,9 +913,11 @@ const ArtikelDetail: React.FC = () => {
   const contentNode = article ? (
     article.content
   ) : (
-    <ReactMarkdown remarkPlugins={[remarkGfm, remarkUnwrapImages]} components={markdownComponents}>
-      {cmsArticle!.body}
-    </ReactMarkdown>
+    <div className="[&>p:first-of-type]:text-xl [&>p:first-of-type]:font-medium [&>p:first-of-type]:leading-9 [&>p:first-of-type]:text-slate-700 dark:[&>p:first-of-type]:text-slate-200">
+      <ReactMarkdown remarkPlugins={[remarkGfm, remarkUnwrapImages]} components={cmsComponentsFor(cmsArticle!.title)}>
+        {cmsArticle!.body}
+      </ReactMarkdown>
+    </div>
   );
 
   return (

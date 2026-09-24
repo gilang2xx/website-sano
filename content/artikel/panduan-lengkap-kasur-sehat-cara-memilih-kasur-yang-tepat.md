@@ -74,25 +74,12 @@ Karena itu, lapisan tidak harus dibuat sekeras fondasi.
 
 Dalam konsep SANO, ketebalan lapisan busa dapat disesuaikan dengan berat badan pengguna. Formulasi internal SANO membagi kebutuhan ketebalan busa sebagai berikut:
 
-**Berat badan**
-
-**Kisaran ketebalan busa**
-
-0–50 kg
-
-1–4 cm
-
-51–75 kg
-
-2–6 cm
-
-76–100 kg
-
-3–6 cm
-
-101 kg ke atas
-
-Custom berdasarkan berat badan dan keluhan
+| Berat badan | Kisaran ketebalan busa |
+| --- | --- |
+| 0–50 kg | 1–4 cm |
+| 51–75 kg | 2–6 cm |
+| 76–100 kg | 3–6 cm |
+| 101 kg ke atas | Custom berdasarkan berat badan dan keluhan |
 
 Angka tersebut merupakan formulasi konsep produk SANO, bukan standar universal untuk seluruh jenis kasur.
 
