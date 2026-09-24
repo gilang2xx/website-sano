@@ -97,6 +97,8 @@ interface ArtikelFrontmatter {
   date: string;
   image: string;
   desc: string;
+  /** Opsional: `draft: true` di frontmatter menyembunyikan artikel dari daftar, halaman, prerender, dan sitemap. */
+  draft?: boolean;
 }
 
 const articleFiles = import.meta.glob('/content/artikel/*.md', {
@@ -107,6 +109,7 @@ const articleFiles = import.meta.glob('/content/artikel/*.md', {
 
 export function loadCmsArticles(): CmsArticle[] {
   return Object.entries(articleFiles)
+    .filter(([, raw]) => fm<ArtikelFrontmatter>(raw).attributes.draft !== true)
     .map(([path, raw]) => {
       const { attributes, body } = fm<ArtikelFrontmatter>(raw);
       return {

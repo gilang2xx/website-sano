@@ -1,20 +1,58 @@
 import React, { Suspense, lazy } from 'react'; // Tambah Suspense & lazy
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, matchPath } from 'react-router-dom';
 import Layout from './components/Layout';
+import { STATIC_ROUTES, ARTICLE_ROUTE_PATTERN } from './seo/routes';
 
+type StaticRoutePath = (typeof STATIC_ROUTES)[number];
+type PageLoader = () => Promise<{ default: React.ComponentType }>;
+
+// Daftar route publik berasal dari SATU sumber: seo/routes.ts (dipakai juga
+// oleh prerender & sitemap). Tipe Record di bawah memaksa TypeScript menolak
+// build bila ada route di STATIC_ROUTES yang belum punya halaman di sini
+// (atau sebaliknya).
 // GANTI IMPORT BIASA MENJADI LAZY IMPORT
-const Home = lazy(() => import('./pages/Home'));
-const Layanan = lazy(() => import('./pages/Layanan'));
-const TentangKami = lazy(() => import('./pages/TentangKami'));
-const BeforeAfter = lazy(() => import('./pages/BeforeAfter'));
-const Kontak = lazy(() => import('./pages/Kontak'));
-const KlinikMatras = lazy(() => import('./pages/KlinikMatras'));
-const KlinikSofa = lazy(() => import('./pages/KlinikSofa'));
-const SanoClean = lazy(() => import('./pages/SanoClean'));
-const Pricelist = lazy(() => import('./pages/Pricelist'));
-const Artikel = lazy(() => import('./pages/Artikel'));
-const ArtikelDetail = lazy(() => import('./pages/ArtikelDetail'));
-const KebijakanPrivasi = lazy(() => import('./pages/KebijakanPrivasi'));
+const PAGE_LOADERS: Record<StaticRoutePath, PageLoader> = {
+  '/': () => import('./pages/Home'),
+  '/layanan': () => import('./pages/Layanan'),
+  '/pricelist': () => import('./pages/Pricelist'),
+  '/artikel': () => import('./pages/Artikel'),
+  '/tentang-kami': () => import('./pages/TentangKami'),
+  '/before-after': () => import('./pages/BeforeAfter'),
+  '/kontak': () => import('./pages/Kontak'),
+  '/klinik-matras': () => import('./pages/KlinikMatras'),
+  '/klinik-sofa': () => import('./pages/KlinikSofa'),
+  '/sano-clean': () => import('./pages/SanoClean'),
+  '/kebijakan-privasi': () => import('./pages/KebijakanPrivasi'),
+};
+const loadArtikelDetail: PageLoader = () => import('./pages/ArtikelDetail');
+const loadNotFound: PageLoader = () => import('./pages/NotFound');
+
+const PAGES = Object.fromEntries(
+  STATIC_ROUTES.map((path) => [path, lazy(PAGE_LOADERS[path])]),
+) as Record<StaticRoutePath, React.LazyExoticComponent<React.ComponentType>>;
+const ArtikelDetail = lazy(loadArtikelDetail);
+const NotFound = lazy(loadNotFound);
+
+// Dipakai index.tsx sebelum hydrateRoot(): muat chunk halaman untuk URL saat
+// ini lebih dulu supaya hydration tidak menampilkan spinner Suspense di atas
+// HTML hasil prerender. Turunan dari daftar route yang sama dengan <Routes>.
+const PRELOADERS: Array<[string, PageLoader]> = [
+  ...STATIC_ROUTES.map((path): [string, PageLoader] => [path, PAGE_LOADERS[path]]),
+  [ARTICLE_ROUTE_PATTERN, loadArtikelDetail],
+];
+
+const matchesRoute = (pathname: string) =>
+  PRELOADERS.find(([pattern]) => matchPath({ path: pattern, end: true }, pathname));
+
+/** true bila pathname cocok dengan salah satu route publik (tidak termasuk 404). */
+export function isPublicRoute(pathname: string): boolean {
+  return matchesRoute(pathname) !== undefined;
+}
+
+export function preloadRoute(pathname: string): Promise<unknown> {
+  const hit = matchesRoute(pathname);
+  return (hit ? hit[1] : loadNotFound)();
+}
 
 // Komponen Loading Sementara (Muncul saat pindah halaman)
 const LoadingSpinner = () => (
@@ -29,18 +67,12 @@ const App: React.FC = () => {
       {/* Bungkus Routes dengan Suspense */}
       <Suspense fallback={<LoadingSpinner />}>
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/layanan" element={<Layanan />} />
-          <Route path="/pricelist" element={<Pricelist />} />
-          <Route path="/artikel" element={<Artikel />} />
-          <Route path="/artikel/:slug" element={<ArtikelDetail />} />
-          <Route path="/tentang-kami" element={<TentangKami />} />
-          <Route path="/before-after" element={<BeforeAfter />} />
-          <Route path="/kontak" element={<Kontak />} />
-          <Route path="/klinik-matras" element={<KlinikMatras />} />
-          <Route path="/klinik-sofa" element={<KlinikSofa />} />
-          <Route path="/sano-clean" element={<SanoClean />} />
-          <Route path="/kebijakan-privasi" element={<KebijakanPrivasi />} />
+          {STATIC_ROUTES.map((path) => {
+            const Page = PAGES[path];
+            return <Route key={path} path={path} element={<Page />} />;
+          })}
+          <Route path={ARTICLE_ROUTE_PATTERN} element={<ArtikelDetail />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Suspense>
     </Layout>

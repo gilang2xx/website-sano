@@ -1,114 +1,81 @@
-// Runs after `vite build` (see package.json "build" script) and writes
-// dist/sitemap.xml. Two article sources are merged: (1) the 6 legacy
-// articles, read straight out of pages/Artikel.tsx source text, and (2)
-// new articles published via the CMS (content/artikel/*.md). Either way,
-// a new /artikel/:slug entry appears in the sitemap automatically the next
-// time the site is built/deployed -- no manual sitemap editing needed.
+// Menulis dist/sitemap.xml dari dist-ssr/prerender-manifest.json yang dibuat
+// scripts/prerender.mjs. Artinya sitemap == himpunan halaman yang BENAR-BENAR
+// diprerender (daftar route berasal dari satu sumber: seo/routes.ts + artikel
+// CMS di content/artikel/*.md). Tidak ada daftar route kedua yang perlu
+// dirawat, dan artikel CMS baru otomatis masuk setelah build.
+//
+// Aturan isi sitemap:
+//   - hanya halaman publik, valid, dan indexable (dari manifest);
+//   - <loc> = canonical persis (https://sanomatrassehat.com + path);
+//   - TIDAK ada admin, API, 404, spa-fallback, redirect, noindex, draft;
+//   - <lastmod> hanya bila ada tanggal perubahan konten valid (bukan tanggal build);
+//   - tanpa <changefreq>/<priority> (diabaikan Google).
+// Skrip ini gagal keras (exit 1) bila ada yang melanggar.
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
-import fm from 'front-matter';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const ROOT = path.resolve(__dirname, '..');
-const SITE_URL = 'https://sanomatrassehat.com';
+const DIST = path.join(ROOT, 'dist');
+const MANIFEST = path.join(ROOT, 'dist-ssr', 'prerender-manifest.json');
 
-const STATIC_ROUTES = [
-  { path: '/', priority: '1.0', changefreq: 'weekly' },
-  { path: '/klinik-matras', priority: '0.9', changefreq: 'monthly' },
-  { path: '/klinik-sofa', priority: '0.9', changefreq: 'monthly' },
-  { path: '/sano-clean', priority: '0.9', changefreq: 'monthly' },
-  { path: '/layanan', priority: '0.8', changefreq: 'monthly' },
-  { path: '/pricelist', priority: '0.7', changefreq: 'monthly' },
-  { path: '/artikel', priority: '0.7', changefreq: 'weekly' },
-  { path: '/before-after', priority: '0.6', changefreq: 'monthly' },
-  { path: '/kontak', priority: '0.6', changefreq: 'yearly' },
-  { path: '/tentang-kami', priority: '0.5', changefreq: 'yearly' },
-  { path: '/kebijakan-privasi', priority: '0.3', changefreq: 'yearly' },
-];
+const MAX_URLS = 50000; // batas protokol sitemap
+const EXCLUDED_PREFIXES = ['/admin', '/api', '/404', '/spa-fallback', '/_'];
+const ISO_DATE = /^\d{4}-\d{2}-\d{2}$/;
 
-const INDO_MONTHS = {
-  jan: '01', feb: '02', mar: '03', apr: '04', mei: '05', jun: '06',
-  jul: '07', agu: '08', ags: '08', sep: '09', okt: '10', nov: '11', des: '12',
-};
-
-function parseIndoDate(raw) {
-  const match = /^(\d{1,2})\s+([A-Za-z]+)\s+(\d{4})$/.exec(raw.trim());
-  if (!match) return null;
-  const [, day, monthName, year] = match;
-  const month = INDO_MONTHS[monthName.toLowerCase().slice(0, 3)];
-  if (!month) return null;
-  return `${year}-${month}-${day.padStart(2, '0')}`;
+function fail(message) {
+  console.error(`[sitemap] GAGAL: ${message}`);
+  process.exit(1);
 }
 
-function getLegacyArticleRoutes() {
-  const source = fs.readFileSync(path.join(ROOT, 'pages/Artikel.tsx'), 'utf-8');
-  // Each article object lists `slug` before `date`, e.g.:
-  //   slug: "konsep-matras-sehat",
-  //   ...
-  //   date: "27 Des 2025",
-  const entryRegex = /slug:\s*["']([^"']+)["'][\s\S]*?date:\s*["']([^"']+)["']/g;
-  const today = new Date().toISOString().slice(0, 10);
-  const routes = [];
-  let match;
-  while ((match = entryRegex.exec(source)) !== null) {
-    const [, slug, dateRaw] = match;
-    routes.push({
-      path: `/artikel/${slug}`,
-      priority: '0.6',
-      changefreq: 'monthly',
-      lastmod: parseIndoDate(dateRaw) || today,
-    });
+if (!fs.existsSync(MANIFEST)) fail('dist-ssr/prerender-manifest.json tidak ada (jalankan scripts/prerender.mjs dulu)');
+const { site, routes } = JSON.parse(fs.readFileSync(MANIFEST, 'utf-8'));
+if (site !== 'https://sanomatrassehat.com') fail(`domain canonical tidak sesuai: ${site}`);
+if (!Array.isArray(routes) || routes.length === 0) fail('manifest kosong');
+if (routes.length > MAX_URLS) fail(`melebihi ${MAX_URLS} URL; pecah menjadi sitemap index`);
+
+const xmlEscape = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;');
+const today = new Date().toISOString().slice(0, 10);
+const seen = new Set();
+const entries = [];
+
+for (const r of routes) {
+  const expectedUrl = r.path === '/' ? `${site}/` : `${site}${r.path}`;
+  if (!r.indexable) fail(`${r.path}: tidak indexable tetapi ada di manifest`);
+  if (EXCLUDED_PREFIXES.some((p) => r.path === p || r.path.startsWith(`${p}/`))) fail(`${r.path}: route dikecualikan tidak boleh masuk sitemap`);
+  if (r.url !== expectedUrl) fail(`${r.path}: url manifest "${r.url}" != canonical "${expectedUrl}"`);
+  if (seen.has(r.url)) fail(`URL duplikat: ${r.url}`);
+  seen.add(r.url);
+  if (r.path !== '/' && r.path.endsWith('/')) fail(`${r.path}: trailing slash tidak diizinkan`);
+
+  // File HTML harus ada, self-canonical, dan tidak noindex
+  const file = path.join(DIST, r.file);
+  if (!fs.existsSync(file)) fail(`${r.path}: file ${r.file} tidak ada di dist/`);
+  const html = fs.readFileSync(file, 'utf-8');
+  const canonical = (html.match(/<link rel="canonical" href="([^"]*)"/) || [])[1];
+  if (canonical !== r.url) fail(`${r.path}: canonical di ${r.file} ("${canonical}") != ${r.url}`);
+  if (/<meta[^>]+name="robots"[^>]*noindex/i.test(html)) fail(`${r.path}: ${r.file} mengandung noindex`);
+
+  if (r.lastmod !== null && r.lastmod !== undefined) {
+    if (!ISO_DATE.test(r.lastmod)) fail(`${r.path}: lastmod tidak valid "${r.lastmod}"`);
+    if (r.lastmod > today) fail(`${r.path}: lastmod di masa depan "${r.lastmod}"`);
   }
-  return routes;
+  entries.push(r);
 }
 
-function getCmsArticleRoutes() {
-  const dir = path.join(ROOT, 'content/artikel');
-  if (!fs.existsSync(dir)) return [];
+const urls = entries
+  .map((r) => `  <url>\n    <loc>${xmlEscape(r.url)}</loc>${r.lastmod ? `\n    <lastmod>${r.lastmod}</lastmod>` : ''}\n  </url>`)
+  .join('\n');
+const xml = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
 
-  const today = new Date().toISOString().slice(0, 10);
-  return fs
-    .readdirSync(dir)
-    .filter((file) => file.endsWith('.md'))
-    .map((file) => {
-      const raw = fs.readFileSync(path.join(dir, file), 'utf-8');
-      const { attributes } = fm(raw);
-      const slug = file.replace(/\.md$/, '');
-      return {
-        path: `/artikel/${slug}`,
-        priority: '0.6',
-        changefreq: 'monthly',
-        // Tanggal artikel CMS sudah ISO dari frontmatter, tidak perlu di-parse.
-        lastmod: attributes.date || today,
-      };
-    });
-}
+fs.mkdirSync(DIST, { recursive: true });
+fs.writeFileSync(path.join(DIST, 'sitemap.xml'), xml, 'utf-8');
 
-function buildXml(routes) {
-  const today = new Date().toISOString().slice(0, 10);
-  const urls = routes
-    .map(({ path: routePath, priority, changefreq, lastmod }) => `  <url>
-    <loc>${SITE_URL}${routePath}</loc>
-    <lastmod>${lastmod || today}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
-  </url>`)
-    .join('\n');
+// Baca ulang & cocokkan dengan manifest
+const written = fs.readFileSync(path.join(DIST, 'sitemap.xml'), 'utf-8');
+const locs = [...written.matchAll(/<loc>([^<]*)<\/loc>/g)].map((m) => m[1]);
+if (locs.length !== entries.length) fail(`jumlah <loc> (${locs.length}) != jumlah route (${entries.length})`);
 
-  return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`;
-}
-
-const legacyArticleRoutes = getLegacyArticleRoutes();
-const cmsArticleRoutes = getCmsArticleRoutes();
-const routes = [...STATIC_ROUTES, ...legacyArticleRoutes, ...cmsArticleRoutes];
-const xml = buildXml(routes);
-
-const outDir = path.join(ROOT, 'dist');
-fs.mkdirSync(outDir, { recursive: true });
-fs.writeFileSync(path.join(outDir, 'sitemap.xml'), xml, 'utf-8');
-
-console.log(
-  `[sitemap] Wrote dist/sitemap.xml with ${routes.length} URLs ` +
-  `(${legacyArticleRoutes.length} legacy articles + ${cmsArticleRoutes.length} CMS articles).`,
-);
+const withLastmod = entries.filter((e) => e.lastmod).length;
+console.log(`[sitemap] dist/sitemap.xml: ${locs.length} URL (${withLastmod} dengan lastmod dari data konten, ${locs.length - withLastmod} tanpa lastmod).`);
