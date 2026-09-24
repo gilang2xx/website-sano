@@ -21,7 +21,7 @@ Referensi: [SEO_PHASE_2B_REPORT.md](SEO_PHASE_2B_REPORT.md), [SEO_PHASE_2A_REPOR
 |---|---|
 | Kode/artefak (branch `feat/seo-ssg-implementation`, HEAD `f662e15`) | **GO** — `tsc` exit 0; `npm run build` exit 0 (17 route, 0 error, `404.html`, sitemap 17 URL); skrip verifikasi 67/67 pada build lokal; `main` tidak berubah (`1b7cf8a`), branch `ahead 13, behind 0` |
 | Domain sekunder | **RESOLVED (PASS)** — terkunci dan tidak lagi membangun (§0.3) |
-| **Merge/deploy production sekarang** | **NO-GO (belum)** — bukan karena kode, melainkan **3 hal owner yang belum terbukti/terpenuhi** (§0.5): kecocokan env Production, kesiapan eksekusi rollback, dan izin eksplisit |
+| **Merge/deploy production sekarang** | **Belum diizinkan (menunggu izin eksplisit owner)** — tidak ada blocker teknis. Setelah screenshot owner (§0.7): rollback = fitur ada, keadaan aktif baru terlihat setelah deploy baru (risiko rendah); env Production lengkap **kecuali `RESEND_API_KEY`/`LEAD_NOTIFICATION_EMAIL` yang tidak terlihat** (cacat fungsional yang sudah ada sebelum merge, bukan disebabkan merge — perlu keputusan owner) |
 
 ### 0.2 Timeline bukti (UTC, 2026-09-24)
 
@@ -57,12 +57,12 @@ Label dasar bukti: **TEST** = saya uji secara teknis; **OWNER-CONFIRMED** = pern
 
 | # | Item | Status | Dasar / catatan |
 |---|---|---|---|
-| P1 | Production Branch = `main` | **OWNER-CONFIRMED** | Perilaku mendukung: deployment "Production" hanya muncul untuk push ke `main` (TEST, tidak sama dengan membaca setting) |
+| P1 | Production Branch = `main` | **OWNER-SCREENSHOT** | Screenshot dashboard `website-sano` → Environments → Production: *Branch is `main`*, "Every commit pushed to the main branch will create a Production Deployment"; *Auto-assign Custom Production Domains: Enabled*. Perilaku mendukung (TEST): deployment "Production" hanya muncul untuk push ke `main` |
 | P2 | Ignored Build Step = Automatic | **OWNER-CONFIRMED** | TEST parsial: `vercel.json` tidak punya `ignoreCommand` (tidak menimpa dashboard) dan project ini membangun setiap push |
 | P3 | Node.js 24.x | **OWNER-CONFIRMED** | Konsisten: build sukses; versi tidak terbaca langsung |
-| P4 | Domain `sanomatrassehat.com` di project ini | **OWNER-CONFIRMED** | TEST pendukung: apex dilayani Vercel; `/api/auth` di apex punya env OAuth yang tidak ada di sekunder |
-| P5 | Target rollback: deployment Ready `1b7cf8a`, 9 Sep 2026 | **OWNER-CONFIRMED** | TEST parsial: rekaman GitHub `success` 2026-09-09 10:39:19 UTC, URL `website-sano-ewr56zx05-rigss-projects.vercel.app` masih ada (302 SSO, bukan 404) |
-| P6 | Instant Rollback **dapat dieksekusi** setelah deployment baru aktif (tombol aktif, batas paket) | **NOT VERIFIED** | Hanya terlihat di dashboard; tidak boleh saya jalankan |
+| P4 | Domain `sanomatrassehat.com` di project ini | **OWNER-SCREENSHOT** | Screenshot: `sanomatrassehat.com` tercantum di Domains (Production) project `website-sano`. TEST pendukung: apex dilayani Vercel; `/api/auth` di apex punya env OAuth yang tidak ada di sekunder. `www` **tidak** tercantum di kotak itu (redirect 307 www→apex terlihat di HTTP; lokasi konfigurasinya NOT VERIFIED) |
+| P5 | Target rollback: deployment Ready `1b7cf8a`, 9 Sep 2026 | **OWNER-SCREENSHOT** | Screenshot daftar Deployments (filter Production): `1b7cf8a` **Ready**, berlabel **Production** (deployment aktif sekarang). TEST parsial: rekaman GitHub `success` 2026-09-09 10:39:19 UTC; URL `website-sano-ewr56zx05-…` masih ada (302 SSO, bukan 404). Kandidat cadangan Ready: `6a92be2`, `e2ae5f7`, `06a2d75` |
+| P6 | Instant Rollback **dapat dieksekusi** setelah deployment baru aktif | **PARTIAL** (OWNER-SCREENSHOT) | Screenshot menu `…` pada `1b7cf8a`: *Instant Rollback* dan *Promote* tampil tetapi **abu-abu (nonaktif)**. Itu wajar untuk deployment yang **sedang menjadi production** — jadi menunjukkan fitur ada, **bukan** bahwa tombol aktif nanti. Keadaan aktif baru terlihat setelah ada deployment production yang lebih baru. Menu juga menyediakan *Redeploy* (cadangan). Sisa risiko: rendah |
 
 **Environment variable (dibandingkan dengan kebutuhan kode; hanya nama, tanpa nilai)**
 Owner **tidak melampirkan daftar/screenshot env** di pesan ini (satu-satunya gambar di sesi = dialog bypass lama), maka pencocokan ke daftar owner **tidak dapat dilakukan**.
@@ -70,11 +70,11 @@ Owner **tidak melampirkan daftar/screenshot env** di pesan ini (satu-satunya gam
 | Nama | Dipakai di | Bila hilang | Status Production |
 |---|---|---|---|
 | `GITHUB_OAUTH_CLIENT_ID` | `api/auth.ts:12`, `api/callback.ts:55` | Login CMS gagal (`/api/auth` 500) | **PASS** — TEST: `/api/auth` → 302 GitHub dengan `client_id` |
-| `GITHUB_OAUTH_CLIENT_SECRET` | `api/callback.ts:56` | Login CMS gagal di langkah callback | **NOT VERIFIED** (hanya terbukti dengan menyelesaikan login) |
-| `RESEND_API_KEY`, `LEAD_NOTIFICATION_EMAIL` | `api/_lib/emailNotify.ts:30-31` | **`/api/lead` menjawab 502; lead tidak sampai ke email** | **NOT VERIFIED** (kritis) |
-| `RESEND_FROM_EMAIL` | `emailNotify.ts:32` | Default `onboarding@resend.dev` | **NOT VERIFIED** (opsional) |
-| `META_DATASET_ID`, `META_ACCESS_TOKEN` | `api/_lib/metaCapi.ts:78-79` | Event server Meta gagal (tidak memblokir lead) | **NOT VERIFIED** |
-| `META_TEST_EVENT_CODE` | `api/lead.ts:71` | — | **NOT VERIFIED**; **tidak boleh terpasang di Production** (event masuk Test Events) |
+| `GITHUB_OAUTH_CLIENT_SECRET` | `api/callback.ts:56` | Login CMS gagal di langkah callback | **ADA (OWNER-SCREENSHOT)**: `GITHUB_OA…T_SECRET`, Production, "Updated Sep 9" (nama terpotong di tampilan; fungsi tetap baru terbukti dengan login penuh) |
+| `RESEND_API_KEY`, `LEAD_NOTIFICATION_EMAIL` | `api/_lib/emailNotify.ts:30-31` | **`/api/lead` menjawab 502; lead tidak sampai ke email** | **TIDAK TERLIHAT di env Production (FAIL menurut screenshot)** — lihat §0.7 |
+| `RESEND_FROM_EMAIL` | `emailNotify.ts:32` | Default `onboarding@resend.dev` | Tidak terlihat (opsional) |
+| `META_DATASET_ID`, `META_ACCESS_TOKEN` | `api/_lib/metaCapi.ts:78-79` | Event server Meta gagal (tidak memblokir lead) | **ADA (OWNER-SCREENSHOT)**: `META_ACCESS_TOKEN` Production ("Added Jul 18"); `META_DATASET_ID` Production **dan Preview**. Token hanya di Production → Preview tidak dapat mengirim event CAPI |
+| `META_TEST_EVENT_CODE` | `api/lead.ts:71` | — | **Tidak ada di daftar Production (OWNER-SCREENSHOT) — sesuai yang diinginkan** (event tidak masuk Test Events) |
 | `META_LEAD_CURRENCY`, `META_LEAD_DEFAULT_VALUE`, `META_LEAD_VALUE_MAP` | `metaCapi.ts:59-62` | Default IDR / 50000 / kosong | Opsional |
 | Env sisi klien / build | — | — | **PASS** — TEST: tidak ada `import.meta.env` maupun `process.env` di kode klien; tidak ada env yang dibutuhkan build |
 | `GEMINI_API_KEY` / `API_KEY` | tidak dipakai kode | — | **PASS** — TEST: tidak ada referensi; bila masih ada di dashboard boleh dihapus (LOW) |
@@ -105,8 +105,8 @@ Catatan penting: **deployment baru akan menerapkan semua perubahan env sejak dep
 
 | ID | Blocker | Siapa | Cara menutup |
 |---|---|---|---|
-| **B-1** | Env Production `website-sano` belum dicocokkan (khususnya `RESEND_API_KEY`, `LEAD_NOTIFICATION_EMAIL`, `GITHUB_OAUTH_CLIENT_SECRET`, `META_*`, dan **tidak adanya** `META_TEST_EVENT_CODE`); deployment baru akan menerapkan perubahan env sejak 9 Sep | Owner | Kirim screenshot Settings → Environment Variables **hanya kolom nama + centang scope** (nilai tersembunyi) untuk Production/Preview; saya cocokkan dengan tabel di atas |
-| **B-2** | Kesiapan eksekusi rollback belum terbukti (P6) | Owner | Buka deployment `1b7cf8a` (9 Sep) di `website-sano`, konfirmasi opsi **Instant Rollback/Promote tersedia (jangan diklik)**; catat batas paket bila ada |
+| ~~**B-1**~~ **Dipersempit (§0.7)** | Env Production sudah dicocokkan dengan screenshot owner: OAuth (2), `META_ACCESS_TOKEN`, `META_DATASET_ID` ada; `META_TEST_EVENT_CODE` tidak ada. **Sisa: `RESEND_API_KEY` dan `LEAD_NOTIFICATION_EMAIL` tidak terlihat di `website-sano`** (owner ingat memasangnya di SANSS Hub). Cacat ini sudah ada sebelum merge (form lead menjawab 502) sehingga **bukan blocker merge**, tetapi **wajib diputuskan** dan harus beres sebelum uji lead terkontrol | Owner | Lihat §0.7 langkah 1–3 |
+| ~~**B-2**~~ **Ditutup sebagian (P6)** | Screenshot: target `1b7cf8a` Ready dan aktif; menu Instant Rollback/Promote ada tetapi nonaktif (wajar untuk deployment yang sedang live). Keadaan aktif baru terlihat setelah deploy baru | Owner | Terima risiko rendah, atau buka menu `…` deployment `6a92be2` (Ready, bukan live) dan lihat apakah Instant Rollback aktif — jangan diklik. Cadangan: *Redeploy* `1b7cf8a` atau `git revert -m 1` |
 | **B-3** | Izin eksplisit owner untuk merge dan deploy production | Owner | Pernyataan tertulis; saya tidak akan merge/deploy sebelum itu |
 
 **Bukan blocker tetapi wajib dituntaskan:** S5 (konfirmasi bypass dirotasi/dihapus) — HIGH; uji manual login CMS dan satu lead terkontrol **hanya dengan izin terpisah** (H-3/H-4, §5 D).
@@ -116,6 +116,35 @@ Catatan penting: **deployment baru akan menerapkan semua perubahan env sejak dep
 ### 0.6 Yang tidak dilakukan pada gate ini
 
 Tidak ada merge/push ke `main`, deploy, rollback, perubahan setting Vercel/DNS/env, POST, lead nyata, atau pemakaian bypass lama. Satu-satunya perubahan Git: satu commit kosong `f662e15` di **branch SEO** (memicu Preview `website-sano` otomatis) untuk menguji Ignored Build Step; plus pembaruan laporan ini.
+
+### 0.7 Pembaruan setelah screenshot owner dan pengecekan `RESEND_*` (2026-09-24)
+
+**Bukti dari owner (screenshot; bukan pengujian teknis saya):**
+1. Deployments (Production): `1b7cf8a` **Ready**, badge **Production** (aktif). Deployment Ready lain: `6a92be2`, `e2ae5f7`, `06a2d75`, dst. Menu `…` pada `1b7cf8a`: Instant Rollback dan Promote **abu-abu** (wajar bagi deployment yang sedang live), Redeploy tersedia.
+2. Environments → Production (`website-sano`): Branch tracking `main`; `sanomatrassehat.com` di Domains; Environment Variables (filter Production, seluruh daftar hanya **4 baris**): `GITHUB_OA…T_SECRET` (Production, Updated Sep 9), `GITHUB_OA…LIENT_ID` (Production, Updated Sep 9), `META_ACCESS_TOKEN` (Production, Added Jul 18), `META_DATASET_ID` (Production and Preview, Added Jul 18).
+
+**Temuan yang mengubah status:**
+- P1/P4/P5 naik dari OWNER-CONFIRMED ke OWNER-SCREENSHOT; P6 = PARTIAL (lihat tabel §0.4).
+- **`RESEND_API_KEY` dan `LEAD_NOTIFICATION_EMAIL` tidak ada di daftar Production `website-sano`.** Owner menyampaikan kemungkinan variabel itu dipasang di **SANSS Hub** (project lain). Bila benar, `api/lead.ts` di `website-sano` gagal di langkah email (`emailNotify.ts:30-35` melempar error → `lead.ts:86-93` menjawab **502**) dan formulir kontak menampilkan "Gagal mengirim data" (`pages/Kontak.tsx`), sementara event server Meta tetap terkirim (`Promise.allSettled`, `lead.ts:47-73`) dan pixel klien tetap menembakkan `Lead`. Ini **cacat yang sudah ada sebelum merge**; merge tidak menyebabkan maupun memperbaikinya.
+
+**Hasil pengecekan yang diminta owner ("cek karena lupa"), read-only:**
+
+| Pengecekan | Hasil | Arti |
+|---|---|---|
+| Gmail (connector yang tersedia di sesi ini), metadata saja, tanpa subjek/isi: subjek "Lead baru", pengirim Resend, "Lead baru dari Konsultasi Gratis" | **0 thread** | **Tidak konklusif**: mailbox ini bukan inbox notifikasi |
+| Gmail: surat ke/`deliveredto` `sanocareofficial@gmail.com` | **0 thread** | Mailbox yang terhubung **bukan** `sanocareofficial@gmail.com`; saya tidak menggali mailbox tak terkait lebih jauh (privasi) |
+| SANSS CRM/Hub (tool `statistik_crm`, `ringkasan_sumber_lead`, `tren_traffic_lead`) | **Tidak tersedia** (koneksi terputus/butuh otorisasi) | Tidak dapat memeriksa apakah lead formulir masuk lewat Hub |
+| Cek env `RESEND_*` melalui HTTP | Tidak mungkin tanpa POST (`GET /api/lead` = 405 sebelum membaca env) | Tetap tidak terbukti oleh saya |
+
+**Kesimpulan jujur:** dari screenshot, `RESEND_*` **tidak terpasang di `website-sano` Production**; dugaan owner (terpasang di SANSS Hub) konsisten dengan itu. **Belum terbukti** bahwa formulir benar-benar gagal di production dan sejak kapan; itu hanya dapat dipastikan lewat inbox notifikasi (mis. pencarian `subject:"Lead baru"` di kotak `LEAD_NOTIFICATION_EMAIL` — tanggal email terakhir), tampilan riwayat lead di Hub, atau satu lead terkontrol.
+
+**Langkah untuk owner (urutan):**
+1. **Cek inbox `LEAD_NOTIFICATION_EMAIL`** (kemungkinan `sanocareofficial@gmail.com`): cari `subject:"Lead baru"`, catat tanggal terakhir. Ada email sesudah 18 Jul → env pernah bekerja (mungkin hilang/dipindah sejak itu). Tidak ada sama sekali → formulir belum pernah mengirim email dari `website-sano`.
+2. **Cek project SANSS Hub → Environment Variables:** apakah `RESEND_API_KEY`/`LEAD_NOTIFICATION_EMAIL` memang di sana (nama saja). Juga tab **Shared** di `website-sano` (variabel tim yang ditautkan). Jangan salin nilai ke chat.
+3. **Putuskan:** bila email formulir memang dibutuhkan di `website-sano`, tambahkan `RESEND_API_KEY`, `LEAD_NOTIFICATION_EMAIL` (dan `RESEND_FROM_EMAIL` dengan domain terverifikasi bila ada) ke **Production** `website-sano` — perubahan env berlaku setelah **deployment berikutnya** (merge ini bisa menjadi deployment itu). Bila lead sengaja ditangani Hub, catat bahwa `api/lead.ts` saat ini **tidak** memanggil Hub (perlu perubahan kode terpisah, di luar SEO).
+4. Uji lead terkontrol hanya setelah 1–3 jelas dan dengan izin terpisah.
+
+**Dampak pada keputusan rilis:** tidak ada blocker teknis baru untuk merge SEO. Gate merge kini tinggal: **B-3 izin eksplisit owner**; **S5** (konfirmasi bypass lama dirotasi) tetap HIGH; keputusan `RESEND_*` di atas (HIGH, cacat lama). B-2 (rollback) dianggap ditutup sebagian dengan risiko rendah.
 
 ---
 
