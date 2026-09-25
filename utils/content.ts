@@ -41,6 +41,18 @@ function slugFromPath(path: string): string {
   return path.split('/').pop()!.replace(/\.md$/, '');
 }
 
+/**
+ * Decap menulis tanggal frontmatter TANPA tanda kutip (`date: 2026-09-24`), dan
+ * parser YAML (front-matter/js-yaml) mengubahnya menjadi objek `Date`, bukan
+ * string. Objek Date tidak bisa dirender React dan merusak perbandingan/format
+ * tanggal. Selalu normalkan ke string "YYYY-MM-DD" (js-yaml membaca tanggal
+ * tanpa jam sebagai UTC, jadi toISOString() tidak menggeser hari).
+ */
+function normalizeDate(value: unknown): string {
+  if (value instanceof Date && !Number.isNaN(value.getTime())) return value.toISOString().slice(0, 10);
+  return value == null ? '' : String(value);
+}
+
 // ─── Before / After ──────────────────────────────────────────────────────
 
 export interface BeforeAfterEntry {
@@ -70,7 +82,7 @@ export function loadBeforeAfterEntries(): BeforeAfterEntry[] {
   return Object.entries(beforeAfterFiles)
     .map(([path, raw]) => {
       const { attributes } = fm<BeforeAfterFrontmatter>(raw);
-      return { id: slugFromPath(path), date: '', ...attributes };
+      return { id: slugFromPath(path), ...attributes, date: normalizeDate(attributes.date) };
     })
     // Terbaru dulu. Entri lama (migrasi awal) dikasih tanggal urut manual
     // di frontmatter-nya supaya urutan tampilan tetap sama seperti semula;
@@ -112,12 +124,13 @@ export function loadCmsArticles(): CmsArticle[] {
     .filter(([, raw]) => fm<ArtikelFrontmatter>(raw).attributes.draft !== true)
     .map(([path, raw]) => {
       const { attributes, body } = fm<ArtikelFrontmatter>(raw);
+      const date = normalizeDate(attributes.date);
       return {
         slug: slugFromPath(path),
         title: attributes.title,
         category: attributes.category,
-        date: attributes.date,
-        displayDate: isoToIndoDate(attributes.date),
+        date,
+        displayDate: isoToIndoDate(date),
         image: attributes.image,
         desc: attributes.desc,
         body,
