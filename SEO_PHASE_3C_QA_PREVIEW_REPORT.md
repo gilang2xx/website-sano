@@ -167,3 +167,18 @@ Visual QA: hasil §2 di atas tetap berlaku; perubahan gate hanya menyentuh bagia
 ## F. Rekomendasi
 
 **BELUM GO — tunggu validasi Preview.** Semua acceptance criteria yang bisa diuji tanpa Preview lulus (kode, klaim, testimonial, headline, tsc, build, routing, sitemap, hydration, layout, tautan, secret scan, domain sekunder tetap terlindungi). Begitu `verify-deployment` pada Preview lulus penuh (79/79 setara) dan browser QA Preview bersih, rekomendasi berubah menjadi **GO**, dan merge ke main tetap menunggu izin eksplisit owner.
+
+---
+
+# FINAL PREVIEW VALIDATION — percobaan ke-2 (26 Sep 2026)
+
+**Status: BLOCKER (lingkungan), Preview tetap belum tervalidasi.** `VERCEL_BYPASS_SECRET` **tidak terbaca** dari proses sesi ini: Bash (`len=0`) dan PowerShell (variabel tidak ada; tidak ada variabel `VERCEL*`/`BYPASS*` sama sekali). Kemungkinan variabel diset setelah Claude Code dijalankan, atau di terminal/sesi lain; proses yang sudah berjalan tidak menerima environment baru. Nilai tidak pernah dicetak/disimpan/di-commit.
+
+- Uji dengan header bypass kosong pada alias Preview `website-sano-git-feat-seo-ssg-implementation-rigss-projects.vercel.app` → tetap **302 SSO** (wajar tanpa secret). Tidak ada konten Preview yang dapat dibaca, sehingga verify-deployment, browser QA Preview, dan verifikasi visual panel "Ulasan Pelanggan di Google" belum dijalankan. Tidak ada percobaan bypass lain dan Deployment Protection tidak diubah.
+- **Butir 6 (dapat diverifikasi tanpa secret) LULUS:** `https://sano-website.vercel.app` untuk `/`, `/perbaikan-kasur-amblas`, `/sitemap.xml`, `/admin/` semuanya **302 (15 byte, redirect SSO)**, 0 konten situs bocor (tidak ada "Klinik Matras"/`<h1>` di body). Tetap protected.
+- Production `sanomatrassehat.com/perbaikan-kasur-amblas` masih 404 (belum ada deploy production, sesuai).
+- Tidak ada POST, tidak ada event Meta, tidak ada merge/deploy production.
+
+**Tindakan korektif minimum (owner):** tutup lalu buka ulang VS Code/Claude Code **setelah** `VERCEL_BYPASS_SECRET` diset (User environment variable di Windows atau `$env:` di terminal yang meluncurkan Claude Code), lalu minta lanjut. Jalankan yang tertunda: `node scripts/verify-deployment.mjs --base=<alias Preview>`, browser QA Preview (`/`, `/klinik-matras`, `/perbaikan-kasur-amblas`, `/pricelist`, `/kontak`, 2 artikel, dark mode, atribusi WA), dan cek visual panel ulasan Home (tanpa testimonial/nama/foto/bintang).
+
+**Rekomendasi: masih BELUM GO** (bukan karena kegagalan kode, tetapi karena bukti Preview belum ada). Hasil lokal pada build final tetap: tsc bersih, 19 route/19 sitemap, harness 38/38 + 24/24, verify-deployment emulator 79/79, 0 orphan/tautan rusak, secret scan bersih.
