@@ -39,7 +39,7 @@ const Artikel: React.FC = () => {
     {
       id: 3,
       slug: "dampak-kasur-rusak",
-      title: "Awas! Kasur Anda Mungkin Sedang Merusak Tulang Belakang",
+      title: "Apakah Kasur Anda Masih Menopang Tubuh dengan Baik? Kenali Tandanya",
       category: "Edukasi",
       date: "28 Des 2025",
       image: "/kasur-merusak-tulang.jpg", 
@@ -50,7 +50,7 @@ const Artikel: React.FC = () => {
     {
       id: 4,
       slug: "dampak-jangka-panjang-kasur-salah",
-      title: "Dampak Jangka Panjang Menggunakan Kasur yang Salah: Bahaya yang Mengintai di Balik Tidur Anda",
+      title: "Menggunakan Kasur yang Tidak Sesuai dalam Jangka Panjang: Yang Perlu Anda Ketahui",
       category: "Edukasi",
       date: "28 Des 2025",
       image: "/dampak-kasur-salah.jpg", 

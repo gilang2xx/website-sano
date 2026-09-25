@@ -371,7 +371,7 @@ const articleDatabase: any = {
 
     // ARTIKEL: AWAS KASUR MERUSAK TULANG BELAKANG
     "dampak-kasur-rusak": {
-      title: "Awas! Kasur Anda Mungkin Sedang Merusak Tulang Belakang: Inilah Alasannya",
+      title: "Apakah Kasur Anda Masih Menopang Tubuh dengan Baik? Kenali Tandanya",
       date: "28 Des 2025",
       desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya.",
       readTime: "7 Menit Baca",
@@ -399,7 +399,7 @@ const articleDatabase: any = {
 
           {/* BAGIAN 1: 4 PENYEBAB UTAMA */}
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-6">
-            4 Penyebab Utama Kasur Merusak Tubuh Anda
+            4 Faktor yang Membuat Kasur Kurang Mendukung Tubuh Anda
           </h2>
           <p className="mb-8 text-slate-600 dark:text-slate-300">
             Mengapa kasur yang terlihat "baik-baik saja" di permukaan bisa menjadi sumber malapetaka bagi kesehatan? Berikut adalah faktor teknisnya:
@@ -521,7 +521,7 @@ const articleDatabase: any = {
 
     // ARTIKEL 4: DAMPAK JANGKA PANJANG (UPDATED CONTENT)
     "dampak-jangka-panjang-kasur-salah": {
-      title: "Dampak Jangka Panjang Menggunakan Kasur yang Salah: Bahaya yang Mengintai di Balik Tidur Anda",
+      title: "Menggunakan Kasur yang Tidak Sesuai dalam Jangka Panjang: Yang Perlu Anda Ketahui",
       date: "28 Des 2025",
       desc: "Kerusakan struktur kasur atau struktur tidak sesuai dengan tubuh yang dibiarkan bertahun-tahun akan memaksa tubuh beradaptasi secara tidak alami.",
       readTime: "7 Menit Baca",
