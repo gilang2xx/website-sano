@@ -106,3 +106,64 @@ Dihitung dari HTML prerender (tautan `<a href="/…">` internal, tanpa self-link
 ## 9. Rekomendasi
 
 **NO-GO (belum) untuk merge/production.** Kode aman secara lokal (tsc, build, routing, sitemap, hydration, layout, tautan) dan perbaikan klaim/tautan 3C sudah masuk branch. Prasyarat GO: (1) validasi Preview lulus (butuh bypass dari owner), (2) owner menyetujui copy dan status klaim di §8 nomor 2-4. Setelah itu: merge → deploy → kirim ulang sitemap di GSC. Tidak akan ada merge/deploy tanpa izin eksplisit owner.
+
+---
+
+# FINAL PREVIEW GATE (update setelah keputusan owner)
+
+Commit gate: `b53214d` di `feat/seo-ssg-implementation` (sudah di-push; Preview otomatis dipicu oleh Vercel). Tidak ada merge, tidak ada deploy production, tidak ada POST, tidak ada event Meta, tidak ada perubahan env/setting Vercel.
+
+## A. Perubahan terakhir
+
+| Keputusan owner | Tindakan |
+|---|---|
+| Testimonial tanpa sumber/izin tidak boleh tampil | `components/GoogleReviewSection.tsx` tidak lagi merender kartu testimonial (Ratna, Farhan, Krisna, Su Jannah), foto, bintang, atau angka rating. Sisa: panel "Ulasan Pelanggan di Google" + tombol "Lihat & Tulis Ulasan di Google" (tautan yang sudah ada). Data tetap di `constants.ts` dengan komentar "TIDAK DITAMPILKAN"; tampilkan lagi hanya setelah sumber dan izin terbukti. Terverifikasi: nama-nama tersebut tidak ada di HTML prerender Home. |
+| Headline artikel terlalu menakutkan → edukatif | `dampak-kasur-rusak`: "Awas! Kasur Anda Mungkin Sedang Merusak Tulang Belakang…" → **"Apakah Kasur Anda Masih Menopang Tubuh dengan Baik? Kenali Tandanya"**. `dampak-jangka-panjang-kasur-salah`: "…Bahaya yang Mengintai di Balik Tidur Anda" → **"Menggunakan Kasur yang Tidak Sesuai dalam Jangka Panjang: Yang Perlu Anda Ketahui"**. Subjudul internal "4 Penyebab Utama Kasur Merusak Tubuh Anda" → "4 Faktor yang Membuat Kasur Kurang Mendukung Tubuh Anda". Diterapkan di halaman detail, daftar artikel, dan `<title>`. Slug/URL tidak berubah (tidak ada redirect diperlukan). |
+| Orthopedic, wording kesehatan, teknisi 10+ tahun | Sudah diterapkan/dipertahankan di 3C sebelumnya; tidak diubah lagi. |
+| Jangan mengarang garansi/area/durasi/harga/FAQ | Ditinjau ulang seluruh copy `/klinik-matras` dan `/perbaikan-kasur-amblas` (lihat B). Tidak ada perubahan yang diperlukan. |
+| `/upgrade-kasur`, halaman kota, RESEND_* | Tidak dibuat / tidak disentuh. |
+
+## B. Verifikasi klaim pada halaman baru & hub
+
+Setiap pernyataan operasional ditelusuri ke sumber yang sudah tayang atau knowledge base owner:
+- Harga: **tidak ada angka harga** di kedua halaman; semua mengarah ke `/pricelist` (dan halaman itu tidak ditambah harga baru).
+- Durasi: tidak ada.
+- Garansi: hanya "Layanan kami dilindungi garansi; cakupan dan lama berbeda menurut paket, konfirmasi saat konsultasi" (KB owner; tanpa angka).
+- Area layanan: tidak ada klaim. Hanya fakta alamat workshop (Pancoran Mas, Kota Depok) dari halaman Kontak; jemput/antar = "konfirmasikan lokasi lewat WhatsApp".
+- Alur Konsultasi→Estimasi→Jemput→Proses→Pembayaran (QRIS/transfer/tunai)→Antar: dari Home. "Update proses lewat foto/video" dan langkah diagnosis: KB owner, ditulis "dapat".
+- ±1 cm penurunan fondasi: dari artikel pilar yang sudah tayang.
+- FAQ springbed: jawaban hati-hati ("kirim foto, kami nilai"), tanpa janji cakupan merek/jenis.
+- Konsultasi "gratis": sudah dipakai di CTA Home.
+
+## C. Hasil Preview — BLOCKED (bypass tidak tersedia di sesi)
+
+- `VERCEL_BYPASS_SECRET` **tidak ada** di environment sesi ini (shell, environment user/mesin Windows, maupun `.env*` di repo semuanya kosong). Nilai tidak dicetak, tidak disimpan, tidak di-commit. Saya tidak memakai secret lama yang sudah dihapus dan tidak menonaktifkan Deployment Protection.
+- Yang teramati tanpa kredensial (HEAD, tanpa cookie/bypass): alias Preview branch SEO → **302 ke SSO Vercel** (aktif, terlindungi); domain sekunder `sano-website.vercel.app` (`/` dan `/perbaikan-kasur-amblas`) → **302 SSO** (tetap terlindungi, tidak terpengaruh, tanpa perubahan); production `sanomatrassehat.com/perbaikan-kasur-amblas` → **404** (halaman baru belum di production, sesuai: belum ada deploy production).
+- Karena itu ceklis Preview (19 route, sitemap, canonical, metadata, H1, 404, trailing slash, internal link, admin, API GET/HEAD, aset, WA attribution, hydration) **belum dijalankan pada Preview**. Perintah untuk menjalankannya begitu env tersedia:
+  `VERCEL_BYPASS_SECRET=<diset di shell, jangan diketik ke berkas> node scripts/verify-deployment.mjs --base=https://website-sano-git-feat-seo-ssg-implementation-rigss-projects.vercel.app`
+  (hanya GET/HEAD; skrip tidak mencetak secret; tidak ada POST).
+- Agar env terbaca: set di sesi terminal yang sama dengan Claude Code (mis. `$env:VERCEL_BYPASS_SECRET="…"` di PowerShell sebelum menjalankan Claude Code), lalu minta lanjutkan.
+
+## D. Hasil lokal pada build final (emulator Vercel lokal, tracker diblokir)
+
+| Uji | Hasil |
+|---|---|
+| `tsc --noEmit` | bersih |
+| `npm run build` | 19 route, 0 error, sitemap 19 URL |
+| Secret scan (`git grep` pola secret/token/bypass + nilai bypass lama) | 0 temuan; tidak ada berkas `.env*` selain `.env.example` |
+| Browser harness desktop+mobile | route-checks 38/38; fungsional 24/24 (hydration, dark mode, SPA nav, 404, trailing slash, WA attribution organik/iklan, form ke mock lokal, sitemap) |
+| `verify-deployment` (emulator) | 79/79 |
+| Overflow/heading/dark, 8 halaman × 3 mode | 0 masalah |
+| Internal link | 0 rusak, 0 orphan |
+
+Visual QA: hasil §2 di atas tetap berlaku; perubahan gate hanya menyentuh bagian ulasan Home (panel sederhana, tidak ada layout kompleks) dan teks judul artikel. Screenshot ulang bagian ulasan tidak berhasil diposisikan (tangkapan mendarat di galeri produk); keabsahannya didukung hasil overflow/hydration 0 masalah. Verifikasi visual pada Preview tetap disarankan.
+
+## E. Blocker tersisa
+
+1. **Validasi Preview** (butuh `VERCEL_BYPASS_SECRET` di lingkungan sesi). Ini satu-satunya syarat gate yang belum terpenuhi.
+2. Terbuka dari sebelumnya, bukan penghalang SEO: cakupan garansi Standard/Premium, dasar harga coret, area jemput/antar (tidak ditulis di situs); testimonial disembunyikan sampai diverifikasi.
+3. `RESEND_*` tetap existing issue di luar scope.
+
+## F. Rekomendasi
+
+**BELUM GO — tunggu validasi Preview.** Semua acceptance criteria yang bisa diuji tanpa Preview lulus (kode, klaim, testimonial, headline, tsc, build, routing, sitemap, hydration, layout, tautan, secret scan, domain sekunder tetap terlindungi). Begitu `verify-deployment` pada Preview lulus penuh (79/79 setara) dan browser QA Preview bersih, rekomendasi berubah menjadi **GO**, dan merge ke main tetap menunggu izin eksplisit owner.
