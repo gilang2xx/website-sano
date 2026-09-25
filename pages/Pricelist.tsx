@@ -136,11 +136,11 @@ const Pricelist: React.FC = () => {
                   </div>
                 </div>
 
-                <h3 className={`text-2xl font-bold mb-3 leading-tight ${
+                <h2 className={`text-2xl font-bold mb-3 leading-tight ${
                   service.isPremium ? 'text-white' : 'text-slate-900 dark:text-white'
                 }`}>
                   {service.title}
-                </h3>
+                </h2>
                 
                 <p className={`text-sm mb-8 leading-relaxed ${
                   service.isPremium ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
@@ -194,9 +194,9 @@ const Pricelist: React.FC = () => {
               <ListPlus size={32} />
             </div>
             
-            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
               Butuh Layanan Lainnya?
-            </h3>
+            </h2>
             
             <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
               Kami juga menyediakan layanan: <span className="font-semibold text-slate-800 dark:text-slate-200">Ganti Kain, Potong Ukuran, Tambah Latex, Custom Ukuran, Sterilisasi Tungau, Service Sofa</span>, dan masih banyak lagi.

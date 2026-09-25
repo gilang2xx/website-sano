@@ -357,6 +357,7 @@ const Home: React.FC = () => {
               <NavLink to="/pricelist" className="text-blue-600 dark:text-blue-400 hover:underline">Lihat estimasi harga service &amp; upgrade</NavLink>
               <NavLink to="/before-after" className="text-blue-600 dark:text-blue-400 hover:underline">Contoh hasil before &amp; after</NavLink>
               <NavLink to="/sano-clean" className="text-blue-600 dark:text-blue-400 hover:underline">Perlu pembersihan? Sano Clean</NavLink>
+              <NavLink to="/layanan" className="text-blue-600 dark:text-blue-400 hover:underline">Semua layanan kami</NavLink>
             </div>
           </div>
 
@@ -571,7 +572,7 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Beli Kasur Orthopedic?</h3>
               <p className="text-sm text-slate-500">
-                Seringkali label "Orthopedic" di pasaran hanya gimmick marketing tanpa standar medis yang jelas.
+                Label "Orthopedic" tidak selalu berarti sama antar kasur. Yang penting fondasi kokoh dan lapisan sesuai berat badan serta postur Kamu.
               </p>
             </div>
 

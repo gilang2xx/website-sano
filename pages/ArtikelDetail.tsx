@@ -157,6 +157,10 @@ type RelatedService = { to: string; lead: string; anchor: string };
 const KLINIK: RelatedService = { to: '/klinik-matras', lead: 'Ingin kasur lama diperbaiki tanpa beli baru? Kenali pilihan perbaikan dan upgrade di', anchor: 'layanan service kasur & springbed' };
 const AMBLAS: RelatedService = { to: '/perbaikan-kasur-amblas', lead: 'Kasur mulai amblas atau bergelombang? Pelajari penyebab dan langkah penanganannya di', anchor: 'panduan perbaikan kasur amblas' };
 const HARGA: RelatedService = { to: '/pricelist', lead: 'Ingin tahu kisaran biaya paket service dan upgrade? Lihat', anchor: 'estimasi harga di daftar harga kami' };
+// Title <title> yang berbeda dari H1 hanya bila H1 sudah memuat nama brand (suffix brand global akan menggandakannya).
+const SEO_TITLE_OVERRIDE: Record<string, string> = {
+  'klinik-matras-by-sano-care': 'Solusi Kasur Sehat dari Akar Permasalahan: Dampak Kasur yang Salah',
+};
 const DEFAULT_RELATED: RelatedService[] = [KLINIK, AMBLAS];
 const RELATED_SERVICES: Record<string, RelatedService[]> = {
   'klinik-matras-by-sano-care': [{ ...KLINIK, lead: 'Ingin tahu apa saja yang dikerjakan Klinik Matras? Telusuri', anchor: 'daftar layanan service kasur' }, HARGA],
@@ -407,7 +411,7 @@ const articleDatabase: any = {
             <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-2xl border-l-4 border-red-500">
               <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">1. Fondasi Lemah & Tenggelam</h3>
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
-                Jika fondasi kasur sudah tidak rata, tulang belakang Anda akan melengkung secara perlahan menuju permanen. Ini adalah salah satu penyebab utama ketegangan otot yang terus-menerus. Jika fondasi sudah tenggelam, busa apapun di atasnya menjadi sia-sia; posisi tidur akan tenggelam dan merusak tubuh jangka panjang.
+                Jika fondasi kasur sudah tidak rata, tulang belakang Anda dapat menjadi kurang tertopang dengan baik. Kondisi ini bisa berkaitan dengan ketegangan otot yang terus-menerus. Jika fondasi sudah tenggelam, busa apapun di atasnya menjadi sia-sia; posisi tidur akan tenggelam dan kurang mendukung tubuh dalam jangka panjang.
               </p>
             </div>
 
@@ -452,8 +456,8 @@ const articleDatabase: any = {
                 <li><strong>Kepala Pusing</strong></li>
                 <li><strong>Lemas & Kurang Bersemangat</strong></li>
                 <li><strong>Sakit Pinggang & Punggung Kronis:</strong> Rasa nyeri yang tajam atau tumpul setiap pagi.</li>
-                <li><strong>Saraf Kejepit (HNP Fungsional):</strong> Penekanan pada diskus tulang belakang akibat posisi tidur salah.</li>
-                <li><strong>Skoliosis Fungsional:</strong> Perubahan kelengkungan tulang belakang karena tumpuan tidak rata.</li>
+                <li><strong>Keluhan Saraf Kejepit:</strong> Keluhan yang oleh sebagian orang dikaitkan dengan posisi tidur yang kurang tertopang. Penyebab pastinya perlu diperiksa dokter.</li>
+                <li><strong>Perubahan Postur:</strong> Postur dapat terpengaruh bila tumpuan tidur tidak rata.</li>
                 <li><strong>Kualitas Tidur Buruk:</strong> Bangun dengan perasaan lelah (badan "remuk").</li>
              </ul>
           </div>
@@ -529,7 +533,7 @@ const articleDatabase: any = {
             Banyak orang mengabaikan kondisi kasur yang sudah mulai amblas atau tidak stabil dengan alasan "masih bisa dipakai". Padahal, kasur adalah satu-satunya benda yang menyangga tubuh Anda selama 6 hingga 8 jam setiap hari.
           </p>
           <p className="mb-6 text-slate-600 dark:text-slate-300">
-            Tanpa disadari, tidur bertahun-tahun di atas kasur yang salah bukan hanya soal tidur yang tidak nyenyak, melainkan tiket menuju <strong>gangguan muskuloskeletal jangka panjang</strong>. Di Klinik Matras by Sano Care, kami sering menemukan kasus di mana kerusakan postur bermula dari tempat tidur yang tidak lagi mampu menjalankan fungsinya.
+            Tanpa disadari, tidur bertahun-tahun di atas kasur yang salah bukan hanya soal tidur yang tidak nyenyak, melainkan dapat berkaitan dengan <strong>keluhan otot dan tulang jangka panjang</strong>. Di Klinik Matras by Sano Care, kami sering menemukan kasus di mana kerusakan postur bermula dari tempat tidur yang tidak lagi mampu menjalankan fungsinya.
           </p>
 
           {/* GAMBAR 1 */}
@@ -555,8 +559,8 @@ const articleDatabase: any = {
                 <li><strong>Sakit Kepala:</strong> Aliran darah dan oksigen ke otak terganggu selama tidur.</li>
                 <li><strong>Nyeri Pinggang Kronis:</strong> Rasa sakit menetap akibat otot pinggang bekerja keras menahan tubuh.</li>
                 <li><strong>Postur Tubuh Tidak Simetris:</strong> Akibat terbiasa tidur di kasur miring/amblas.</li>
-                <li><strong>Skoliosis Fungsional:</strong> Tulang belakang bengkok mengikuti bentuk kasur rusak.</li>
-                <li><strong>Saraf Kejepit (HNP) Berulang:</strong> Risiko tinggi akibat penekanan diskus tulang belakang.</li>
+                <li><strong>Perubahan Postur:</strong> Postur tubuh dapat terpengaruh oleh kasur yang tidak lagi menopang dengan baik.</li>
+                <li><strong>Keluhan Saraf Kejepit:</strong> Keluhan ini dapat terasa lebih sering bila tubuh tidak tertopang baik. Konsultasikan dengan dokter untuk penyebabnya.</li>
                 <li><strong>Gangguan Sirkulasi Darah:</strong> Kesemutan akibat kasur terlalu keras menekan pembuluh darah.</li>
              </ul>
           </div>
@@ -601,7 +605,7 @@ const articleDatabase: any = {
             Sano Care: Memperbaiki Sebelum Terlambat
           </h2>
           <p className="mb-4 text-slate-600 dark:text-slate-300">
-            Mencegah kerusakan permanen pada tulang belakang jauh lebih baik daripada mengobatinya. Layanan restorasi kami difokuskan untuk:
+            Merawat kondisi kasur sejak dini lebih baik daripada menunggu keluhan bertambah. Layanan restorasi kami difokuskan untuk:
           </p>
           
           <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border-l-4 border-green-500 mb-8">
@@ -625,7 +629,7 @@ const articleDatabase: any = {
           <div className="bg-slate-900 text-white p-8 rounded-[2rem] text-center shadow-xl">
              <h3 className="text-xl font-bold mb-4">Kesimpulan: Jangan Pertaruhkan Kesehatan Anda</h3>
              <p className="text-blue-200 mb-6 leading-relaxed">
-               Kasur Anda adalah fondasi kesehatan Anda. Jika Anda mulai merasa sering pegal saat bangun tidur atau melihat kasur sudah mulai amblas, itu adalah sinyal bahaya.
+               Kasur Anda adalah fondasi kesehatan Anda. Jika Anda mulai merasa sering pegal saat bangun tidur atau melihat kasur sudah mulai amblas, itu adalah sinyal untuk memeriksa kondisi kasur.
              </p>
              <p className="text-white text-sm opacity-90 mb-8">
                Sano Care membantu Anda memiliki Matras Sehat tanpa harus membeli baru. Kembalikan kenyamanan tidur Anda dan lindungi tulang belakang Anda untuk masa depan yang lebih sehat.
@@ -906,7 +910,7 @@ const articleDatabase: any = {
   // Dipanggil sebelum early-return di bawah supaya urutan hook tetap stabil
   // (aturan React Hooks: tidak boleh dipanggil kondisional).
   useSEO({
-    title: article?.title || cmsArticle?.title || 'Artikel Tidak Ditemukan',
+    title: SEO_TITLE_OVERRIDE[slug || ''] || article?.title || cmsArticle?.title || 'Artikel Tidak Ditemukan',
     description: article?.desc || cmsArticle?.desc || 'Artikel yang Anda cari tidak tersedia.',
     path: `/artikel/${slug || ''}`,
     image: article?.image || cmsArticle?.image,

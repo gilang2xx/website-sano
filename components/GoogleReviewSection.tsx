@@ -63,7 +63,7 @@ const GoogleReviewSection = () => {
               return (
                 // PASTIKAN INI TAG <A>, BUKAN <DIV>
                 <a 
-                  key={testi.id}
+                  key={`${testi.id}-${idx}`}
                   href={GOOGLE_MAPS_URL}
                   target="_blank"
                   rel="noopener noreferrer"
@@ -88,7 +88,7 @@ const GoogleReviewSection = () => {
                         {testi.name}
                       </h4>
                       {/* Menggunakan optional chaining (?.) untuk safety jika date belum ada */}
-                      <p className="text-xs text-slate-400 mt-0.5">{(testi as any).date || "1 month ago"}</p>
+                      <p className="text-xs text-slate-400 mt-0.5">Ulasan Google</p>
                     </div>
                   </div>
 
