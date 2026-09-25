@@ -21,7 +21,7 @@ const GoogleReviewSection = () => {
             Kata Mereka Tentang Kami
           </h2>
           <p className="text-slate-500 dark:text-slate-400">
-            Ribuan pelanggan puas dengan tidur yang lebih berkualitas
+            Pengalaman pelanggan setelah menggunakan layanan kami
           </p>
         </div>
 
@@ -37,20 +37,10 @@ const GoogleReviewSection = () => {
                 className="w-8 h-8"
                 loading="lazy"
               />
-              <span className="font-bold text-slate-700 dark:text-white text-xl">Google Rating</span>
+              <span className="font-bold text-slate-700 dark:text-white text-xl">Ulasan Google</span>
             </div>
             
-            <div className="text-7xl font-black text-slate-900 dark:text-white mb-2 tracking-tight">
-              5.0
-            </div>
-            
-            <div className="flex gap-1 mb-3 justify-center">
-              {[...Array(5)].map((_, i) => (
-                <Star key={i} size={28} className="fill-yellow-400 text-yellow-400" />
-              ))}
-            </div>
-            
-            <p className="text-slate-500 text-sm mb-8">Based on all reviews</p>
+            <p className="text-slate-600 dark:text-slate-300 text-sm mb-8 leading-relaxed">Lihat ulasan pelanggan langsung di Google.</p>
             
             <div className="w-full h-px bg-slate-200 dark:bg-slate-700 mb-6"></div>
 

@@ -65,8 +65,8 @@ import { useSEO } from '../hooks/useSEO';
 
 const Home: React.FC = () => {
   useSEO({
-    title: 'Klinik Matras by SANO CARE — Servis, Upgrade & Cuci Kasur di Depok',
-    description: 'Kembalikan kenyamanan tidur tanpa beli kasur baru. Klinik Matras by SANO CARE melayani service, upgrade, custom matras & sofa, hingga cuci kasur profesional di Depok. Konsultasi gratis via WhatsApp.',
+    title: 'Service & Restorasi Kasur Sehat di Depok',
+    description: 'Spesialis diagnosis, service kasur dan springbed, restorasi, penguatan fondasi, dan upgrade kasur sehat di Depok, tanpa beli baru. Konsultasi via WhatsApp.',
     path: '/',
   });
   const [isDarkMode, setIsDarkMode] = React.useState(false);
@@ -97,7 +97,7 @@ const Home: React.FC = () => {
     // 2. MASALAH MENENGAH (Pinggang)
     {
       title: "Sakit Pinggang & Punggung",
-      desc: "Pinggang terasa patah saat bangun. Tanda kasur sudah amblas dan tidak menopang tulang belakang dengan lurus.",
+      desc: "Pinggang terasa pegal saat bangun? Kasur yang amblas bisa ikut berperan. Cek kondisi kasurmu.",
        // Video
       videoWebm: "/video-sakitpinggang.webm",
       videoMp4: "/video-sakitpinggang.mp4",
@@ -106,13 +106,13 @@ const Home: React.FC = () => {
       // Gambar berbeda untuk kartu tengah 
       colSpan: "md:col-span-1",
       color: "from-orange-600",
-      link: "/artikel/dampak-kasur-rusak"
+      link: "/perbaikan-kasur-amblas"
     },
 
     // 3. MASALAH BERAT (Saraf)
     {
-      title: "Saraf Kejepit (HNP)",
-      desc: "BAHAYA! Nyeri menjalar parah. Akibat fatal membiarkan posisi tidur salah bertahun-tahun.",
+      title: "Nyeri Menjalar (Keluhan Saraf)",
+      desc: "Bila nyeri berat atau menetap, konsultasikan dengan dokter. Posisi tidur yang tidak tertopang baik bisa memperberat keluhan.",
       videoWebm: "/videos-sarafkejepit.webm",
       videoMp4: "/videos-sarafkejepit.mp4",
         // TAMBAHKAN INI (Thumbnail khusus untuk video)
@@ -139,20 +139,26 @@ const Home: React.FC = () => {
           
           {/* HEADER */}
           <div className="text-center mb-12">
-            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-red-100 border border-red-200 text-red-600 dark:bg-red-500/10 dark:border-red-500/30 dark:text-red-400 text-xs font-bold uppercase tracking-wider mb-6 animate-pulse">
-              <AlertCircle size={14} /> Apakah Kamu Merasakan Ini?
+            <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-blue-100 border border-blue-200 text-blue-600 dark:bg-blue-500/10 dark:border-blue-500/30 dark:text-blue-400 text-xs font-bold uppercase tracking-wider mb-6">
+              Klinik Matras by SANO CARE · Ahlinya Kasur Sehat
             </div>
             
             <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight mb-4 max-w-4xl mx-auto">
-              Bangun Tidur Bukannya Segar, <br className="hidden md:block" />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500">
-                Malah Sakit Semua?
-              </span>
-              <br />
-              <span className="text-2xl md:text-3xl text-slate-500 dark:text-slate-400 font-bold mt-3 block">
-                Itu Tanda Dampak Kasur Tidak Sehat!
+              Spesialis <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Service &amp; Restorasi Kasur Sehat</span>
+              <span className="text-xl md:text-3xl text-slate-500 dark:text-slate-400 font-bold mt-3 block">
+                Diagnosis, perbaikan, penguatan fondasi, dan upgrade kasur, tanpa harus beli baru
               </span>
             </h1>
+            <p className="text-slate-600 dark:text-slate-300 max-w-3xl mx-auto text-base md:text-lg mb-8">
+              Kasur amblas, busa kempis, atau tidak lagi nyaman? Kami memeriksa kondisi kasur atau springbed Kamu, lalu merekomendasikan service atau upgrade yang sesuai.
+            </p>
+            <div className="flex flex-wrap justify-center gap-4 mb-10">
+              <NavLink to="/klinik-matras" className="px-6 py-3 rounded-full bg-blue-600 text-white font-bold shadow-lg hover:-translate-y-0.5 transition-all">Lihat Layanan Service Kasur</NavLink>
+              <NavLink to="/perbaikan-kasur-amblas" className="px-6 py-3 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold hover:border-blue-500 transition-all">Kasur Amblas? Cek di Sini</NavLink>
+            </div>
+            <h2 className="text-lg md:text-xl font-bold text-slate-700 dark:text-slate-200">
+              Keluhan Tidur yang Sering Berkaitan dengan Kondisi Kasur
+            </h2>
           </div>
 
           {/* BENTO GRID MASALAH (VIDEO + TEKS FIX) */}
@@ -243,9 +249,9 @@ const Home: React.FC = () => {
               <h2 className="text-3xl md:text-5xl lg:text-6xl font-black text-white mb-8 leading-tight drop-shadow-2xl">
                 Solusi Hemat Kembalikan <br/>
                 <span className="text-transparent bg-clip-text bg-gradient-to-r from-cyan-300 to-blue-400 filter drop-shadow-lg">
-                  Kesehatan dan Kenyamanan
+                  Kenyamanan Tidur Kamu
                 </span> <br/>
-                Tidur Kamu Tanpa Perlu Beli Baru.
+                Tanpa Perlu Beli Kasur Baru.
               </h2>
               
               <a
@@ -286,9 +292,9 @@ const Home: React.FC = () => {
               </h3>
               
               <p className="text-slate-600 dark:text-slate-400 text-lg md:text-xl leading-relaxed">
-                Berpengalaman mengerjakan berbagai jenis kerusakan matras (pegas, busa, kain) agar kembali 
-                <span className="font-bold text-slate-900 dark:text-white"> nyaman, higienis, dan sehat </span> 
-                sesuai kebutuhan tubuh Kamu. Mulai dari diagnosa, perbaikan, hingga hasil akhir yang presisi.
+                Service kasur dan springbed di Klinik Matras dimulai dari diagnosa: kami memeriksa fondasi, pegas, busa, dan kain, lalu mengerjakan agar kasur kembali 
+                <span className="font-bold text-slate-900 dark:text-white"> nyaman, higienis, dan sesuai </span> 
+                kebutuhan tubuh Kamu. Mulai dari diagnosa, perbaikan, hingga hasil akhir yang presisi.
               </p>
 
               <div className="w-24 h-1.5 bg-gradient-to-r from-blue-400 to-[#3B62AA] mx-auto mt-12 rounded-full mb-16"></div>
@@ -313,9 +319,9 @@ const Home: React.FC = () => {
                     <div className="w-14 h-14 bg-blue-50 dark:bg-blue-900/30 rounded-2xl flex items-center justify-center text-blue-600 dark:text-blue-400 mb-6">
                       <BedDouble size={28} />
                     </div>
-                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Klinik Matras</h3>
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white mb-3">Service Kasur &amp; Springbed (Klinik Matras)</h3>
                     <p className="text-slate-500 dark:text-slate-400 leading-relaxed text-sm">
-                      Restorasi fondasi, lapisan, kain dengan konsep matras sehat.
+                      Perbaikan dan restorasi fondasi, lapisan, dan kain dengan konsep matras sehat.
                     </p>
                   </div>
                 </div>
@@ -343,6 +349,14 @@ const Home: React.FC = () => {
                 </div>
               </NavLink>
 
+            </div>
+
+            {/* Tautan cepat layanan (kontekstual, anchor beragam) */}
+            <div className="max-w-5xl mx-auto mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-semibold">
+              <NavLink to="/perbaikan-kasur-amblas" className="text-blue-600 dark:text-blue-400 hover:underline">Kasur amblas? Pelajari perbaikannya</NavLink>
+              <NavLink to="/pricelist" className="text-blue-600 dark:text-blue-400 hover:underline">Lihat estimasi harga service &amp; upgrade</NavLink>
+              <NavLink to="/before-after" className="text-blue-600 dark:text-blue-400 hover:underline">Contoh hasil before &amp; after</NavLink>
+              <NavLink to="/sano-clean" className="text-blue-600 dark:text-blue-400 hover:underline">Perlu pembersihan? Sano Clean</NavLink>
             </div>
           </div>
 
@@ -535,7 +549,7 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Cek ke Dokter?</h3>
               <p className="text-sm text-slate-500">
-                Dokter mengobati gejala tubuh, tapi apakah penyebab utamanya (tempat tidur) diperbaiki?
+                Dokter menangani keluhan tubuh. Kondisi tempat tidur juga layak diperiksa sebagai salah satu faktor yang mungkin berperan.
               </p>
             </div>
 
@@ -546,7 +560,7 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Pijat / Fisioterapi?</h3>
               <p className="text-sm text-slate-500">
-                Badan enak sesaat, tapi malamnya tidur di kasur yang rusak lagi. Sakitnya akan kembali.
+                Badan terasa enak sesaat, tapi bila malamnya kembali tidur di kasur yang sudah rusak, keluhan bisa terulang.
               </p>
             </div>
 
@@ -568,7 +582,7 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Beli Kasur Mahal?</h3>
               <p className="text-sm text-slate-500">
-                Mahal belum tentu cocok. Kasur puluhan juta pun bisa bikin sakit pinggang jika tidak sesuai postur Kamu.
+                Mahal belum tentu cocok. Kasur yang tidak sesuai berat badan dan postur Kamu bisa terasa tidak nyaman.
               </p>
             </div>
 
@@ -579,7 +593,7 @@ const Home: React.FC = () => {
               </div>
               <h3 className="font-bold text-lg text-slate-800 dark:text-white mb-2">Ganti Kasur Keras?</h3>
               <p className="text-sm text-slate-500">
-                Mitos lama. Kasur terlalu keras justru menekan bahu & panggul, menghambat aliran darah.
+                Keras tidak otomatis nyaman. Kasur yang terlalu keras bisa menekan bahu dan panggul; yang dicari adalah kondisi pas dan presisi.
               </p>
             </div>
 
@@ -954,7 +968,7 @@ const Home: React.FC = () => {
                   <div>
                     <p className="text-xs text-blue-200 font-bold uppercase tracking-wider">Fokus Solusi</p>
                     <p className="text-xl font-bold text-white">Keluhan Nyeri & Orthopedic</p>
-                    <p className="text-xs text-blue-200">(Khusus kasus Saraf Kejepit / Sakit Punggung)</p>
+                    <p className="text-xs text-blue-200">(Untuk keluhan nyeri punggung/pinggang terkait kondisi kasur. Nyeri berat atau menetap: konsultasikan dengan dokter)</p>
                   </div>
                 </li>
               </ul>

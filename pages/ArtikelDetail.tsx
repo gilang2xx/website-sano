@@ -151,7 +151,24 @@ const ArtikelDetail: React.FC = () => {
   }, [slug]);
 
   // --- DATABASE KONTEN ARTIKEL (FULL 6 ARTIKEL) ---
-  const articleDatabase: any = {
+  // Tautan kontekstual dari artikel ke halaman layanan (anchor sengaja dibuat beragam).
+// Tautan ke /pricelist hanya dipakai bila artikel membahas biaya/pilihan perbaikan.
+type RelatedService = { to: string; lead: string; anchor: string };
+const KLINIK: RelatedService = { to: '/klinik-matras', lead: 'Ingin kasur lama diperbaiki tanpa beli baru? Kenali pilihan perbaikan dan upgrade di', anchor: 'layanan service kasur & springbed' };
+const AMBLAS: RelatedService = { to: '/perbaikan-kasur-amblas', lead: 'Kasur mulai amblas atau bergelombang? Pelajari penyebab dan langkah penanganannya di', anchor: 'panduan perbaikan kasur amblas' };
+const HARGA: RelatedService = { to: '/pricelist', lead: 'Ingin tahu kisaran biaya paket service dan upgrade? Lihat', anchor: 'estimasi harga di daftar harga kami' };
+const DEFAULT_RELATED: RelatedService[] = [KLINIK, AMBLAS];
+const RELATED_SERVICES: Record<string, RelatedService[]> = {
+  'klinik-matras-by-sano-care': [{ ...KLINIK, lead: 'Ingin tahu apa saja yang dikerjakan Klinik Matras? Telusuri', anchor: 'daftar layanan service kasur' }, HARGA],
+  'konsep-matras-sehat': [{ ...KLINIK, lead: 'Konsep ini diterapkan lewat perbaikan fondasi dan lapisan. Lihat', anchor: 'layanan upgrade kasur di Klinik Matras' }, AMBLAS],
+  'dampak-kasur-rusak': [{ ...AMBLAS, lead: 'Curiga kasur Anda sudah amblas? Baca', anchor: 'cara mengenali dan memperbaiki kasur amblas' }, KLINIK],
+  'dampak-jangka-panjang-kasur-salah': [{ ...AMBLAS, lead: 'Sebelum kondisi kasur memburuk, cek dulu', anchor: 'tanda-tanda kasur amblas dan pilihan perbaikannya' }, KLINIK],
+  'mengenal-struktur-kasur': [{ ...AMBLAS, lead: 'Setelah memahami fondasi dan lapisan, lihat bagaimana masalahnya ditangani pada', anchor: 'perbaikan kasur amblas' }, { ...KLINIK, anchor: 'layanan restorasi fondasi dan lapisan kasur' }],
+  'kasur-ortopedik-untuk-tidur-sehat': [{ ...KLINIK, lead: 'Kasur lama masih bisa disesuaikan lewat upgrade. Cek', anchor: 'opsi upgrade fondasi dan lapisan' }, HARGA],
+  'panduan-lengkap-kasur-sehat-cara-memilih-kasur-yang-tepat': [{ ...KLINIK, lead: 'Bila hasil pengecekan menunjukkan kasur masih layak diperbaiki, lihat', anchor: 'layanan service kasur di Klinik Matras' }, AMBLAS, HARGA],
+};
+
+const articleDatabase: any = {
 
     // =================================================================
     // ARTIKEL 1: MISI & VISI SANO CARE
@@ -159,7 +176,7 @@ const ArtikelDetail: React.FC = () => {
     "klinik-matras-by-sano-care": {
       title: "Klinik Matras by SANO CARE: Hadir untuk Menolong dari Dampak Kasur yang Salah",
       date: "26 Des 2025",
-      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya.",
+      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah.",
       readTime: "5 Menit Baca",
       image: "/foto-karyawan.jpg", // Gambar Utama
       content: (
@@ -352,7 +369,7 @@ const ArtikelDetail: React.FC = () => {
     "dampak-kasur-rusak": {
       title: "Awas! Kasur Anda Mungkin Sedang Merusak Tulang Belakang: Inilah Alasannya",
       date: "28 Des 2025",
-      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah.",
+      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya.",
       readTime: "7 Menit Baca",
       image: "/kasur-merusak-tulang.jpg", // Gambar cover yang relevan
       content: (
@@ -910,6 +927,8 @@ const ArtikelDetail: React.FC = () => {
   const displayDate = article ? article.date : cmsArticle!.displayDate;
   const displayReadTime = article ? article.readTime : estimateReadTime(cmsArticle!.body);
   const displayImage = article ? article.image : cmsArticle!.image;
+  const relatedServices = RELATED_SERVICES[slug || ''] ?? DEFAULT_RELATED;
+
   const contentNode = article ? (
     article.content
   ) : (
@@ -939,9 +958,24 @@ const ArtikelDetail: React.FC = () => {
         <div className="prose prose-lg dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed">
            {contentNode}
         </div>
+        {relatedServices.length > 0 && (
+          <aside className="mt-16 rounded-3xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6 md:p-8" aria-labelledby="layanan-terkait">
+             <h2 id="layanan-terkait" className="text-xl font-bold text-slate-900 dark:text-white mb-4">Layanan Terkait</h2>
+             <ul className="space-y-4">
+               {relatedServices.map((item) => (
+                 <li key={item.to}>
+                   <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                     {item.lead}{' '}
+                     <Link to={item.to} className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">{item.anchor}</Link>.
+                   </p>
+                 </li>
+               ))}
+             </ul>
+          </aside>
+        )}
         <div className="mt-16 bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl p-8 text-center text-white shadow-xl">
            <h3 className="text-2xl font-bold mb-2">Konsultasikan Keluhan Anda!</h3>
-           <p className="mb-6 opacity-90">Jangan tunggu hingga menjadi saraf kejepit. Hubungi kami untuk analisa profesional.</p>
+           <p className="mb-6 opacity-90">Hubungi kami untuk membahas kondisi kasur Anda. Bila nyeri terasa berat atau menetap, konsultasikan juga dengan dokter.</p>
            <a href={buildWaHref("Halo Sano, saya ingin konsultasi setelah baca artikel ini.")} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold hover:scale-105 transition-transform">
               <MessageCircle size={20} /> Chat WhatsApp Sekarang
            </a>

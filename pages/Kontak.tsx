@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import { Phone, MapPin, Mail, Clock, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { submitConsultationLead } from '../utils/leadTracking';
 import { useSEO } from '../hooks/useSEO';
@@ -13,8 +14,8 @@ const SERVICE_TYPES = [
 
 const Kontak: React.FC = () => {
   useSEO({
-    title: 'Hubungi Kami — Konsultasi Gratis',
-    description: 'Hubungi Klinik Matras by SANO CARE via WhatsApp untuk konsultasi gratis, atau kunjungi workshop kami di Depok, Jawa Barat.',
+    title: 'Konsultasi Service & Perbaikan Kasur',
+    description: 'Konsultasi service dan perbaikan kasur di Klinik Matras by SANO CARE: kirim foto kasur via WhatsApp atau kunjungi workshop kami di Pancoran Mas, Depok.',
     path: '/kontak',
   });
   const [form, setForm] = useState({
@@ -66,8 +67,8 @@ const Kontak: React.FC = () => {
     <div className="pb-24">
       <section className="bg-bg-surface text-white py-20">
         <div className="container mx-auto px-6 text-center">
-          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Hubungi Kami</h1>
-          <p className="text-slate-300 text-lg">Kami siap membantu mengembalikan kenyamanan tidur Anda.</p>
+          <h1 className="text-4xl md:text-5xl font-extrabold mb-4">Konsultasi Service &amp; Perbaikan Kasur</h1>
+          <p className="text-slate-300 text-lg">Ceritakan kondisi kasur Anda. Kirim foto lewat WhatsApp agar kami dapat membantu menilai apakah perlu diperbaiki atau di-upgrade.</p>
         </div>
       </section>
 
@@ -76,7 +77,7 @@ const Kontak: React.FC = () => {
            <div className="grid grid-cols-1 lg:grid-cols-2">
               <div className="p-10 lg:p-16 bg-primary text-white">
                  <h2 className="text-3xl font-bold mb-8">Informasi Kontak</h2>
-                 <p className="mb-10 text-blue-100">Silakan hubungi kami melalui WhatsApp untuk respon cepat, atau kunjungi workshop kami.</p>
+                 <p className="mb-10 text-blue-100">Silakan hubungi kami melalui WhatsApp untuk respon cepat, atau kunjungi workshop kami. Sertakan foto kasur, keluhan yang dirasakan, dan berat badan pengguna agar rekomendasi lebih tepat. Lihat juga <Link to="/klinik-matras" className="underline font-semibold">layanan service kasur &amp; springbed</Link> dan <Link to="/pricelist" className="underline font-semibold">daftar harga</Link>.</p>
                  <div className="space-y-8">
                     <div className="flex items-start gap-4">
                        <div className="w-12 h-12 rounded-full bg-white/20 flex items-center justify-center shrink-0"><MapPin size={24} /></div>
@@ -111,7 +112,7 @@ const Kontak: React.FC = () => {
                         ))}
                       </select>
                     </div>
-                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Keluhan</label><textarea rows={4} value={form.message} onChange={handleChange('message')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all"></textarea></div>
+                    <div><label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Kondisi Kasur / Keluhan</label><textarea rows={4} value={form.message} onChange={handleChange('message')} className="w-full px-4 py-3 rounded-lg bg-slate-50 dark:bg-bg-surface border border-slate-200 dark:border-slate-700 text-slate-900 dark:text-white focus:ring-2 focus:ring-primary outline-none transition-all"></textarea></div>
 
                     {status === 'success' && (
                       <div className="flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-bold"><CheckCircle2 size={18} /> Terima kasih! Tim kami akan segera menghubungi Anda.</div>

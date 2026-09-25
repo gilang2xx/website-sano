@@ -21,7 +21,7 @@ const Artikel: React.FC = () => {
       category: "Klinik Matras by Sano Care",
       date: "26 Des 2025",
       image: "/foto-karyawan.jpg", 
-      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya."
+      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah."
     },
     
     // ARTIKEL 2 
@@ -43,7 +43,7 @@ const Artikel: React.FC = () => {
       category: "Edukasi",
       date: "28 Des 2025",
       image: "/kasur-merusak-tulang.jpg", 
-      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah."
+      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya."
     },
 
     // ARTIKEL 4

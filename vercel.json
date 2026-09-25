@@ -4,7 +4,7 @@
   "framework": "vite",
   "redirects": [
     {
-      "source": "/(layanan|pricelist|artikel|tentang-kami|before-after|kontak|klinik-matras|klinik-sofa|sano-clean|kebijakan-privasi)/",
+      "source": "/(layanan|pricelist|artikel|tentang-kami|before-after|kontak|klinik-matras|perbaikan-kasur-amblas|klinik-sofa|sano-clean|kebijakan-privasi)/",
       "destination": "/$1",
       "permanent": true
     },

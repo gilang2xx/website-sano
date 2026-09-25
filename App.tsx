@@ -20,6 +20,7 @@ const PAGE_LOADERS: Record<StaticRoutePath, PageLoader> = {
   '/before-after': () => import('./pages/BeforeAfter'),
   '/kontak': () => import('./pages/Kontak'),
   '/klinik-matras': () => import('./pages/KlinikMatras'),
+  '/perbaikan-kasur-amblas': () => import('./pages/PerbaikanKasurAmblas'),
   '/klinik-sofa': () => import('./pages/KlinikSofa'),
   '/sano-clean': () => import('./pages/SanoClean'),
   '/kebijakan-privasi': () => import('./pages/KebijakanPrivasi'),
