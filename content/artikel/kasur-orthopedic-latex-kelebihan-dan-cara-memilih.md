@@ -6,8 +6,6 @@ image: /uploads/orthopedic-latex-kelebihan-dan-cara-memilih.png
 desc: Kenali kelebihan kasur orthopedic latex, fungsi lapisan, tingkat
   kekerasan, pengaruh berat badan, dan cara memilih sesuai kebutuhan.
 ---
-
-
 # **Kasur Orthopedic Latex: Kelebihan dan Cara Memilih**
 
 Kasur orthopedic latex menjadi salah satu pilihan bagi orang yang mencari kombinasi dukungan dan kenyamanan saat tidur. Latex dikenal sebagai material yang memiliki karakter elastis, responsif, dan cukup tahan lama. Namun, penggunaan latex saja tidak otomatis membuat sebuah kasur menjadi orthopedic atau [cocok untuk semua orang](https://sanomatrassehat.com/artikel/panduan-lengkap-kasur-sehat-cara-memilih-kasur-yang-tepat).
@@ -143,41 +141,7 @@ Latex cenderung lebih responsif dan tahan lama, sementara jenis foam lain dapat 
 
 Secara sederhana:
 
-**Karakteristik**
-
-**Latex**
-
-**Foam lainnya**
-
-Respons terhadap tekanan
-
-Cenderung responsif
-
-Bergantung jenis foam
-
-Sensasi permukaan
-
-Elastis dan responsif
-
-Sangat bervariasi
-
-Contouring
-
-Moderat
-
-Bergantung jenis foam
-
-Pressure relief
-
-Bergantung konstruksi
-
-Bergantung konstruksi
-
-Daya tahan
-
-Umumnya baik
-
-Bergantung material dan kepadatan
+![Tabel Perbandingan Karakteristik Latex](/uploads/tabel-1.jpg)
 
 Karena itu, jangan memilih hanya berdasarkan nama material.
 
@@ -203,25 +167,7 @@ Dalam konsep Kasur Sehat SANO, berat badan digunakan sebagai salah satu pertimba
 
 Formulasi lapisan busa yang digunakan dalam konsep SANO adalah:
 
-**Berat badan**
-
-**Kisaran ketebalan busa SANO**
-
-0–50 kg
-
-1–4 cm
-
-51–75 kg
-
-2–6 cm
-
-76–100 kg
-
-3–6 cm
-
-101 kg ke atas
-
-Disesuaikan berdasarkan berat badan dan kebutuhan pengguna
+![Formulasi lapisan busa yang digunakan dalam konsep SANO ](/uploads/tabel-2.jpg)
 
 Rentang tersebut merupakan **formulasi konsep SANO**, bukan standar universal untuk semua kasur latex.
 
