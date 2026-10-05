@@ -6,8 +6,6 @@ image: /uploads/cara-memilih-kasur-orthopedic.jpg
 desc: Cari kasur orthopedic terbaik? Ketahui cara menilai fondasi, lapisan,
   tingkat kekerasan, berat badan, posisi tidur, dan kebutuhan pengguna.
 ---
-
-
 # **Kasur Orthopedic Terbaik: Cara Memilih Sesuai Kebutuhan**
 
 Mencari kasur orthopedic terbaik tidak selalu berarti mencari kasur yang paling keras, paling mahal, atau memiliki label orthopedic paling menonjol. Kasur yang terasa nyaman bagi satu orang belum tentu memberikan dukungan yang sama bagi orang lain.
@@ -196,25 +194,7 @@ Dalam konsep SANO, berat badan digunakan sebagai salah satu dasar untuk menentuk
 
 Formulasi yang digunakan adalah:
 
-**Berat badan**
-
-**Kisaran ketebalan busa SANO**
-
-0–50 kg
-
-1–4 cm
-
-51–75 kg
-
-2–6 cm
-
-76–100 kg
-
-3–6 cm
-
-101 kg ke atas
-
-Disesuaikan berdasarkan berat badan dan kebutuhan pengguna
+![Formulasi lapisan busa yang digunakan dalam konsep SANO ](/uploads/tabel-2.jpg)
 
 Rentang tersebut merupakan **formulasi konsep SANO**, bukan standar universal untuk menentukan ketebalan busa semua kasur.
 
