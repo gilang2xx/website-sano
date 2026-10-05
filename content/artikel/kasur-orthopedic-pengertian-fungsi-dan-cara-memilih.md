@@ -6,10 +6,6 @@ image: /uploads/apa-orthopedic-sama-dengan-keras.jpg
 desc: Ketahui apa itu kasur orthopedic, apakah harus keras, fungsi fondasi dan
   lapisan, serta cara memilih kasur sesuai berat badan dan kebutuhan tubuh.
 ---
-
-
-
-
 # **Kasur Orthopedic: Pengertian, Fungsi, dan Cara Memilih**
 
 Istilah kasur orthopedic sering muncul ketika seseorang mencari kasur yang mampu memberikan dukungan tubuh saat tidur. Namun, masih banyak anggapan bahwa kasur orthopedic adalah kasur yang harus keras. Padahal, tingkat kekerasan permukaan bukan satu-satunya hal yang menentukan apakah sebuah kasur mampu memberikan dukungan yang sesuai.
@@ -91,25 +87,7 @@ Karena itu, lapisan tidak harus memiliki karakteristik yang sama dengan fondasi.
 
 Dalam konsep SANO, ketebalan lapisan juga mempertimbangkan berat badan pengguna. Formulasi yang digunakan adalah:
 
-**Berat badan**
-
-**Kisaran ketebalan busa SANO**
-
-0–50 kg
-
-1–4 cm
-
-51–75 kg
-
-2–6 cm
-
-76–100 kg
-
-3–6 cm
-
-101 kg ke atas
-
-Disesuaikan berdasarkan berat badan dan kebutuhan pengguna
+![Tabel 2. Formulasi Tebal Busa Sano](/uploads/tabel-2.jpg)
 
 Rentang tersebut merupakan formulasi konsep SANO dan bukan aturan universal untuk menentukan ketebalan busa pada semua jenis kasur.
 
