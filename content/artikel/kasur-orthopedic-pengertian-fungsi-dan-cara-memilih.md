@@ -87,7 +87,7 @@ Karena itu, lapisan tidak harus memiliki karakteristik yang sama dengan fondasi.
 
 Dalam konsep SANO, ketebalan lapisan juga mempertimbangkan berat badan pengguna. Formulasi yang digunakan adalah:
 
-![Tabel 2. Formulasi Tebal Busa Sano](/uploads/tabel-2.jpg)
+![Formulasi Tebal Busa Sano](/uploads/tabel-2.jpg)
 
 Rentang tersebut merupakan formulasi konsep SANO dan bukan aturan universal untuk menentukan ketebalan busa pada semua jenis kasur.
 
