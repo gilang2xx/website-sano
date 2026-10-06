@@ -182,3 +182,48 @@ Visual QA: hasil §2 di atas tetap berlaku; perubahan gate hanya menyentuh bagia
 **Tindakan korektif minimum (owner):** tutup lalu buka ulang VS Code/Claude Code **setelah** `VERCEL_BYPASS_SECRET` diset (User environment variable di Windows atau `$env:` di terminal yang meluncurkan Claude Code), lalu minta lanjut. Jalankan yang tertunda: `node scripts/verify-deployment.mjs --base=<alias Preview>`, browser QA Preview (`/`, `/klinik-matras`, `/perbaikan-kasur-amblas`, `/pricelist`, `/kontak`, 2 artikel, dark mode, atribusi WA), dan cek visual panel ulasan Home (tanpa testimonial/nama/foto/bintang).
 
 **Rekomendasi: masih BELUM GO** (bukan karena kegagalan kode, tetapi karena bukti Preview belum ada). Hasil lokal pada build final tetap: tsc bersih, 19 route/19 sitemap, harness 38/38 + 24/24, verify-deployment emulator 79/79, 0 orphan/tautan rusak, secret scan bersih.
+
+---
+
+# FINAL PREVIEW QA — cakupan gabungan Fase 3C + 4A (07 Okt 2026)
+
+Commit yang diuji: `4484d15` (branch `feat/seo-ssg-implementation`; `4484d15` adalah commit dokumentasi di atas `8fe0d67`, tidak mengubah kode — diff `8fe0d67..4484d15` hanya menambah `SEO_PHASE_4A_ARTICLE_SCHEMA_REPORT.md`). Working tree bersih, sesuai commit ini.
+
+## Status Preview: BLOCKER (lingkungan) — tetap belum tervalidasi, percobaan ke-3
+
+`VERCEL_BYPASS_SECRET` **tidak terbaca** oleh proses sesi ini, diperiksa lewat tiga jalur sekaligus:
+- Bash: `${#VERCEL_BYPASS_SECRET}` = 0.
+- PowerShell: `$env:VERCEL_BYPASS_SECRET` tidak ada; `[Environment]::GetEnvironmentVariable('VERCEL_BYPASS_SECRET', 'User'|'Machine'|'Process')` ketiganya `unset`.
+- Pencarian file: tidak ada `.env*` selain `.env.example`; tidak ada referensi `VERCEL_BYPASS_SECRET` di berkas konfigurasi sesi.
+
+Kesimpulan teknis: variabel ini belum pernah sampai ke proses yang menjalankan sesi Claude Code saat ini. "Tersedia di environment sesi" kemungkinan merujuk ke terminal/shell lain (mis. tempat Anda mengetik perintah), bukan ke proses yang mewarisi env untuk tool Bash/PowerShell di sesi ini — proses yang sudah berjalan tidak bisa membaca variabel yang di-set setelah ia start, dan variabel yang di-set di satu jendela terminal tidak otomatis ada di jendela/proses lain.
+
+**Tindakan korektif yang benar-benar akan berhasil:** set `VERCEL_BYPASS_SECRET` sebagai **User environment variable Windows** (`setx VERCEL_BYPASS_SECRET "..."` di cmd, atau lewat System Properties → Environment Variables), lalu **tutup total dan buka ulang** aplikasi yang menjalankan Claude Code (bukan hanya tab/jendela terminal di dalamnya) supaya proses barunya mewarisi variabel tersebut. Alternatif: jalankan `verify-deployment.mjs` sendiri di terminal Anda yang sudah punya variabel itu, lalu tempel hasilnya ke saya untuk dimasukkan ke laporan.
+
+Yang **tetap bisa diverifikasi tanpa secret** (GET/HEAD, tanpa cookie/bypass):
+- Alias Preview `website-sano-git-feat-seo-ssg-implementation-rigss-projects.vercel.app` untuk `/`, `/perbaikan-kasur-amblas`, `/sitemap.xml`, `/admin/` → semua **302 ke SSO Vercel** (deployment hidup dan terlindungi; konsisten dengan push terakhir ke branch ini).
+- Domain sekunder `sano-website.vercel.app` (`/`, `/admin/`) → **302, 263 byte** (redirect SSO), **0 konten situs bocor**. Tetap protected, tidak terpengaruh.
+- Production `sanomatrassehat.com`: `/` → 200, `/sitemap.xml` → 200, `/perbaikan-kasur-amblas` → **404** (halaman baru belum ada di production — benar, karena belum ada deploy production).
+- Tidak ada POST, tidak ada login CMS, tidak ada event Meta dari aktivitas verifikasi ini.
+
+Karena itu butir 1–3 dan bagian Preview dari butir 9 (acceptance: HTTP status/canonical/metadata/H1/redirect/404/sitemap/hydration/asset/internal-link **di Preview sungguhan**) **belum bisa dinyatakan lulus**, meski seluruh bukti pengganti di bawah (build lokal + emulator yang meniru `vercel.json` yang sama persis) konsisten hijau.
+
+## Hasil lokal final (build dari commit `4484d15`, emulator Vercel lokal, tracker diblokir)
+
+| Area | Hasil |
+|---|---|
+| `tsc --noEmit` | bersih |
+| `npm run build` | 19 route, 0 error, 16 peringatan (panjang title/desc, tidak berubah) |
+| Sitemap | 19 URL |
+| Schema audit otomatis (19 halaman) | **0 masalah** — lihat detail per-artikel di `SEO_PHASE_4A_ARTICLE_SCHEMA_REPORT.md` §Final QA |
+| Testimonial lama di Home | **0 kemunculan** nama/rating/"Based on all reviews"/"Ribuan pelanggan puas" di HTML; panel "Ulasan Pelanggan di Google" + tombol "Lihat & Tulis Ulasan di Google" tampil normal |
+| Browser harness desktop+mobile | route-checks **38/38**; fungsional **24/24** (hydration, dark mode, SPA nav, 404, trailing slash, atribusi WA organik/iklan, form ke mock lokal, sitemap XML) |
+| `verify-deployment` (emulator lokal, meniru `vercel.json` live) | **79/79** (termasuk `/admin/` noindex, `/api/lead` GET/HEAD, aset, redirect trailing slash, sitemap) |
+| Overflow/dark mode, 9 halaman × 3 mode (`/`, `/klinik-matras`, `/perbaikan-kasur-amblas`, `/pricelist`, `/kontak`, 4 artikel) | 0 overflow horizontal di semua kombinasi; 1 H1 di semua kombinasi |
+| Heading hierarchy | 1 temuan **pra-eksisting, di luar scope**: artikel `klinik-matras-by-sano-care` punya H1→H3 ("Misi Sano Care") sebelum H2 pertama — bagian dari konten JSX legacy yang tidak disentuh Fase 3C/4A (bukan regresi; bukan BlokPosting/Layanan Terkait yang baru ditambahkan, keduanya sudah di H2 yang benar). Severity **LOW**, tidak diperbaiki (editorial legacy, di luar scope artikel-schema). |
+| Internal link | 0 rusak, 0 orphan |
+| Secret scan | 0 temuan |
+
+## Rekomendasi (update)
+
+**Masih BELUM GO untuk production**, semata-mata karena validasi Preview sungguhan belum bisa dijalankan (BLOCKER lingkungan, bukan kegagalan produk). Semua acceptance criteria yang *bisa* diuji tanpa akses Preview — build, routing, sitemap, hydration, layout, dark mode, tautan, atribusi WA, testimonial disembunyikan, schema BlogPosting+LocalBusiness, secret scan, perlindungan domain sekunder dan production tidak terpengaruh — **lulus semua**. Begitu `verify-deployment` berhasil dijalankan terhadap Preview sungguhan dan hasilnya sama bersihnya, rekomendasi berubah menjadi **GO untuk merge production**, dan merge tetap menunggu izin eksplisit owner.
