@@ -9,7 +9,8 @@ import {
 } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
 import { useSEO } from '../hooks/useSEO';
-import { getCmsArticleBySlug, estimateReadTime } from '../utils/content';
+import { getCmsArticleBySlug, estimateReadTime, DEFAULT_AUTHOR } from '../utils/content';
+import { SITE_URL, canonicalUrl, LEGACY_ARTICLES } from '../seo/routes';
 
 // Styling untuk artikel yang datang dari CMS (Markdown) -- meniru gaya
 // visual yang sudah dipakai 6 artikel lama (hardcoded JSX: kotak callout
@@ -933,6 +934,44 @@ const articleDatabase: any = {
   const displayImage = article ? article.image : cmsArticle!.image;
   const relatedServices = RELATED_SERVICES[slug || ''] ?? DEFAULT_RELATED;
 
+  // --- Author & tanggal untuk BlogPosting JSON-LD + tampilan ---
+  // Artikel lama (articleDatabase) tidak punya field author/updatedAt di CMS (ditulis
+  // langsung sebagai JSX), jadi dateModified = datePublished (keputusan owner) dan
+  // author = DEFAULT_AUTHOR. Tanggal ISO-nya diambil dari seo/routes.ts LEGACY_ARTICLES,
+  // satu-satunya sumber tanggal ISO untuk artikel lama (prerender.mjs sudah memvalidasi
+  // slug & tanggal di sana sinkron dengan articleDatabase ini, jadi aman dipakai di sini).
+  const legacyIsoDate = article ? LEGACY_ARTICLES.find((a) => a.slug === slug)?.date : undefined;
+  const authorName = article ? DEFAULT_AUTHOR : cmsArticle!.author;
+  const datePublishedIso = article ? legacyIsoDate : cmsArticle!.date;
+  const dateModifiedIso = article ? legacyIsoDate : cmsArticle!.dateModified;
+  const showUpdated = !article && cmsArticle!.dateModified !== cmsArticle!.date;
+  const displayDateModified = !article ? cmsArticle!.displayDateModified : undefined;
+
+  const toAbsoluteUrl = (src: string) => (src.startsWith('http') ? src : `${SITE_URL}${src}`);
+  const canonical = canonicalUrl(`/artikel/${slug || ''}`);
+  // BlogPosting JSON-LD -- hidup berdampingan dengan LocalBusiness/Organization schema
+  // global di index.html (tidak saling menggantikan). datePublished/dateModified harus
+  // ISO yang valid; kalau tanggal legacy tidak ketemu (seharusnya tidak pernah terjadi,
+  // dijaga guard prerender), schema TIDAK dirender daripada mengirim tanggal kosong.
+  const articleSchema = found && datePublishedIso ? {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: displayTitle,
+    description: article?.desc || cmsArticle?.desc || '',
+    image: toAbsoluteUrl(displayImage),
+    datePublished: datePublishedIso,
+    dateModified: dateModifiedIso || datePublishedIso,
+    author: { '@type': 'Organization', name: authorName },
+    publisher: {
+      '@type': 'Organization',
+      name: DEFAULT_AUTHOR,
+      logo: { '@type': 'ImageObject', url: toAbsoluteUrl('/sano-logomarks-whitebg.png') },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    url: canonical,
+    inLanguage: 'id-ID',
+  } : null;
+
   const contentNode = article ? (
     article.content
   ) : (
@@ -945,15 +984,27 @@ const articleDatabase: any = {
 
   return (
     <div className="pt-32 pb-24 min-h-screen bg-white dark:bg-slate-900 transition-colors">
+      {articleSchema && (
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          // Escape "</" supaya judul/ringkasan yang (secara teori) mengandung "</script>" tidak memutus tag ini.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema).replace(/<\//g, '<\\/') }}
+        />
+      )}
       <article className="container mx-auto px-6 max-w-3xl">
         <Link to="/artikel" className="inline-flex items-center gap-2 text-slate-500 hover:text-blue-600 mb-8 transition-colors">
           <ArrowLeft size={20} /> Kembali ke Daftar
         </Link>
         <div className="mb-10 text-center">
-          <div className="flex justify-center gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">
+          <div className="flex justify-center gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
              <span className="flex items-center gap-1"><Calendar size={14}/> {displayDate}</span>
              <span className="flex items-center gap-1"><Clock size={14}/> {displayReadTime}</span>
           </div>
+          <p className="text-xs text-slate-400 mb-4">
+            {authorName}
+            {showUpdated && <span> &middot; Diperbarui {displayDateModified}</span>}
+          </p>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-8 leading-tight">{displayTitle}</h1>
           <div className="w-full aspect-video rounded-3xl overflow-hidden mb-8 shadow-xl">
              <img src={displayImage} className="w-full h-full object-cover" alt={displayTitle} />
