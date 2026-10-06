@@ -142,3 +142,55 @@ Baris "Diperbarui …" di UI karena itu **tidak muncul** di artikel manapun saat
 **GO untuk Preview** (dari sisi teknis fase ini): build bersih, 19 route/19 sitemap tidak berubah, JSON-LD `BlogPosting` valid di 7/7 halaman artikel, `LocalBusiness` global tidak terganggu, backward compatibility terbukti (artikel lama tanpa field baru tetap render dengan fallback benar), browser QA dan verify-deployment lokal 100% lulus, secret scan bersih.
 
 Belum ada perubahan status terhadap keputusan Vercel Preview dari Fase 3C — commit ini menambah perubahan di atas state yang sudah divalidasi 79/79 di emulator lokal; validasi Preview sungguhan (dengan `VERCEL_BYPASS_SECRET`) masih perlu dijalankan ulang di atas commit `8fe0d67` sebelum merge, sesuai proses yang sama seperti Fase 3C. **Tidak ada merge ke main dan tidak ada deploy production tanpa izin eksplisit owner.**
+
+---
+
+# FINAL QA — hasil schema per artikel & validasi Preview (07 Okt 2026)
+
+Commit yang diuji: `4484d15` (docs-only di atas `8fe0d67` yang berisi kode fase ini). Lihat `SEO_PHASE_3C_QA_PREVIEW_REPORT.md` bagian "FINAL PREVIEW QA" untuk hasil gabungan 3C+4A, status akses Preview, dan hasil browser/overflow QA. Bagian ini fokus ke detail schema per-artikel.
+
+## Hasil schema per artikel (dari HTML prerender, 19 halaman)
+
+| Artikel | headline = H1? | datePublished | dateModified | fallback dateModified? | image absolute | url = mainEntityOfPage.@id | inLanguage |
+|---|---|---|---|---|---|---|---|
+| `klinik-matras-by-sano-care` | ya (title tag beda by design, lihat Fase 3C) | 2025-12-26 | 2025-12-26 | ya | ✅ | ✅ | id-ID |
+| `konsep-matras-sehat` | ya | 2025-12-27 | 2025-12-27 | ya | ✅ | ✅ | id-ID |
+| `dampak-kasur-rusak` | ya | 2025-12-28 | 2025-12-28 | ya | ✅ | ✅ | id-ID |
+| `dampak-jangka-panjang-kasur-salah` | ya | 2025-12-28 | 2025-12-28 | ya | ✅ | ✅ | id-ID |
+| `mengenal-struktur-kasur` | ya | 2025-12-29 | 2025-12-29 | ya | ✅ | ✅ | id-ID |
+| `kasur-ortopedik-untuk-tidur-sehat` | ya | 2025-12-30 | 2025-12-30 | ya | ✅ | ✅ | id-ID |
+| `panduan-lengkap-kasur-sehat-cara-memilih-kasur-yang-tepat` | ya | 2026-09-24 | 2026-09-24 | ya (CMS, `updatedAt` belum diisi) | ✅ | ✅ | id-ID |
+
+Semua 7/7: `author.@type`=`Organization`, `author.name`="KLINIK MATRAS by SANO CARE"; `publisher.@type`=`Organization`, `publisher.name`="KLINIK MATRAS by SANO CARE", `publisher.logo.url`="https://sanomatrassehat.com/sano-logomarks-whitebg.png" (file resmi yang sudah dipakai sebagai apple-touch-icon situs). `description` setiap artikel = `desc`/ringkasan artikel itu sendiri (bukan deskripsi generik). Audit field-wajib otomatis (lihat §6 laporan Fase 4A sebelumnya): **0 masalah** pada ketujuhnya.
+
+Catatan `klinik-matras-by-sano-care`: `headline` BlogPosting **sama dengan H1 halaman** ("Klinik Matras by SANO CARE: Hadir untuk Menolong dari Dampak Kasur yang Salah"), sesuai cara Google membaca BlogPosting (headline merepresentasikan judul artikel yang terlihat, bukan tag `<title>`). `<title>` memang sengaja berbeda sejak Fase 3C untuk menghindari nama brand muncul dua kali di tag title; itu tidak memengaruhi validitas `headline`.
+
+## Validasi UI artikel (dari build + browser harness)
+
+- Author tampil di bawah badge tanggal/waktu baca pada ketujuh artikel (diverifikasi lewat grep "KLINIK MATRAS by SANO CARE</p>" di output build, lihat run sebelumnya).
+- Label "Diperbarui …" **tidak muncul** di artikel manapun saat ini (benar — tidak ada artikel yang `dateModified ≠ datePublished`), sesuai aturan owner.
+- Artikel lama (6 legacy, JSX) tetap render dengan H1 tunggal dan konten utuh; browser harness 38/38 mencakup seluruh 7 halaman artikel di desktop+mobile tanpa error hydration.
+- Tidak ada layout rusak/overflow pada artikel yang diuji manual (lihat laporan 3C, 4 dari 7 artikel dicek langsung termasuk dark mode); satu temuan heading-hierarchy pra-eksisting pada `klinik-matras-by-sano-care` (H1→H3 sebelum H2 pertama) — berasal dari JSX legacy yang tidak disentuh fase manapun di SEO branch ini, bukan regresi, severity LOW, tidak diperbaiki (di luar scope "jangan ubah isi editorial").
+
+## CMS compatibility (re-cek)
+
+- `public/admin/config.yml` tervalidasi sebagai YAML (dibaca ulang, struktur sesuai urutan: Judul, Kategori, Author, Tanggal Publish, Tanggal Update, Gambar Sampul, Ringkasan Singkat, Isi Artikel). `author` punya `default`; `updatedAt` punya `required: false`.
+- Tidak ada login CMS yang dilakukan untuk pengujian ini (sesuai batasan "jangan login CMS") — validasi field dilakukan dengan membaca YAML langsung dan menguji logika parsing frontmatter secara terpisah (lihat laporan 4A §3/§6).
+- 7 artikel existing (semuanya tanpa `author`/`updatedAt` di frontmatter) terbukti tetap ter-build dan ter-render sempurna di 19/19 route — bukti langsung bahwa field baru backward-compatible.
+
+## Security/regression (re-cek pada commit final)
+
+| Item | Hasil |
+|---|---|
+| Secret scan | 0 temuan (`git grep` pola secret/token/bypass panjang; tidak ada `.env*` selain `.env.example`) |
+| `/admin/` noindex | terverifikasi lewat `verify-deployment` emulator (79/79, termasuk cek ini) |
+| `/api/lead` GET/HEAD | tidak berubah perilakunya (tidak ada perubahan file `api/*` di fase ini); diverifikasi lewat `verify-deployment` |
+| POST form / login CMS / event Meta | tidak dilakukan |
+| Domain sekunder `sano-website.vercel.app` | tetap 302 (protected), 0 konten bocor |
+| Production `sanomatrassehat.com` | tidak terpengaruh (200 di halaman existing, 404 di halaman baru yang memang belum di-deploy) |
+
+## Status Preview & rekomendasi akhir
+
+Validasi terhadap Vercel Preview **sungguhan** (dengan `VERCEL_BYPASS_SECRET`) masih **BLOCKER lingkungan** — secret tidak terbaca oleh proses sesi ini meski diklaim tersedia; detail diagnosis dan langkah perbaikan ada di `SEO_PHASE_3C_QA_PREVIEW_REPORT.md` bagian "FINAL PREVIEW QA". Semua hal lain yang bisa diuji tanpa akses Preview — build, 19 route/19 sitemap, schema BlogPosting valid 7/7 dengan LocalBusiness tetap utuh, backward compatibility, testimonial disembunyikan, browser QA desktop/mobile, secret scan, domain sekunder & production tidak terpengaruh — **lulus semua**.
+
+**Rekomendasi: GO secara teknis, NO-GO administratif sampai Preview tervalidasi.** Begitu validasi Preview lulus, rekomendasi menjadi GO penuh untuk merge production — namun merge tetap menunggu izin eksplisit owner, sesuai batasan di setiap fase.
