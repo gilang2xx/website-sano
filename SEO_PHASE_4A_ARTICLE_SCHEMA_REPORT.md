@@ -194,3 +194,17 @@ Catatan `klinik-matras-by-sano-care`: `headline` BlogPosting **sama dengan H1 ha
 Validasi terhadap Vercel Preview **sungguhan** (dengan `VERCEL_BYPASS_SECRET`) masih **BLOCKER lingkungan** — secret tidak terbaca oleh proses sesi ini meski diklaim tersedia; detail diagnosis dan langkah perbaikan ada di `SEO_PHASE_3C_QA_PREVIEW_REPORT.md` bagian "FINAL PREVIEW QA". Semua hal lain yang bisa diuji tanpa akses Preview — build, 19 route/19 sitemap, schema BlogPosting valid 7/7 dengan LocalBusiness tetap utuh, backward compatibility, testimonial disembunyikan, browser QA desktop/mobile, secret scan, domain sekunder & production tidak terpengaruh — **lulus semua**.
 
 **Rekomendasi: GO secara teknis, NO-GO administratif sampai Preview tervalidasi.** Begitu validasi Preview lulus, rekomendasi menjadi GO penuh untuk merge production — namun merge tetap menunggu izin eksplisit owner, sesuai batasan di setiap fase.
+
+---
+
+# PREVIEW TECHNICAL GATE — evidence manual owner (08 Okt 2026)
+
+Owner menjalankan `node scripts/verify-deployment.mjs --base=https://website-sano-git-feat-seo-ssg-implementation-rigss-projects.vercel.app` sendiri (dengan `VERCEL_BYPASS_SECRET` miliknya) dan melaporkan **79 total / 0 failed**. Analisis lengkap dan pemetaan ke acceptance criteria ada di `SEO_PHASE_3C_QA_PREVIEW_REPORT.md` bagian "PREVIEW TECHNICAL GATE". Ringkasan untuk laporan ini:
+
+- **Preview technical gate (HTTP-level: status/canonical/H1/metadata/redirect/404/sitemap/robots/admin/API/aset): PASS**, dikuatkan oleh kecocokan jumlah check (79) dengan run emulator lokal commit `d6c9a72` yang juga 79/79, 0 gagal.
+- `verify-deployment.mjs` **tidak** memvalidasi konten JSON-LD, jadi butir-butir spesifik Fase 4A ini **masih belum terverifikasi di Preview sungguhan** (hanya di build lokal — lihat §"FINAL QA" di atas untuk hasil lokal 7/7 `BlogPosting` valid): headline/description/image-absolute/datePublished/dateModified/fallback/author/publisher/logo/`url`=`mainEntityOfPage.@id`/`inLanguage`, serta `LocalBusiness` tetap ada di Preview.
+- Sesi ini masih tidak punya `VERCEL_BYPASS_SECRET` yang terbaca (dicek ulang lewat Bash dan PowerShell, keduanya kosong) sehingga tidak bisa memparse HTML Preview sungguhan sendiri.
+
+## Rekomendasi (update)
+
+**GO BERSYARAT.** Bagian HTTP-level Preview sudah terbukti lewat evidence manual owner. Yang tersisa murni pengecekan konten JSON-LD + visual panel ulasan pada Preview sungguhan (bukan lagi soal routing/infrastruktur) — risiko rendah karena kode yang menghasilkan JSON-LD dan panel ulasan sudah terbukti identik perilakunya antara build lokal dan Preview untuk 79 check lain yang sama-sama bergantung pada build yang sama. Dua jalan untuk menutupnya: (1) owner cek manual 2-3 halaman artikel + homepage di Preview (View Page Source, cari `application/ld+json` dan teks "Ulasan Pelanggan di Google"), atau (2) `VERCEL_BYPASS_SECRET` tersedia di sesi ini agar saya cek langsung. **Belum rekomendasi GO penuh untuk merge/deploy** sampai salah satunya tuntas; merge tetap menunggu izin eksplisit owner sesudahnya.
