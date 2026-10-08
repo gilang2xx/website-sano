@@ -208,3 +208,57 @@ Owner menjalankan `node scripts/verify-deployment.mjs --base=https://website-san
 ## Rekomendasi (update)
 
 **GO BERSYARAT.** Bagian HTTP-level Preview sudah terbukti lewat evidence manual owner. Yang tersisa murni pengecekan konten JSON-LD + visual panel ulasan pada Preview sungguhan (bukan lagi soal routing/infrastruktur) — risiko rendah karena kode yang menghasilkan JSON-LD dan panel ulasan sudah terbukti identik perilakunya antara build lokal dan Preview untuk 79 check lain yang sama-sama bergantung pada build yang sama. Dua jalan untuk menutupnya: (1) owner cek manual 2-3 halaman artikel + homepage di Preview (View Page Source, cari `application/ld+json` dan teks "Ulasan Pelanggan di Google"), atau (2) `VERCEL_BYPASS_SECRET` tersedia di sesi ini agar saya cek langsung. **Belum rekomendasi GO penuh untuk merge/deploy** sampai salah satunya tuntas; merge tetap menunggu izin eksplisit owner sesudahnya.
+
+---
+
+# STOP RELEASE — audit root cause: BlogPosting tidak ditemukan di View Page Source Preview (08 Okt 2026)
+
+## Root cause
+
+**Bukan bug kode.** Audit menelusuri 5 titik yang diminta:
+
+1. **`pages/ArtikelDetail.tsx`** -- objek `BlogPosting` dibangun dari `article`/`cmsArticle` yang sudah divalidasi, dirender sebagai `<script type="application/ld+json" dangerouslySetInnerHTML={...}>` langsung di JSX komponen (bukan lewat `useSEO`/head collector, sehingga tidak bergantung pada mekanisme head-injection terpisah). Diperiksa ulang baris per baris: tidak ada kondisi yang bisa membuatnya hilang selain `found && datePublishedIso` bernilai falsy (dan untuk ke-7 artikel yang ada, keduanya selalu truthy -- dibuktikan di §2).
+2. **`utils/content.ts`** -- fallback author/dateModified sudah diaudit sebelumnya (lihat bagian "FINAL QA"), tidak berubah, tidak relevan dengan hilangnya tag (field-nya tetap terisi, bukan source masalah).
+3. **Pipeline prerender/SSG** -- `entry-server.tsx` pakai `renderToPipeableStream` (React SSR API standar); `scripts/prerender.mjs` tidak melakukan sanitasi/strip HTML apa pun (diperiksa: tidak ada `replace(/<script/`, tidak ada library sanitizer). Tidak ada titik di pipeline yang bisa menghapus sebuah `<script>` tag dari output build.
+4. **Generated dist HTML** -- **dibuktikan langsung**, bukan diasumsikan: `dist/artikel/<slug>/index.html` dibaca lewat Node (`fs.readFileSync`, di luar browser) untuk ke-7 artikel. JSON-LD **ada** dan valid di semuanya. Ini dilakukan ulang pada build terbaru (commit `785dc68`) dengan skrip baru `scripts/verify-article-schema.mjs`: **105/105 check lulus** (15 check × 7 artikel: ada tepat 1 BlogPosting, LocalBusiness tetap ada, headline/description/image-absolute/datePublished/dateModified/author/publisher/logo/mainEntityOfPage=url=canonical/inLanguage id-ID).
+5. **Hydration** -- tidak relevan untuk temuan owner: "View Page Source" menampilkan HTML mentah dari server **sebelum** JS apa pun dijalankan, sama sekali tidak melewati React/hydration. Kalau tag ini tidak muncul di View Source, itu murni soal HTML apa yang **dikirim server** untuk request itu -- bukan soal apa yang terjadi di DOM setelah hydrasi. (Sebagai catatan tambahan: karena `ArtikelDetail` me-render field yang sama persis di server dan di client dari data yang sama, tidak ada hydration mismatch yang mungkin terjadi pada node ini -- tapi ini bukan penyebab temuan owner.)
+6. **Vercel Preview artifact & hubungan commit/deployment** -- **di sinilah kemungkinan akar masalahnya**, dan satu-satunya titik yang tidak bisa saya audit langsung dari sesi ini (tidak ada akses dashboard/API Vercel). Yang bisa dipastikan dari git: `8fe0d67` (commit yang menambahkan BlogPosting) adalah ancestor dari `d6c9a72` yang disebut owner, dan satu-satunya commit kode di rentang itu yang menyentuh file artikel. Yang **tidak** bisa dipastikan dari sesi ini: apakah deployment Preview yang dilihat owner saat View Page Source benar-benar dibangun dari commit sebesar/setelah `8fe0d67`, atau apakah itu deployment lama/ cache browser. Dua kemungkinan diuraikan di `SEO_PHASE_3C_QA_PREVIEW_REPORT.md` bagian "STOP RELEASE".
+
+**Item 6 di instruksi ("jika JSON-LD hanya client-rendered atau hilang saat prerender, buat FIX MINIMAL") tidak berlaku** -- kondisinya tidak terjadi: JSON-LD terbukti ada di HTML prerender statis, bukan client-rendered, dan tidak hilang saat prerender. Karena itu **tidak ada fix kode** yang dibuat untuk BlogPosting itu sendiri.
+
+## Apakah laporan lokal sebelumnya salah, atau hanya artifact berbeda?
+
+**Hanya artifact berbeda, bukan laporan yang salah.** Setiap klaim "BlogPosting 7/7 PASS" di laporan-laporan sebelumnya secara eksplisit di-scope ke "HTML prerender"/"build lokal", dan laporan yang sama **sudah menandai** bahwa verifikasi terhadap Preview sungguhan "masih BLOCKER" dan meminta owner mengecek manual -- persis langkah yang kemudian dilakukan owner dan menghasilkan temuan ini. Jadi caution sebelumnya terbukti perlu; tidak ada inkonsistensi dalam pelaporan.
+
+## File yang diperbaiki
+
+- **`pages/ArtikelDetail.tsx`**: tidak ada perubahan fungsional, hanya **1 komentar dokumentasi** ditambahkan (mencatat hasil audit ini). Tidak mengubah output HTML.
+- **`scripts/verify-article-schema.mjs` (BARU)**: alat verifikasi read-only (GET saja) yang memparse JSON-LD mentah dari HTML server untuk ke-7 artikel sekaligus, dengan 15 pemeriksaan per artikel (lihat header file untuk detail). Dirancang persis untuk mengisi gap yang dikeluhkan di temuan ini -- `verify-deployment.mjs` yang lama tidak pernah memvalidasi isi JSON-LD.
+- **Tidak ada perubahan** pada `utils/content.ts`, desain, copy, atau `api/*`.
+
+## Hasil test (build dari commit `785dc68`)
+
+| Uji | Hasil |
+|---|---|
+| `tsc --noEmit` | bersih |
+| `npm run build` | 19 route, 0 error |
+| Sitemap | 19 URL (tidak berubah) |
+| Audit schema 19 halaman (LocalBusiness + BlogPosting, dari dist lokal) | 0 masalah |
+| **`verify-article-schema.mjs` baru (7 artikel × 15 check)** | **105/105 lulus** |
+| `verify-deployment.mjs` (emulator lokal) | 79/79 |
+| Browser harness desktop+mobile | 38/38 + 24/24 |
+| Internal link | 0 rusak, 0 orphan |
+| Secret scan | 0 temuan |
+
+## Command untuk owner (PowerShell, read-only, GET saja)
+
+```powershell
+$env:VERCEL_BYPASS_SECRET = "<secret Anda>"
+node scripts/verify-article-schema.mjs --base=https://website-sano-git-feat-seo-ssg-implementation-rigss-projects.vercel.app
+```
+
+Jalankan ini **setelah** deployment untuk commit `785dc68` (atau yang lebih baru) berstatus "Ready" di Vercel dashboard. Hasil yang diharapkan: `105/105 lulus, 0 gagal`. Sertakan output lengkapnya bila masih ada yang gagal -- akan dipakai sebagai bukti konkret untuk audit lanjutan (bukan tebakan).
+
+## Status & rekomendasi
+
+**NO-GO tetap berlaku.** Root cause teknis kode sudah tertutup (tidak ada bug), tapi status Preview sungguhan belum dikonfirmasi ulang terhadap deployment commit `785dc68`. Tidak ada merge ke main, tidak ada deploy production, tidak ada perubahan API lead.

@@ -280,3 +280,64 @@ Sesi ini masih tidak punya `VERCEL_BYPASS_SECRET` yang terbaca (dicek ulang: Bas
 **Preview technical gate (item 2 di atas): GO**, berdasarkan evidence manual 79/0 owner + kecocokan dengan hasil lokal yang identik.
 
 **Rekomendasi keseluruhan: GO BERSYARAT** — bukan GO penuh, karena 3 item Fase 4A di atas (JSON-LD on Preview + panel ulasan) belum terverifikasi langsung di Preview, hanya di build lokal. Risikonya rendah (build lokal dan Preview sudah terbukti identik untuk 79 check lain, dan kode JSON-LD/testimonial tidak bergantung pada environment Vercel), tapi belum 100% dikonfirmasi. Cara tercepat menutup gap ini: owner buka 2-3 halaman artikel + homepage di Preview secara manual (klik kanan → View Page Source, cari `application/ld+json` dan "Ulasan Pelanggan di Google"), atau beri saya `VERCEL_BYPASS_SECRET` yang terbaca di sesi ini. **Belum GO penuh untuk merge/deploy** sampai salah satu dari itu terjadi — dan sekalipun GO penuh tercapai, merge tetap menunggu izin eksplisit owner.
+
+---
+
+# STOP RELEASE — audit root cause BlogPosting hilang di Preview (08 Okt 2026, lanjutan)
+
+Owner melaporkan dua fakta dari QA manual di browser:
+
+**Fakta 1 (screenshot Preview, hero "Spesialis Service & Restorasi Kasur Sehat", tanpa testimonial lama, panel "Ulasan Pelanggan di Google"):** ini **sesuai ekspektasi, bukan bug**. Itu justru bukti visual bahwa perubahan Fase 3B/3C sudah benar ter-deploy ke Preview. Production (`sanomatrassehat.com`) memang **sengaja** belum menunjukkan perubahan ini — belum ada merge/deploy production sampai saat ini, persis sesuai batasan di setiap fase. Jadi Fase 3C **tidak** "belum live" secara tidak sengaja; itu memang belum di-merge atas instruksi berulang "jangan merge/deploy production".
+
+**Fakta 2 (View Page Source 2-3 artikel di Preview, JSON-LD `BlogPosting` tidak ditemukan):** ini **temuan nyata** yang perlu diaudit. Detail audit root cause ada di bawah dan di `SEO_PHASE_4A_ARTICLE_SCHEMA_REPORT.md`.
+
+## Audit root cause (ringkasan; rinci di laporan 4A)
+
+1. **Kode & SSR pipeline: tidak ada bug.** `pages/ArtikelDetail.tsx` membangun objek `BlogPosting` dan merendernya sebagai `<script type="application/ld+json">` di dalam JSX artikel (bukan di `<head>` lewat `useSEO`), jadi ia ikut dirender server-side oleh `entry-server.tsx` (`renderToPipeableStream`, API SSR standar React — tidak ada langkah yang menghapus tag `<script>` dari output). `scripts/prerender.mjs` tidak melakukan sanitasi/strip apa pun terhadap body HTML. Dibuktikan langsung (bukan diasumsikan): file statis `dist/artikel/<slug>/index.html` hasil `npm run build` dibaca lewat Node **di luar browser, tanpa hydration/JS apa pun** — JSON-LD **ada** di RAW HTML untuk **7/7 artikel**, tervalidasi ulang barusan dengan skrip baru `scripts/verify-article-schema.mjs` (105/105 check lulus terhadap build lokal). Ini menutup kemungkinan "hanya client-rendered" — buktinya justru sebaliknya: tag ini murni hasil prerender statis, bahkan sebelum React/hydration jalan sama sekali.
+2. **Ancestry commit: tidak ada masalah.** `git merge-base --is-ancestor 8fe0d67 HEAD` = true. `8fe0d67` (commit yang menambahkan BlogPosting) adalah **satu-satunya** commit di rentang ini yang menyentuh `pages/ArtikelDetail.tsx`/`utils/content.ts`/`public/admin/config.yml`, dan ia ada di riwayat setiap commit sesudahnya termasuk `d6c9a72` yang disebut owner.
+3. **Kesimpulan**: gap antara "lokal 7/7 PASS" dan "Preview tidak ditemukan" **bukan bug kode**, melainkan **artifact Preview yang dilihat owner belum/tidak mencerminkan build dari commit `8fe0d67` atau setelahnya** — dua kemungkinan paling masuk akal (tidak bisa dipastikan 100% dari sesi ini karena tidak ada akses dashboard Vercel):
+   - **(a) Deployment Preview yang di-alias ke URL itu memang lebih lama** dari `8fe0d67` (mis. Preview terakhir yang berhasil ter-build berhenti di sekitar commit `b53214d`/gate Fase 3C, dan build untuk commit-commit sesudahnya -- termasuk `8fe0d67` -- entah gagal, entah di-skip oleh suatu kondisi di sisi Vercel yang tidak terlihat dari sesi ini).
+   - **(b) Cache browser/CDN** menyajikan HTML lama untuk tab yang sudah dibuka owner sebelum build terbaru selesai (View Page Source bisa mengambil dari cache HTTP browser, bukan selalu fetch baru).
+   Kedua kemungkinan ini **tidak memerlukan perubahan kode** -- source sudah benar dan terbukti ada di artifact build.
+
+## Apakah laporan lokal sebelumnya salah?
+
+**Tidak salah, hanya scope artifact yang berbeda, dan ini sudah ditandai eksplisit.** Baca ulang laporan 4A §"FINAL QA" dan bagian "PREVIEW TECHNICAL GATE" sebelumnya: klaim "BlogPosting 7/7" selalu ditulis dengan embel-embel "dari HTML prerender" / "build lokal", dan di bagian sesudahnya saya eksplisit menulis "Validasi terhadap Vercel Preview **sungguhan** ... masih **BLOCKER**" serta meminta owner cek manual persis dengan cara yang kemudian dilakukan (View Page Source) -- justru untuk menutup gap ini. Temuan owner **mengonfirmasi** gap yang sudah saya tandai sebelumnya, bukan membantahnya.
+
+## Tindakan yang diambil
+
+- **Tidak ada perubahan kode fungsional** (karena tidak ada bug untuk diperbaiki -- lihat §1 di atas). Satu komentar dokumentasi ditambahkan di `pages/ArtikelDetail.tsx` (menjelaskan hasil audit; tidak mengubah output HTML).
+- **Skrip baru `scripts/verify-article-schema.mjs`** ditambahkan: memvalidasi `BlogPosting` + `LocalBusiness` langsung dari HTML mentah (fetch GET biasa, tanpa browser/JS) untuk ke-7 artikel sekaligus, dengan 15 pemeriksaan per artikel. Ini alat yang seharusnya dipakai owner (bukan saya menebak) untuk memastikan Preview sungguhan sudah benar -- lihat perintah di bawah.
+- **Commit baru di-push** (`785dc68`) ke `feat/seo-ssg-implementation` untuk memaksa Vercel membuat deployment Preview baru (build fresh), menghilangkan kemungkinan (a) di atas untuk build selanjutnya.
+- Regresi penuh dijalankan ulang terhadap build ini (lihat §hasil test di bawah): semuanya hijau.
+
+## Hasil test (build dari commit `785dc68`)
+
+| Uji | Hasil |
+|---|---|
+| `tsc --noEmit` | bersih |
+| `npm run build` | 19 route, 0 error |
+| Sitemap | 19 URL |
+| Schema audit (19 halaman, LocalBusiness + BlogPosting) | 0 masalah |
+| **`scripts/verify-article-schema.mjs` (baru, 7 artikel × 15 check)** | **105/105 lulus** |
+| `scripts/verify-deployment.mjs` (emulator lokal) | 79/79 |
+| Browser harness desktop+mobile | 38/38 route-checks; 24/24 fungsional |
+| Internal link | 0 rusak, 0 orphan |
+| Secret scan | 0 temuan |
+
+## Cara owner memverifikasi Preview baru (read-only, GET saja, tanpa POST/login CMS/event Meta)
+
+1. **Pastikan deployment baru sudah selesai build** di Vercel dashboard untuk commit `785dc68` pada branch `feat/seo-ssg-implementation` (tunggu status "Ready"), lalu catat/cocokkan SHA commit yang tertera di situ.
+2. Di PowerShell (dari folder repo, dengan secret yang **sudah divalidasi Anda sendiri bekerja** -- lihat §"generate ulang" sebelumnya kalau perlu):
+
+```powershell
+$env:VERCEL_BYPASS_SECRET = "<secret Anda>"
+node scripts/verify-article-schema.mjs --base=https://website-sano-git-feat-seo-ssg-implementation-rigss-projects.vercel.app
+```
+
+3. Harapannya: `RINGKASAN ...: 105/105 lulus, 0 gagal`. Kalau masih ada yang `FAIL`, skrip mencetak kategori (slug artikel) dan detail field yang gagal -- kirim outputnya ke saya, itu akan jadi bukti definitif (bukan tebakan) untuk audit lanjutan.
+4. (Opsional, silang-cek manual) Buka salah satu artikel di Preview dengan **hard refresh** (Ctrl+Shift+R) atau tab Incognito baru sebelum View Page Source, untuk menyingkirkan kemungkinan cache browser lama.
+
+## Status & rekomendasi
+
+**NO-GO tetap berlaku** sampai butir di atas dikonfirmasi lulus terhadap deployment Preview yang baru. Tidak ada merge ke main, tidak ada deploy production, tidak ada perubahan API lead, tidak ada perubahan desain/copy lain di luar yang disebutkan.
