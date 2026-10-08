@@ -38,13 +38,22 @@ collections:
     fields:
       - { label: "Judul", name: "title", widget: "string" }
       - { label: "Kategori", name: "category", widget: "string", default: "Edukasi" }
-      - label: "Tanggal"
+      - { label: "Author", name: "author", widget: "string", default: "KLINIK MATRAS by SANO CARE" }
+      - label: "Tanggal Publish"
         name: "date"
         widget: "datetime"
         format: "YYYY-MM-DD"
         date_format: "YYYY-MM-DD"
         time_format: false
         picker_utc: true
+      - label: "Tanggal Update (kosongkan jika belum ada revisi)"
+        name: "updatedAt"
+        widget: "datetime"
+        format: "YYYY-MM-DD"
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        picker_utc: true
+        required: false
       - { label: "Gambar Sampul", name: "image", widget: "image" }
       - { label: "Ringkasan Singkat (muncul di daftar artikel)", name: "desc", widget: "text" }
       - { label: "Isi Artikel", name: "body", widget: "markdown" }

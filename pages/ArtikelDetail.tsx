@@ -9,7 +9,8 @@ import {
 } from 'lucide-react';
 import { buildWaHref } from '../utils/attribution';
 import { useSEO } from '../hooks/useSEO';
-import { getCmsArticleBySlug, estimateReadTime } from '../utils/content';
+import { getCmsArticleBySlug, estimateReadTime, DEFAULT_AUTHOR } from '../utils/content';
+import { SITE_URL, canonicalUrl, LEGACY_ARTICLES } from '../seo/routes';
 
 // Styling untuk artikel yang datang dari CMS (Markdown) -- meniru gaya
 // visual yang sudah dipakai 6 artikel lama (hardcoded JSX: kotak callout
@@ -151,7 +152,28 @@ const ArtikelDetail: React.FC = () => {
   }, [slug]);
 
   // --- DATABASE KONTEN ARTIKEL (FULL 6 ARTIKEL) ---
-  const articleDatabase: any = {
+  // Tautan kontekstual dari artikel ke halaman layanan (anchor sengaja dibuat beragam).
+// Tautan ke /pricelist hanya dipakai bila artikel membahas biaya/pilihan perbaikan.
+type RelatedService = { to: string; lead: string; anchor: string };
+const KLINIK: RelatedService = { to: '/klinik-matras', lead: 'Ingin kasur lama diperbaiki tanpa beli baru? Kenali pilihan perbaikan dan upgrade di', anchor: 'layanan service kasur & springbed' };
+const AMBLAS: RelatedService = { to: '/perbaikan-kasur-amblas', lead: 'Kasur mulai amblas atau bergelombang? Pelajari penyebab dan langkah penanganannya di', anchor: 'panduan perbaikan kasur amblas' };
+const HARGA: RelatedService = { to: '/pricelist', lead: 'Ingin tahu kisaran biaya paket service dan upgrade? Lihat', anchor: 'estimasi harga di daftar harga kami' };
+// Title <title> yang berbeda dari H1 hanya bila H1 sudah memuat nama brand (suffix brand global akan menggandakannya).
+const SEO_TITLE_OVERRIDE: Record<string, string> = {
+  'klinik-matras-by-sano-care': 'Solusi Kasur Sehat dari Akar Permasalahan: Dampak Kasur yang Salah',
+};
+const DEFAULT_RELATED: RelatedService[] = [KLINIK, AMBLAS];
+const RELATED_SERVICES: Record<string, RelatedService[]> = {
+  'klinik-matras-by-sano-care': [{ ...KLINIK, lead: 'Ingin tahu apa saja yang dikerjakan Klinik Matras? Telusuri', anchor: 'daftar layanan service kasur' }, HARGA],
+  'konsep-matras-sehat': [{ ...KLINIK, lead: 'Konsep ini diterapkan lewat perbaikan fondasi dan lapisan. Lihat', anchor: 'layanan upgrade kasur di Klinik Matras' }, AMBLAS],
+  'dampak-kasur-rusak': [{ ...AMBLAS, lead: 'Curiga kasur Anda sudah amblas? Baca', anchor: 'cara mengenali dan memperbaiki kasur amblas' }, KLINIK],
+  'dampak-jangka-panjang-kasur-salah': [{ ...AMBLAS, lead: 'Sebelum kondisi kasur memburuk, cek dulu', anchor: 'tanda-tanda kasur amblas dan pilihan perbaikannya' }, KLINIK],
+  'mengenal-struktur-kasur': [{ ...AMBLAS, lead: 'Setelah memahami fondasi dan lapisan, lihat bagaimana masalahnya ditangani pada', anchor: 'perbaikan kasur amblas' }, { ...KLINIK, anchor: 'layanan restorasi fondasi dan lapisan kasur' }],
+  'kasur-ortopedik-untuk-tidur-sehat': [{ ...KLINIK, lead: 'Kasur lama masih bisa disesuaikan lewat upgrade. Cek', anchor: 'opsi upgrade fondasi dan lapisan' }, HARGA],
+  'panduan-lengkap-kasur-sehat-cara-memilih-kasur-yang-tepat': [{ ...KLINIK, lead: 'Bila hasil pengecekan menunjukkan kasur masih layak diperbaiki, lihat', anchor: 'layanan service kasur di Klinik Matras' }, AMBLAS, HARGA],
+};
+
+const articleDatabase: any = {
 
     // =================================================================
     // ARTIKEL 1: MISI & VISI SANO CARE
@@ -159,7 +181,7 @@ const ArtikelDetail: React.FC = () => {
     "klinik-matras-by-sano-care": {
       title: "Klinik Matras by SANO CARE: Hadir untuk Menolong dari Dampak Kasur yang Salah",
       date: "26 Des 2025",
-      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya.",
+      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah.",
       readTime: "5 Menit Baca",
       image: "/foto-karyawan.jpg", // Gambar Utama
       content: (
@@ -350,9 +372,9 @@ const ArtikelDetail: React.FC = () => {
 
     // ARTIKEL: AWAS KASUR MERUSAK TULANG BELAKANG
     "dampak-kasur-rusak": {
-      title: "Awas! Kasur Anda Mungkin Sedang Merusak Tulang Belakang: Inilah Alasannya",
+      title: "Apakah Kasur Anda Masih Menopang Tubuh dengan Baik? Kenali Tandanya",
       date: "28 Des 2025",
-      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah.",
+      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya.",
       readTime: "7 Menit Baca",
       image: "/kasur-merusak-tulang.jpg", // Gambar cover yang relevan
       content: (
@@ -378,7 +400,7 @@ const ArtikelDetail: React.FC = () => {
 
           {/* BAGIAN 1: 4 PENYEBAB UTAMA */}
           <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-6">
-            4 Penyebab Utama Kasur Merusak Tubuh Anda
+            4 Faktor yang Membuat Kasur Kurang Mendukung Tubuh Anda
           </h2>
           <p className="mb-8 text-slate-600 dark:text-slate-300">
             Mengapa kasur yang terlihat "baik-baik saja" di permukaan bisa menjadi sumber malapetaka bagi kesehatan? Berikut adalah faktor teknisnya:
@@ -390,7 +412,7 @@ const ArtikelDetail: React.FC = () => {
             <div className="bg-slate-50 dark:bg-slate-800 p-6 rounded-2xl border-l-4 border-red-500">
               <h3 className="text-xl font-bold text-slate-800 dark:text-white mb-2">1. Fondasi Lemah & Tenggelam</h3>
               <p className="text-slate-600 dark:text-slate-300 leading-relaxed text-sm">
-                Jika fondasi kasur sudah tidak rata, tulang belakang Anda akan melengkung secara perlahan menuju permanen. Ini adalah salah satu penyebab utama ketegangan otot yang terus-menerus. Jika fondasi sudah tenggelam, busa apapun di atasnya menjadi sia-sia; posisi tidur akan tenggelam dan merusak tubuh jangka panjang.
+                Jika fondasi kasur sudah tidak rata, tulang belakang Anda dapat menjadi kurang tertopang dengan baik. Kondisi ini bisa berkaitan dengan ketegangan otot yang terus-menerus. Jika fondasi sudah tenggelam, busa apapun di atasnya menjadi sia-sia; posisi tidur akan tenggelam dan kurang mendukung tubuh dalam jangka panjang.
               </p>
             </div>
 
@@ -435,8 +457,8 @@ const ArtikelDetail: React.FC = () => {
                 <li><strong>Kepala Pusing</strong></li>
                 <li><strong>Lemas & Kurang Bersemangat</strong></li>
                 <li><strong>Sakit Pinggang & Punggung Kronis:</strong> Rasa nyeri yang tajam atau tumpul setiap pagi.</li>
-                <li><strong>Saraf Kejepit (HNP Fungsional):</strong> Penekanan pada diskus tulang belakang akibat posisi tidur salah.</li>
-                <li><strong>Skoliosis Fungsional:</strong> Perubahan kelengkungan tulang belakang karena tumpuan tidak rata.</li>
+                <li><strong>Keluhan Saraf Kejepit:</strong> Keluhan yang oleh sebagian orang dikaitkan dengan posisi tidur yang kurang tertopang. Penyebab pastinya perlu diperiksa dokter.</li>
+                <li><strong>Perubahan Postur:</strong> Postur dapat terpengaruh bila tumpuan tidur tidak rata.</li>
                 <li><strong>Kualitas Tidur Buruk:</strong> Bangun dengan perasaan lelah (badan "remuk").</li>
              </ul>
           </div>
@@ -500,7 +522,7 @@ const ArtikelDetail: React.FC = () => {
 
     // ARTIKEL 4: DAMPAK JANGKA PANJANG (UPDATED CONTENT)
     "dampak-jangka-panjang-kasur-salah": {
-      title: "Dampak Jangka Panjang Menggunakan Kasur yang Salah: Bahaya yang Mengintai di Balik Tidur Anda",
+      title: "Menggunakan Kasur yang Tidak Sesuai dalam Jangka Panjang: Yang Perlu Anda Ketahui",
       date: "28 Des 2025",
       desc: "Kerusakan struktur kasur atau struktur tidak sesuai dengan tubuh yang dibiarkan bertahun-tahun akan memaksa tubuh beradaptasi secara tidak alami.",
       readTime: "7 Menit Baca",
@@ -512,7 +534,7 @@ const ArtikelDetail: React.FC = () => {
             Banyak orang mengabaikan kondisi kasur yang sudah mulai amblas atau tidak stabil dengan alasan "masih bisa dipakai". Padahal, kasur adalah satu-satunya benda yang menyangga tubuh Anda selama 6 hingga 8 jam setiap hari.
           </p>
           <p className="mb-6 text-slate-600 dark:text-slate-300">
-            Tanpa disadari, tidur bertahun-tahun di atas kasur yang salah bukan hanya soal tidur yang tidak nyenyak, melainkan tiket menuju <strong>gangguan muskuloskeletal jangka panjang</strong>. Di Klinik Matras by Sano Care, kami sering menemukan kasus di mana kerusakan postur bermula dari tempat tidur yang tidak lagi mampu menjalankan fungsinya.
+            Tanpa disadari, tidur bertahun-tahun di atas kasur yang salah bukan hanya soal tidur yang tidak nyenyak, melainkan dapat berkaitan dengan <strong>keluhan otot dan tulang jangka panjang</strong>. Di Klinik Matras by Sano Care, kami sering menemukan kasus di mana kerusakan postur bermula dari tempat tidur yang tidak lagi mampu menjalankan fungsinya.
           </p>
 
           {/* GAMBAR 1 */}
@@ -538,8 +560,8 @@ const ArtikelDetail: React.FC = () => {
                 <li><strong>Sakit Kepala:</strong> Aliran darah dan oksigen ke otak terganggu selama tidur.</li>
                 <li><strong>Nyeri Pinggang Kronis:</strong> Rasa sakit menetap akibat otot pinggang bekerja keras menahan tubuh.</li>
                 <li><strong>Postur Tubuh Tidak Simetris:</strong> Akibat terbiasa tidur di kasur miring/amblas.</li>
-                <li><strong>Skoliosis Fungsional:</strong> Tulang belakang bengkok mengikuti bentuk kasur rusak.</li>
-                <li><strong>Saraf Kejepit (HNP) Berulang:</strong> Risiko tinggi akibat penekanan diskus tulang belakang.</li>
+                <li><strong>Perubahan Postur:</strong> Postur tubuh dapat terpengaruh oleh kasur yang tidak lagi menopang dengan baik.</li>
+                <li><strong>Keluhan Saraf Kejepit:</strong> Keluhan ini dapat terasa lebih sering bila tubuh tidak tertopang baik. Konsultasikan dengan dokter untuk penyebabnya.</li>
                 <li><strong>Gangguan Sirkulasi Darah:</strong> Kesemutan akibat kasur terlalu keras menekan pembuluh darah.</li>
              </ul>
           </div>
@@ -584,7 +606,7 @@ const ArtikelDetail: React.FC = () => {
             Sano Care: Memperbaiki Sebelum Terlambat
           </h2>
           <p className="mb-4 text-slate-600 dark:text-slate-300">
-            Mencegah kerusakan permanen pada tulang belakang jauh lebih baik daripada mengobatinya. Layanan restorasi kami difokuskan untuk:
+            Merawat kondisi kasur sejak dini lebih baik daripada menunggu keluhan bertambah. Layanan restorasi kami difokuskan untuk:
           </p>
           
           <div className="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border-l-4 border-green-500 mb-8">
@@ -608,7 +630,7 @@ const ArtikelDetail: React.FC = () => {
           <div className="bg-slate-900 text-white p-8 rounded-[2rem] text-center shadow-xl">
              <h3 className="text-xl font-bold mb-4">Kesimpulan: Jangan Pertaruhkan Kesehatan Anda</h3>
              <p className="text-blue-200 mb-6 leading-relaxed">
-               Kasur Anda adalah fondasi kesehatan Anda. Jika Anda mulai merasa sering pegal saat bangun tidur atau melihat kasur sudah mulai amblas, itu adalah sinyal bahaya.
+               Kasur Anda adalah fondasi kesehatan Anda. Jika Anda mulai merasa sering pegal saat bangun tidur atau melihat kasur sudah mulai amblas, itu adalah sinyal untuk memeriksa kondisi kasur.
              </p>
              <p className="text-white text-sm opacity-90 mb-8">
                Sano Care membantu Anda memiliki Matras Sehat tanpa harus membeli baru. Kembalikan kenyamanan tidur Anda dan lindungi tulang belakang Anda untuk masa depan yang lebih sehat.
@@ -889,7 +911,7 @@ const ArtikelDetail: React.FC = () => {
   // Dipanggil sebelum early-return di bawah supaya urutan hook tetap stabil
   // (aturan React Hooks: tidak boleh dipanggil kondisional).
   useSEO({
-    title: article?.title || cmsArticle?.title || 'Artikel Tidak Ditemukan',
+    title: SEO_TITLE_OVERRIDE[slug || ''] || article?.title || cmsArticle?.title || 'Artikel Tidak Ditemukan',
     description: article?.desc || cmsArticle?.desc || 'Artikel yang Anda cari tidak tersedia.',
     path: `/artikel/${slug || ''}`,
     image: article?.image || cmsArticle?.image,
@@ -910,6 +932,49 @@ const ArtikelDetail: React.FC = () => {
   const displayDate = article ? article.date : cmsArticle!.displayDate;
   const displayReadTime = article ? article.readTime : estimateReadTime(cmsArticle!.body);
   const displayImage = article ? article.image : cmsArticle!.image;
+  const relatedServices = RELATED_SERVICES[slug || ''] ?? DEFAULT_RELATED;
+
+  // --- Author & tanggal untuk BlogPosting JSON-LD + tampilan ---
+  // Artikel lama (articleDatabase) tidak punya field author/updatedAt di CMS (ditulis
+  // langsung sebagai JSX), jadi dateModified = datePublished (keputusan owner) dan
+  // author = DEFAULT_AUTHOR. Tanggal ISO-nya diambil dari seo/routes.ts LEGACY_ARTICLES,
+  // satu-satunya sumber tanggal ISO untuk artikel lama (prerender.mjs sudah memvalidasi
+  // slug & tanggal di sana sinkron dengan articleDatabase ini, jadi aman dipakai di sini).
+  const legacyIsoDate = article ? LEGACY_ARTICLES.find((a) => a.slug === slug)?.date : undefined;
+  const authorName = article ? DEFAULT_AUTHOR : cmsArticle!.author;
+  const datePublishedIso = article ? legacyIsoDate : cmsArticle!.date;
+  const dateModifiedIso = article ? legacyIsoDate : cmsArticle!.dateModified;
+  const showUpdated = !article && cmsArticle!.dateModified !== cmsArticle!.date;
+  const displayDateModified = !article ? cmsArticle!.displayDateModified : undefined;
+
+  const toAbsoluteUrl = (src: string) => (src.startsWith('http') ? src : `${SITE_URL}${src}`);
+  const canonical = canonicalUrl(`/artikel/${slug || ''}`);
+  // BlogPosting JSON-LD -- hidup berdampingan dengan LocalBusiness/Organization schema
+  // global di index.html (tidak saling menggantikan). datePublished/dateModified harus
+  // ISO yang valid; kalau tanggal legacy tidak ketemu (seharusnya tidak pernah terjadi,
+  // dijaga guard prerender), schema TIDAK dirender daripada mengirim tanggal kosong.
+  // Diverifikasi 08 Okt 2026: tag ini MASUK ke dist/artikel/<slug>/index.html hasil
+  // `npm run build` (dibaca langsung dari file, tanpa browser/hydration) -- lihat
+  // scripts/verify-article-schema.mjs untuk audit yang sama terhadap deployment live.
+  const articleSchema = found && datePublishedIso ? {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: displayTitle,
+    description: article?.desc || cmsArticle?.desc || '',
+    image: toAbsoluteUrl(displayImage),
+    datePublished: datePublishedIso,
+    dateModified: dateModifiedIso || datePublishedIso,
+    author: { '@type': 'Organization', name: authorName },
+    publisher: {
+      '@type': 'Organization',
+      name: DEFAULT_AUTHOR,
+      logo: { '@type': 'ImageObject', url: toAbsoluteUrl('/sano-logomarks-whitebg.png') },
+    },
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    url: canonical,
+    inLanguage: 'id-ID',
+  } : null;
+
   const contentNode = article ? (
     article.content
   ) : (
@@ -922,15 +987,27 @@ const ArtikelDetail: React.FC = () => {
 
   return (
     <div className="pt-32 pb-24 min-h-screen bg-white dark:bg-slate-900 transition-colors">
+      {articleSchema && (
+        <script
+          type="application/ld+json"
+          // eslint-disable-next-line react/no-danger
+          // Escape "</" supaya judul/ringkasan yang (secara teori) mengandung "</script>" tidak memutus tag ini.
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema).replace(/<\//g, '<\\/') }}
+        />
+      )}
       <article className="container mx-auto px-6 max-w-3xl">
         <Link to="/artikel" className="inline-flex items-center gap-2 text-slate-500 hover:text-blue-600 mb-8 transition-colors">
           <ArrowLeft size={20} /> Kembali ke Daftar
         </Link>
         <div className="mb-10 text-center">
-          <div className="flex justify-center gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-4">
+          <div className="flex justify-center gap-4 text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">
              <span className="flex items-center gap-1"><Calendar size={14}/> {displayDate}</span>
              <span className="flex items-center gap-1"><Clock size={14}/> {displayReadTime}</span>
           </div>
+          <p className="text-xs text-slate-400 mb-4">
+            {authorName}
+            {showUpdated && <span> &middot; Diperbarui {displayDateModified}</span>}
+          </p>
           <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white mb-8 leading-tight">{displayTitle}</h1>
           <div className="w-full aspect-video rounded-3xl overflow-hidden mb-8 shadow-xl">
              <img src={displayImage} className="w-full h-full object-cover" alt={displayTitle} />
@@ -939,9 +1016,24 @@ const ArtikelDetail: React.FC = () => {
         <div className="prose prose-lg dark:prose-invert max-w-none text-slate-600 dark:text-slate-300 leading-relaxed">
            {contentNode}
         </div>
+        {relatedServices.length > 0 && (
+          <aside className="mt-16 rounded-3xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/50 p-6 md:p-8" aria-labelledby="layanan-terkait">
+             <h2 id="layanan-terkait" className="text-xl font-bold text-slate-900 dark:text-white mb-4">Layanan Terkait</h2>
+             <ul className="space-y-4">
+               {relatedServices.map((item) => (
+                 <li key={item.to}>
+                   <p className="text-slate-600 dark:text-slate-300 leading-relaxed">
+                     {item.lead}{' '}
+                     <Link to={item.to} className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">{item.anchor}</Link>.
+                   </p>
+                 </li>
+               ))}
+             </ul>
+          </aside>
+        )}
         <div className="mt-16 bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl p-8 text-center text-white shadow-xl">
            <h3 className="text-2xl font-bold mb-2">Konsultasikan Keluhan Anda!</h3>
-           <p className="mb-6 opacity-90">Jangan tunggu hingga menjadi saraf kejepit. Hubungi kami untuk analisa profesional.</p>
+           <p className="mb-6 opacity-90">Hubungi kami untuk membahas kondisi kasur Anda. Bila nyeri terasa berat atau menetap, konsultasikan juga dengan dokter.</p>
            <a href={buildWaHref("Halo Sano, saya ingin konsultasi setelah baca artikel ini.")} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold hover:scale-105 transition-transform">
               <MessageCircle size={20} /> Chat WhatsApp Sekarang
            </a>

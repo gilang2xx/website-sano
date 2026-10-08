@@ -21,7 +21,7 @@ const Artikel: React.FC = () => {
       category: "Klinik Matras by Sano Care",
       date: "26 Des 2025",
       image: "/foto-karyawan.jpg", 
-      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya."
+      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah."
     },
     
     // ARTIKEL 2 
@@ -39,18 +39,18 @@ const Artikel: React.FC = () => {
     {
       id: 3,
       slug: "dampak-kasur-rusak",
-      title: "Awas! Kasur Anda Mungkin Sedang Merusak Tulang Belakang",
+      title: "Apakah Kasur Anda Masih Menopang Tubuh dengan Baik? Kenali Tandanya",
       category: "Edukasi",
       date: "28 Des 2025",
       image: "/kasur-merusak-tulang.jpg", 
-      desc: "Klinik Matras by SANO CARE — Hadir untuk Menolong Banyak Orang dari Dampak Kasur yang Salah."
+      desc: "Dampak kasur amblas terhadap posisi tulang belakang dan saraf tubuh. Kenali gejala awal dan solusi perbaikannya."
     },
 
     // ARTIKEL 4
     {
       id: 4,
       slug: "dampak-jangka-panjang-kasur-salah",
-      title: "Dampak Jangka Panjang Menggunakan Kasur yang Salah: Bahaya yang Mengintai di Balik Tidur Anda",
+      title: "Menggunakan Kasur yang Tidak Sesuai dalam Jangka Panjang: Yang Perlu Anda Ketahui",
       category: "Edukasi",
       date: "28 Des 2025",
       image: "/dampak-kasur-salah.jpg", 

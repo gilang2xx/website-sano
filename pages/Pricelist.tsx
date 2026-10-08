@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import {
   Hammer, Wrench, Crown, ArrowRight, Tag, MessageCircle, ListPlus
 } from 'lucide-react';
@@ -7,8 +8,8 @@ import { useSEO } from '../hooks/useSEO';
 
 const Pricelist: React.FC = () => {
   useSEO({
-    title: 'Daftar Harga Layanan Matras & Sofa',
-    description: 'Cek estimasi harga service, upgrade, dan custom matras maupun sofa di SANO CARE. Transparan sejak awal, tanpa biaya tersembunyi.',
+    title: 'Harga Service & Upgrade Kasur',
+    description: 'Estimasi harga service fondasi, upgrade fondasi, dan full upgrade kasur di Klinik Matras by SANO CARE. Harga transparan di awal; penawaran sesuai kondisi kasur.',
     path: '/pricelist',
   });
 
@@ -71,11 +72,18 @@ const Pricelist: React.FC = () => {
         </div>
         
         <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">
-          Pricelist
+          Harga Service &amp; Upgrade Kasur
         </h1>
         
         <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
           Pilih paket restorasi terbaik untuk kenyamanan tidur Kamu.
+        </p>
+        <p className="text-slate-500 dark:text-slate-400 text-sm max-w-2xl mx-auto mt-4 leading-relaxed">
+          Harga di bawah adalah estimasi paket utama (mulai dari, paket Standard). Pekerjaan yang paling sesuai dan penawaran akhir
+          ditentukan setelah kondisi kasur didiagnosis lewat konsultasi. Belum yakin paket mana yang cocok? Baca dulu{' '}
+          <Link to="/perbaikan-kasur-amblas" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">panduan perbaikan kasur amblas</Link>{' '}
+          atau lihat{' '}
+          <Link to="/klinik-matras" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">seluruh layanan service kasur &amp; springbed</Link>.
         </p>
       </div>
 
@@ -128,11 +136,11 @@ const Pricelist: React.FC = () => {
                   </div>
                 </div>
 
-                <h3 className={`text-2xl font-bold mb-3 leading-tight ${
+                <h2 className={`text-2xl font-bold mb-3 leading-tight ${
                   service.isPremium ? 'text-white' : 'text-slate-900 dark:text-white'
                 }`}>
                   {service.title}
-                </h3>
+                </h2>
                 
                 <p className={`text-sm mb-8 leading-relaxed ${
                   service.isPremium ? 'text-slate-300' : 'text-slate-500 dark:text-slate-400'
@@ -186,9 +194,9 @@ const Pricelist: React.FC = () => {
               <ListPlus size={32} />
             </div>
             
-            <h3 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
+            <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white mb-4">
               Butuh Layanan Lainnya?
-            </h3>
+            </h2>
             
             <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
               Kami juga menyediakan layanan: <span className="font-semibold text-slate-800 dark:text-slate-200">Ganti Kain, Potong Ukuran, Tambah Latex, Custom Ukuran, Sterilisasi Tungau, Service Sofa</span>, dan masih banyak lagi.

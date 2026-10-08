@@ -92,12 +92,18 @@ export function loadBeforeAfterEntries(): BeforeAfterEntry[] {
 
 // ─── Artikel (CMS, terpisah dari 6 artikel lama yang masih hardcoded) ────
 
+/** Default author brand -- dipakai bila field Author kosong (artikel lama/belum diisi). */
+export const DEFAULT_AUTHOR = 'KLINIK MATRAS by SANO CARE';
+
 export interface CmsArticle {
   slug: string;
   title: string;
   category: string;
-  date: string; // ISO, apa adanya dari frontmatter -- untuk sort
+  author: string; // fallback DEFAULT_AUTHOR bila frontmatter tidak mengisi
+  date: string; // ISO, apa adanya dari frontmatter -- untuk sort & datePublished
   displayDate: string; // "15 Jan 2026" -- untuk tampilan
+  dateModified: string; // ISO -- fallback ke `date` bila updatedAt tidak diisi
+  displayDateModified: string; // "15 Jan 2026" -- untuk tampilan "Diperbarui ..."
   image: string;
   desc: string;
   body: string; // markdown mentah, dirender oleh ReactMarkdown
@@ -106,7 +112,10 @@ export interface CmsArticle {
 interface ArtikelFrontmatter {
   title: string;
   category: string;
+  author?: string;
   date: string;
+  /** Opsional: diisi hanya saat artikel direvisi. Tanpa ini, dateModified = date (datePublished). */
+  updatedAt?: string;
   image: string;
   desc: string;
   /** Opsional: `draft: true` di frontmatter menyembunyikan artikel dari daftar, halaman, prerender, dan sitemap. */
@@ -125,12 +134,18 @@ export function loadCmsArticles(): CmsArticle[] {
     .map(([path, raw]) => {
       const { attributes, body } = fm<ArtikelFrontmatter>(raw);
       const date = normalizeDate(attributes.date);
+      // updatedAt kosong (artikel lama/belum pernah direvisi) -> dateModified = datePublished.
+      // Sengaja TIDAK pakai waktu build/deploy -- itu akan berubah di tiap deploy walau isi artikel sama.
+      const dateModified = attributes.updatedAt ? normalizeDate(attributes.updatedAt) : date;
       return {
         slug: slugFromPath(path),
         title: attributes.title,
         category: attributes.category,
+        author: attributes.author?.trim() || DEFAULT_AUTHOR,
         date,
         displayDate: isoToIndoDate(date),
+        dateModified,
+        displayDateModified: isoToIndoDate(dateModified),
         image: attributes.image,
         desc: attributes.desc,
         body,

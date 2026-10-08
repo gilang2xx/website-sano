@@ -149,7 +149,7 @@ const TentangKami: React.FC = () => {
               <div className="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-xl flex items-center justify-center text-slate-600 dark:text-slate-400 mb-6 group-hover:scale-110 transition-transform">
                 <BrickWall size={24} />
               </div>
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">5. Fondasi Standar 20 Tahun</h3>
+              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3">5. Fondasi Standar Kokoh & Tahan Lama</h3>
               <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">
                 Kami memastikan fondasi matras selalu kokoh, stabil, dan tahan lama, sehingga kenyamanan bertahan jangka panjang.
               </p>
