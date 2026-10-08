@@ -953,6 +953,9 @@ const articleDatabase: any = {
   // global di index.html (tidak saling menggantikan). datePublished/dateModified harus
   // ISO yang valid; kalau tanggal legacy tidak ketemu (seharusnya tidak pernah terjadi,
   // dijaga guard prerender), schema TIDAK dirender daripada mengirim tanggal kosong.
+  // Diverifikasi 08 Okt 2026: tag ini MASUK ke dist/artikel/<slug>/index.html hasil
+  // `npm run build` (dibaca langsung dari file, tanpa browser/hydration) -- lihat
+  // scripts/verify-article-schema.mjs untuk audit yang sama terhadap deployment live.
   const articleSchema = found && datePublishedIso ? {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
