@@ -143,10 +143,10 @@ const Home: React.FC = () => {
               Klinik Matras by SANO CARE · Ahlinya Kasur Sehat
             </div>
             
-            <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight mb-4 max-w-4xl mx-auto">
+            <h1 className="text-3xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight tracking-tight mb-4 max-w-4xl lg:max-w-5xl xl:max-w-6xl mx-auto">
               Spesialis <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">Service &amp; Restorasi Kasur Sehat</span>
               <span className="text-xl md:text-3xl text-slate-500 dark:text-slate-400 font-bold mt-3 block">
-                Diagnosis, perbaikan, penguatan fondasi, dan upgrade kasur, tanpa harus beli baru
+                Diagnosis, penguatan fondasi, dan upgrade kasur sehat.
               </span>
             </h1>
             <p className="text-slate-600 dark:text-slate-300 max-w-3xl mx-auto text-base md:text-lg mb-8">
@@ -156,6 +156,7 @@ const Home: React.FC = () => {
               <NavLink to="/klinik-matras" className="px-6 py-3 rounded-full bg-blue-600 text-white font-bold shadow-lg hover:-translate-y-0.5 transition-all">Lihat Layanan Service Kasur</NavLink>
               <NavLink to="/perbaikan-kasur-amblas" className="px-6 py-3 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 font-bold hover:border-blue-500 transition-all">Kasur Amblas? Cek di Sini</NavLink>
             </div>
+            <div className="w-12 h-1 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-cyan-500 mb-4"></div>
             <h2 className="text-lg md:text-xl font-bold text-slate-700 dark:text-slate-200">
               Keluhan Tidur yang Sering Berkaitan dengan Kondisi Kasur
             </h2>
