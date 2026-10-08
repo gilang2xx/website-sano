@@ -262,3 +262,17 @@ Jalankan ini **setelah** deployment untuk commit `785dc68` (atau yang lebih baru
 ## Status & rekomendasi
 
 **NO-GO tetap berlaku.** Root cause teknis kode sudah tertutup (tidak ada bug), tapi status Preview sungguhan belum dikonfirmasi ulang terhadap deployment commit `785dc68`. Tidak ada merge ke main, tidak ada deploy production, tidak ada perubahan API lead.
+
+---
+
+# PREVIEW VERIFICATION TUNTAS — GO PENUH (08 Okt 2026, lanjutan)
+
+Owner menjalankan `scripts/verify-article-schema.mjs` (skrip baru dari audit root-cause sebelumnya) terhadap deployment Preview terbaru pasca-redeploy, hasil: **105/105 lulus, 0 gagal** — BlogPosting ditemukan di RAW HTML untuk 7/7 artikel, dengan seluruh field (`headline`, `description`, `image` absolute, `datePublished`, `dateModified`, `author.@type=Organization`, `publisher.@type=Organization`+`logo`, `mainEntityOfPage['@id']=url=canonical`, `inLanguage=id-ID`) valid. `LocalBusiness` tetap ada berdampingan. `verify-deployment.mjs` juga 79/79. Ini menutup gap root-cause yang ditemukan sebelumnya (Preview lama memakai artifact sebelum commit `8fe0d67`); setelah commit trigger `785dc68` di-redeploy, Preview sekarang terbukti mencerminkan kode Fase 4A dengan benar.
+
+Detail lengkap acceptance criteria dan provenance evidence ada di `SEO_PHASE_3C_QA_PREVIEW_REPORT.md` bagian "PREVIEW VERIFICATION TUNTAS".
+
+## Rekomendasi akhir
+
+**GO PENUH.** Seluruh field BlogPosting dan kehadiran LocalBusiness terbukti benar baik di build lokal maupun di Vercel Preview sungguhan, untuk ke-7 artikel. Backward compatibility, CMS compatibility, dan security/regression semuanya sudah terverifikasi di laporan-laporan sebelumnya dan tidak berubah.
+
+**Berhenti di sini sesuai instruksi.** Tidak ada merge ke main, tidak ada deploy production, menunggu izin eksplisit owner.

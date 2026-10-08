@@ -341,3 +341,48 @@ node scripts/verify-article-schema.mjs --base=https://website-sano-git-feat-seo-
 ## Status & rekomendasi
 
 **NO-GO tetap berlaku** sampai butir di atas dikonfirmasi lulus terhadap deployment Preview yang baru. Tidak ada merge ke main, tidak ada deploy production, tidak ada perubahan API lead, tidak ada perubahan desain/copy lain di luar yang disebutkan.
+
+---
+
+# PREVIEW VERIFICATION TUNTAS — GO PENUH (08 Okt 2026, lanjutan)
+
+## Evidence final dari owner
+
+Owner menjalankan ulang verifikasi terhadap deployment Preview terbaru (commit `785dc68` atau setelahnya, branch `feat/seo-ssg-implementation`) setelah redeploy dipicu, dan melaporkan:
+
+- `node scripts/verify-deployment.mjs --base=<preview>` → **79/79 lulus, 0 gagal**.
+- `node scripts/verify-article-schema.mjs --base=<preview>` → **105/105 lulus, 0 gagal** (7 artikel × 15 pemeriksaan: tepat 1 `BlogPosting` di RAW HTML per artikel, `LocalBusiness` tetap ada, `headline`/`description`/`image` absolute/`datePublished`/`dateModified`/`author`/`publisher`/`mainEntityOfPage['@id']=url=canonical`/`inLanguage=id-ID` semuanya valid).
+- Verifikasi visual manual di Preview: panel "Ulasan Pelanggan di Google" tampil normal, testimonial lama (Ratna/Farhan/Krisna/Su Jannah, rating 5.0, "Based on all reviews") **tidak** dirender.
+
+Catatan provenance (supaya tidak ada yang disalahartikan sebagai saya mengamati langsung): sesi ini masih tidak punya `VERCEL_BYPASS_SECRET` yang terbaca, jadi angka-angka di atas adalah **laporan owner** dari skrip yang sama persis dengan yang saya tulis dan audit, dijalankan di lingkungan owner sendiri yang punya akses sah ke Preview. Ini konsisten dengan hasil lokal (`verify-deployment` 79/79 dan `verify-article-schema` 105/105 juga saya reproduksi di emulator lokal commit `785dc68` sebelum push) dan menutup gap root-cause yang ditemukan di temuan sebelumnya (Preview sebelumnya memakai artifact lama; setelah redeploy, Preview sekarang mencerminkan kode Fase 4A dengan benar).
+
+## Status acceptance criteria Preview — SEMUA TERPENUHI
+
+| Kriteria | Status |
+|---|---|
+| 19 route (status/canonical/H1/metadata) | ✅ PASS (verify-deployment) |
+| Trailing slash redirect + query preservation | ✅ PASS |
+| 404 nyata | ✅ PASS |
+| Sitemap 19 URL | ✅ PASS |
+| Robots.txt | ✅ PASS |
+| Admin noindex | ✅ PASS |
+| API GET/HEAD + noindex | ✅ PASS |
+| Asset | ✅ PASS |
+| BlogPosting 7/7 di RAW HTML Preview | ✅ PASS (verify-article-schema) |
+| LocalBusiness tetap ada | ✅ PASS |
+| canonical / url / mainEntityOfPage konsisten | ✅ PASS |
+| author / publisher Organization valid | ✅ PASS |
+| datePublished / dateModified valid | ✅ PASS |
+| image absolute URL | ✅ PASS |
+| inLanguage id-ID | ✅ PASS |
+| Panel "Ulasan Pelanggan di Google" tampil normal | ✅ PASS (visual) |
+| Testimonial lama tidak dirender | ✅ PASS (visual) |
+| Domain sekunder tetap protected | ✅ PASS (dicek sesi ini, lihat percobaan sebelumnya) |
+| Production tidak terpengaruh | ✅ PASS (dicek sesi ini) |
+| Secret scan | ✅ 0 temuan |
+
+## Rekomendasi akhir
+
+**GO PENUH untuk merge ke main dan deploy production.** Seluruh acceptance criteria Fase 3B, 3C, dan 4A — teknis (routing/sitemap/canonical/hydration), konten (klaim dilunakkan, testimonial disembunyikan sampai terverifikasi, headline edukatif), dan structured data (BlogPosting + LocalBusiness) — sudah terbukti lulus baik di build lokal maupun di Vercel Preview sungguhan.
+
+**Sesuai instruksi: berhenti di sini.** Tidak ada merge ke main, tidak ada deploy production, dan tidak ada aksi lanjutan apa pun sampai owner memberi izin eksplisit untuk melakukannya.
