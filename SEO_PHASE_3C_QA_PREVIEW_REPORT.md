@@ -227,3 +227,56 @@ Karena itu butir 1–3 dan bagian Preview dari butir 9 (acceptance: HTTP status/
 ## Rekomendasi (update)
 
 **Masih BELUM GO untuk production**, semata-mata karena validasi Preview sungguhan belum bisa dijalankan (BLOCKER lingkungan, bukan kegagalan produk). Semua acceptance criteria yang *bisa* diuji tanpa akses Preview — build, routing, sitemap, hydration, layout, dark mode, tautan, atribusi WA, testimonial disembunyikan, schema BlogPosting+LocalBusiness, secret scan, perlindungan domain sekunder dan production tidak terpengaruh — **lulus semua**. Begitu `verify-deployment` berhasil dijalankan terhadap Preview sungguhan dan hasilnya sama bersihnya, rekomendasi berubah menjadi **GO untuk merge production**, dan merge tetap menunggu izin eksplisit owner.
+
+---
+
+# PREVIEW TECHNICAL GATE — evidence manual owner (08 Okt 2026)
+
+## Evidence yang diterima
+
+Owner menjalankan sendiri, di luar sesi ini (akses Vercel + `VERCEL_BYPASS_SECRET` miliknya):
+
+```
+node scripts/verify-deployment.mjs --base=https://website-sano-git-feat-seo-ssg-implementation-rigss-projects.vercel.app
+```
+
+Hasil yang dilaporkan: **79 total / 0 failed**. Branch: `feat/seo-ssg-implementation`. Yang diterima sesi ini hanya angka ringkasan (bukan log baris-per-baris); tidak ada rincian per-check yang dikirim.
+
+## Cara angka ini divalidasi (tanpa mengarang detail yang tidak dikirim)
+
+`scripts/verify-deployment.mjs` adalah skrip deterministik: untuk `dist-ssr/prerender-manifest.json` yang sama, ia selalu menjalankan **jumlah dan jenis check yang persis sama**. Dijalankan ulang sesi ini terhadap emulator lokal (meniru `vercel.json` yang identik) atas commit `d6c9a72` (kode = `8fe0d67`, commit setelahnya hanya dokumentasi): **hasilnya juga 79/79, 0 gagal** — cocok persis dengan laporan owner dari Preview sungguhan. Karena totalnya identik (79) dan skrip yang sama tidak punya jalur yang bisa diam-diam skip check, kecocokan jumlah ini adalah bukti kuat bahwa Preview berperilaku sama dengan yang diverifikasi lokal berkali-kali di fase-fase sebelumnya.
+
+Pemetaan 79 check itu ke acceptance criteria (dibaca langsung dari source `scripts/verify-deployment.mjs`, bukan dugaan):
+
+| Acceptance criteria | Check di `verify-deployment.mjs` | Status |
+|---|---|---|
+| Route (19 route) | kategori `route`: tiap route → 200, self-canonical, 1 H1, metadata unik, tanpa noindex (1 check/route) | **PASS** (bagian dari 79/0) |
+| Canonical | termasuk dalam check `route` di atas + check `sitemap` "setiap `<loc>` dilayani 200 ... self-canonical" | **PASS** |
+| Metadata | termasuk dalam check `route` ("metadata unik") | **PASS** |
+| H1 | termasuk dalam check `route` ("1 H1") | **PASS** |
+| Trailing slash redirect | kategori `redirect`: `{path}/ -> {path}` (301/308 langsung), tanpa loop, akhir 200 di `/klinik-matras` | **PASS** |
+| Query preservation | kategori `redirect`: "query dipertahankan", "redirect + query berakhir 200 dan canonical tetap tanpa query" | **PASS** |
+| 404 nyata | kategori `404`: URL tak dikenal → 404 (HTML noindex, tanpa canonical); `/url-tidak-ada/` akhirnya 404 bukan 200 | **PASS** |
+| Sitemap 19 URL | kategori `sitemap`: isi = manifest (jumlah URL cocok, tanpa duplikat), semua di domain canonical, tanpa admin/api/404, tiap `<loc>` 200 self-canonical | **PASS** (19 URL, sama seperti sitemap lokal) |
+| Robots | kategori `robots`: `/robots.txt` 200 memuat `Sitemap:` canonical | **PASS** |
+| Admin/noindex | kategori `admin`: `/admin/` 200 HTML Decap + meta robots noindex + `X-Robots-Tag` noindex; `/admin/config.yml` 200 bukan HTML | **PASS** |
+| API behavior/noindex | kategori `api`: GET `/api/lead` → 405 JSON + `Allow: POST`; HEAD → 405; `X-Robots-Tag` noindex | **PASS** (dan membuktikan **tidak ada POST** yang dikirim — skrip ini sendiri hanya GET/HEAD) |
+| Asset | kategori `aset`: file upload/gambar 200 non-HTML, bundle JS content-type benar, `404.html` ada | **PASS** |
+
+**Kesimpulan gate teknis: PASS**, berdasarkan evidence manual owner (79/0) yang jumlah dan cakupannya cocok persis dengan 79 check yang sudah berkali-kali diverifikasi identik di emulator lokal sepanjang Fase 3C dan 4A.
+
+## Yang BELUM tercakup oleh evidence ini (spesifik, tidak dilebih-lebihkan)
+
+`verify-deployment.mjs` **tidak** memparse konten JSON-LD maupun merender halaman secara visual — docstring-nya sendiri membatasi cakupan ke "status HTTP + canonical + H1 + metadata ... redirect ... 404 ... sitemap ... robots.txt ... admin ... api ... aset". Karena itu, masih kurang (dan **belum** bisa dinyatakan lulus dari evidence ini):
+
+1. **BlogPosting JSON-LD 7/7 di Preview** — field headline/description/datePublished/dateModified/author/publisher/mainEntityOfPage/url/inLanguage/image-absolute belum dicek pada HTML Preview sungguhan (hanya pada build lokal, lihat `SEO_PHASE_4A_ARTICLE_SCHEMA_REPORT.md`).
+2. **LocalBusiness tetap ada di Preview** — belum dicek pada HTML Preview sungguhan.
+3. **Panel "Ulasan Pelanggan di Google" tampil normal + testimonial lama benar-benar tidak dirender** — ini pemeriksaan visual/konten, bukan status HTTP; belum dicek di Preview sungguhan.
+
+Sesi ini masih tidak punya `VERCEL_BYPASS_SECRET` yang terbaca (dicek ulang: Bash `len=0`, PowerShell `$env:` kosong, `[Environment]::GetEnvironmentVariable(... 'User')` unset) — jadi ketiga poin di atas **tidak bisa saya periksa sendiri** terhadap Preview sungguhan saat ini. Tidak ada tes yang diulang dari yang sudah terbukti; hanya 3 item spesifik ini yang tersisa.
+
+## Rekomendasi (update)
+
+**Preview technical gate (item 2 di atas): GO**, berdasarkan evidence manual 79/0 owner + kecocokan dengan hasil lokal yang identik.
+
+**Rekomendasi keseluruhan: GO BERSYARAT** — bukan GO penuh, karena 3 item Fase 4A di atas (JSON-LD on Preview + panel ulasan) belum terverifikasi langsung di Preview, hanya di build lokal. Risikonya rendah (build lokal dan Preview sudah terbukti identik untuk 79 check lain, dan kode JSON-LD/testimonial tidak bergantung pada environment Vercel), tapi belum 100% dikonfirmasi. Cara tercepat menutup gap ini: owner buka 2-3 halaman artikel + homepage di Preview secara manual (klik kanan → View Page Source, cari `application/ld+json` dan "Ulasan Pelanggan di Google"), atau beri saya `VERCEL_BYPASS_SECRET` yang terbaca di sesi ini. **Belum GO penuh untuk merge/deploy** sampai salah satu dari itu terjadi — dan sekalipun GO penuh tercapai, merge tetap menunggu izin eksplisit owner.
