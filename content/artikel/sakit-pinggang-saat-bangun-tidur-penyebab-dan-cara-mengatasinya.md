@@ -10,7 +10,7 @@ Sakit pinggang saat bangun tidur dapat membuat tubuh terasa tidak nyaman bahkan 
 
 Kasur sering kali menjadi salah satu hal yang dicurigai ketika keluhan muncul setelah tidur. Namun, kondisi kasur bukan satu-satunya kemungkinan penyebab. Posisi tidur, aktivitas sehari-hari, perubahan berat badan, kebiasaan tidur, dan kondisi tubuh juga perlu diperhatikan.
 
-Karena itu, sebelum langsung mengganti kasur atau memilih kasur yang lebih keras, penting untuk memahami pola keluhan dan mengevaluasi apakah kondisi kasur memang masih sesuai dengan kebutuhan tubuh.
+Karena itu, sebelum langsung mengganti kasur atau memilih kasur yang lebih keras, penting untuk memahami pola keluhan dan mengevaluasi apakah [kondisi kasur ](https://sanomatrassehat.com/perbaikan-kasur-amblas)memang masih sesuai dengan kebutuhan tubuh.
 
 ## **Sakit Pinggang Saat Bangun Tidur, Kenapa Bisa Terjadi?**
 
