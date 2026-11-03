@@ -1,7 +1,7 @@
 import React from 'react';
 import ScrollReveal from '../components/ScrollReveal';
 import { CheckCircle2, MessageCircle, ArrowRight } from 'lucide-react';
-import { buildWaHref } from '../utils/attribution';
+import WhatsAppLink from '../components/WhatsAppLink';
 import { useSEO } from '../hooks/useSEO';
 
 const Layanan: React.FC = () => {
@@ -68,14 +68,17 @@ const Layanan: React.FC = () => {
                             ))}
                          </ul>
                       </div>
-                      <a 
-                        href={buildWaHref("Halo Sano, saya mau konsultasi layanan Klinik Matras")}
+                      <WhatsAppLink 
+                        message="Halo Sano, saya mau konsultasi layanan Klinik Matras"
+                        eventLabel="Layanan WA - Klinik Matras"
+                        buttonId="layanan-klinik-matras"
+                        placement="service-card"
                         target="_blank"
                         rel="noreferrer"
                         className="w-full py-4 bg-primary hover:bg-primary-dark text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-blue-200 dark:hover:shadow-none"
                       >
                          <MessageCircle size={20} /> Konsultasi via WA
-                      </a>
+                      </WhatsAppLink>
                    </div>
                 </div>
              </ScrollReveal>
@@ -108,14 +111,17 @@ const Layanan: React.FC = () => {
                             ))}
                          </ul>
                       </div>
-                      <a 
-                        href={buildWaHref("Halo Sano, saya mau konsultasi layanan Klinik Sofa")}
+                      <WhatsAppLink 
+                        message="Halo Sano, saya mau konsultasi layanan Klinik Sofa"
+                        eventLabel="Layanan WA - Klinik Sofa"
+                        buttonId="layanan-klinik-sofa"
+                        placement="service-card"
                         target="_blank"
                         rel="noreferrer" 
                         className="w-full py-4 bg-orange-600 hover:bg-orange-700 text-white rounded-xl font-bold flex items-center justify-center gap-2 transition-all hover:shadow-lg hover:shadow-orange-200 dark:hover:shadow-none"
                       >
                          <MessageCircle size={20} /> Konsultasi via WA
-                      </a>
+                      </WhatsAppLink>
                    </div>
                 </div>
              </ScrollReveal>

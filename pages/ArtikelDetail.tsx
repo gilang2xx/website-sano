@@ -7,7 +7,9 @@ import {
   ArrowLeft, Calendar, Clock, MessageCircle,
   CheckCircle2, ShieldCheck, Zap, HeartPulse
 } from 'lucide-react';
-import { buildWaHref } from '../utils/attribution';
+import WhatsAppLink from '../components/WhatsAppLink';
+import { createWhatsAppClickHandler } from '../utils/tracking';
+import { csIdForHref, isWhatsAppHref } from '../utils/whatsapp';
 import { useSEO } from '../hooks/useSEO';
 import { getCmsArticleBySlug, estimateReadTime, DEFAULT_AUTHOR } from '../utils/content';
 import { SITE_URL, canonicalUrl, LEGACY_ARTICLES } from '../seo/routes';
@@ -110,7 +112,20 @@ const markdownComponents = {
     />
   ),
   a: ({ node, ...props }: MdProps<'a'>) => (
-    <a className="text-blue-600 dark:text-blue-400 font-semibold hover:underline" target="_blank" rel="noreferrer" {...props} />
+    <a
+      className="text-blue-600 dark:text-blue-400 font-semibold hover:underline"
+      target="_blank"
+      rel="noreferrer"
+      {...props}
+      onClick={isWhatsAppHref(props.href)
+        ? createWhatsAppClickHandler('Artikel WA - Tautan Isi', {
+            buttonId: 'artikel-isi-tautan-wa',
+            placement: 'article-body',
+            cs: csIdForHref(props.href),
+            pixels: false,
+          })
+        : undefined}
+    />
   ),
   img: ({ src, alt }: MdProps<'img'>) => (
     <figure className="my-10 w-full rounded-3xl overflow-hidden shadow-lg">
@@ -357,14 +372,17 @@ const articleDatabase: any = {
               Jangan biarkan tubuh Anda menanggung dampak dari kasur yang salah. Segera konsultasikan kondisi kasur Anda kepada ahli kami.
             </p>
             
-            <a 
-              href={buildWaHref("Halo Sano, saya ingin konsultasi tentang konsep Matras Sehat.")}
+            <WhatsAppLink 
+              message="Halo Sano, saya ingin konsultasi tentang konsep Matras Sehat."
+              eventLabel="Artikel WA - Konsep Matras Sehat"
+              buttonId="artikel-cta-konsep-matras-sehat"
+              placement="article-cta"
               target="_blank"
               rel="noreferrer" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-green-500 text-white rounded-full font-bold shadow-lg hover:bg-green-600 transition-all hover:scale-105"
             >
               <MessageCircle size={20} /> Konsultasi WhatsApp
-            </a>
+            </WhatsAppLink>
           </div>
         </>
       )
@@ -507,14 +525,17 @@ const articleDatabase: any = {
             <p className="text-slate-600 dark:text-slate-300 mb-6">
               Apakah Anda sering bangun dengan rasa nyeri? Jangan tunggu hingga menjadi saraf kejepit. Hubungi tim ahli kami untuk analisa kasur dan tubuh Anda secara profesional.
             </p>
-            <a 
-              href={buildWaHref("Halo Sano, saya ingin analisa kasur karena ada keluhan sakit.")}
+            <WhatsAppLink 
+              message="Halo Sano, saya ingin analisa kasur karena ada keluhan sakit."
+              eventLabel="Artikel WA - Analisa Kasur"
+              buttonId="artikel-cta-analisa-kasur"
+              placement="article-cta"
               target="_blank"
               rel="noreferrer" 
               className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 transition-all hover:scale-105"
             >
               <MessageCircle size={20} /> Chat WhatsApp Sekarang
-            </a>
+            </WhatsAppLink>
           </div>
         </>
       )
@@ -637,10 +658,13 @@ const articleDatabase: any = {
              </p>
              
              {/* CTA Button */}
-             <a href={buildWaHref("Halo Sano, saya ingin cek kondisi kasur saya")}
+             <WhatsAppLink message="Halo Sano, saya ingin cek kondisi kasur saya"
+                eventLabel="Artikel WA - Cek Kondisi Kasur"
+                buttonId="artikel-cta-cek-kondisi-kasur"
+                placement="article-cta"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-white text-blue-900 rounded-full font-bold hover:scale-105 transition-transform shadow-lg">
                 <MessageCircle size={20} /> Cek Kondisi Kasur Saya
-             </a>
+             </WhatsAppLink>
           </div>
 
           {/* GAMBAR 3 */}
@@ -796,10 +820,13 @@ const articleDatabase: any = {
             <p className="text-slate-600 dark:text-slate-400 mb-6 text-sm">
                Apakah kasur Anda sudah terasa tenggelam? Itu tandanya ada komponen di dalamnya yang mengalami kelelahan material.
             </p>
-            <a href={buildWaHref("Halo Sano, saya ingin cek komponen dalam kasur saya")}
+            <WhatsAppLink message="Halo Sano, saya ingin cek komponen dalam kasur saya"
+               eventLabel="Artikel WA - Diagnosa Gratis"
+               buttonId="artikel-cta-diagnosa-gratis"
+               placement="article-cta"
                className="inline-flex items-center gap-2 px-8 py-4 bg-blue-600 text-white rounded-full font-bold shadow-lg hover:bg-blue-700 transition-all hover:scale-105">
                <MessageCircle size={20} /> Diagnosa Gratis
-            </a>
+            </WhatsAppLink>
           </div>
 
         </>
@@ -888,10 +915,13 @@ const articleDatabase: any = {
                <li>Matras Sehat SANO CARE memastikan keseimbangan antara <strong>Fondasi Kuat</strong> dan <strong>Lapisan Adaptif</strong>.</li>
                <li>Matras Sehat bukan keras atau empuk — tetapi <strong>TEPAT & PRESISI</strong> sesuai berat tubuh.</li>
              </ul>
-             <a href={buildWaHref("Halo Sano, saya ingin konsultasi matras sehat")}
+             <WhatsAppLink message="Halo Sano, saya ingin konsultasi matras sehat"
+                eventLabel="Artikel WA - Konsultasi Matras Sehat"
+                buttonId="artikel-cta-konsultasi-matras-sehat"
+                placement="article-cta"
                 className="inline-flex items-center gap-2 px-8 py-3 bg-white text-blue-900 rounded-full font-bold hover:scale-105 transition-transform shadow-lg">
                 <MessageCircle size={20} /> Konsultasi Gratis
-             </a>
+             </WhatsAppLink>
           </div>
         </>
       )
@@ -1034,9 +1064,9 @@ const articleDatabase: any = {
         <div className="mt-16 bg-gradient-to-r from-blue-600 to-blue-800 rounded-3xl p-8 text-center text-white shadow-xl">
            <h3 className="text-2xl font-bold mb-2">Konsultasikan Keluhan Anda!</h3>
            <p className="mb-6 opacity-90">Hubungi kami untuk membahas kondisi kasur Anda. Bila nyeri terasa berat atau menetap, konsultasikan juga dengan dokter.</p>
-           <a href={buildWaHref("Halo Sano, saya ingin konsultasi setelah baca artikel ini.")} target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold hover:scale-105 transition-transform">
+           <WhatsAppLink message="Halo Sano, saya ingin konsultasi setelah baca artikel ini." eventLabel="Artikel WA - CTA Akhir" buttonId="artikel-cta-akhir" placement="article-cta" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-white text-blue-600 rounded-full font-bold hover:scale-105 transition-transform">
               <MessageCircle size={20} /> Chat WhatsApp Sekarang
-           </a>
+           </WhatsAppLink>
         </div>
       </article>
     </div>
