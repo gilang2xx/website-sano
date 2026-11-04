@@ -134,7 +134,9 @@ for (const r of routes.filter((x) => x.path !== '/')) {
 }
 
 // 3) URL tidak dikenal = 404
-const unknown = ['/url-tidak-ada', '/artikel/slug-tidak-ada', '/klinik-matras/xyz', '/klinik-matras.html', '/index.css', '/spa-fallback.html', '/api/tidak-ada', '/admin/tidak-ada'];
+const unknown = ['/url-tidak-ada', '/artikel/slug-tidak-ada', '/klinik-matras/xyz', '/klinik-matras.html', '/index.css', '/spa-fallback.html', '/api/tidak-ada', '/admin/tidak-ada',
+  // layanan Sano Clean dihentikan: URL lama harus 404 nyata (tanpa redirect, tanpa fallback 200); dengan & tanpa trailing slash
+  '/sano-clean', '/sano-clean/'];
 for (const p of unknown) {
   const res = await req(p);
   const html = res.body;

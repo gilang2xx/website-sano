@@ -29,7 +29,6 @@ export const STATIC_ROUTES = [
   '/klinik-matras',
   '/perbaikan-kasur-amblas',
   '/klinik-sofa',
-  '/sano-clean',
   '/kebijakan-privasi',
 ] as const;
 

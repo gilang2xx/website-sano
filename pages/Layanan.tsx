@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
-import { MessageCircle, ArrowRight, Sparkles } from 'lucide-react';
+import { MessageCircle, ArrowRight } from 'lucide-react';
 import WhatsAppLink from '../components/WhatsAppLink';
 import { useSEO } from '../hooks/useSEO';
 
-// Tiga layanan yang tampil. Nomor WhatsApp = CS 1 (default WhatsAppLink); label event & ID tombol Klinik Matras/Sofa
-// dipertahankan dari versi sebelumnya agar seri data lama tetap sambung. Sano Clean mengikuti pola yang sama.
+// Dua layanan aktif. Nomor WhatsApp = CS 1 (default WhatsAppLink); label event & ID tombol dipertahankan
+// dari versi sebelumnya agar seri data lama tetap sambung. Sano Clean dihentikan dan tidak lagi ditawarkan.
 const SERVICES = [
   {
     id: 'klinik-matras',
@@ -46,32 +46,13 @@ const SERVICES = [
       buttonId: 'layanan-klinik-sofa',
     },
   },
-  {
-    id: 'sano-clean',
-    title: 'Sano Clean',
-    description:
-      'Layanan pembersihan matras dan sofa. Konsultasikan kondisi barang untuk mengetahui pilihan pembersihan yang sesuai.',
-    to: '/sano-clean',
-    detailLabel: 'Detail Sano Clean',
-    image: null,
-    imageAlt: '',
-    titleClass: 'text-teal-700 dark:text-white',
-    overlayClass: '',
-    detailClass: 'text-teal-700 dark:text-teal-300',
-    waClass: 'bg-teal-700 hover:bg-teal-800 hover:shadow-teal-200',
-    wa: {
-      message: 'Halo Sano, saya mau konsultasi layanan Sano Clean',
-      eventLabel: 'Layanan WA - Sano Clean',
-      buttonId: 'layanan-sano-clean',
-    },
-  },
 ] as const;
 
 const Layanan: React.FC = () => {
   useSEO({
-    title: 'Layanan Kasur, Sofa, Sano Clean',
+    title: 'Layanan Perbaikan Kasur & Sofa',
     description:
-      'Klinik Matras, Klinik Sofa, dan Sano Clean: perbaikan struktur, penggantian lapisan dan kain, hingga pembersihan kasur dan sofa. Konsultasi via WhatsApp.',
+      'Layanan Klinik Matras dan Klinik Sofa: perbaikan struktur, penggantian lapisan dan kain pada kasur maupun sofa. Konsultasi via WhatsApp.',
     path: '/layanan',
   });
   return (
@@ -82,10 +63,10 @@ const Layanan: React.FC = () => {
         <div className="absolute inset-0 bg-primary/10"></div>
         <div className="container mx-auto px-6 relative z-10 text-center">
           <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold mb-4 max-w-4xl mx-auto">
-            Layanan Perbaikan dan Perawatan Kasur &amp; Sofa
+            Layanan Perbaikan Kasur &amp; Sofa
           </h1>
           <p className="text-slate-300 max-w-2xl mx-auto text-lg">
-            Temukan layanan yang sesuai dengan kondisi kasur atau sofa Anda, mulai dari perbaikan struktur, penggantian lapisan dan kain, hingga pembersihan.
+            Temukan layanan yang sesuai dengan kondisi kasur atau sofa Anda, mulai dari perbaikan struktur hingga penggantian lapisan dan kain.
           </p>
         </div>
       </section>
@@ -94,27 +75,19 @@ const Layanan: React.FC = () => {
       <section className="py-16 bg-bg-light dark:bg-bg-dark -mt-10 relative z-20">
         <div className="container mx-auto px-6">
 
-          {/* 3 KARTU LAYANAN: bertumpuk di mobile, tiga kolom di desktop */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {/* 2 KARTU LAYANAN: bertumpuk di mobile, dua kolom seimbang di desktop */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             {SERVICES.map((s, i) => (
               <ScrollReveal key={s.id} delay={i * 100} className="h-full">
                 <div className="group bg-white dark:bg-bg-surface rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-800 overflow-hidden h-full flex flex-col hover:-translate-y-2 transition-transform duration-300">
                   <div className="aspect-[4/3] relative overflow-hidden">
-                    {s.image ? (
-                      <>
-                        <img
-                          src={s.image}
-                          alt={s.imageAlt}
-                          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                          loading="lazy"
-                        />
-                        <div className={`absolute inset-0 ${s.overlayClass} group-hover:bg-transparent transition-colors`}></div>
-                      </>
-                    ) : (
-                      <div className="w-full h-full bg-gradient-to-br from-teal-700 to-teal-900 flex items-center justify-center" aria-hidden="true">
-                        <Sparkles size={72} className="text-teal-100/80" />
-                      </div>
-                    )}
+                    <img
+                      src={s.image}
+                      alt={s.imageAlt}
+                      className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      loading="lazy"
+                    />
+                    <div className={`absolute inset-0 ${s.overlayClass} group-hover:bg-transparent transition-colors`}></div>
                   </div>
                   <div className="p-8 flex-grow flex flex-col">
                     <h2 className={`text-2xl font-bold mb-3 ${s.titleClass}`}>{s.title}</h2>

@@ -244,7 +244,7 @@ const KebijakanPrivasi: React.FC = () => {
                   'Mengakses dan menjelajahi situs web kami;',
                   'Mengisi formulir konsultasi gratis di halaman Kontak;',
                   'Menghubungi kami melalui WhatsApp, telepon, email, atau media sosial;',
-                  'Menggunakan layanan Klinik Matras, Klinik Sofa, atau Sano Clean, baik di workshop maupun di lokasi Kamu.',
+                  'Menggunakan layanan Klinik Matras atau Klinik Sofa, baik di workshop maupun di lokasi Kamu.',
                 ]}
               />
               <p>
@@ -314,7 +314,7 @@ const KebijakanPrivasi: React.FC = () => {
                   <><strong>Identitas dasar:</strong> nama lengkap atau nama panggilan.</>,
                   <><strong>Kontak:</strong> alamat email dan nomor telepon/WhatsApp.</>,
                   <><strong>Lokasi umum:</strong> kota atau area domisili, untuk menentukan cakupan layanan antar-jemput.</>,
-                  <><strong>Detail kebutuhan layanan:</strong> jenis layanan yang diminati (Klinik Matras, Klinik Sofa, atau Sano Clean) serta deskripsi keluhan matras/sofa yang Kamu tuliskan.</>,
+                  <><strong>Detail kebutuhan layanan:</strong> jenis layanan yang diminati (Klinik Matras atau Klinik Sofa) serta deskripsi keluhan matras/sofa yang Kamu tuliskan.</>,
                   <><strong>Alamat lengkap pengerjaan:</strong> diberikan saat proses pemesanan berlanjut, untuk penjemputan, pengantaran, atau pengerjaan di tempat.</>,
                   <><strong>Foto kondisi barang:</strong> foto matras/sofa yang Kamu kirimkan untuk keperluan diagnosis dan estimasi biaya.</>,
                   <><strong>Data transaksi:</strong> catatan pemesanan, nominal, metode pembayaran, dan bukti transfer. Kami <strong>tidak pernah</strong> menyimpan nomor lengkap kartu kredit/debit atau PIN Kamu.</>,

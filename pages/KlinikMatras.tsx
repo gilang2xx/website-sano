@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import {
   ArrowRight, Layers, Wrench, Scissors, Ruler,
-  Sparkles, Crown, Zap, Settings,
+  Crown, Zap, Settings,
   Feather, Cloud, Hammer, MoveDiagonal, Clock, MessageCircle,
   Armchair, Camera,
 } from 'lucide-react';
@@ -12,7 +12,7 @@ import { toButtonSlug } from '../utils/whatsapp';
 import { useSEO } from '../hooks/useSEO';
 
 // Hub layanan "Service Kasur & Springbed" (route tetap /klinik-matras).
-// SUMBER ISI: 16 layanan = katalog yang sudah ada sebelumnya di halaman ini; alur kerja =
+// SUMBER ISI: 15 layanan (Sterilisasi Tungau/Kutu dihapus bersama Sano Clean) = katalog yang sudah ada sebelumnya di halaman ini; alur kerja =
 // pages/Home.tsx; langkah diagnosis & standar fondasi = knowledge base owner + artikel pilar.
 // TIDAK ADA di sini (belum ada bukti/konfirmasi owner): harga (lihat /pricelist), durasi,
 // area layanan di luar alamat bengkel, hasil pelanggan, klaim medis, angka garansi.
@@ -41,13 +41,12 @@ const problems: { problem: string; solution: string; to: string | null; link: st
   { problem: 'Kasur terlalu keras atau terlalu empuk', solution: 'Ubah Tekstur atau Upgrade Lapisan (Latex / Memory Foam)', to: null, link: null },
   { problem: 'Kain kusam, robek, atau ingin tampil baru', solution: 'Ganti Kain Premium atau Full Upgrade', to: null, link: null },
   { problem: 'Divan atau sandaran (headboard) rusak', solution: 'Service Divan / Sandaran', to: null, link: null },
-  { problem: 'Kasur perlu dibersihkan dari tungau dan bau', solution: 'Sterilisasi Tungau/Kutu (layanan pendukung)', to: '/sano-clean', link: 'Lihat layanan Sano Clean' },
 ];
 
 const faqs = [
   {
     q: 'Apa saja yang bisa dikerjakan pada layanan service kasur?',
-    a: 'Perbaikan dan penguatan fondasi, penggantian lapisan busa, penyesuaian kekerasan, penggantian kain, service divan dan sandaran, potong atau tambah ukuran, hingga sterilisasi. Semuanya ada di daftar layanan pada halaman ini.',
+    a: 'Perbaikan dan penguatan fondasi, penggantian lapisan busa, penyesuaian kekerasan, penggantian kain, service divan dan sandaran, serta potong atau tambah ukuran. Semuanya ada di daftar layanan pada halaman ini.',
   },
   {
     q: 'Apakah kasur springbed bisa diservis?',
@@ -75,7 +74,7 @@ const KlinikMatras: React.FC = () => {
     image: '/pelayanan-matras.png',
   });
 
-  // DAFTAR 16 LAYANAN (dikelompokkan via properti group)
+  // DAFTAR 15 LAYANAN (dikelompokkan via properti group)
   // 'isBestSeller: true' hanya untuk 2 layanan pilihan
   const services = [
     { 
@@ -157,12 +156,6 @@ const KlinikMatras: React.FC = () => {
       group: 'lain' as const, 
       desc: "Menyambung/memperbesar kasur (misal: Single ke Queen) rapi.", 
       icon: <MoveDiagonal /> 
-    },
-    { 
-      title: "Sterilisasi Tungau/Kutu",
-      group: 'lain' as const, 
-      desc: "Deep cleaning profesional untuk membasmi tungau, bakteri, dan bau.", 
-      icon: <Sparkles /> 
     },
     { 
       title: "Kasur Sewa",

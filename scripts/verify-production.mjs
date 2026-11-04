@@ -138,7 +138,7 @@ for (const p of paths.filter((x) => x !== '/')) {
 }
 
 // ── 4. 404: route, API, dan aset tidak dikenal ───────────────────────────
-for (const p of ['/url-tidak-ada', '/artikel/slug-tidak-ada', '/klinik-matras/xyz', '/klinik-matras.html', '/index.css', '/spa-fallback.html', '/api/tidak-ada', '/assets/tidak-ada.js', '/tidak-ada.png', '/admin/tidak-ada']) {
+for (const p of ['/url-tidak-ada', '/artikel/slug-tidak-ada', '/klinik-matras/xyz', '/klinik-matras.html', '/index.css', '/spa-fallback.html', '/api/tidak-ada', '/assets/tidak-ada.js', '/tidak-ada.png', '/admin/tidak-ada', '/sano-clean', '/sano-clean/']) {
   const r = await req(BASE, p);
   const ok = r.status === 404 && (!isHtml(r) || (/<meta name="robots" content="noindex, nofollow"/.test(r.body) && !/<link rel="canonical"/.test(r.body)));
   check('404', `${p} -> 404 (HTML noindex, tanpa canonical)`, ok, ok ? '' : `status=${r.status} type=${r.headers.get('content-type')}`);

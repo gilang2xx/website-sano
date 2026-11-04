@@ -356,7 +356,6 @@ const Home: React.FC = () => {
               <NavLink to="/perbaikan-kasur-amblas" className="text-blue-600 dark:text-blue-400 hover:underline">Kasur amblas? Pelajari perbaikannya</NavLink>
               <NavLink to="/pricelist" className="text-blue-600 dark:text-blue-400 hover:underline">Lihat estimasi harga service &amp; upgrade</NavLink>
               <NavLink to="/before-after" className="text-blue-600 dark:text-blue-400 hover:underline">Contoh hasil before &amp; after</NavLink>
-              <NavLink to="/sano-clean" className="text-blue-600 dark:text-blue-400 hover:underline">Perlu pembersihan? Sano Clean</NavLink>
               <NavLink to="/layanan" className="text-blue-600 dark:text-blue-400 hover:underline">Semua layanan kami</NavLink>
             </div>
           </div>

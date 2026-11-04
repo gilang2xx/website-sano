@@ -9,7 +9,6 @@ type SubmitStatus = 'idle' | 'submitting' | 'success' | 'validation_error' | 'su
 const SERVICE_TYPES = [
   { value: 'klinik_matras', label: 'Klinik Matras' },
   { value: 'klinik_sofa', label: 'Klinik Sofa' },
-  { value: 'sano_clean', label: 'Sano Clean' },
 ];
 
 const Kontak: React.FC = () => {
