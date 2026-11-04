@@ -203,7 +203,7 @@ const Pricelist: React.FC = () => {
             </h2>
             
             <p className="text-slate-600 dark:text-slate-400 mb-8 max-w-2xl mx-auto">
-              Kami juga menyediakan layanan: <span className="font-semibold text-slate-800 dark:text-slate-200">Ganti Kain, Potong Ukuran, Tambah Latex, Custom Ukuran, Sterilisasi Tungau, Service Sofa</span>, dan masih banyak lagi.
+              Kami juga menyediakan layanan: <span className="font-semibold text-slate-800 dark:text-slate-200">Ganti Kain, Potong Ukuran, Tambah Latex, Custom Ukuran, Service Sofa</span>, dan masih banyak lagi.
             </p>
 
             <WhatsAppLink 

@@ -40,12 +40,6 @@ export const SERVICES: ServiceItem[] = [
     description: 'Restorasi divan yang patah, berbunyi, atau kain pelapis yang rusak.',
     iconName: 'Hammer',
   },
-  {
-    id: '6',
-    title: 'Cuci Matras (SANO CARE)',
-    description: 'Pembersihan mendalam (deep cleaning) untuk membasmi tungau dan noda.',
-    iconName: 'Sparkles',
-  },
 ];
 
 export const MATRAS_SERVICES: ServiceItem[] = [
@@ -95,22 +89,6 @@ export const SOFA_SERVICES: ServiceItem[] = [
     iconName: 'PenTool',
   }
 ];
-
-export const CLEAN_SERVICES: ServiceItem[] = [
-  {
-    id: 'c1',
-    title: 'Cuci Matras & Sofa',
-    description: 'Pembersihan mendalam (deep cleaning) untuk membasmi tungau, debu, dan noda membandel.',
-    iconName: 'Sparkles',
-  },
-  {
-    id: 'c2',
-    title: 'Hydro Allergen Vacuum',
-    description: 'Penyedotan debu kering dengan teknologi hydro separator untuk penderita alergi.',
-    iconName: 'Wind',
-  }
-];
-
 
 // TIDAK DITAMPILKAN di website (keputusan owner Fase 3C): sumber/izin belum terverifikasi.
 export const TESTIMONIALS = [

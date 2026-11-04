@@ -22,7 +22,6 @@ const PAGE_LOADERS: Record<StaticRoutePath, PageLoader> = {
   '/klinik-matras': () => import('./pages/KlinikMatras'),
   '/perbaikan-kasur-amblas': () => import('./pages/PerbaikanKasurAmblas'),
   '/klinik-sofa': () => import('./pages/KlinikSofa'),
-  '/sano-clean': () => import('./pages/SanoClean'),
   '/kebijakan-privasi': () => import('./pages/KebijakanPrivasi'),
 };
 const loadArtikelDetail: PageLoader = () => import('./pages/ArtikelDetail');
