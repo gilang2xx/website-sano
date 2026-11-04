@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import {
   Hammer, Wrench, Crown, ArrowRight, Tag, MessageCircle, ListPlus
 } from 'lucide-react';
-import { buildWaHref } from '../utils/attribution';
+import WhatsAppLink from '../components/WhatsAppLink';
+import { toButtonSlug } from '../utils/whatsapp';
 import { useSEO } from '../hooks/useSEO';
 
 const Pricelist: React.FC = () => {
@@ -92,9 +93,12 @@ const Pricelist: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
           
           {services.map((service) => (
-            <a 
+            <WhatsAppLink 
               key={service.id}
-              href={buildWaHref(`Halo Sano, saya tertarik dengan paket ${service.title}`)}
+              message={`Halo Sano, saya tertarik dengan paket ${service.title}`}
+              eventLabel={`Pricelist WA - ${service.title}`}
+              buttonId={`pricelist-paket-${toButtonSlug(service.title)}`}
+              placement="pricing"
               target="_blank"
               rel="noreferrer"
               // Jika Premium, kartu lebih besar sedikit (scale-105 di desktop)
@@ -176,7 +180,7 @@ const Pricelist: React.FC = () => {
                   </span>
                 </div>
               </div>
-            </a>
+            </WhatsAppLink>
           ))}
 
         </div>
@@ -202,15 +206,18 @@ const Pricelist: React.FC = () => {
               Kami juga menyediakan layanan: <span className="font-semibold text-slate-800 dark:text-slate-200">Ganti Kain, Potong Ukuran, Tambah Latex, Custom Ukuran, Sterilisasi Tungau, Service Sofa</span>, dan masih banyak lagi.
             </p>
 
-            <a 
-              href={buildWaHref("Halo Sano, boleh minta daftar harga lengkap untuk layanan lainnya?")}
+            <WhatsAppLink 
+              message="Halo Sano, boleh minta daftar harga lengkap untuk layanan lainnya?"
+              eventLabel="Pricelist WA - Harga Lengkap"
+              buttonId="pricelist-harga-lengkap"
+              placement="cta"
               target="_blank" 
               rel="noreferrer"
               className="inline-flex items-center gap-3 px-8 py-4 bg-[#3B62AA] text-white rounded-full font-bold shadow-lg hover:bg-blue-700 transition-all hover:scale-105"
             >
               <MessageCircle size={20} />
               Tanya Harga Lengkap via WhatsApp
-            </a>
+            </WhatsAppLink>
           </div>
 
         </div>

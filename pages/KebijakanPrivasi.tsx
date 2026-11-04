@@ -7,6 +7,7 @@ import {
   ChevronRight, AlertTriangle, Scale, ExternalLink
 } from 'lucide-react';
 import { useSEO } from '../hooks/useSEO';
+import { createWhatsAppClickHandler } from '../utils/tracking';
 
 // Tanggal berlaku kebijakan. Perbarui saat isi kebijakan diubah.
 const LAST_UPDATED = '15 Agustus 2026';
@@ -291,7 +292,7 @@ const KebijakanPrivasi: React.FC = () => {
                 </div>
                 <div className="p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-700">
                   <p className="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2">WhatsApp / Telepon</p>
-                  <p className="font-bold text-slate-900 dark:text-white">0851 6666 2896 &middot; 0851 8728 3900</p>
+                  <p className="font-bold text-slate-900 dark:text-white">0851 8728 3900</p>
                 </div>
               </div>
               <p>
@@ -629,6 +630,12 @@ const KebijakanPrivasi: React.FC = () => {
                   href="https://wa.me/6285187283900?text=Halo%20Sano,%20saya%20ingin%20bertanya%20tentang%20Kebijakan%20Privasi."
                   target="_blank"
                   rel="noreferrer"
+                  onClick={createWhatsAppClickHandler('Kebijakan Privasi WA - Kontak', {
+                    buttonId: 'privacy-kontak-whatsapp',
+                    placement: 'privacy-contact',
+                    cs: 'cs1',
+                    pixels: false,
+                  })}
                   className="group p-5 rounded-2xl bg-slate-50 dark:bg-slate-900/50 border border-slate-100 dark:border-slate-700 hover:border-green-500 hover:-translate-y-1 transition-all"
                 >
                   <Phone size={20} className="text-green-600 dark:text-green-400 mb-3" />

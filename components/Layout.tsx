@@ -6,8 +6,8 @@ import {
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { NAV_LINKS } from '../constants';
-import { trackWhatsAppClick } from '../utils/tracking';
-import { captureAdReferral, buildWaHref, endAttributionHydration } from '../utils/attribution';
+import { openWhatsAppChat, WA_PHONE_CS1 } from '../utils/whatsapp';
+import { captureAdReferral, endAttributionHydration } from '../utils/attribution';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -22,15 +22,13 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
   const location = useLocation();
 
-  // Fungsi klik tombol WhatsApp (satu nomor CS aktif)
-  const handleCSClick = (nomorWA: string, namaCS: string) => {
-    // Lapor ke Tracking (dataLayer -> GTM, plus Meta & TikTok pixels)
-    trackWhatsAppClick(`Floating WA - ${namaCS}`);
-
-    // Buka WhatsApp -- pesan ditempeli tag "(ref: ...)" otomatis KALAU
-    // pengunjung ini datang dari iklan (lihat utils/attribution.ts).
-    // Kunjungan organik/direct pesannya tetap apa adanya, tanpa tag.
-    window.open(buildWaHref("Halo Sano, saya tertarik konsultasi", nomorWA), "_blank");
+  // Fungsi klik tombol WhatsApp (footer & tombol melayang). Lapor ke Tracking
+  // (dataLayer -> GTM, plus Meta & TikTok pixels seperti sebelumnya) lalu buka
+  // WhatsApp; pesan ditempeli tag atribusi KALAU pengunjung datang dari iklan
+  // (lihat utils/attribution.ts, utils/whatsapp.ts). Label event lama
+  // (`Floating WA - <nama>`) dipertahankan; buttonId/placement menambah identitas.
+  const handleCSClick = (nomorWA: string, namaCS: string, buttonId: string, placement: 'floating' | 'footer') => {
+    openWhatsAppChat({ phone: nomorWA, eventLabel: `Floating WA - ${namaCS}`, buttonId, placement });
   };
 
   useEffect(() => {
@@ -223,25 +221,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <span className="leading-relaxed">Jl. Raya Keadilan, Gg Asrama Polri, No. 81, RT 5/12, Pancoran Mas, Kota Depok, Jawa Barat</span>
               </li>
               
-              {/* Nomor CS 1 */}
+              {/* Satu nomor WhatsApp CS: 0851 8728 3900 (CS 1). event_label 'Footer CS 2' sengaja
+                  dipertahankan: nomor tujuannya sama dengan tombol footer ini sebelumnya, jadi seri
+                  data GA4 lama tetap sambung. */}
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-secondary shrink-0" />
-                <button 
-                  onClick={() => handleCSClick('6285166662896', 'Footer CS 1')} 
+                <button
+                  onClick={() => handleCSClick(WA_PHONE_CS1, 'Footer CS 2', 'layout-footer-cs1', 'footer')}
                   className="hover:text-white hover:underline transition-all text-left"
                 >
-                  0851 6666 2896 (CS 1)
-                </button>
-              </li>
-
-              {/* Nomor CS 2 */}
-              <li className="flex items-center gap-3">
-                <Phone size={18} className="text-secondary shrink-0" />
-                <button 
-                  onClick={() => handleCSClick('6285187283900', 'Footer CS 2')} 
-                  className="hover:text-white hover:underline transition-all text-left"
-                >
-                  0851 8728 3900 (CS 2)
+                  0851 8728 3900 (CS 1)
                 </button>
               </li>
 
@@ -311,7 +300,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           type="button"
           aria-label="Hubungi kami via WhatsApp"
           className="relative group cursor-pointer"
-          onClick={() => handleCSClick('6285187283900', 'Floating WA')}
+          onClick={() => handleCSClick(WA_PHONE_CS1, 'Floating WA', 'layout-floating-wa', 'floating')}
         >
           {/* Efek Glow */}
           <div className="absolute inset-0 rounded-full bg-green-400 blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>

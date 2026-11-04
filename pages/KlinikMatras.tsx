@@ -7,7 +7,8 @@ import {
   Feather, Cloud, Hammer, MoveDiagonal, Clock, MessageCircle,
   Armchair, Camera,
 } from 'lucide-react';
-import { buildWaHref } from '../utils/attribution';
+import WhatsAppLink from '../components/WhatsAppLink';
+import { toButtonSlug } from '../utils/whatsapp';
 import { useSEO } from '../hooks/useSEO';
 
 // Hub layanan "Service Kasur & Springbed" (route tetap /klinik-matras).
@@ -211,12 +212,15 @@ const KlinikMatras: React.FC = () => {
             memperkuat fondasi, atau meng-upgrade bagian yang bermasalah, tanpa harus membeli kasur baru.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href={buildWaHref("Halo Sano, saya ingin konsultasi service kasur. Saya kirim foto kondisi kasurnya.")}
+            <WhatsAppLink
+              message="Halo Sano, saya ingin konsultasi service kasur. Saya kirim foto kondisi kasurnya."
+              eventLabel="Klinik Matras WA - Hero"
+              buttonId="km-hero-konsultasi"
+              placement="hero"
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-bold shadow-xl shadow-blue-600/20 hover:-translate-y-1 transition-all"
             >
               <Camera size={20} /> Kirim Foto &amp; Konsultasi
-            </a>
+            </WhatsAppLink>
             <Link
               to="/pricelist"
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-full font-bold hover:border-blue-500 transition-all"
@@ -307,14 +311,17 @@ const KlinikMatras: React.FC = () => {
                       {item.desc}
                     </p>
 
-                    <a
-                      href={buildWaHref(`Halo Sano, saya ingin tanya layanan ${item.title}.`)}
+                    <WhatsAppLink
+                      message={`Halo Sano, saya ingin tanya layanan ${item.title}.`}
+                      eventLabel={`Klinik Matras WA - ${item.title}`}
+                      buttonId={`km-layanan-${toButtonSlug(item.title)}`}
+                      placement="service-card"
                       className={`text-xs font-bold flex items-center gap-1 transition-all mt-auto ${
                         isHighlight ? 'text-blue-600 gap-2' : 'text-slate-500 group-hover:text-blue-500 group-hover:gap-2'
                       }`}
                     >
                       Tanya via WhatsApp <ArrowRight size={14} />
-                    </a>
+                    </WhatsAppLink>
                   </motion.div>
                 );
               })}
@@ -390,12 +397,15 @@ const KlinikMatras: React.FC = () => {
 
       {/* 7. CTA */}
       <section className="container mx-auto px-6 text-center">
-        <a
-          href={buildWaHref("Halo Sano, saya ingin konsultasi tentang layanan Klinik Matras.")}
+        <WhatsAppLink
+          message="Halo Sano, saya ingin konsultasi tentang layanan Klinik Matras."
+          eventLabel="Klinik Matras WA - CTA Konsultasi"
+          buttonId="km-cta-konsultasi"
+          placement="cta"
           className="inline-flex items-center gap-2 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-bold shadow-xl shadow-blue-600/20 hover:shadow-blue-600/40 hover:-translate-y-1 transition-all"
         >
           <MessageCircle size={20} /> Konsultasi Gratis dengan Ahli
-        </a>
+        </WhatsAppLink>
         <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
           Atau langsung ke halaman <Link to="/kontak" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">kontak</Link>.
         </p>

@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import {
   MessageCircle, Camera, ChevronRight, ArrowRight, Search, Hammer, Wrench, Layers, Crown, Settings,
 } from 'lucide-react';
-import { buildWaHref } from '../utils/attribution';
+import WhatsAppLink from '../components/WhatsAppLink';
 import { useSEO } from '../hooks/useSEO';
 
 // Halaman problem-to-solution untuk "perbaikan kasur amblas".
@@ -120,14 +120,17 @@ const PerbaikanKasurAmblas: React.FC = () => {
             kasur Kamu, lalu merekomendasikan perbaikan yang sesuai, selama kondisinya memungkinkan.
           </p>
           <div className="flex flex-wrap gap-4">
-            <a
-              href={buildWaHref(WA_MAIN)}
+            <WhatsAppLink
+              message={WA_MAIN}
+              eventLabel="Perbaikan Kasur Amblas WA - Hero"
+              buttonId="pka-hero-kirim-foto"
+              placement="hero"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-gradient-to-r from-blue-600 to-blue-700 text-white rounded-full font-bold shadow-xl shadow-blue-600/20 hover:-translate-y-1 transition-all"
             >
               <Camera size={20} /> Kirim Foto Kasur untuk Konsultasi
-            </a>
+            </WhatsAppLink>
             <Link
               to="/klinik-matras"
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-200 rounded-full font-bold hover:border-blue-500 transition-all"
@@ -284,14 +287,17 @@ const PerbaikanKasurAmblas: React.FC = () => {
           <h2 className="text-2xl md:text-3xl font-bold mb-3">Kasur Kamu Amblas? Kirim Foto dan Ceritakan Kondisinya</h2>
           <p className="mb-6 opacity-90">Konsultasi awal gratis lewat WhatsApp. Kami bantu menilai bagian yang bermasalah dan pilihan perbaikannya.</p>
           <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href={buildWaHref(WA_MAIN)}
+            <WhatsAppLink
+              message={WA_MAIN}
+              eventLabel="Perbaikan Kasur Amblas WA - CTA"
+              buttonId="pka-cta-chat"
+              placement="cta"
               target="_blank"
               rel="noreferrer"
               className="inline-flex items-center gap-2 px-7 py-3.5 bg-white text-blue-700 rounded-full font-bold hover:scale-105 transition-transform shadow-lg"
             >
               <MessageCircle size={20} /> Chat WhatsApp Sekarang
-            </a>
+            </WhatsAppLink>
             <Link
               to="/kontak"
               className="inline-flex items-center gap-2 px-7 py-3.5 border border-white/50 text-white rounded-full font-bold hover:bg-white/10 transition-colors"

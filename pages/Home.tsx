@@ -58,8 +58,7 @@ import { TESTIMONIALS } from '../constants';
 // Ensure the file exists or correct the path if necessary
 // Ensure the correct path to the GoogleReviewSection component
 import GoogleReviewSection from '../components/GoogleReviewSection'; // Check if the file exists
-import { trackWhatsAppClick } from '../utils/tracking';
-import { buildWaHref } from '../utils/attribution';
+import WhatsAppLink from '../components/WhatsAppLink';
 import { useSEO } from '../hooks/useSEO';
 
 
@@ -70,9 +69,6 @@ const Home: React.FC = () => {
     path: '/',
   });
   const [isDarkMode, setIsDarkMode] = React.useState(false);
-  const handleWAClick = () => {
-    trackWhatsAppClick('Tombol WA Utama');
-  };
  // DATA MASALAH (Disederhanakan jadi 3 Poin Utama)
   const painPoints = [
     // 1. MASALAH RINGAN (Leher & Kepala)
@@ -255,8 +251,11 @@ const Home: React.FC = () => {
                 Tanpa Perlu Beli Kasur Baru.
               </h2>
               
-              <a
-                href={buildWaHref("Halo Sano, saya tertarik konsultasi gratis")}
+              <WhatsAppLink
+                message="Halo Sano, saya tertarik konsultasi gratis"
+                eventLabel="Home WA - Hero Konsultasi Gratis"
+                buttonId="home-hero-konsultasi-gratis"
+                placement="hero"
                 target="_blank"
                 rel="noreferrer"
                 className="group relative inline-flex items-center gap-3 px-10 py-5 rounded-full font-bold text-lg md:text-xl text-white transition-all transform hover:scale-105 overflow-hidden"
@@ -268,7 +267,7 @@ const Home: React.FC = () => {
                    <MessageCircle size={24} className="animate-pulse" /> 
                    Konsultasi Gratis Sekarang
                 </div>
-              </a>
+              </WhatsAppLink>
             </motion.div>
           </div>
         </div>
@@ -977,15 +976,18 @@ const Home: React.FC = () => {
 
               {/* CTA Button Premium */}
               <div className="mt-8">
-                <a 
-                  href={buildWaHref("Halo Sano, saya tertarik Paket Premium")}
+                <WhatsAppLink 
+                  message="Halo Sano, saya tertarik Paket Premium"
+                  eventLabel="Home WA - Paket Premium"
+                  buttonId="home-paket-premium"
+                  placement="pricing"
+                  pixels
                   target="_blank"
                   rel="noreferrer"
-                  onClick={() => trackWhatsAppClick('Home WA - Paket Premium')}
                   className="block w-full py-4 bg-white text-blue-700 font-bold rounded-xl text-center shadow-lg hover:bg-blue-50 transition-colors"
                 >
                   Pilih Paket Premium
-                </a>
+                </WhatsAppLink>
               </div>
 
             </div>
@@ -1085,15 +1087,18 @@ const Home: React.FC = () => {
                 Konsultasikan keluhan dampak bangun tidur dan fisik matras kamu sekarang!
               </p>
               <div className="flex flex-col md:flex-row justify-center items-center gap-6 relative z-10">
-                <a 
-                  href={buildWaHref("Halo Sano Care, saya ingin konsultasi mengenai kasur saya.")}
-                  onClick={handleWAClick}
+                <WhatsAppLink 
+                  message="Halo Sano Care, saya ingin konsultasi mengenai kasur saya."
+                  eventLabel="Tombol WA Utama"
+                  buttonId="home-cta-chat-whatsapp"
+                  placement="cta"
+                  pixels
                   target="_blank"
                   rel="noreferrer" 
                   className="bg-white text-primary font-bold px-10 py-4 rounded-full hover:bg-blue-50 transition-all shadow-lg hover:shadow-xl hover:scale-105 flex items-center gap-2"
                 >
                   <MessageCircle size={20} /> Chat WhatsApp Sekarang
-                </a>
+                </WhatsAppLink>
                 <NavLink to="/kontak" className="px-10 py-4 border-2 border-white/30 text-white font-bold rounded-full hover:bg-white/10 transition-all">
                   Lihat Lokasi Workshop
                 </NavLink>
