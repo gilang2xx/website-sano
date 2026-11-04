@@ -2,14 +2,14 @@ import React from 'react';
 import { buildWaHref } from '../utils/attribution';
 import { createWhatsAppClickHandler } from '../utils/tracking';
 import type { WhatsAppPlacement } from '../utils/tracking';
-import { WA_PHONE_MAIN, csIdForPhone } from '../utils/whatsapp';
+import { WA_PHONE_CS1, csIdForPhone } from '../utils/whatsapp';
 
 type AnchorProps = Omit<React.AnchorHTMLAttributes<HTMLAnchorElement>, 'href'>;
 
 export interface WhatsAppLinkProps extends AnchorProps {
   /** Pesan dasar. Tag atribusi iklan ditempel otomatis oleh buildWaHref. */
   message: string;
-  /** Nomor tujuan. Default = nomor utama. */
+  /** Nomor tujuan. Default = CS 1 (0851 8728 3900), satu-satunya nomor aktif. */
   phone?: string;
   /** Label event lama/baru (`event_label`). */
   eventLabel: string;
@@ -32,7 +32,7 @@ export interface WhatsAppLinkProps extends AnchorProps {
  */
 const WhatsAppLink: React.FC<WhatsAppLinkProps> = ({
   message,
-  phone = WA_PHONE_MAIN,
+  phone = WA_PHONE_CS1,
   eventLabel,
   buttonId,
   placement,

@@ -76,6 +76,18 @@ for (const f of files.filter((x) => /^(pages|components)\//.test(x))) {
 }
 ok(rawOffenders.length === 0, 'tautan WhatsApp mentah (wa.me) selalu ber-handler bersama', rawOffenders.join(', '));
 
+// SATU nomor aktif: CS 1 = 6285187283900 (0851 8728 3900). Nomor SANO lama hanya boleh ada di utils/whatsapp.ts
+// (untuk normalisasi tautan lama di isi artikel); setiap literal wa.me di sumber harus nomor CS 1.
+const CS1_DIGITS = '6285187283900';
+const LEGACY_DIGITS = '6285166662896';
+const legacyOffenders = files.filter((f) => f !== 'utils/whatsapp.ts' && (src[f].includes(LEGACY_DIGITS) || /0851[\s.-]?6666[\s.-]?2896/.test(src[f])));
+ok(legacyOffenders.length === 0, 'nomor SANO lama (0851 6666 2896) tidak muncul di sumber aktif selain utils/whatsapp.ts', legacyOffenders.join(', '));
+const badLiteral = [];
+for (const f of files) for (const m of src[f].matchAll(/(?:wa\.me\/|[?&]phone=)\+?(\d{6,})/g)) if (m[1] !== CS1_DIGITS && !(f === 'utils/whatsapp.ts')) badLiteral.push(`${f}:${m[1].slice(0, 4)}…`);
+ok(badLiteral.length === 0, 'semua literal wa.me / phone= di sumber = 6285187283900 (CS 1)', badLiteral.join(', '));
+const indexHtml = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+ok(!indexHtml.includes(LEGACY_DIGITS) && indexHtml.includes(`+${CS1_DIGITS}`), 'index.html (JSON-LD telephone) memakai CS 1 saja');
+
 // Setiap <WhatsAppLink ...> punya eventLabel, buttonId, placement.
 function openingTags(text, tagName) {
   const tags = [];
@@ -103,6 +115,8 @@ const incomplete = linkTags.filter(({ t }) => !/\bmessage=/.test(t) || !/\bevent
 ok(incomplete.length === 0, 'setiap <WhatsAppLink> punya message, eventLabel, buttonId, placement', incomplete.map((x) => x.f).join(', '));
 const stray = linkTags.filter(({ t }) => /\bhref=/.test(t));
 ok(stray.length === 0, 'tidak ada <WhatsAppLink href=...> (href dibangun komponen)');
+const phoneOverride = linkTags.filter(({ t }) => /\bphone=/.test(t));
+ok(phoneOverride.length === 0, 'tidak ada <WhatsAppLink phone=...> (semua memakai CS 1 default)', phoneOverride.map((x) => x.f).join(', '));
 
 // buttonId statis unik.
 const ids = [];
@@ -116,6 +130,7 @@ ok(dupIds.length === 0, `buttonId statis unik (${ids.length} ID)`, [...new Set(d
 
 // Renderer markdown artikel CMS melacak tautan WhatsApp.
 ok(/isWhatsAppHref\(/.test(src['pages/ArtikelDetail.tsx'] || ''), 'renderer markdown artikel CMS melacak tautan WhatsApp');
+ok(/href=\{normalizeSanoWaHref\(props\.href\)\}/.test(src['pages/ArtikelDetail.tsx'] || ''), 'renderer markdown artikel CMS menormalkan nomor SANO lama ke CS 1');
 
 // Isi artikel CMS: informasi saja.
 const cmsDir = path.join(ROOT, 'content', 'artikel');
@@ -135,7 +150,7 @@ const built = await esbuild.build({
   stdin: {
     contents: `
       export { trackWhatsAppClick, createWhatsAppClickHandler } from './utils/tracking';
-      export { openWhatsAppChat, csIdForPhone, csIdForHref, isWhatsAppHref, toButtonSlug, WA_PHONE_MAIN, WA_PHONE_CS1, WA_DEFAULT_CHAT_MESSAGE } from './utils/whatsapp';
+      export { openWhatsAppChat, csIdForPhone, csIdForHref, isWhatsAppHref, toButtonSlug, normalizeSanoWaHref, WA_PHONE_LEGACY, WA_PHONE_CS1, WA_DEFAULT_CHAT_MESSAGE } from './utils/whatsapp';
       export { buildWaHref } from './utils/attribution';
       export { default as WhatsAppLink } from './components/WhatsAppLink';
     `,
@@ -180,12 +195,12 @@ const LEGACY_KEYS = ['event', 'event_category', 'event_label', 'value'];
 
 // T1: payload lama utuh + identitas
 reset();
-trackWhatsAppClick('Label Uji', { buttonId: 'uji-tombol', placement: 'hero', cs: 'cs2' });
+trackWhatsAppClick('Label Uji', { buttonId: 'uji-tombol', placement: 'hero', cs: 'cs1' });
 {
   const e = events();
   ok(e.length === 1, 'satu panggilan = tepat satu event dataLayer');
   ok(e[0] && LEGACY_KEYS.every((k) => k in e[0]) && e[0].event === 'click_whatsapp' && e[0].event_category === 'Kontak' && e[0].event_label === 'Label Uji' && e[0].value === 1, 'payload lama (event, event_category, event_label, value) tidak berubah');
-  ok(e[0].wa_button_id === 'uji-tombol' && e[0].wa_placement === 'hero' && e[0].wa_cs === 'cs2' && e[0].wa_page_path === '/uji-lokal', 'identitas ditambahkan: wa_button_id, wa_placement, wa_cs, wa_page_path');
+  ok(e[0].wa_button_id === 'uji-tombol' && e[0].wa_placement === 'hero' && e[0].wa_cs === 'cs1' && e[0].wa_page_path === '/uji-lokal', 'identitas ditambahkan: wa_button_id, wa_placement, wa_cs, wa_page_path');
   const allowed = new Set([...LEGACY_KEYS, 'wa_button_id', 'wa_placement', 'wa_cs', 'wa_page_path']);
   ok(Object.keys(e[0]).every((k) => allowed.has(k)), 'tidak ada key di luar daftar yang diizinkan');
   ok(!JSON.stringify(e[0]).match(/\d{9,}/), 'payload tidak memuat nomor telepon / angka panjang');
@@ -223,11 +238,11 @@ const baseProps = { message: 'Halo Uji, pesan dasar', eventLabel: 'Uji WA - Tomb
 const el1 = WhatsAppLink({ ...baseProps, className: 'k', target: '_blank', rel: 'noreferrer', children: 'Teks' });
 const el2 = WhatsAppLink({ ...baseProps, children: 'Teks' });
 ok(events().length === 0 && calls.open.length === 0, 'render komponen (berulang) tidak mengirim event');
-ok(el1.type === 'a' && el1.props.href === buildWaHref('Halo Uji, pesan dasar') && el1.props.href.startsWith('https://wa.me/6285187283900?text='), 'href = buildWaHref(pesan) ke nomor utama (tidak berubah)');
+ok(el1.type === 'a' && el1.props.href === buildWaHref('Halo Uji, pesan dasar') && el1.props.href.startsWith('https://wa.me/6285187283900?text='), 'href = buildWaHref(pesan) ke CS 1 (6285187283900) secara default');
 ok(el1.props.target === '_blank' && el1.props.rel === 'noreferrer' && el1.props.className === 'k', 'target/rel/className diteruskan apa adanya');
 ok(el2.props.target === undefined && el2.props.rel === undefined, 'tanpa target/rel bila pemanggil tidak memberi (perilaku navigasi lama dipertahankan)');
 el1.props.onClick({ defaultPrevented: false });
-ok(events().length === 1 && events()[0].event_label === 'Uji WA - Tombol' && events()[0].wa_button_id === 'uji-link' && events()[0].wa_placement === 'cta' && events()[0].wa_cs === 'cs2', 'satu klik tombol = tepat satu event beridentitas');
+ok(events().length === 1 && events()[0].event_label === 'Uji WA - Tombol' && events()[0].wa_button_id === 'uji-link' && events()[0].wa_placement === 'cta' && events()[0].wa_cs === 'cs1', 'satu klik tombol = tepat satu event beridentitas');
 ok(calls.fbq.length === 0 && calls.ttq.length === 0, 'tombol baru dicakup (pixels default false): Meta/TikTok tidak ikut dipicu');
 advance(900);
 el1.props.onClick({ defaultPrevented: false });
@@ -241,11 +256,13 @@ ok(userClicks === 1 && events().length === 1 && calls.fbq.length === 1 && calls.
 
 // T7: nomor CS & tag atribusi
 reset();
-const cs1 = WhatsAppLink({ ...baseProps, phone: mod.WA_PHONE_CS1, children: 'x' });
-ok(cs1.props.href.startsWith('https://wa.me/6285166662896?text='), 'nomor CS 1 tetap 6285166662896');
+const cs1 = WhatsAppLink({ ...baseProps, children: 'x' });
+ok(cs1.props.href.startsWith('https://wa.me/6285187283900?text='), 'CS 1 = 6285187283900 (0851 8728 3900)');
 cs1.props.onClick({});
-ok(events()[0].wa_cs === 'cs1' && !JSON.stringify(events()[0]).includes('6285166662896'), 'CS dikirim sebagai kode cs1 (bukan nomor)');
-ok(mod.WA_PHONE_MAIN === '6285187283900' && buildWaHref('x') === buildWaHref('x', mod.WA_PHONE_MAIN), 'nomor utama konstanta = default buildWaHref (6285187283900)');
+ok(events()[0].wa_cs === 'cs1' && !JSON.stringify(events()[0]).includes('6285187283900'), 'CS dikirim sebagai kode cs1 (bukan nomor)');
+ok(mod.WA_PHONE_CS1 === '6285187283900' && buildWaHref('x') === buildWaHref('x', mod.WA_PHONE_CS1), 'konstanta CS 1 = default buildWaHref (6285187283900)');
+ok(mod.csIdForPhone(mod.WA_PHONE_LEGACY) === undefined && mod.csIdForPhone(undefined) === undefined, 'wa_cs: nomor lama / kosong bukan CS aktif (undefined)');
+ok(mod.csIdForPhone('+62 851-8728-3900') === 'cs1' && mod.csIdForPhone('6285187283900') === 'cs1', 'csIdForPhone: format bernomor/berspasi tetap dikenali sebagai cs1');
 store.set('sano_ref', JSON.stringify({ source: 'google', medium: 'cpc', campaign: 'uji' }));
 const tagged = WhatsAppLink({ ...baseProps, children: 'x' }).props.href;
 const text = new URL(tagged).searchParams.get('text');
@@ -255,15 +272,27 @@ ok(new URL(WhatsAppLink({ ...baseProps, children: 'x' }).props.href).searchParam
 
 // T8: openWhatsAppChat (tombol footer/melayang)
 reset();
-openWhatsAppChat({ phone: mod.WA_PHONE_CS1, eventLabel: 'Floating WA - Footer CS 1', buttonId: 'layout-footer-cs1', placement: 'footer' });
+openWhatsAppChat({ phone: mod.WA_PHONE_CS1, eventLabel: 'Floating WA - Footer CS 2', buttonId: 'layout-footer-cs1', placement: 'footer' });
 ok(events().length === 1 && calls.open.length === 1, 'openWhatsAppChat: 1 event + 1 window.open');
-ok(calls.open[0][1] === '_blank' && calls.open[0][0] === buildWaHref(mod.WA_DEFAULT_CHAT_MESSAGE, mod.WA_PHONE_CS1), 'window.open(url, "_blank") dengan pesan & nomor yang sama seperti sebelumnya');
-ok(events()[0].event_label === 'Floating WA - Footer CS 1' && calls.fbq.length === 1 && calls.ttq.length === 1, 'label lama & pixel lama dipertahankan untuk tombol lama');
+ok(calls.open[0][1] === '_blank' && calls.open[0][0] === buildWaHref(mod.WA_DEFAULT_CHAT_MESSAGE, mod.WA_PHONE_CS1) && calls.open[0][0].startsWith('https://wa.me/6285187283900?text='), 'window.open(url, "_blank") ke CS 1 dengan pesan yang sama seperti sebelumnya');
+ok(events()[0].event_label === 'Floating WA - Footer CS 2' && events()[0].wa_cs === 'cs1' && events()[0].wa_button_id === 'layout-footer-cs1' && calls.fbq.length === 1 && calls.ttq.length === 1, 'footer: event_label lama dipertahankan, wa_cs=cs1, pixel lama dipertahankan');
 ok(mod.WA_DEFAULT_CHAT_MESSAGE === 'Halo Sano, saya tertarik konsultasi', 'pesan tombol melayang/footer tidak berubah');
 
 // T9: util
 ok(mod.isWhatsAppHref('https://wa.me/6285187283900?text=a') && mod.isWhatsAppHref('https://api.whatsapp.com/send?phone=1') && !mod.isWhatsAppHref('https://example.com/wa.me/') && !mod.isWhatsAppHref('tel:+62'), 'isWhatsAppHref: hanya host WhatsApp');
-ok(mod.csIdForHref('https://wa.me/6285166662896?x') === 'cs1' && mod.csIdForHref('https://wa.me/6281234') === undefined, 'csIdForHref memetakan nomor CS dikenal saja');
+ok(mod.csIdForHref('https://wa.me/6285187283900?x') === 'cs1' && mod.csIdForHref('https://wa.me/6285166662896?x') === undefined && mod.csIdForHref('https://wa.me/6281234') === undefined, 'csIdForHref: hanya CS 1 yang dikenal (nomor lama & lain = undefined)');
+// normalizeSanoWaHref: nomor SANO lama -> CS 1; sisanya tak disentuh
+{
+  const n = mod.normalizeSanoWaHref;
+  const msg = 'text=Halo%20Sano%2C%20tanya';
+  ok(n(`https://wa.me/6285166662896?${msg}`) === `https://wa.me/6285187283900?${msg}`, 'normalisasi: wa.me nomor lama -> CS 1, pesan utuh');
+  ok(n('https://wa.me/+6285166662896') === 'https://wa.me/6285187283900' && n('https://wa.me/6285166662896/') === 'https://wa.me/6285187283900/', 'normalisasi: varian + dan / akhir');
+  ok(n('https://api.whatsapp.com/send?phone=6285166662896&text=a') === 'https://api.whatsapp.com/send?phone=6285187283900&text=a', 'normalisasi: api.whatsapp.com ?phone= nomor lama -> CS 1');
+  ok(n('https://wa.me/6285187283900?x=1') === 'https://wa.me/6285187283900?x=1', 'normalisasi: CS 1 tidak berubah');
+  ok(n('https://wa.me/6281234567890?x=1') === 'https://wa.me/6281234567890?x=1', 'normalisasi: nomor bukan SANO dibiarkan');
+  ok(n('https://wa.me/628516666289699') === 'https://wa.me/628516666289699', 'normalisasi: nomor yang hanya berawalan sama dengan nomor lama tidak ikut diganti');
+  ok(n('https://example.com/?x=6285166662896') === 'https://example.com/?x=6285166662896' && n(undefined) === undefined && n('/artikel/x') === '/artikel/x', 'normalisasi: URL non-WhatsApp & undefined tidak disentuh');
+}
 ok(mod.toButtonSlug('Service Divan / Sandaran') === 'service-divan-sandaran' && mod.toButtonSlug('') === 'tanpa-judul', 'toButtonSlug stabil & aman');
 
 console.log(`\nHasil: ${pass} lulus, ${fail} gagal`);

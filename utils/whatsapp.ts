@@ -1,24 +1,38 @@
 // Konstanta & helper WhatsApp yang dipakai bersama oleh komponen/halaman.
-// Nomor di sini SAMA dengan yang sebelumnya tersebar di Layout.tsx dan
-// default `buildWaHref` (utils/attribution.ts) -- tidak ada nomor baru.
+// SATU nomor WhatsApp aktif untuk semua tombol/tautan SANO: CS 1 = 0851 8728 3900.
 import { buildWaHref } from './attribution';
 import { trackWhatsAppClick } from './tracking';
 import type { WhatsAppPlacement } from './tracking';
 
-/** Nomor utama (CS 2). Harus sama dengan default `buildWaHref`. */
-export const WA_PHONE_MAIN = '6285187283900';
-/** Nomor CS 1 (hanya dipakai tombol footer). */
-export const WA_PHONE_CS1 = '6285166662896';
+/**
+ * Satu-satunya nomor WhatsApp CS aktif (CS 1): 0851 8728 3900.
+ * Harus sama dengan default `buildWaHref` (utils/attribution.ts); dijaga oleh scripts/verify-whatsapp-tracking.mjs.
+ */
+export const WA_PHONE_CS1 = '6285187283900';
+/**
+ * Nomor SANO lama (0851 6666 2896), tidak lagi dipakai CTA mana pun. Hanya dipakai
+ * `normalizeSanoWaHref` agar tautan lama yang tertulis di isi artikel CMS tetap menuju CS 1.
+ */
+export const WA_PHONE_LEGACY = '6285166662896';
 
 /** Pesan prefilled tombol melayang & footer (tidak diubah). */
 export const WA_DEFAULT_CHAT_MESSAGE = 'Halo Sano, saya tertarik konsultasi';
 
-/** Kode CS untuk analitik. Nomor telepon tidak pernah dikirim ke dataLayer. */
+/** Kode CS untuk analitik. Nomor telepon tidak pernah dikirim ke dataLayer. Hanya CS 1 yang aktif. */
 export function csIdForPhone(phone: string | undefined): string | undefined {
   const digits = String(phone ?? '').replace(/\D/g, '');
-  if (digits === WA_PHONE_CS1) return 'cs1';
-  if (digits === WA_PHONE_MAIN) return 'cs2';
-  return undefined;
+  return digits === WA_PHONE_CS1 ? 'cs1' : undefined;
+}
+
+/**
+ * Ganti nomor SANO lama dengan CS 1 pada tautan WhatsApp (`wa.me/<nomor>` atau `?phone=<nomor>`),
+ * sisanya (pesan, parameter) tidak disentuh. Nomor lain (bukan milik SANO) dibiarkan.
+ */
+export function normalizeSanoWaHref(href: string | undefined): string | undefined {
+  if (typeof href !== 'string') return href;
+  return href
+    .replace(new RegExp(`^(https?://wa\\.me/)\\+?${WA_PHONE_LEGACY}(?=[/?#]|$)`, 'i'), `$1${WA_PHONE_CS1}`)
+    .replace(new RegExp(`([?&]phone=)\\+?${WA_PHONE_LEGACY}(?=[&#]|$)`, 'i'), `$1${WA_PHONE_CS1}`);
 }
 
 /**
@@ -40,9 +54,9 @@ export function isWhatsAppHref(href: string | undefined): boolean {
   return typeof href === 'string' && WA_HOST_PATTERN.test(href);
 }
 
-/** Kode CS dari tautan `https://wa.me/<nomor>?...`; undefined bila bukan nomor CS dikenal. */
+/** Kode CS dari tautan `https://wa.me/<nomor>?...`; undefined bila bukan CS 1. */
 export function csIdForHref(href: string | undefined): string | undefined {
-  const match = typeof href === 'string' ? /^https?:\/\/wa\.me\/(\d+)/i.exec(href) : null;
+  const match = typeof href === 'string' ? /^https?:\/\/wa\.me\/\+?(\d+)/i.exec(href) : null;
   return match ? csIdForPhone(match[1]) : undefined;
 }
 

@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import WhatsAppLink from '../components/WhatsAppLink';
 import { createWhatsAppClickHandler } from '../utils/tracking';
-import { csIdForHref, isWhatsAppHref } from '../utils/whatsapp';
+import { csIdForHref, isWhatsAppHref, normalizeSanoWaHref } from '../utils/whatsapp';
 import { useSEO } from '../hooks/useSEO';
 import { getCmsArticleBySlug, estimateReadTime, DEFAULT_AUTHOR } from '../utils/content';
 import { SITE_URL, canonicalUrl, LEGACY_ARTICLES } from '../seo/routes';
@@ -117,11 +117,12 @@ const markdownComponents = {
       target="_blank"
       rel="noreferrer"
       {...props}
+      href={normalizeSanoWaHref(props.href)}
       onClick={isWhatsAppHref(props.href)
         ? createWhatsAppClickHandler('Artikel WA - Tautan Isi', {
             buttonId: 'artikel-isi-tautan-wa',
             placement: 'article-body',
-            cs: csIdForHref(props.href),
+            cs: csIdForHref(normalizeSanoWaHref(props.href)),
             pixels: false,
           })
         : undefined}

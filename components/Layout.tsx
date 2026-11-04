@@ -6,7 +6,7 @@ import {
 } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { NAV_LINKS } from '../constants';
-import { openWhatsAppChat, WA_PHONE_CS1, WA_PHONE_MAIN } from '../utils/whatsapp';
+import { openWhatsAppChat, WA_PHONE_CS1 } from '../utils/whatsapp';
 import { captureAdReferral, endAttributionHydration } from '../utils/attribution';
 
 interface LayoutProps {
@@ -221,25 +221,16 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                 <span className="leading-relaxed">Jl. Raya Keadilan, Gg Asrama Polri, No. 81, RT 5/12, Pancoran Mas, Kota Depok, Jawa Barat</span>
               </li>
               
-              {/* Nomor CS 1 */}
+              {/* Satu nomor WhatsApp CS: 0851 8728 3900 (CS 1). event_label 'Footer CS 2' sengaja
+                  dipertahankan: nomor tujuannya sama dengan tombol footer ini sebelumnya, jadi seri
+                  data GA4 lama tetap sambung. */}
               <li className="flex items-center gap-3">
                 <Phone size={18} className="text-secondary shrink-0" />
-                <button 
-                  onClick={() => handleCSClick(WA_PHONE_CS1, 'Footer CS 1', 'layout-footer-cs1', 'footer')} 
+                <button
+                  onClick={() => handleCSClick(WA_PHONE_CS1, 'Footer CS 2', 'layout-footer-cs1', 'footer')}
                   className="hover:text-white hover:underline transition-all text-left"
                 >
-                  0851 6666 2896 (CS 1)
-                </button>
-              </li>
-
-              {/* Nomor CS 2 */}
-              <li className="flex items-center gap-3">
-                <Phone size={18} className="text-secondary shrink-0" />
-                <button 
-                  onClick={() => handleCSClick(WA_PHONE_MAIN, 'Footer CS 2', 'layout-footer-cs2', 'footer')} 
-                  className="hover:text-white hover:underline transition-all text-left"
-                >
-                  0851 8728 3900 (CS 2)
+                  0851 8728 3900 (CS 1)
                 </button>
               </li>
 
@@ -309,7 +300,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
           type="button"
           aria-label="Hubungi kami via WhatsApp"
           className="relative group cursor-pointer"
-          onClick={() => handleCSClick(WA_PHONE_MAIN, 'Floating WA', 'layout-floating-wa', 'floating')}
+          onClick={() => handleCSClick(WA_PHONE_CS1, 'Floating WA', 'layout-floating-wa', 'floating')}
         >
           {/* Efek Glow */}
           <div className="absolute inset-0 rounded-full bg-green-400 blur-lg opacity-0 group-hover:opacity-50 transition-opacity duration-300"></div>
