@@ -21,38 +21,72 @@ interface RefInfo {
   capturedAt?: string;
 }
 
+// Alias penulisan sumber Google Ads di Final URL suffix (mis. "google-ads",
+// "google_ads", "Google Ads", "googleads"). Parser CRM membaca tag
+// "<source>-<medium>-<campaign>" dengan split("-"), jadi "google-ads-cpc"
+// terbaca source "google" + medium "ads" (bukan medium berbayar) dan salah
+// masuk WEBSITE_ORGANIC. Alias dinormalkan ke sumber kanonis "google" sebelum
+// disimpan. Hanya alias Google Ads yang terbukti bermasalah; sumber lain
+// TIDAK diutak-atik.
+function isGoogleAdsAlias(rawSource: string): boolean {
+  return rawSource.toLowerCase().replace(/[\s_-]+/g, "") === "googleads";
+}
+
+/**
+ * Terjemahkan query URL jadi referral iklan, atau null kalau tidak ada
+ * penanda iklan sama sekali. Fungsi murni (tidak menyentuh storage) supaya
+ * bisa diuji terpisah.
+ *
+ * ATURAN PRIORITAS -- UTM eksplisit tidak pernah ditimpa diam-diam:
+ *   - source/medium/campaign dari UTM eksplisit SELALU menang.
+ *   - click-id iklan (gclid/gbraid/wbraid = Google, fbclid = Meta) hanya
+ *     MENGISI yang kosong: source default (google/meta) dan medium "cpc".
+ *     Nilai mentah click-id tidak pernah dibaca keluar dari fungsi ini --
+ *     hanya "ada/tidak ada". Tidak disimpan, tidak dikirim ke mana pun.
+ *   - Kalau click-id Google dan fbclid sama-sama ada tanpa utm_source,
+ *     Google didahulukan (perilaku lama).
+ */
+export function resolveAdReferral(params: URLSearchParams): RefInfo | null {
+  const rawSource = (params.get("utm_source") || "").trim();
+  const medium = params.get("utm_medium");
+  const campaign = params.get("utm_campaign");
+  // Google Ads auto-tagging: gclid (web), gbraid (iOS app -> web), wbraid
+  // (web -> app). Ketiganya sama-sama menandai klik iklan Google berbayar.
+  const googleClick = !!(params.get("gclid") || params.get("gbraid") || params.get("wbraid"));
+  const metaClick = !!params.get("fbclid"); // Meta auto-tagging
+
+  // Tidak ada penanda iklan APAPUN di URL ini -- JANGAN timpa referral
+  // yang sudah tersimpan dari halaman sebelumnya. Orang bisa klik-klik ke
+  // beberapa halaman situs sebelum akhirnya klik tombol WA; referral
+  // aslinya (halaman pertama yang didarati dari iklan) harus tetap hidup.
+  if (!rawSource && !medium && !campaign && !googleClick && !metaClick) return null;
+
+  const aliasGoogleAds = rawSource !== "" && isGoogleAdsAlias(rawSource);
+  const source = aliasGoogleAds ? "google" : rawSource || undefined;
+
+  // Click-id SAMA-SAMA penanda iklan berbayar -- kalau salah satu ada,
+  // medium default-nya HARUS "cpc" juga, kalau tidak backend
+  // (leadSourceFromRefTag) yang medium-aware membacanya sebagai bukan-iklan.
+  // Alias Google Ads tanpa utm_medium juga diberi "cpc": nama sumbernya
+  // sendiri sudah menyatakan "Ads". Medium eksplisit (termasuk "cpm" atau
+  // "organic") tidak pernah diubah.
+  const berbayar = googleClick || metaClick || aliasGoogleAds;
+  return {
+    source: source || (googleClick ? "google" : metaClick ? "meta" : undefined),
+    medium: medium || (berbayar ? "cpc" : undefined),
+    campaign: campaign || undefined,
+    capturedAt: new Date().toISOString(),
+  };
+}
+
 /**
  * Panggil SEKALI per navigasi di root app (Layout.tsx, yang mount sekali
  * dan tidak pernah unmount selama SPA ini hidup).
  */
 export function captureAdReferral(): void {
   if (typeof window === "undefined") return;
-  const params = new URLSearchParams(window.location.search);
-
-  const source = params.get("utm_source");
-  const medium = params.get("utm_medium");
-  const campaign = params.get("utm_campaign");
-  const gclid = params.get("gclid");   // Google Ads auto-tagging
-  const fbclid = params.get("fbclid"); // Meta auto-tagging
-
-  // Tidak ada penanda iklan APAPUN di URL ini -- JANGAN timpa referral
-  // yang sudah tersimpan dari halaman sebelumnya. Orang bisa klik-klik ke
-  // beberapa halaman situs sebelum akhirnya klik tombol WA; referral
-  // aslinya (halaman pertama yang didarati dari iklan) harus tetap hidup.
-  if (!source && !medium && !campaign && !gclid && !fbclid) return;
-
-  // gclid & fbclid SAMA-SAMA click-id iklan berbayar -- kalau salah satu
-  // ada, medium default-nya HARUS "cpc" juga. Sebelum ini cuma gclid yang
-  // diberi default; fbclid tanpa utm_medium eksplisit jadi bertag "meta"
-  // TANPA medium, dan backend (leadSourceFromRefTag) yang medium-aware
-  // akan salah membacanya sebagai bukan-iklan.
-  const berbayar = gclid || fbclid;
-  const info: RefInfo = {
-    source: source || (gclid ? "google" : fbclid ? "meta" : undefined),
-    medium: medium || (berbayar ? "cpc" : undefined),
-    campaign: campaign || undefined,
-    capturedAt: new Date().toISOString(),
-  };
+  const info = resolveAdReferral(new URLSearchParams(window.location.search));
+  if (!info) return;
 
   try {
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(info));
