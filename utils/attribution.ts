@@ -79,16 +79,45 @@ export function resolveAdReferral(params: URLSearchParams): RefInfo | null {
   };
 }
 
+// Asal kunjungan tanpa penanda iklan. Hanya kanal yang memang dilaporkan; sumber
+// lain tidak diberi tag karangan dan tetap terbaca "kanal tidak diketahui" di CRM.
+const KANAL_REFERRER: Array<{ cocok: RegExp; source: string; medium: string }> = [
+  { cocok: /(^|\.)linktr\.ee$/, source: "linktree", medium: "referral" },
+  { cocok: /(^|\.)tiktok\.com$|^com\.zhiliaoapp\.musically$|^com\.ss\.android\.ugc\.trill$/, source: "tiktok", medium: "social" },
+  { cocok: /(^|\.)instagram\.com$|^com\.instagram\.android$/, source: "ig", medium: "social" },
+  { cocok: /(^|\.)facebook\.com$|^com\.facebook\.katana$/, source: "facebook", medium: "social" },
+  { cocok: /(^|\.)google\.[a-z.]+$|^com\.google\.android\.googlequicksearchbox$/, source: "google", medium: "organic" },
+];
+
+/**
+ * Terjemahkan document.referrer jadi asal kunjungan, atau null kalau tidak
+ * dikenali. Hanya nama kanalnya yang dipakai; URL lengkap tidak disimpan.
+ */
+export function resolveReferrerChannel(referrer: string): RefInfo | null {
+  if (!referrer) return null;
+  try {
+    const host = new URL(referrer).hostname.toLowerCase();
+    const kanal = KANAL_REFERRER.find((k) => k.cocok.test(host));
+    if (!kanal) return null;
+    return { source: kanal.source, medium: kanal.medium, capturedAt: new Date().toISOString() };
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Panggil SEKALI per navigasi di root app (Layout.tsx, yang mount sekali
  * dan tidak pernah unmount selama SPA ini hidup).
  */
 export function captureAdReferral(): void {
   if (typeof window === "undefined") return;
-  const info = resolveAdReferral(new URLSearchParams(window.location.search));
-  if (!info) return;
+  const iklan = resolveAdReferral(new URLSearchParams(window.location.search));
 
   try {
+    // Referrer hanya mengisi yang kosong: tidak pernah menimpa referral iklan.
+    const info = iklan
+      || (sessionStorage.getItem(STORAGE_KEY) ? null : resolveReferrerChannel(document.referrer));
+    if (!info) return;
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(info));
   } catch {
     // sessionStorage bisa gagal (mode privat browser lama, dsb) -- gagal
