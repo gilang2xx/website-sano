@@ -19,6 +19,8 @@ interface RefInfo {
   medium?: string;
   campaign?: string;
   capturedAt?: string;
+  /** Kode kunjungan terlihat (mis. "G7K2P"), hanya diisi bila flag VITE_KODE_KUNJUNGAN=on. */
+  kode?: string;
 }
 
 // Alias penulisan sumber Google Ads di Final URL suffix (mis. "google-ads",
@@ -115,9 +117,16 @@ export function captureAdReferral(): void {
 
   try {
     // Referrer hanya mengisi yang kosong: tidak pernah menimpa referral iklan.
-    const info = iklan
-      || (sessionStorage.getItem(STORAGE_KEY) ? null : resolveReferrerChannel(document.referrer));
+    const tersimpan = sessionStorage.getItem(STORAGE_KEY);
+    const info = iklan || (tersimpan ? null : resolveReferrerChannel(document.referrer));
     if (!info) return;
+    if (isKodeKunjunganAktif()) {
+      // Satu kode per sumber: reload/navigasi dengan UTM yang SAMA tidak
+      // mengganti kode; sumber/kampanye baru = kode baru.
+      const lama: RefInfo | null = tersimpan ? JSON.parse(tersimpan) : null;
+      const sama = !!lama && lama.source === info.source && lama.medium === info.medium && lama.campaign === info.campaign;
+      info.kode = sama && lama?.kode && KODE_VALID.test(lama.kode) ? lama.kode : buatKode(hurufKanal(info));
+    }
     sessionStorage.setItem(STORAGE_KEY, JSON.stringify(info));
   } catch {
     // sessionStorage bisa gagal (mode privat browser lama, dsb) -- gagal
@@ -150,13 +159,13 @@ export function beginAttributionHydration(): void {
 export function endAttributionHydration(): void {
   if (!hydrationPending) return;
   hydrationPending = false;
-  if (typeof document === "undefined" || !getRefTag()) return;
+  if (typeof document === "undefined" || (!getRefTag() && !getVisitCode())) return;
 
   document.querySelectorAll<HTMLAnchorElement>('a[href^="https://wa.me/"]').forEach((a) => {
     try {
       const url = new URL(a.href);
       const text = url.searchParams.get("text");
-      if (text === null || text.includes(START_MARK)) return;
+      if (text === null || text.includes(START_MARK) || text.includes(KODE_PREFIX)) return;
       a.href = buildWaHref(text, url.pathname.replace(/^\//, ""));
     } catch {
       // href tak bisa di-parse -- biarkan apa adanya.
@@ -244,6 +253,95 @@ function encodeInvisibleTag(tag: string): string {
  */
 export function buildWaHref(baseMessage: string, phone: string = "6285187283900"): string {
   const tag = getRefTag();
-  const pesan = tag ? `${baseMessage}${encodeInvisibleTag(tag)}` : baseMessage;
+  let pesan = tag ? `${baseMessage}${encodeInvisibleTag(tag)}` : baseMessage;
+  const kode = getVisitCode();
+  if (kode && !baseMessage.includes(KODE_PREFIX)) pesan += ` ${KODE_PREFIX}${kode})`;
   return `https://wa.me/${phone}?text=${encodeURIComponent(pesan)}`;
+}
+
+// ─── Kode kunjungan TERLIHAT, mis. "(Kode: G7K2P)" ──────────────────────
+//
+// KENAPA (16 Nov 2026). Uji production: tag tak terlihat di atas sampai ke
+// CRM dari HP non-iPhone (2/2), tetapi TIDAK dari iPhone (0/2), sehingga
+// lead iPhone dari iklan tercatat "kanal tidak diketahui". Kode pendek yang
+// terlihat ini adalah cadangan yang tahan iPhone: huruf pertama = kanal,
+// empat sisanya acak (pembeda kunjungan). Tag tak terlihat TETAP dipasang
+// karena membawa nama kampanye (Android).
+//
+// Tampil di SEMUA tombol WA (termasuk pengunjung tanpa sumber = "W"),
+// hanya bila flag build VITE_KODE_KUNJUNGAN=on. Flag mati = pesan persis
+// seperti sebelumnya (rollback tanpa revert).
+//
+// ⚠️ HARUS SELARAS dengan parser di CRM (backend/src/services/
+// leadAttribution.js: KODE_KUNJUNGAN_PATTERN & KANAL_KODE): huruf kanal,
+// alfabet, dan bentuk "(Kode: XXXXX)".
+//
+//   G Google Ads        M Meta Ads (fb/ig/meta berbayar)   T TikTok Ads
+//   I Instagram organik S Google organik                   L Linktree
+//   R sumber lain       W tanpa sumber (langsung)
+export const KODE_PREFIX = "(Kode: ";
+const KODE_ALFABET = "ABCDEFGHJKMNPQRSTUVWXYZ23456789"; // tanpa 0/O/1/I/L
+const KODE_VALID = /^[GMTISLRW][ABCDEFGHJKMNPQRSTUVWXYZ23456789]{4}$/;
+const KODE_KEY_TANPA_SUMBER = "sano_kode";
+// Sama dengan MEDIUM_BERBAYAR di CRM (leadSourceFromRefTag).
+const MEDIUM_BERBAYAR = new Set(["cpc", "ppc", "paid", "display", "pmax"]);
+let kodeCadangan: string | null = null; // dipakai bila sessionStorage tidak bisa ditulis
+
+export function isKodeKunjunganAktif(): boolean {
+  return import.meta.env.VITE_KODE_KUNJUNGAN === "on";
+}
+
+/** Huruf kanal dari referral tersimpan; null/undefined = "W" (tanpa sumber). */
+export function hurufKanal(ref: RefInfo | null | undefined): string {
+  if (!ref) return "W";
+  const source = String(ref.source || "").toLowerCase();
+  const berbayar = MEDIUM_BERBAYAR.has(String(ref.medium || "").toLowerCase());
+  if (source === "google") return berbayar ? "G" : "S";
+  if (source === "meta" || source === "facebook" || source === "fb") return berbayar ? "M" : "R";
+  if (source === "ig" || source === "instagram") return berbayar ? "M" : "I";
+  if (source === "tiktok") return berbayar ? "T" : "R";
+  if (source === "linktree") return "L";
+  return "R";
+}
+
+function buatKode(huruf: string): string {
+  const n = KODE_ALFABET.length;
+  let acak = "";
+  const c = typeof globalThis !== "undefined" ? globalThis.crypto : undefined;
+  if (c && typeof c.getRandomValues === "function") {
+    const b = new Uint8Array(4);
+    c.getRandomValues(b);
+    for (const x of b) acak += KODE_ALFABET[x % n];
+  } else {
+    for (let i = 0; i < 4; i++) acak += KODE_ALFABET[Math.floor(Math.random() * n)];
+  }
+  return huruf + acak;
+}
+
+/**
+ * Kode kunjungan untuk pesan WA, atau null bila flag mati / selama
+ * hydration (HTML statis harus identik dengan render pertama).
+ */
+export function getVisitCode(): string | null {
+  if (!isKodeKunjunganAktif() || typeof window === "undefined" || hydrationPending) return null;
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY);
+    if (raw) {
+      const ref: RefInfo = JSON.parse(raw);
+      if (ref.kode && KODE_VALID.test(ref.kode)) return ref.kode;
+      // Referral tersimpan sebelum fitur ini aktif: lengkapi sekali.
+      ref.kode = buatKode(hurufKanal(ref));
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(ref));
+      return ref.kode;
+    }
+    const w = sessionStorage.getItem(KODE_KEY_TANPA_SUMBER);
+    if (w && KODE_VALID.test(w)) return w;
+    const baru = buatKode("W");
+    sessionStorage.setItem(KODE_KEY_TANPA_SUMBER, baru);
+    return baru;
+  } catch {
+    // Storage tidak bisa dipakai: kode tetap konsisten selama halaman hidup.
+    if (!kodeCadangan) kodeCadangan = buatKode(hurufKanal(null));
+    return kodeCadangan;
+  }
 }

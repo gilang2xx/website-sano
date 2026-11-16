@@ -163,7 +163,8 @@ const built = await esbuild.build({
   format: 'esm',
   platform: 'node',
   jsx: 'automatic',
-  define: { 'process.env.NODE_ENV': '"production"' },
+  // Flag kode kunjungan MATI di bagian [2]: perilaku harus identik dengan sebelum fitur ada.
+  define: { 'process.env.NODE_ENV': '"production"', 'import.meta.env.VITE_KODE_KUNJUNGAN': '""' },
   logLevel: 'silent',
 });
 const mod = await import(`data:text/javascript;base64,${Buffer.from(built.outputFiles[0].text).toString('base64')}`);
@@ -294,6 +295,143 @@ ok(mod.csIdForHref('https://wa.me/6285187283900?x') === 'cs1' && mod.csIdForHref
   ok(n('https://example.com/?x=6285166662896') === 'https://example.com/?x=6285166662896' && n(undefined) === undefined && n('/artikel/x') === '/artikel/x', 'normalisasi: URL non-WhatsApp & undefined tidak disentuh');
 }
 ok(mod.toButtonSlug('Service Divan / Sandaran') === 'service-divan-sandaran' && mod.toButtonSlug('') === 'tanpa-judul', 'toButtonSlug stabil & aman');
+
+// T10: flag kode kunjungan MATI -> tidak ada "(Kode:" di pesan mana pun
+store.clear();
+ok(!decodeURIComponent(buildWaHref('Halo')).includes('(Kode:'), 'flag mati: tanpa referral tidak ada kode terlihat');
+store.set('sano_ref', JSON.stringify({ source: 'google', medium: 'cpc', campaign: 'jasa' }));
+ok(!decodeURIComponent(buildWaHref('Halo')).includes('(Kode:'), 'flag mati: dengan referral iklan tidak ada kode terlihat');
+ok(!store.has('sano_kode'), 'flag mati: tidak menulis sano_kode');
+store.clear();
+
+// ───────────────────── 3) KODE KUNJUNGAN (flag ON) ─────────────────────
+console.log('\n[3] Kode kunjungan terlihat (VITE_KODE_KUNJUNGAN=on)');
+const builtOn = await esbuild.build({
+  stdin: {
+    contents: `
+      export { buildWaHref, captureAdReferral, getVisitCode, hurufKanal, beginAttributionHydration, endAttributionHydration, KODE_PREFIX } from './utils/attribution';
+      export { openWhatsAppChat, WA_PHONE_CS1, WA_DEFAULT_CHAT_MESSAGE } from './utils/whatsapp';
+    `,
+    resolveDir: ROOT,
+    sourcefile: 'wa-test-entry-kode.ts',
+    loader: 'ts',
+  },
+  bundle: true,
+  write: false,
+  format: 'esm',
+  platform: 'node',
+  jsx: 'automatic',
+  define: { 'process.env.NODE_ENV': '"production"', 'import.meta.env.VITE_KODE_KUNJUNGAN': '"on"' },
+  logLevel: 'silent',
+});
+const on = await import(`data:text/javascript;base64,${Buffer.from(builtOn.outputFiles[0].text).toString('base64')}`);
+const KODE_RE = /\(Kode: ([GMTISLRW][ABCDEFGHJKMNPQRSTUVWXYZ23456789]{4})\)$/;
+const teks = (href) => new URL(href).searchParams.get('text');
+globalThis.document = { referrer: '', querySelectorAll: () => [] };
+const kunjungi = (search, referrer = '') => { window.location.search = search; document.referrer = referrer; on.captureAdReferral(); };
+
+// K1: tabel huruf kanal
+{
+  const h = on.hurufKanal;
+  const kasus = [
+    [{ source: 'google', medium: 'cpc' }, 'G'], [{ source: 'google', medium: 'pmax' }, 'G'], [{ source: 'google', medium: 'organic' }, 'S'],
+    [{ source: 'meta', medium: 'cpc' }, 'M'], [{ source: 'facebook', medium: 'paid' }, 'M'], [{ source: 'ig', medium: 'cpc' }, 'M'],
+    [{ source: 'ig', medium: 'social' }, 'I'], [{ source: 'instagram' }, 'I'], [{ source: 'facebook', medium: 'social' }, 'R'],
+    [{ source: 'tiktok', medium: 'cpc' }, 'T'], [{ source: 'tiktok', medium: 'social' }, 'R'], [{ source: 'linktree', medium: 'referral' }, 'L'],
+    [{ source: 'newsletter', medium: 'email' }, 'R'], [null, 'W'],
+  ];
+  const salah = kasus.filter(([r, e]) => h(r) !== e).map(([r, e]) => `${JSON.stringify(r)}=>${h(r)}≠${e}`);
+  ok(salah.length === 0, 'huruf kanal sesuai tabel desain v2 (G/M/T/I/S/L/R/W)', salah.join('; '));
+}
+
+// K2: tanpa sumber -> W, stabil selama sesi
+store.clear();
+kunjungi('');
+{
+  const t1 = teks(on.buildWaHref('Halo Sano, saya tertarik konsultasi'));
+  const t2 = teks(on.buildWaHref('Pesan lain'));
+  const m1 = KODE_RE.exec(t1);
+  ok(!!m1 && m1[1][0] === 'W' && t1.startsWith('Halo Sano, saya tertarik konsultasi (Kode: '), 'tanpa sumber: "<pesan> (Kode: W....)"');
+  ok(KODE_RE.exec(t2)?.[1] === m1?.[1] && store.get('sano_kode') === m1?.[1], 'kode W sama untuk semua tombol dalam sesi (sano_kode)');
+  ok(!t1.includes('\u200d'), 'tanpa sumber: tidak ada tag tak terlihat');
+}
+
+// K3: Google Ads ber-UTM -> tag tak terlihat + (Kode: G....) di akhir
+store.clear();
+kunjungi('?utm_source=google&utm_medium=cpc&utm_campaign=jasa');
+{
+  const t = teks(on.buildWaHref('Halo Sano, saya tertarik konsultasi'));
+  const m = KODE_RE.exec(t);
+  const ref = JSON.parse(store.get('sano_ref'));
+  ok(!!m && m[1][0] === 'G' && ref.kode === m[1], 'google/cpc: kode G tersimpan di sano_ref.kode dan tampil di pesan');
+  const iStart = t.indexOf('\u200d\u200d'), iEnd = t.indexOf('\u2060\u2060'), iKode = t.indexOf(' (Kode: ');
+  ok(t.startsWith('Halo Sano, saya tertarik konsultasi') && iStart > 0 && iEnd > iStart && iKode > iEnd, 'urutan: pesan dasar -> tag tak terlihat -> (Kode: ...) di akhir');
+  ok(!store.has('sano_kode'), 'kunjungan ber-sumber tidak membuat kode W');
+  // reload dengan UTM sama: kode tetap; kampanye baru: kode baru
+  kunjungi('?utm_source=google&utm_medium=cpc&utm_campaign=jasa');
+  ok(JSON.parse(store.get('sano_ref')).kode === ref.kode, 'reload dengan UTM sama: kode tidak berganti');
+  kunjungi('?utm_source=google&utm_medium=cpc&utm_campaign=ortho');
+  const k2 = JSON.parse(store.get('sano_ref')).kode;
+  ok(k2 !== ref.kode && k2[0] === 'G', 'kampanye baru: kode baru (tetap G)');
+  // navigasi SPA tanpa query tidak mengubah apa pun
+  kunjungi('');
+  ok(JSON.parse(store.get('sano_ref')).kode === k2, 'navigasi tanpa query: kode dipertahankan');
+}
+
+// K4: click-id & kanal lain
+store.clear(); kunjungi('?gclid=UJI-DUMMY');
+ok(on.getVisitCode()?.[0] === 'G' && !JSON.stringify([...store.values()]).includes('UJI-DUMMY'), 'gclid saja -> G; nilai gclid tidak disimpan');
+store.clear(); kunjungi('?fbclid=UJI');
+ok(on.getVisitCode()?.[0] === 'M', 'fbclid -> M');
+store.clear(); kunjungi('?utm_source=tiktok&utm_medium=cpc');
+ok(on.getVisitCode()?.[0] === 'T', 'tiktok/cpc -> T');
+store.clear(); kunjungi('', 'https://l.instagram.com/');
+ok(on.getVisitCode()?.[0] === 'I', 'referrer instagram -> I');
+store.clear(); kunjungi('', 'https://www.google.com/');
+ok(on.getVisitCode()?.[0] === 'S', 'referrer google (organik) -> S');
+
+// K5: referral lama tanpa kode (tersimpan sebelum flag nyala) dilengkapi sekali
+store.clear(); store.set('sano_ref', JSON.stringify({ source: 'google', medium: 'cpc', campaign: 'lama' }));
+{
+  const k = on.getVisitCode();
+  ok(k?.[0] === 'G' && JSON.parse(store.get('sano_ref')).kode === k && on.getVisitCode() === k, 'referral lama tanpa kode: dilengkapi sekali lalu stabil');
+}
+
+// K6: pesan yang sudah memuat kode tidak digandakan
+ok((decodeURIComponent(on.buildWaHref('Halo (Kode: GAAAA)')).match(/\(Kode:/g) || []).length === 1, 'pesan dasar yang sudah berkode tidak ditempel kode kedua');
+
+// K7: hydration -> tanpa kode; sesudahnya link wa.me di DOM ditempeli
+store.clear(); kunjungi('?utm_source=google&utm_medium=cpc&utm_campaign=jasa');
+on.beginAttributionHydration();
+{
+  const statis = on.buildWaHref('Halo Sano, saya tertarik konsultasi gratis');
+  ok(on.getVisitCode() === null && !teks(statis).includes('(Kode:') && !teks(statis).includes('\u200d'), 'selama hydration: href identik HTML statis (tanpa tag & kode)');
+  const a1 = { href: statis }, a2 = { href: 'https://wa.me/6285187283900' }, a3 = { href: on.buildWaHref('x') };
+  document.querySelectorAll = () => [a1, a2, a3];
+  on.endAttributionHydration();
+  const ta = teks(a1.href);
+  ok(KODE_RE.test(ta) && ta.includes('\u200d\u200d'), 'sesudah hydration: link ditempeli tag + kode');
+  ok(a2.href === 'https://wa.me/6285187283900', 'link wa.me tanpa ?text tidak disentuh');
+  ok(a1.href === on.buildWaHref('Halo Sano, saya tertarik konsultasi gratis'), 'href hasil tempel = render berikutnya (tidak ada mismatch)');
+  document.querySelectorAll = () => [];
+}
+
+// K8: tombol melayang (window.open) membawa kode
+store.clear(); kunjungi('?utm_source=google&utm_medium=cpc&utm_campaign=jasa');
+reset();
+on.openWhatsAppChat({ phone: on.WA_PHONE_CS1, eventLabel: 'Floating WA - Uji', buttonId: 'uji-float', placement: 'floating' });
+ok(calls.open.length === 1 && KODE_RE.exec(teks(calls.open[0][0]))?.[1][0] === 'G', 'tombol melayang: pesan membawa (Kode: G....)');
+
+// K9: sessionStorage gagal -> kode tetap konsisten selama halaman hidup
+{
+  const asli = globalThis.sessionStorage;
+  const rusak = { getItem: () => { throw new Error('x'); }, setItem: () => { throw new Error('x'); }, removeItem: () => {} };
+  globalThis.sessionStorage = rusak; window.sessionStorage = rusak;
+  const k1 = on.getVisitCode(), k2 = on.getVisitCode();
+  ok(!!k1 && k1 === k2 && k1[0] === 'W', 'storage gagal: kode cadangan W konsisten, tanpa error');
+  globalThis.sessionStorage = asli; window.sessionStorage = asli;
+}
+store.clear();
 
 console.log(`\nHasil: ${pass} lulus, ${fail} gagal`);
 process.exit(fail === 0 ? 0 : 1);
