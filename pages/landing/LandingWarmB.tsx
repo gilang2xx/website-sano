@@ -41,7 +41,7 @@ const LandingWarmB: React.FC = () => {
         </>}
       />
 
-      <div className="pt-10 md:pt-16 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title={<>Kasur yang sudah kami <Serif>benerin.</Serif></>} /></div>
+      <div className="pt-10 md:pt-16 bg-white dark:bg-black"><BigCase pair={PAIRS.world} others={[PAIRS.culm, PAIRS.thera, PAIRS.heir]} title={<>Kasur yang sudah kami <Serif>benerin.</Serif></>} /></div>
 
       <TrustStrip />
 
@@ -81,9 +81,9 @@ const LandingWarmB: React.FC = () => {
       <Screen>
         <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2">Gampang, <Serif>tiga langkah.</Serif></h2></Reveal>
         <ZigZag steps={[
-          { title: <><Hl>Kirim foto</Hl> kasurmu lewat WA</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Kasur di ruangan rumah yang difoto untuk dikirim ke tim' },
-          { title: <>Dapat <Hl>saran dan harga</Hl> pastinya</>, text: 'Bandingkan dulu dengan kasur baru yang kamu incar. Tanpa paksaan.', photo: 'langkah2', alt: 'Tukang memotong busa di workshop Klinik Matras' },
-          { title: <>Dijemput, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur' },
+          { title: <><Hl>Kirim foto</Hl> kasurmu lewat WA</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Ibu memeriksa kasurnya sebelum mengirim foto ke tim' },
+          { title: <>Dapat <Hl>saran dan harga</Hl> pastinya</>, text: 'Bandingkan dulu dengan kasur baru yang kamu incar. Tanpa paksaan.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop' },
+          { title: <>Dijemput, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur ke rumah pelanggan' },
         ]} />
       </Screen>
 

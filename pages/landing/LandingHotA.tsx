@@ -28,7 +28,7 @@ const LandingHotA: React.FC = () => {
         actions={<WaButton buttonId="ortho-hot-a-hero" placement="hero" eventLabel="Landing Ortho Hot A - Hero" label="Tanya harga dan jadwal" message={MSG} className="w-full sm:w-auto" />}
       />
 
-      <div className="pt-10 md:pt-16 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title={<>Sudah banyak yang <Serif>pakai.</Serif></>} /></div>
+      <div className="pt-10 md:pt-16 bg-white dark:bg-black"><BigCase pair={PAIRS.world} others={[PAIRS.culm, PAIRS.thera, PAIRS.heir]} title={<>Sudah banyak yang <Serif>pakai.</Serif></>} /></div>
 
       <TrustStrip />
 
@@ -57,9 +57,9 @@ const LandingHotA: React.FC = () => {
         <Reveal><Eyebrow>Jadwal</Eyebrow><h2 className="lp-h2 max-w-3xl">Slot jemput <Serif>terdekat?</Serif></h2>
           <Lead className="mt-3 max-w-2xl">Jadwal menyesuaikan antrean workshop. Tanya lewat WA, kami kabari yang masih kosong.</Lead></Reveal>
         <ZigZag steps={[
-          { title: <>Chat dan <Hl>kirim foto</Hl> kasur</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Kasur di ruangan rumah yang difoto untuk dikirim ke tim' },
-          { title: <>Sepakat <Hl>harga dan jadwal</Hl></>, text: 'Tim kami mengerjakan di workshop setelah semuanya cocok.', photo: 'langkah2', alt: 'Tukang memotong busa di workshop Klinik Matras' },
-          { title: <>Dikerjakan, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur' },
+          { title: <>Chat dan <Hl>kirim foto</Hl> kasur</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Ibu memeriksa kasurnya sebelum mengirim foto ke tim' },
+          { title: <>Sepakat <Hl>harga dan jadwal</Hl></>, text: 'Tim kami mengerjakan di workshop setelah semuanya cocok.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop' },
+          { title: <>Dikerjakan, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur ke rumah pelanggan' },
         ]} />
       </Screen>
 

@@ -20,6 +20,7 @@ export const FACTS = {
 export interface PhotoPair {
   id: number;
   title: string;
+  note?: string;
   before: string;
   after: string;
   w: number;
@@ -28,32 +29,32 @@ export interface PhotoPair {
   altAfter: string;
 }
 
-// Foto asli SANO (public/before-N.jpg & after-N.jpg) yang sudah dikecilkan ke
-// WebP 640 px (19-37 KB per foto). Judul = judul resmi di content/before-after.
-export const PAIRS: Record<'p10' | 'p11' | 'p6' | 'p7', PhotoPair> = {
-  p10: {
-    id: 10, title: 'Full Upgrade All-in-One',
-    before: '/landing/before-10.webp', after: '/landing/after-10.webp', w: 640, h: 404,
-    altBefore: 'Kasur pelanggan sebelum dikerjakan: kain kusam dan bernoda',
-    altAfter: 'Kasur yang sama setelah Full Upgrade: rapi, bersih dan tegak',
+// Before-after asli dari deck "SANO-Credentials 2026" (Canva Gilang), slide Hasil Kerja Kami, dipotong per pasangan
+// (bagian foto yang tidak tertutup kotak keterangan). Label = tipe kasur, teks = ringkasan penanganan dari slide itu.
+export const PAIRS: Record<'world' | 'culm' | 'thera' | 'heir', PhotoPair> = {
+  world: {
+    id: 1, title: 'King Koil World Edition', note: 'Kain kotor dan permukaan bergelombang. Upgrade Fondasi, Lapisan dan Ganti Kain.',
+    before: '/landing/ba-world-before.webp', after: '/landing/ba-world-after.webp', w: 600, h: 456,
+    altBefore: 'King Koil World Edition sebelum dikerjakan: kain kotor dan permukaan bergelombang',
+    altAfter: 'King Koil World Edition sesudah dikerjakan: kain putih bersih dan permukaan rata',
   },
-  p11: {
-    id: 11, title: 'Full Upgrade dengan Kain Knitting 3D',
-    before: '/landing/before-11.webp', after: '/landing/after-11.webp', w: 640, h: 404,
-    altBefore: 'Kasur bermotif bunga sebelum dikerjakan, kain sudah lusuh',
-    altAfter: 'Kasur yang sama setelah upgrade dengan kain knitting 3D, rata dan bersih',
+  culm: {
+    id: 2, title: 'King Koil Culmington', note: 'Lapisan atas cekung di bagian tengah. Upgrade Fondasi dan Lapisan Matras Sehat.',
+    before: '/landing/ba-culm-before.webp', after: '/landing/ba-culm-after.webp', w: 600, h: 480,
+    altBefore: 'King Koil Culmington sebelum dikerjakan: lapisan atas cekung',
+    altAfter: 'King Koil Culmington sesudah dikerjakan: permukaan rata dan tegak',
   },
-  p6: {
-    id: 6, title: 'Full Upgrade Kasur 2 in 1',
-    before: '/landing/before-6.webp', after: '/landing/after-6.webp', w: 640, h: 640,
-    altBefore: 'Kasur lama dengan busa dan kain yang sobek',
-    altAfter: 'Kasur 2 in 1 abu-abu yang rapi setelah Full Upgrade',
+  thera: {
+    id: 3, title: 'Therapedic Titanium Spring', note: 'Lapisan atas cekung di bagian tengah. Upgrade Fondasi dan Lapisan Matras Sehat.',
+    before: '/landing/ba-thera-before.webp', after: '/landing/ba-thera-after.webp', w: 600, h: 510,
+    altBefore: 'Therapedic Titanium Spring sebelum dikerjakan: permukaan cekung',
+    altAfter: 'Therapedic Titanium Spring sesudah dikerjakan: permukaan rata',
   },
-  p7: {
-    id: 7, title: 'Full Upgrade All-in-One',
-    before: '/landing/before-7.webp', after: '/landing/after-7.webp', w: 640, h: 640,
-    altBefore: 'Kasur pelanggan sebelum Full Upgrade',
-    altAfter: 'Kasur yang sama setelah Full Upgrade, lebih tebal dan rapi',
+  heir: {
+    id: 4, title: 'Lady Americana Heirloom', note: 'Kasur terlalu empuk, tidur terasa tenggelam. Upgrade Fondasi dan Lapisan Matras Sehat.',
+    before: '/landing/ba-heir-before.webp', after: '/landing/ba-heir-after.webp', w: 597, h: 464,
+    altBefore: 'Lady Americana Heirloom sebelum dikerjakan',
+    altAfter: 'Lady Americana Heirloom sesudah dikerjakan: lapisan baru yang tegak',
   },
 };
 

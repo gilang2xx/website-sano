@@ -45,10 +45,10 @@ details[open] .lp-plus{transform:rotate(45deg)}
 /* ───────────── Gambar (srcset, width/height tetap) ───────────── */
 
 const IMG = {
-  masalah: { w: [360, 720, 1000], r: 4 / 3 },
-  langkah1: { w: [360, 515], r: 4 / 3 },
-  langkah2: { w: [360, 720, 1080], r: 4 / 3 },
-  langkah3: { w: [360, 420], r: 4 / 3 },
+  masalah: { w: [360, 720, 1000], r: 4 / 5 },
+  langkah1: { w: [360, 720, 1000], r: 1 },
+  langkah2: { w: [360, 720, 1000], r: 1 },
+  langkah3: { w: [360, 720], r: 1 },
   service: { w: [360, 720], r: 4 / 5 },
   upgrade: { w: [360, 720], r: 4 / 5 },
   workshop: { w: [360, 720, 1080], r: 1.6 },
@@ -70,7 +70,8 @@ export const Photo: React.FC<{ name: PhotoName; alt: string; sizes?: string; eag
       loading={eager ? 'eager' : 'lazy'}
       decoding="async"
       {...(eager ? { fetchPriority: 'high' as const } : {})}
-      className={`block w-full h-auto ${className}`}
+      style={{ aspectRatio: `${largest} / ${Math.round(largest / r)}` }}
+      className={`block w-full h-auto object-cover ${className}`}
     />
   );
 };
@@ -227,7 +228,7 @@ export const HealthNote: React.FC<{ short?: boolean; className?: string }> = ({ 
 // Gambar hero tanpa label ilustrasi = keputusan owner 25 Nov 2026.
 // Syarat dari owner: tidak ada teks/caption/alt yang menyatakan gambar ini "hasil kerja kami" atau foto pelanggan;
 // bukti nyata ada di slider before-after FOTO ASLI tepat di bawah hero (BigCase).
-// <picture>: portrait untuk <=767px, landscape untuk >=768px.
+// <picture>: portrait untuk <=767px (jadi latar kartu, ibu + kasur mengisi bagian bawah), landscape untuk >=768px.
 export const PhotoHero = React.forwardRef<HTMLElement, {
   pill: string; title: React.ReactNode; lead: React.ReactNode; actions: React.ReactNode;
   checks?: string[];
@@ -248,9 +249,21 @@ export const PhotoHero = React.forwardRef<HTMLElement, {
 
   return (
     <section ref={ref} className="px-3 md:px-5 pt-3 md:pt-4 bg-white dark:bg-black">
-      <div className="relative max-w-7xl mx-auto overflow-hidden rounded-[28px] md:rounded-[44px] text-white flex flex-col md:block md:min-h-[640px]" style={{ backgroundColor: '#02388a' }}>
-        <div className="relative z-10 px-5 md:px-12 pt-6 md:pt-14 pb-2 md:pb-14 md:max-w-[50%] md:min-h-[640px] md:flex md:flex-col md:justify-center">
-          <div className="flex flex-wrap items-center gap-2">
+      <div className="relative max-w-7xl mx-auto overflow-hidden rounded-[28px] md:rounded-[44px] text-white h-[560px] md:h-auto md:min-h-[600px]" style={{ backgroundColor: '#02388a' }}>
+        {/* gambar: HP = latar bawah kartu, desktop = kanan */}
+        <div className="absolute z-0 pointer-events-none bottom-0 inset-x-0 md:inset-y-0 md:bottom-auto md:left-[24%] md:right-0 [mask-image:linear-gradient(to_bottom,transparent,#000_16%)] md:[mask-image:linear-gradient(to_right,transparent,#000_14%)]">
+          <picture>
+            <source media="(min-width: 768px)" srcSet="/landing/hero-landscape.webp" width={1920} height={1080} />
+            <img src="/landing/hero-portrait.webp" width={1152} height={1440} alt="Ibu tersenyum menekan kasur putih yang sudah diperbarui, di sebelah kasur lama yang kusam" loading="eager" decoding="async" {...{ fetchPriority: 'high' as const }}
+              className="block w-full h-auto md:h-full md:object-cover md:object-center" />
+          </picture>
+        </div>
+        {/* teks rapat di atas */}
+        <div className="relative z-10 px-5 md:px-12 pt-5 md:pt-14 pb-2 md:pb-14 md:max-w-[50%] md:min-h-[600px] md:flex md:flex-col md:justify-center">
+          <span className="md:hidden lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold">
+            <Star size={12} className="fill-amber-300 text-amber-300" aria-hidden="true" />{FACTS.rating} · {FACTS.reviewCount} ulasan Google · {pill}
+          </span>
+          <div className="hidden md:flex flex-wrap items-center gap-2">
             <span className="lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold">
               <Star size={14} className="fill-amber-300 text-amber-300" aria-hidden="true" />{FACTS.rating} · {FACTS.reviewCount} ulasan Google
             </span>
@@ -258,25 +271,18 @@ export const PhotoHero = React.forwardRef<HTMLElement, {
               <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: LIME }} aria-hidden="true" />{pill}
             </span>
           </div>
-          <h1 className="lp-big mt-4 md:mt-5 max-w-3xl !text-[clamp(1.9rem,8vw,2.2rem)] md:!text-[clamp(2.4rem,4vw,3.6rem)]">{title}</h1>
-          <p className="mt-3 md:mt-4 text-base md:text-xl leading-snug tracking-tight text-white/85 max-w-xl">{lead}</p>
-          <div className="mt-5 md:mt-6 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">{actions}</div>
+          <h1 className="lp-big mt-3 md:mt-5 max-w-3xl !text-[clamp(1.6rem,7.6vw,1.9rem)] md:!text-[clamp(2.4rem,4vw,3.6rem)]">{title}</h1>
+          <p className="mt-2 md:mt-3 text-sm md:text-xl leading-snug tracking-tight text-white/85 max-w-xl">{lead}</p>
+          <div className="mt-3 md:mt-5 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6 w-[66%] sm:w-auto">{actions}</div>
           {checks && (
             <ul className="hidden md:flex mt-5 flex-wrap gap-x-5 gap-y-1 list-none p-0 m-0 text-sm text-white/85">
               {checks.map((c) => <li key={c} className="inline-flex items-center gap-1.5"><Check size={15} style={{ color: LIME }} aria-hidden="true" />{c}</li>)}
             </ul>
           )}
         </div>
-        <div className="relative z-0 pointer-events-none md:absolute md:top-0 md:bottom-0 md:left-[24%] md:right-0 [mask-image:linear-gradient(to_bottom,transparent,#000_20%)] md:[mask-image:linear-gradient(to_right,transparent,#000_14%)]">
-          <picture>
-            <source media="(min-width: 768px)" srcSet="/landing/hero-landscape.webp" width={1920} height={1080} />
-            <img src="/landing/hero-portrait.webp" width={1152} height={1440} alt="Ibu tersenyum menekan kasur putih yang sudah diperbarui, di sebelah kasur lama yang kusam" loading="eager" decoding="async" {...{ fetchPriority: 'high' as const }}
-              className="block w-full h-auto md:h-full md:object-cover md:object-center" />
-          </picture>
-        </div>
         {checks && (
-          <ul className="md:hidden relative z-10 -mt-2 px-5 pb-5 flex flex-wrap gap-x-4 gap-y-1 list-none m-0 text-sm text-white/85">
-            {checks.map((c) => <li key={c} className="inline-flex items-center gap-1.5"><Check size={15} style={{ color: LIME }} aria-hidden="true" />{c}</li>)}
+          <ul className="md:hidden absolute z-10 bottom-2.5 inset-x-3 rounded-xl bg-black/40 px-3 py-1.5 flex flex-wrap justify-center gap-x-3 gap-y-0.5 list-none m-0 text-[11px] text-white/90">
+            {checks.map((c) => <li key={c} className="inline-flex items-center gap-1"><Check size={12} style={{ color: LIME }} aria-hidden="true" />{c}</li>)}
           </ul>
         )}
         <div className="hidden md:flex absolute top-8 right-8 z-10 lp-glass rounded-2xl px-4 py-3 items-center gap-3">
@@ -327,15 +333,13 @@ export const TrustStrip: React.FC = () => (
 
 /* ───────────── Before-after: slider besar + strip kasus ───────────── */
 
-const big = (src: string) => src.replace('/landing/', '/landing/lg-');
-
 export const BeforeAfterSlider: React.FC<{ pair: PhotoPair }> = ({ pair }) => {
   const [pos, setPos] = useState(50);
   return (
     <figure className="m-0">
       <div className="relative w-full overflow-hidden select-none bg-[#e8e8ed] dark:bg-[#1c1c1e] md:rounded-[28px]" style={{ aspectRatio: `${pair.w} / ${pair.h}` }}>
-        <img src={big(pair.after)} alt={pair.altAfter} width={pair.w} height={pair.h} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
-        <img src={big(pair.before)} alt={pair.altBefore} width={pair.w} height={pair.h} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" draggable={false} style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }} />
+        <img src={pair.after} alt={pair.altAfter} width={pair.w} height={pair.h} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+        <img src={pair.before} alt={pair.altBefore} width={pair.w} height={pair.h} loading="lazy" decoding="async" className="absolute inset-0 w-full h-full object-cover" draggable={false} style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }} />
         <span className="absolute left-4 top-4 text-xs font-semibold px-3 py-1.5 rounded-full bg-black/60 text-white">Sebelum</span>
         <span className="absolute right-4 top-4 text-xs font-semibold px-3 py-1.5 rounded-full text-white" style={{ backgroundColor: 'rgba(22,96,207,.9)' }}>Sesudah</span>
         <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_12px_rgba(0,0,0,.4)] pointer-events-none" style={{ left: `${pos}%` }}>
@@ -344,7 +348,7 @@ export const BeforeAfterSlider: React.FC<{ pair: PhotoPair }> = ({ pair }) => {
         <input type="range" min={0} max={100} step={0.5} value={pos} onChange={(e) => setPos(Number(e.target.value))}
           aria-label={`Geser untuk membandingkan sebelum dan sesudah: ${pair.title}`} className="lp-range absolute inset-0 w-full h-full opacity-0" />
       </div>
-      <figcaption className="mt-3 px-5 md:px-0 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">{pair.title}. Geser untuk membandingkan.</figcaption>
+      <figcaption className="mt-3 px-5 md:px-0 text-sm text-[#6e6e73] dark:text-[#a1a1a6]"><strong className="font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">{pair.title}.</strong> {pair.note ? `${pair.note} ` : ''}Geser untuk membandingkan.</figcaption>
     </figure>
   );
 };
@@ -352,7 +356,7 @@ export const BeforeAfterSlider: React.FC<{ pair: PhotoPair }> = ({ pair }) => {
 /** Kasus terkuat: slider besar lebar penuh, lalu strip kasus lain yang lebih kecil. */
 export const BigCase: React.FC<{ pair: PhotoPair; others?: PhotoPair[]; title?: React.ReactNode }> = ({ pair, others, title = <>Geser, lihat <Serif>bedanya.</Serif></> }) => (
   <section id="hasil" className="bg-white dark:bg-black pb-12 md:pb-16">
-    <div className="max-w-6xl mx-auto md:px-5">
+    <div className="max-w-3xl mx-auto md:px-5">
       <Reveal>
         <div className="px-5 md:px-0 mb-6"><Eyebrow>Hasil asli</Eyebrow><h2 className="lp-h2 max-w-3xl">{title}</h2></div>
         <BeforeAfterSlider pair={pair} />
@@ -372,7 +376,8 @@ export const BigCase: React.FC<{ pair: PhotoPair; others?: PhotoPair[]; title?: 
                       </figure>
                     ))}
                   </div>
-                  <p className="px-4 py-2.5 text-sm font-semibold">{o.title}</p>
+                  <p className="px-4 pt-2.5 text-sm font-semibold">{o.title}</p>
+                  {o.note && <p className="px-4 pb-3 pt-0.5 text-xs leading-snug text-[#6e6e73] dark:text-[#a1a1a6]">{o.note}</p>}
                 </Link>
               </li>
             ))}
@@ -389,7 +394,7 @@ export const BigCase: React.FC<{ pair: PhotoPair; others?: PhotoPair[]; title?: 
 /** Foto di satu sisi, teks di sisi lain. */
 export const Split: React.FC<{ photo: React.ReactNode; reverse?: boolean; children: React.ReactNode }> = ({ photo, reverse, children }) => (
   <div className="grid gap-5 md:gap-12 md:grid-cols-2 md:items-center">
-    <Reveal className={reverse ? 'md:order-2' : ''}><div className="rounded-[24px] md:rounded-[32px] overflow-hidden bg-[#e8e8ed] dark:bg-[#1c1c1e]">{photo}</div></Reveal>
+    <Reveal className={reverse ? 'md:order-2' : ''}><div className="rounded-[24px] md:rounded-[28px] overflow-hidden bg-[#e8e8ed] dark:bg-[#1c1c1e]">{photo}</div></Reveal>
     <Reveal delay={80} className={reverse ? 'md:order-1' : ''}>{children}</Reveal>
   </div>
 );
