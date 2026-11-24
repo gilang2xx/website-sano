@@ -47,7 +47,8 @@ details[open] .lp-plus{transform:rotate(45deg)}
 const IMG = {
   masalah: { w: [360, 720, 1000], r: 4 / 5 },
   langkah1: { w: [360, 720, 1000], r: 1 },
-  langkah2: { w: [360, 720, 970], r: 1 },
+  langkah2: { w: [360, 720, 1000], r: 1414 / 2000 },
+  konsul: { w: [360, 720, 1000], r: 6 / 5 },
   langkah3: { w: [360, 720], r: 1 },
   service: { w: [360, 720], r: 4 / 5 },
   upgrade: { w: [360, 720], r: 4 / 5 },
@@ -181,7 +182,7 @@ export const TextLink: React.FC<{ to?: string; href?: string; children: React.Re
  * Muncul hanya setelah hero keluar layar dan sembunyi saat pita CTA biru terlihat (IntersectionObserver),
  * jadi tidak pernah ada dua tombol WA berdampingan. Animasi geser halus, mati bila pengguna memilih kurangi gerakan.
  */
-export const FloatingWa: React.FC<Omit<WaProps, 'label' | 'tone' | 'className'> & { sentinelRef: React.RefObject<HTMLElement | null>; labelMobile?: string; labelDesktop?: string }> = ({ sentinelRef, labelMobile = 'Chat WA sekarang', labelDesktop = 'Chat WA', ...wa }) => {
+export const FloatingWa: React.FC<Omit<WaProps, 'label' | 'tone' | 'className'> & { sentinelRef: React.RefObject<HTMLElement | null>; labelMobile?: string; labelDesktop?: string }> = ({ sentinelRef, labelMobile = 'Konsultasi lewat WA', labelDesktop = 'Konsultasi lewat WA', ...wa }) => {
   const [heroIn, setHeroIn] = useState(true);
   const [ribbonIn, setRibbonIn] = useState(false);
   useEffect(() => {
@@ -367,7 +368,7 @@ export const BeforeAfterSlider: React.FC<{ pair: PhotoPair }> = ({ pair }) => {
 };
 
 /** Kasus terkuat: slider besar lebar penuh, lalu strip kasus lain yang lebih kecil. */
-export const BigCase: React.FC<{ pair: PhotoPair; others?: PhotoPair[]; title?: React.ReactNode }> = ({ pair, others, title = <>Geser, lihat <Serif>bedanya.</Serif></> }) => (
+export const BigCase: React.FC<{ pair: PhotoPair; others?: PhotoPair[]; title?: React.ReactNode }> = ({ pair, others, title = <>Geser dan lihat <Serif>bedanya.</Serif></> }) => (
   <section id="hasil" className="bg-white dark:bg-black pb-12 md:pb-16">
     <div className="max-w-3xl mx-auto md:px-5">
       <Reveal>
@@ -425,27 +426,6 @@ export const ZigZag: React.FC<{ steps: Array<{ title: React.ReactNode; text: str
       </li>
     ))}
   </ol>
-);
-
-/** Kartu foto tinggi (Service / Upgrade), bisa digeser di HP. */
-export const ServiceCards: React.FC<{ cards: Array<{ photo: PhotoName; alt: string; title: string; line: string; badge: string; cta: React.ReactNode; hi?: boolean }> }> = ({ cards }) => (
-  <ul className="mt-10 flex gap-3 md:gap-5 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pb-2 md:mx-0 md:px-0 md:grid md:grid-cols-2 md:overflow-visible list-none m-0">
-    {cards.map((c) => (
-      <li key={c.title} className="snap-center shrink-0 w-[82%] sm:w-[60%] md:w-auto">
-        <article className={`h-full rounded-[28px] overflow-hidden flex flex-col ${c.hi ? 'text-white' : 'bg-[#f5f5f7] dark:bg-[#1c1c1e]'}`} style={c.hi ? { backgroundColor: ACCENT } : undefined}>
-          <div className="relative">
-            <Photo name={c.photo} alt={c.alt} sizes="(min-width:768px) 480px, 80vw" />
-            <span className="absolute left-4 top-4 text-xs font-semibold px-3 py-1.5 rounded-full bg-white text-[#0b2a6f]">{c.badge}</span>
-          </div>
-          <div className="p-6 flex flex-col gap-3 flex-grow">
-            <h3 className="text-3xl font-bold tracking-tight">{c.title}</h3>
-            <p className={`text-lg leading-snug flex-grow ${c.hi ? 'text-white/90' : 'text-[#6e6e73] dark:text-[#a1a1a6]'}`}>{c.line}</p>
-            <div className="pt-2">{c.cta}</div>
-          </div>
-        </article>
-      </li>
-    ))}
-  </ul>
 );
 
 /* ───────────── Bento fakta (ikon + angka) ───────────── */

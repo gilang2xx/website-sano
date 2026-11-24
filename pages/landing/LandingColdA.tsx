@@ -3,13 +3,13 @@ import { Check } from 'lucide-react';
 import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
-  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, ServiceCards, PriceCard, NumbersRow, ReviewBlock, Faq, ConceptSection,
+  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PriceCard, NumbersRow, ReviewBlock, Faq, ConceptSection,
   CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
 // COLD A (MOCKUP v5): pegal dulu, baru kasur. Satu tujuan: klik WA.
-const MSG = 'Halo Klinik Matras, badan saya sering pegal waktu bangun tidur. Saya mau cek kondisi kasur saya, ini fotonya.';
+const MSG = 'Halo Klinik Matras, saya mau konsultasi soal kasur saya. Badan sering pegal waktu bangun tidur, ini fotonya.';
 
 const CHECKS = [
   'Ada cekungan di tengah, apalagi di bagian pinggul.',
@@ -36,7 +36,7 @@ const LandingColdA: React.FC = () => {
         lead="Kirim foto kasurmu, kami bantu cek lewat WA."
         checks={['Antar-jemput gratis Jabodetabek & Bandung', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
         actions={<>
-          <WaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />
+          <WaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Konsultasi lewat WA" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#hasil">Lihat hasilnya</HeroSecondaryLink>
         </>}
       />
@@ -57,7 +57,7 @@ const LandingColdA: React.FC = () => {
             ))}
           </ul>
           <p className="mt-4 text-lg font-semibold">Kalau kamu centang dua atau lebih, kasurmu layak dicek.</p>
-          <div className="mt-5"><WaButton buttonId="ortho-cold-a-cta" placement="cta" eventLabel="Landing Ortho Cold A - CTA" label="Kirim foto kasurku" message={MSG} className="w-full sm:w-auto" /></div>
+          <div className="mt-5"><WaButton buttonId="ortho-cold-a-cta" placement="cta" eventLabel="Landing Ortho Cold A - CTA" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto" /></div>
         </Split>
       </Screen>
 
@@ -67,22 +67,20 @@ const LandingColdA: React.FC = () => {
       <Screen tone="grey">
         <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2">Gampang, <Serif>tiga langkah.</Serif></h2></Reveal>
         <ZigZag steps={[
-          { title: <><Hl>Kirim foto</Hl> kasurmu lewat WA</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Ibu memeriksa kasurnya sebelum mengirim foto ke tim' },
+          { title: <><Hl>Kirim foto</Hl> kasurmu lewat WhatsApp</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Ibu memeriksa kasurnya sebelum mengirim foto ke tim' },
           { title: <>Kami <Hl>cek dan kerjakan</Hl></>, text: 'Dapat saran dan harga pastinya. Setelah cocok, tim kami mengerjakan di workshop.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop', badge: 'Pernah diliput CUANBOS Trans7' },
           { title: <>Dijemput, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur ke rumah pelanggan' },
         ]} />
       </Screen>
 
       <Screen>
-        <Reveal><Eyebrow>Dua pilihan</Eyebrow><h2 className="lp-h2 max-w-3xl">Service atau Upgrade? Kami bantu <Serif>pilihkan.</Serif></h2></Reveal>
-        <ServiceCards cards={[
-          { photo: 'service', alt: 'Kasur lama dengan kain kusam di workshop sebelum diservice', title: 'Service', line: 'Fondasi yang amblas kami perbaiki. Kasurnya tetap kasurmu.', badge: `Garansi ${FACTS.warrantyService}`,
-            cta: <WaButton buttonId="ortho-cold-a-service" placement="service-card" eventLabel="Landing Ortho Cold A - Service" label="Tanya Service" message={MSG} className="w-full sm:w-auto" /> },
-          { photo: 'upgrade', alt: 'Kasur yang sudah diupgrade, rapi dan tegak di workshop', title: 'Upgrade', line: 'Kasur lamamu dirombak jadi lebih kokoh. Garansi sampai 20 tahun. Harga setelah kami lihat kondisi kasurmu.', badge: `Garansi ${FACTS.warrantyUpgrade}`, hi: true,
-            cta: <HeroWaButton buttonId="ortho-cold-a-upgrade" placement="service-card" eventLabel="Landing Ortho Cold A - Upgrade" label="Tanya Upgrade" message={MSG} className="w-full sm:w-auto" /> },
-        ]} />
-        <div className="mt-5"><PriceCard /></div>
-        <Reveal><Lead className="mt-4">Bingung pilih yang mana? Wajar kok. Dari foto kasurmu, tim kami bantu pilih.</Lead></Reveal>
+        <Split photo={<Photo name="konsul" alt="Teknisi Klinik Matras mengecek kasur di rumah pelanggan" />}>
+          <Eyebrow>Dua pilihan</Eyebrow>
+          <h2 className="lp-h2">Service, Upgrade Kasur Sehat, atau layanan lain? Kami bantu <Serif>pilih</Serif> sesuai keluhanmu.</h2>
+          <Lead className="mt-4">Ceritakan keluhanmu dan kirim foto kasurnya. Tim kami dengarkan dulu, cek kondisinya, lalu sarankan perbaikan yang paling pas.</Lead>
+          <div className="mt-6"><WaButton buttonId="ortho-cold-a-service" placement="service-card" eventLabel="Landing Ortho Cold A - Konsultasi" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto" /></div>
+        </Split>
+        <div className="mt-10"><PriceCard /></div>
         <div className="mt-10"><NumbersRow /></div>
       </Screen>
 
@@ -98,7 +96,7 @@ const LandingColdA: React.FC = () => {
         sub="Kirim fotonya, kami bantu cek."
         note={<HealthNote className="!text-white/70" />}
       >
-        <HeroWaButton buttonId="ortho-cold-a-closing" placement="cta" eventLabel="Landing Ortho Cold A - CTA Penutup" label="Kirim foto kasurku" message={MSG} className="w-full sm:w-auto" />
+        <HeroWaButton buttonId="ortho-cold-a-closing" placement="cta" eventLabel="Landing Ortho Cold A - CTA Penutup" label="Konsultasi lewat WA" message={MSG} className="w-full sm:w-auto" />
       </CtaRibbon>
 
       <FloatingWa sentinelRef={hero} buttonId="ortho-cold-a-floating" placement="floating" eventLabel="Landing Ortho Cold A - Floating" message={MSG} />
