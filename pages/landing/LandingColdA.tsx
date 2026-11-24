@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
-  LandingShell, FloatingWa, WaButton, TextLink, Screen, Eyebrow, Lead, Reveal, BeforeAfterSlider,
-  FactsBento, ReviewBlock, Steps, HealthNote, BentoCard, useHeroRef,
+  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, GradientHero, Kw, TrustStrip, CtaRibbon,
+  TextLink, Screen, Eyebrow, Lead, Reveal, BeforeAfterSlider, FactsBento, ReviewBlock, Steps, HealthNote, BentoCard, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
@@ -27,21 +27,19 @@ const LandingColdA: React.FC = () => {
 
   return (
     <LandingShell>
-      <section ref={hero as React.RefObject<HTMLElement>} className="pt-14 md:pt-24 pb-10 md:pb-16 text-center bg-white dark:bg-black">
-        <div className="max-w-4xl mx-auto px-5">
-          <h1 className="lp-big">Bangun tidur badan pegal &amp; sakit pinggang? Coba cek kasurmu dulu</h1>
-          <Lead className="mt-5 max-w-2xl mx-auto">Kirim foto kasurmu, kami bantu cek lewat WA.</Lead>
-          <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-2 sm:gap-6">
-            <WaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />
-            <a href="#hasil" className="inline-flex items-center min-h-[44px] text-[17px] font-medium text-[#1660cf] dark:text-[#4d94ff] hover:underline">Lihat hasilnya</a>
-          </div>
-          <p className="mt-5 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">5,0 di Google dari {FACTS.reviewCount} ulasan. Chat dibalas {FACTS.hours}.</p>
-        </div>
-      </section>
+      <GradientHero
+        ref={hero}
+        pill="Service dan upgrade kasur"
+        title={<>Bangun tidur badan pegal &amp; sakit pinggang? Coba <Kw>cek kasurmu dulu</Kw></>}
+        lead="Kirim foto kasurmu, kami bantu cek lewat WA."
+        pair={PAIRS.p10}
+        actions={<>
+          <HeroWaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />
+          <HeroSecondaryLink href="#hasil">Lihat hasilnya</HeroSecondaryLink>
+        </>}
+      />
 
-      <section id="hasil" className="bg-white dark:bg-black pb-16 md:pb-28">
-        <div className="max-w-6xl mx-auto md:px-5"><Reveal><BeforeAfterSlider pair={PAIRS.p10} eager /></Reveal></div>
-      </section>
+      <TrustStrip />
 
       <Screen tone="grey">
         <Reveal><h2 className="lp-h2 max-w-3xl">Kasurmu begini nggak?</h2></Reveal>
@@ -56,7 +54,7 @@ const LandingColdA: React.FC = () => {
         <Reveal><div className="mt-4"><WaButton buttonId="ortho-cold-a-cta" placement="cta" eventLabel="Landing Ortho Cold A - CTA" label="Kirim foto kasurku" message={MSG} className="w-full sm:w-auto" /></div></Reveal>
       </Screen>
 
-      <Screen>
+      <Screen id="hasil">
         <Reveal><Eyebrow>Kasur pelanggan</Eyebrow><h2 className="lp-h2 max-w-3xl">Sebelum dan sesudah, hasil asli.</h2></Reveal>
         <div className="mt-10 grid gap-8 md:grid-cols-2 -mx-5 md:mx-0">
           <Reveal><BeforeAfterSlider pair={PAIRS.p11} /></Reveal>
@@ -83,23 +81,22 @@ const LandingColdA: React.FC = () => {
           <Lead className="mt-2">Bingung pilih yang mana? Wajar kok. Dari foto kasurmu, tim kami bantu pilih.</Lead></Reveal>
       </Screen>
 
-      <Screen>
+      <Screen><FactsBento /></Screen>
+
+      <Screen tone="grey">
         <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2">Gampang, tiga langkah.</h2></Reveal>
         <Steps steps={['Kirim foto kasur lewat WA.', 'Kami cek, kasih saran dan harga pastinya.', `Dijemput gratis, dikerjakan ${FACTS.days}, lalu diantar lagi.`]} />
       </Screen>
 
-      <Screen tone="grey"><FactsBento /></Screen>
+      <Screen><ReviewBlock reviews={[REVIEWS.ratna, REVIEWS.jannah, REVIEWS.farhan]} title="Kata mereka yang sudah pakai." /></Screen>
 
-      <Screen tone="grey" className="!pt-0"><ReviewBlock reviews={[REVIEWS.ratna, REVIEWS.jannah, REVIEWS.farhan]} title="Kata mereka yang sudah pakai." /></Screen>
-
-      <Screen tone="navy" className="text-center">
-        <Reveal>
-          <h2 className="lp-h2 max-w-3xl mx-auto">Kasurmu masih bisa diselamatkan nggak? Tanya dulu aja.</h2>
-          <p className="mt-4 text-xl opacity-80">Kirim fotonya, kami bantu cek.</p>
-          <div className="mt-8"><WaButton tone="lime" buttonId="ortho-cold-a-closing" placement="cta" eventLabel="Landing Ortho Cold A - CTA Penutup" label="Kirim foto kasurku" message={MSG} className="w-full sm:w-auto" /></div>
-          <HealthNote className="mt-10 max-w-xl mx-auto !text-white/60" />
-        </Reveal>
-      </Screen>
+      <CtaRibbon
+        title="Kasurmu masih bisa diselamatkan nggak? Tanya dulu aja."
+        sub="Kirim fotonya, kami bantu cek."
+        note={<HealthNote className="!text-white/70" />}
+      >
+        <HeroWaButton buttonId="ortho-cold-a-closing" placement="cta" eventLabel="Landing Ortho Cold A - CTA Penutup" label="Kirim foto kasurku" message={MSG} className="w-full sm:w-auto" />
+      </CtaRibbon>
 
       <FloatingWa mode="after-hero" sentinelRef={hero} buttonId="ortho-cold-a-floating" placement="floating" eventLabel="Landing Ortho Cold A - Floating" label="Chat WA" message={MSG} />
     </LandingShell>

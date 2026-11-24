@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MessageCircle, Star, ArrowRight, ChevronsLeftRight } from 'lucide-react';
+import { MessageCircle, Star, ArrowRight, ChevronsLeftRight, ShieldCheck, Clock, Truck, MapPin } from 'lucide-react';
 import WhatsAppLink from '../WhatsAppLink';
 import ThemeToggle from '../ThemeToggle';
 import type { WhatsAppPlacement } from '../../utils/tracking';
@@ -15,6 +15,7 @@ import type { PhotoPair, Review } from './landingData';
 export const ACCENT = '#1660cf';
 export const NAVY = '#0b2a6f';
 export const LIME = '#c8f53c';
+export const BLUE2 = '#2f86ea';
 
 const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif';
 
@@ -24,10 +25,17 @@ const CSS = `
 .lp-big{font-size:clamp(2.1rem,8.4vw,4.75rem);line-height:1.04;letter-spacing:-.035em;font-weight:800}
 .lp-h2{font-size:clamp(1.9rem,6.4vw,3.5rem);line-height:1.06;letter-spacing:-.03em;font-weight:800}
 .lp-num{font-size:clamp(3rem,13vw,6rem);line-height:1;letter-spacing:-.04em;font-weight:800}
+.lp-hero{background:radial-gradient(120% 80% at 50% 0%,#2f86ea 0%,#1660cf 45%,#0b2a6f 100%)}
+.lp-hero-night{background:repeating-linear-gradient(90deg,rgba(47,134,234,0) 0 36px,rgba(47,134,234,.16) 38px 74px),linear-gradient(180deg,#050a2a 0%,#0b2a6f 100%)}
+.lp-glass{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.34);box-shadow:0 18px 40px rgba(5,10,42,.28);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+@media (max-width:767px){.lp-glass{-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}}
+.lp-ribbon{background:linear-gradient(120deg,#0b2a6f 0%,#1660cf 55%,#2f86ea 100%)}
+.lp-float{animation:lpf 7s ease-in-out infinite}
+@keyframes lpf{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
 .lp-range{-webkit-appearance:none;appearance:none;background:transparent;margin:0;cursor:ew-resize;touch-action:pan-y}
 .lp-range::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:100vh;background:transparent;border:0}
 .lp-range::-moz-range-thumb{width:44px;height:100vh;background:transparent;border:0}
-@media (prefers-reduced-motion:reduce){.lp-rv{opacity:1;transform:none;transition:none}}
+@media (prefers-reduced-motion:reduce){.lp-rv{opacity:1;transform:none;transition:none}.lp-float{animation:none}}
 `;
 
 /* ───────────── Muncul perlahan saat scroll ───────────── */
@@ -66,9 +74,19 @@ export const LandingShell: React.FC<{ children: React.ReactNode }> = ({ children
         </div>
       </header>
       <main className="flex-grow">{children}</main>
-      <footer className="py-10 pb-28 text-center text-xs text-[#6e6e73] dark:text-[#86868b] bg-[#f5f5f7] dark:bg-[#0a0a0a]">
-        <p>Klinik Matras by SANO CARE. Workshop dan kantor di Depok.</p>
-        <Link to="/kebijakan-privasi" className="inline-block mt-2 underline min-h-[44px] leading-[44px]">Kebijakan Privasi</Link>
+      <footer className="text-white" style={{ backgroundColor: NAVY }}>
+        <div className="max-w-6xl mx-auto px-5 py-12 pb-28 grid gap-8 md:grid-cols-3">
+          <div>
+            <img src="/klinikmatras-dark.png" alt="Klinik Matras by SANO CARE" className="h-8 w-auto" width={140} height={32} loading="lazy" />
+            <p className="mt-4 text-sm leading-relaxed text-white/70 max-w-xs">Service dan upgrade kasur. Workshop dan kantor di Depok. Antar-jemput gratis Jabodetabek dan Bandung.</p>
+          </div>
+          <nav aria-label="Tautan" className="flex flex-col text-sm">
+            <Link to="/before-after" className="min-h-[44px] flex items-center text-white/80 hover:text-white">Hasil before-after</Link>
+            <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="min-h-[44px] flex items-center text-white/80 hover:text-white">Ulasan di Google Maps</a>
+            <Link to="/kebijakan-privasi" className="min-h-[44px] flex items-center text-white/80 hover:text-white">Kebijakan Privasi</Link>
+          </nav>
+          <p className="text-sm text-white/60 leading-relaxed">Chat dibalas {FACTS.hours}.<br />Klinik Matras by SANO CARE.</p>
+        </div>
       </footer>
     </div>
   );
@@ -160,12 +178,12 @@ export const Lead: React.FC<{ children: React.ReactNode; className?: string }> =
 
 const big = (src: string) => src.replace('/landing/', '/landing/lg-');
 
-export const BeforeAfterSlider: React.FC<{ pair: PhotoPair; eager?: boolean }> = ({ pair, eager = false }) => {
+export const BeforeAfterSlider: React.FC<{ pair: PhotoPair; eager?: boolean; inCard?: boolean }> = ({ pair, eager = false, inCard = false }) => {
   const [pos, setPos] = useState(50);
   return (
     <figure className="m-0">
       <div
-        className="relative w-full overflow-hidden select-none bg-[#e8e8ed] dark:bg-[#1c1c1e] md:rounded-[28px]"
+        className={`relative w-full overflow-hidden select-none bg-[#e8e8ed] dark:bg-[#1c1c1e] ${inCard ? 'rounded-[20px]' : 'md:rounded-[28px]'}`}
         style={{ aspectRatio: `${pair.w} / ${pair.h}` }}
       >
         <img src={big(pair.after)} alt={pair.altAfter} width={pair.w} height={pair.h} loading={eager ? 'eager' : 'lazy'} decoding="async"
@@ -186,7 +204,7 @@ export const BeforeAfterSlider: React.FC<{ pair: PhotoPair; eager?: boolean }> =
           className="lp-range absolute inset-0 w-full h-full opacity-0"
         />
       </div>
-      <figcaption className="mt-3 px-5 md:px-0 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">{pair.title}. Geser untuk membandingkan.</figcaption>
+      {!inCard && <figcaption className="mt-3 px-5 md:px-0 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">{pair.title}. Geser untuk membandingkan.</figcaption>}
     </figure>
   );
 };
@@ -206,44 +224,51 @@ const Stars: React.FC<{ size?: number }> = ({ size = 18 }) => (
   <span className="inline-flex" aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={size} className="fill-amber-400 text-amber-400" />)}</span>
 );
 
-/** Bento fakta: rating, garansi, 2-3 hari, antar-jemput, area. */
+/** Bento fakta: ikon + teks pendek, satu kartu disorot warna penuh. */
+const IconBox: React.FC<{ children: React.ReactNode; hi?: boolean }> = ({ children, hi }) => (
+  <span className={`w-11 h-11 rounded-2xl flex items-center justify-center ${hi ? 'bg-white/20 text-white' : 'bg-[#1660cf]/10 text-[#1660cf] dark:bg-[#4d94ff]/15 dark:text-[#4d94ff]'}`} aria-hidden="true">{children}</span>
+);
+
 export const FactsBento: React.FC = () => (
   <div className="grid gap-3 md:gap-4 grid-cols-2 md:grid-cols-6">
     <Reveal className="col-span-2 md:col-span-3">
-      <BentoCard tone="navy" className="h-full min-h-[200px]">
-        <Stars />
+      <div className="lp-ribbon text-white rounded-[24px] md:rounded-[28px] p-6 md:p-8 h-full min-h-[210px] flex flex-col justify-between">
+        <IconBox hi><ShieldCheck size={24} /></IconBox>
         <div>
-          <div className="lp-num">{FACTS.rating}</div>
-          <p className="mt-2 text-base md:text-lg opacity-80">rating Google dari {FACTS.reviewCount} ulasan</p>
-          <p className="text-xs opacity-60 mt-1">Data {FACTS.ratingDate}</p>
+          <p className="text-sm font-semibold uppercase tracking-[.14em] opacity-80">Garansi Klinik Matras</p>
+          <div className="flex gap-8 mt-3">
+            <div><div className="lp-num !text-[clamp(2.8rem,11vw,4.6rem)]">20</div><p className="opacity-85">tahun, Upgrade</p></div>
+            <div><div className="lp-num !text-[clamp(2.8rem,11vw,4.6rem)]">10</div><p className="opacity-85">tahun, Service</p></div>
+          </div>
         </div>
-      </BentoCard>
+      </div>
     </Reveal>
     <Reveal className="col-span-2 md:col-span-3" delay={80}>
-      <BentoCard className="h-full min-h-[200px]">
-        <p className="text-sm font-semibold uppercase tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff]">Garansi Klinik Matras</p>
-        <div className="flex gap-6 mt-4">
-          <div><div className="lp-num !text-[clamp(2.6rem,10vw,4.5rem)]">20</div><p className="text-base opacity-70">tahun, Upgrade</p></div>
-          <div><div className="lp-num !text-[clamp(2.6rem,10vw,4.5rem)]">10</div><p className="text-base opacity-70">tahun, Service</p></div>
+      <BentoCard className="h-full min-h-[210px]">
+        <IconBox><Star size={24} /></IconBox>
+        <div>
+          <Stars />
+          <div className="lp-num !text-[clamp(2.8rem,11vw,4.6rem)] mt-1">{FACTS.rating}</div>
+          <p className="opacity-70">rating Google dari {FACTS.reviewCount} ulasan (data {FACTS.ratingDate})</p>
         </div>
       </BentoCard>
     </Reveal>
-    <Reveal className="col-span-1 md:col-span-2" delay={0}>
-      <BentoCard tone="lime" className="h-full min-h-[170px]">
-        <p className="text-sm font-semibold">Pengerjaan</p>
-        <div className="lp-num !text-[clamp(2.4rem,9vw,4rem)]">2-3<span className="text-xl font-bold ml-1">hari</span></div>
+    <Reveal className="col-span-1 md:col-span-2">
+      <BentoCard className="h-full min-h-[170px]">
+        <IconBox><Clock size={24} /></IconBox>
+        <div><p className="text-3xl font-extrabold tracking-tight">2-3 hari</p><p className="text-sm opacity-70 mt-1">Pengerjaan</p></div>
       </BentoCard>
     </Reveal>
     <Reveal className="col-span-1 md:col-span-2" delay={80}>
       <BentoCard className="h-full min-h-[170px]">
-        <p className="text-sm font-semibold text-[#6e6e73] dark:text-[#a1a1a6]">Antar-jemput</p>
-        <p className="text-2xl md:text-3xl font-bold tracking-tight leading-tight">Gratis</p>
+        <IconBox><Truck size={24} /></IconBox>
+        <div><p className="text-3xl font-extrabold tracking-tight">Gratis</p><p className="text-sm opacity-70 mt-1">Antar-jemput</p></div>
       </BentoCard>
     </Reveal>
     <Reveal className="col-span-2 md:col-span-2" delay={160}>
       <BentoCard className="h-full min-h-[170px]">
-        <p className="text-sm font-semibold text-[#6e6e73] dark:text-[#a1a1a6]">Area</p>
-        <p className="text-xl md:text-2xl font-bold tracking-tight leading-tight">Jabodetabek dan Bandung. Workshop dan kantor di Depok.</p>
+        <IconBox><MapPin size={24} /></IconBox>
+        <div><p className="text-xl font-bold tracking-tight leading-snug">Jabodetabek dan Bandung</p><p className="text-sm opacity-70 mt-1">Workshop dan kantor di Depok</p></div>
       </BentoCard>
     </Reveal>
   </div>
@@ -293,3 +318,110 @@ export const HealthNote: React.FC<{ short?: boolean; className?: string }> = ({ 
 );
 
 export const useHeroRef = () => useRef<HTMLElement | null>(null);
+
+/* ───────────── Hero gradien + kartu kaca melayang ───────────── */
+
+export const Pill: React.FC<{ children: React.ReactNode; dark?: boolean }> = ({ children, dark }) => (
+  <span className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold ${dark ? 'bg-white/15 text-white border border-white/25' : 'bg-[#1660cf]/10 text-[#1660cf]'}`}>
+    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: LIME }} aria-hidden="true" />{children}
+  </span>
+);
+
+/** Satu kata kunci berwarna aksen di judul hero. */
+export const Kw: React.FC<{ children: React.ReactNode }> = ({ children }) => <span style={{ color: LIME }}>{children}</span>;
+
+const GlassChip: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+  <div className={`lp-glass rounded-2xl px-4 py-3 text-white text-left ${className}`}>{children}</div>
+);
+
+/**
+ * Hero: gradien CSS biru (atau varian gelap), judul + tombol di atas,
+ * lalu kartu before-after utama dengan kartu kaca melayang yang bertumpuk.
+ * Blur hanya dipakai di sini.
+ */
+export const GradientHero = React.forwardRef<HTMLElement, {
+  pill: string; title: React.ReactNode; lead: React.ReactNode; actions: React.ReactNode;
+  pair: PhotoPair; night?: boolean; extraChip?: React.ReactNode;
+}>(({ pill, title, lead, actions, pair, night, extraChip }, ref) => (
+  <section ref={ref} className={`${night ? 'lp-hero-night' : 'lp-hero'} text-white rounded-b-[36px] md:rounded-b-[56px] overflow-hidden`}>
+    <div className="max-w-5xl mx-auto px-5 pt-10 md:pt-16 pb-14 md:pb-20 text-center">
+      <Pill dark>{pill}</Pill>
+      <h1 className="lp-big mt-5 mx-auto max-w-4xl">{title}</h1>
+      <p className="mt-4 text-lg md:text-2xl leading-snug tracking-tight text-white/80 max-w-2xl mx-auto">{lead}</p>
+      <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-6">{actions}</div>
+
+      <div className="relative mt-12 md:mt-16 max-w-2xl mx-auto">
+        <div className="lp-glass rounded-[28px] p-2 md:p-3">
+          <BeforeAfterSlider pair={pair} eager inCard />
+        </div>
+        <div className="flex flex-wrap justify-center gap-2 -mt-6 relative z-10 px-1 md:contents">
+          <GlassChip className="md:absolute md:-left-20 md:top-1/2 lp-float">
+            <div className="flex items-center gap-1.5"><Star size={15} className="fill-amber-300 text-amber-300" aria-hidden="true" /><span className="font-extrabold text-lg leading-none">{FACTS.rating}</span></div>
+            <p className="text-xs text-white/80 mt-1">{FACTS.reviewCount} ulasan Google</p>
+          </GlassChip>
+          <GlassChip className="md:absolute md:-right-16 md:top-24">
+            <div className="flex items-center gap-2"><ShieldCheck size={18} aria-hidden="true" /><span className="text-xs font-semibold text-white/80 leading-tight">Garansi Klinik Matras</span></div>
+            <p className="text-sm font-bold mt-1">Upgrade {FACTS.warrantyUpgrade}, Service {FACTS.warrantyService}</p>
+          </GlassChip>
+          <GlassChip className="md:absolute md:-left-10 md:bottom-4">
+            <div className="flex items-center gap-2"><Clock size={16} aria-hidden="true" /><span className="font-extrabold text-lg leading-none">{FACTS.days}</span></div>
+            <p className="text-xs text-white/80 mt-1">pengerjaan</p>
+          </GlassChip>
+          {extraChip}
+        </div>
+      </div>
+    </div>
+  </section>
+));
+GradientHero.displayName = 'GradientHero';
+
+export const HeroSecondaryLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
+  <a href={href} className="inline-flex items-center min-h-[44px] text-[17px] font-medium text-white/90 hover:text-white underline-offset-4 hover:underline">{children}</a>
+);
+
+/** Tombol WA di atas gradien: lime supaya kontras (satu-satunya pemakaian lime besar). */
+export const HeroWaButton: React.FC<Omit<WaProps, 'tone'>> = (p) => <WaButton {...p} tone="lime" />;
+
+/* ───────────── Strip kepercayaan ───────────── */
+
+const LOGOS: Array<[string, string]> = [
+  ['kingkoil', 'King Koil'], ['serta', 'Serta'], ['ladyamericana', 'Lady Americana'],
+  ['elite', 'Elite'], ['florence', 'Florence'], ['springair', 'Spring Air'],
+];
+
+export const TrustStrip: React.FC = () => (
+  <section className="bg-white dark:bg-black py-12 md:py-16">
+    <div className="max-w-5xl mx-auto px-5 text-center">
+      <Reveal>
+        <p className="flex items-center justify-center gap-2 text-lg md:text-xl font-semibold tracking-tight">
+          <Stars /> <span><strong>{FACTS.rating}</strong> di Google dari {FACTS.reviewCount} ulasan</span>
+        </p>
+        <p className="mt-8 text-xs md:text-sm font-semibold uppercase tracking-[.14em] text-[#6e6e73] dark:text-[#a1a1a6]">Dipercaya merestorasi berbagai merek kasur ternama</p>
+        <ul className="mt-5 flex flex-wrap items-center justify-center gap-3 list-none p-0 m-0">
+          {LOGOS.map(([f, n]) => (
+            <li key={f} className="bg-white rounded-2xl border border-black/5 dark:border-white/10 px-4 py-3 h-16 w-28 md:w-32 flex items-center justify-center">
+              <img src={`/landing/logo-${f}.webp`} alt={n} loading="lazy" decoding="async" height={40} className="max-h-10 w-auto max-w-full object-contain" />
+            </li>
+          ))}
+        </ul>
+      </Reveal>
+    </div>
+  </section>
+);
+
+/* ───────────── Pita CTA berwarna di dasar halaman ───────────── */
+
+export const CtaRibbon: React.FC<{ title: string; sub?: string; children: React.ReactNode; note?: React.ReactNode }> = ({ title, sub, children, note }) => (
+  <section className="bg-white dark:bg-black py-14 md:py-24">
+    <div className="max-w-5xl mx-auto px-5">
+      <Reveal>
+        <div className="lp-ribbon text-white rounded-[32px] md:rounded-[44px] px-6 py-12 md:py-20 text-center">
+          <h2 className="lp-h2 max-w-3xl mx-auto">{title}</h2>
+          {sub && <p className="mt-4 text-xl text-white/80">{sub}</p>}
+          <div className="mt-8">{children}</div>
+          {note && <div className="mt-8 max-w-xl mx-auto text-white/70">{note}</div>}
+        </div>
+      </Reveal>
+    </div>
+  </section>
+);
