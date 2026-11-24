@@ -33,6 +33,18 @@ export const STATIC_ROUTES = [
 ] as const;
 
 /**
+ * Landing iklan SAMPLE (noindex). SENGAJA di luar STATIC_ROUTES: tidak masuk
+ * sitemap, tidak diprerender, dirender di sisi klien tanpa Layout (tanpa menu
+ * & footer penuh). Sebelum dipakai iklan: putuskan apakah perlu prerender
+ * (noindex) dan redirect trailing slash di vercel.json.
+ */
+export const LANDING_ROUTES = [
+  '/kasur-orthopedic',
+  '/kasur-orthopedic/banding',
+  '/service-kasur-depok',
+] as const;
+
+/**
  * Artikel lama (isi ditulis langsung di pages/ArtikelDetail.tsx, daftar
  * kartunya di pages/Artikel.tsx). `date` = tanggal terbit ISO, dipakai
  * sebagai lastmod. scripts/prerender.mjs membandingkan slug & tanggal ini

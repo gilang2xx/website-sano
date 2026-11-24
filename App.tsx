@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react'; // Tambah Suspense & lazy
-import { Routes, Route, matchPath } from 'react-router-dom';
+import { Routes, Route, matchPath, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
-import { STATIC_ROUTES, ARTICLE_ROUTE_PATTERN } from './seo/routes';
+import { STATIC_ROUTES, LANDING_ROUTES, ARTICLE_ROUTE_PATTERN } from './seo/routes';
 
 type StaticRoutePath = (typeof STATIC_ROUTES)[number];
 type PageLoader = () => Promise<{ default: React.ComponentType }>;
@@ -23,6 +23,16 @@ const PAGE_LOADERS: Record<StaticRoutePath, PageLoader> = {
   '/perbaikan-kasur-amblas': () => import('./pages/PerbaikanKasurAmblas'),
   '/klinik-sofa': () => import('./pages/KlinikSofa'),
   '/kebijakan-privasi': () => import('./pages/KebijakanPrivasi'),
+};
+// Landing iklan sample (noindex, tanpa Layout). Lihat LANDING_ROUTES.
+const LANDING_PAGES: Record<(typeof LANDING_ROUTES)[number], React.LazyExoticComponent<React.ComponentType>> = {
+  '/kasur-orthopedic': lazy(() => import('./pages/landing/LandingColdA')),
+  '/kasur-orthopedic/banding': lazy(() => import('./pages/landing/LandingWarmB')),
+  '/service-kasur-depok': lazy(() => import('./pages/landing/LandingHotA')),
+};
+const landingFor = (pathname: string) => {
+  const p = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  return (LANDING_PAGES as Record<string, React.LazyExoticComponent<React.ComponentType> | undefined>)[p];
 };
 const loadArtikelDetail: PageLoader = () => import('./pages/ArtikelDetail');
 const loadNotFound: PageLoader = () => import('./pages/NotFound');
@@ -62,6 +72,15 @@ const LoadingSpinner = () => (
 );
 
 const App: React.FC = () => {
+  const { pathname } = useLocation();
+  const Landing = landingFor(pathname);
+  if (Landing) {
+    return (
+      <Suspense fallback={<LoadingSpinner />}>
+        <Landing />
+      </Suspense>
+    );
+  }
   return (
     <Layout>
       {/* Bungkus Routes dengan Suspense */}
