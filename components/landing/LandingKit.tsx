@@ -52,7 +52,7 @@ const IMG = {
   langkah3: { w: [360, 720], r: 1 },
   service: { w: [360, 720], r: 4 / 5 },
   upgrade: { w: [360, 720], r: 4 / 5 },
-  workshop: { w: [360, 720, 1080], r: 1.6 },
+  workshop: { w: [360, 720, 941], r: 4 / 5 },
 } as const;
 export type PhotoName = keyof typeof IMG;
 

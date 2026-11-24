@@ -73,7 +73,7 @@ const LandingHotA: React.FC = () => {
       </Screen>
 
       <Screen>
-        <Split photo={<Photo name="workshop" alt="Workshop Klinik Matras di Depok, kasur selesai dan tim bekerja" />}>
+        <Split photo={<div className="relative"><Photo name="workshop" alt="Workshop Klinik Matras di Depok saat diliput kru televisi" sizes="(min-width:768px) 420px, 92vw" /><span className="absolute left-3 bottom-3 text-xs font-semibold px-3 py-1.5 rounded-full bg-white text-[#0b2a6f] shadow">Workshop kami di Depok, saat diliput CUANBOS Trans7</span></div>}>
           <Eyebrow>Lokasi dan jam</Eyebrow>
           <h2 className="lp-h2">Workshop dan kantor di <Serif>Depok.</Serif></h2>
           <Lead className="mt-3">Mau datang dan lihat langsung? Bisa, kabari dulu lewat WA. Chat dibalas {FACTS.hours}.</Lead>
