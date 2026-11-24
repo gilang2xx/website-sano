@@ -33,15 +33,16 @@ export const STATIC_ROUTES = [
 ] as const;
 
 /**
- * Landing iklan SAMPLE (noindex). SENGAJA di luar STATIC_ROUTES: tidak masuk
- * sitemap, tidak diprerender, dirender di sisi klien tanpa Layout (tanpa menu
- * & footer penuh). Sebelum dipakai iklan: putuskan apakah perlu prerender
- * (noindex) dan redirect trailing slash di vercel.json.
+ * Landing iklan (noindex). SENGAJA di luar STATIC_ROUTES: tidak masuk sitemap
+ * dan tidak lewat validasi halaman publik. scripts/prerender.mjs memprerender
+ * daftar eksplisit ini lewat jalur sempit (wajib noindex, tanpa canonical).
+ * Tanpa Layout (tanpa menu & footer penuh).
  */
 export const LANDING_ROUTES = [
   '/kasur-orthopedic',
   '/kasur-orthopedic/banding',
   '/service-kasur',
+  '/kasur-sehat',
 ] as const;
 
 /**

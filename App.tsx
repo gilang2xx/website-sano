@@ -25,11 +25,15 @@ const PAGE_LOADERS: Record<StaticRoutePath, PageLoader> = {
   '/kebijakan-privasi': () => import('./pages/KebijakanPrivasi'),
 };
 // Landing iklan sample (noindex, tanpa Layout). Lihat LANDING_ROUTES.
-const LANDING_PAGES: Record<(typeof LANDING_ROUTES)[number], React.LazyExoticComponent<React.ComponentType>> = {
-  '/kasur-orthopedic': lazy(() => import('./pages/landing/LandingColdA')),
-  '/kasur-orthopedic/banding': lazy(() => import('./pages/landing/LandingWarmB')),
-  '/service-kasur': lazy(() => import('./pages/landing/LandingHotA')),
+const LANDING_LOADERS: Record<(typeof LANDING_ROUTES)[number], PageLoader> = {
+  '/kasur-orthopedic': () => import('./pages/landing/LandingColdA'),
+  '/kasur-orthopedic/banding': () => import('./pages/landing/LandingWarmB'),
+  '/service-kasur': () => import('./pages/landing/LandingHotA'),
+  '/kasur-sehat': () => import('./pages/landing/LandingKasurSehat'),
 };
+const LANDING_PAGES = Object.fromEntries(
+  LANDING_ROUTES.map((path) => [path, lazy(LANDING_LOADERS[path])]),
+) as Record<(typeof LANDING_ROUTES)[number], React.LazyExoticComponent<React.ComponentType>>;
 const landingFor = (pathname: string) => {
   const p = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
   return (LANDING_PAGES as Record<string, React.LazyExoticComponent<React.ComponentType> | undefined>)[p];
@@ -48,6 +52,7 @@ const NotFound = lazy(loadNotFound);
 // HTML hasil prerender. Turunan dari daftar route yang sama dengan <Routes>.
 const PRELOADERS: Array<[string, PageLoader]> = [
   ...STATIC_ROUTES.map((path): [string, PageLoader] => [path, PAGE_LOADERS[path]]),
+  ...LANDING_ROUTES.map((path): [string, PageLoader] => [path, LANDING_LOADERS[path]]),
   [ARTICLE_ROUTE_PATTERN, loadArtikelDetail],
 ];
 

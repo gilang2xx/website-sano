@@ -89,7 +89,7 @@ const template = fs.readFileSync(path.join(DIST, 'index.html'), 'utf-8');
 
 
 const entry = await import(pathToFileURL(SSR_ENTRY).href);
-const { render, renderHeadTags, listPublicRoutes, canonicalUrl, SITE_URL, STATIC_ROUTES, LEGACY_ARTICLES, indoDateToIso } = entry;
+const { render, renderHeadTags, listPublicRoutes, canonicalUrl, SITE_URL, STATIC_ROUTES, LANDING_ROUTES, LEGACY_ARTICLES, indoDateToIso } = entry;
 
 // 1) Konsistensi artikel lama
 const listMap = legacyFromList(indoDateToIso);
@@ -221,6 +221,31 @@ for (const route of routes) {
   rendered.push({ route: r, page, head, lastmod: route.lastmod });
 }
 
+// 3a) Landing iklan (noindex). Jalur SEMPIT: hanya daftar eksplisit LANDING_ROUTES.
+// Wajib noindex, tanpa canonical, tepat 1 <h1>, tidak masuk manifest.routes
+// (jadi tidak masuk sitemap). Halaman publik lain tetap ditolak bila noindex.
+const landingRendered = [];
+for (const r of LANDING_ROUTES) {
+  if (routePaths.has(r)) { err(`${r}: route landing tidak boleh juga ada di daftar route publik`); continue; }
+  let result;
+  try {
+    result = await render(r);
+  } catch (e) {
+    fatal(`render landing ${r} error: ${e instanceof Error ? e.stack || e.message : e}`);
+  }
+  const { html, head } = result;
+  if (!head) { err(`${r} (landing): tidak memanggil useSEO`); continue; }
+  if (!head.noindex) err(`${r} (landing): wajib useSEO({ noindex: true })`);
+  if (head.path !== r) err(`${r} (landing): useSEO path "${head.path}" tidak sama dengan route`);
+  if (html.includes('h-16 w-16 border-t-4 border-b-4')) err(`${r} (landing): HTML masih berisi spinner Suspense`);
+  if (count(html, /<h1[\s>]/g) !== 1) err(`${r} (landing): harus tepat 1 <h1>`);
+  const page = buildPage(template, r, html, renderHeadTags(head));
+  if (count(page, /<meta name="robots" content="noindex, nofollow"/g) !== 1) err(`${r} (landing): harus tepat 1 meta robots noindex di HTML final`);
+  if (count(page, /<link rel="canonical"/g) !== 0) err(`${r} (landing): tidak boleh ada canonical`);
+  if (count(page, /<title>/g) !== 1) err(`${r} (landing): harus tepat 1 <title>`);
+  landingRendered.push({ route: r, page });
+}
+
 // 3b) Halaman 404 -> dist/404.html (status 404 dari Vercel bila tak ada rewrite catch-all)
 const NOT_FOUND_PROBE = '/halaman-tidak-ditemukan-uji';
 let notFoundPage = null;
@@ -282,9 +307,16 @@ for (const { route, page, head, lastmod } of rendered) {
     indexable: true,
   });
 }
+const landingFiles = [];
+for (const { route, page } of landingRendered) {
+  const file = outputFileFor(route);
+  fs.mkdirSync(path.dirname(file), { recursive: true });
+  fs.writeFileSync(file, page, 'utf-8');
+  landingFiles.push({ path: route, file: path.relative(DIST, file).split(path.sep).join('/'), indexable: false });
+}
 fs.writeFileSync(path.join(DIST, '404.html'), notFoundPage, 'utf-8');
 fs.mkdirSync(path.dirname(MANIFEST), { recursive: true });
-fs.writeFileSync(MANIFEST, JSON.stringify({ site: SITE_URL, notFound: '404.html', routes: manifest }, null, 2), 'utf-8');
+fs.writeFileSync(MANIFEST, JSON.stringify({ site: SITE_URL, notFound: '404.html', routes: manifest, landing: landingFiles }, null, 2), 'utf-8');
 
-console.log(`[prerender] ${manifest.length} route ter-prerender, ${warnings.length} peringatan, 0 error. 404: dist/404.html. Manifest: ${path.relative(ROOT, MANIFEST)}`);
+console.log(`[prerender] ${manifest.length} route ter-prerender, ${warnings.length} peringatan, 0 error. ${landingFiles.length} landing noindex. 404: dist/404.html. Manifest: ${path.relative(ROOT, MANIFEST)}`);
 for (const m of manifest) console.log(`  ${m.path.padEnd(46)} ${m.lastmod ?? '(tanpa lastmod)'}  ${m.file}`);
