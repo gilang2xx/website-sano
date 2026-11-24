@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
-  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, LightHero, BigCase, Kw, TrustStrip, CtaRibbon,
-  Screen, Eyebrow, Reveal, CaseStrip, PriceCard, FactsBento, ReviewBlock, Steps, HealthNote, useHeroRef,
+  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase, CaseStrip,
+  Screen, Eyebrow, Reveal, ZigZag, PriceCard, FactsBento, ReviewBlock, CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
@@ -29,24 +29,23 @@ const LandingWarmB: React.FC = () => {
 
   return (
     <LandingShell>
-      <LightHero
+      <PhotoHero
         ref={hero}
         pill="Beli baru atau perbaiki?"
-        title={<>Mau beli kasur baru? <Kw>Bandingin</Kw> aja dulu</>}
+        title={<>Mau beli kasur baru? <Serif>Bandingin</Serif> aja dulu</>}
         lead={`Kasur lamamu bisa dibikin kokoh lagi. Service mulai dari ${FACTS.priceService}, dijemput gratis.`}
-        image={{ src: '/landing/hero-sfs.webp', alt: 'Susunan lapisan fondasi kasur: busa, frame guard dan pocket spring', w: 1200, h: 460, fit: 'contain' }}
+        thumb={PAIRS.p10}
+        checks={['Antar-jemput gratis', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
         actions={<>
           <WaButton buttonId="ortho-warm-b-hero" placement="hero" eventLabel="Landing Ortho Warm B - Hero" label="Bandingin buat kasurku" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#banding">Lihat perbandingannya</HeroSecondaryLink>
         </>}
       />
 
-      <BigCase pair={PAIRS.p10} />
-
       <TrustStrip />
 
       <Screen tone="grey" id="banding">
-        <Reveal><Eyebrow>Perbandingan</Eyebrow><h2 className="lp-h2 max-w-3xl">Beli baru vs perbaiki, apa bedanya?</h2></Reveal>
+        <Reveal><Eyebrow>Perbandingan</Eyebrow><h2 className="lp-h2 max-w-3xl">Beli baru vs perbaiki, apa <Serif>bedanya?</Serif></h2></Reveal>
         <Reveal>
           <div className="mt-10 overflow-x-auto rounded-[24px] md:rounded-[28px] bg-white dark:bg-[#1c1c1e]">
             <table className="w-full min-w-[540px] text-left text-base md:text-lg">
@@ -70,22 +69,29 @@ const LandingWarmB: React.FC = () => {
             </table>
           </div>
         </Reveal>
-        <div className="mt-6"><PriceCard /></div>
-        <Reveal><div className="mt-8"><WaButton buttonId="ortho-warm-b-banding" placement="pricing" eventLabel="Landing Ortho Warm B - Banding" label="Hitung punyaku" message={MSG} className="w-full sm:w-auto" /></div></Reveal>
+        <div className="mt-6"><PriceCard>
+          <WaButton buttonId="ortho-warm-b-banding" placement="pricing" eventLabel="Landing Ortho Warm B - Banding" label="Hitung punyaku" message={MSG} className="w-full sm:w-auto !bg-white !text-[#0b2a6f]" />
+        </PriceCard></div>
       </Screen>
 
-      <CaseStrip pairs={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title="Kasur yang sudah kami benerin." />
+      <div className="pt-16 md:pt-24"><BigCase pair={PAIRS.p10} /></div>
+
+      <CaseStrip pairs={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title={<>Kasur yang sudah kami <Serif>benerin.</Serif></>} />
+
+      <Screen tone="grey"><ReviewBlock reviews={[REVIEWS.sudarsono, REVIEWS.hidajat, REVIEWS.rifky]} title={<>Yang tadinya mau beli baru, <Serif>bilang apa?</Serif></>} /></Screen>
+
+      <Screen>
+        <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2">Gampang, <Serif>tiga langkah.</Serif></h2></Reveal>
+        <ZigZag steps={[
+          { title: <><Hl>Kirim foto</Hl> kasurmu lewat WA</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Kasur di ruangan rumah yang difoto untuk dikirim ke tim' },
+          { title: <>Dapat <Hl>saran dan harga</Hl> pastinya</>, text: 'Bandingkan dulu dengan kasur baru yang kamu incar. Tanpa paksaan.', photo: 'langkah2', alt: 'Tukang memotong busa di workshop Klinik Matras' },
+          { title: <>Dijemput, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur' },
+        ]} />
+      </Screen>
 
       <Screen tone="grey"><FactsBento /></Screen>
 
-      <Screen><ReviewBlock reviews={[REVIEWS.farhan, REVIEWS.jannah, REVIEWS.ratna]} title="Yang tadinya mau beli baru, bilang apa?" /></Screen>
-
-      <Screen tone="grey">
-        <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2">Gampang, tiga langkah.</h2></Reveal>
-        <Steps steps={['Kirim foto kasur lewat WA.', 'Dapat saran dan harga pastinya.', `Dijemput gratis, dikerjakan ${FACTS.days}, lalu diantar lagi.`]} />
-      </Screen>
-
-      <CtaRibbon title="Sebelum checkout kasur baru, tanya kami dulu." note={<HealthNote short className="!text-white/70" />}>
+      <CtaRibbon title={<>Sebelum checkout kasur baru, <Serif>tanya kami dulu.</Serif></>} note={<HealthNote short className="!text-white/70" />}>
         <HeroWaButton buttonId="ortho-warm-b-cta" placement="cta" eventLabel="Landing Ortho Warm B - CTA" label="Chat WA sekarang" message={MSG} className="w-full sm:w-auto" />
       </CtaRibbon>
 

@@ -62,21 +62,20 @@ export interface Review {
   text: string;
 }
 
-// Teks dari ulasan Google yang sudah ada di constants.ts (ejaan dirapikan)
-// (TESTIMONIALS). Pilihan 3 ulasan final = keputusan owner; ini pilihan
-// sementara untuk sample. Hanya nama depan.
-export const REVIEWS: Record<'farhan' | 'ratna' | 'jannah', Review> = {
-  farhan: {
-    name: 'Farhan',
-    text: 'Kasur saya dulu benar-benar amblas, sekarang jauh lebih kokoh, nyaman, dan rasanya bahkan lebih baik dari kasur baru di mall karena saya sempat cari-cari kasur baru di mall dan sempat tergoda kasur in thebox di online tapi ga yakin. sano mantap pokonya, sukses terus.',
+// Ulasan Google asli, dipilih Gilang (SANO_DESIGNER, signage-tv-loop/testimoni). Hanya nama depan.
+// Teks disalin apa adanya, kecuali salah ketik, spasi, tanda baca dan emoji dirapikan.
+export const REVIEWS: Record<'sudarsono' | 'hidajat' | 'rifky', Review> = {
+  sudarsono: {
+    name: 'Sudarsono',
+    text: 'Analisa masalahnya dikomunikasikan dengan detail dan terbuka. Hasil pekerjaan memuaskan. Springbed KingKoil berumur 20 tahun saya bisa menjadi nyaman kembali. Sangat recommended untuk coba repair dulu di sini sebelum memutuskan beli yang baru karena lebih ekonomis.',
   },
-  ratna: {
-    name: 'Ratna',
-    text: 'Awalnya bingung bangun tidur sering sakit pinggang, kemudian leher juga. Saya cek ke dokter dan kata dokter penyebabnya adalah kasur yang sudah lama, dan fondasinya rusak.',
+  hidajat: {
+    name: 'Hidajat',
+    text: 'Servicenya sangat bagus. Respondnya sangat cepat. Pengerjaannya juga cepat sekali, 2 hari kerja sudah kelar. Saya service 4 kasur sekali gus dalam 2 hari kerja kelar semua. Kasurnya sekarang jauh lebih bagus dibandingin yang dulu.',
   },
-  jannah: {
-    name: 'Su',
-    text: 'Pekerjaannya rapi dan berkualitas. Sempat berfikir mau ganti spring bed karena ada per yang patah.',
+  rifky: {
+    name: 'Rifky',
+    text: 'Mantap servicenya, kasur ambles saya jadi kaya baru lagi. Bangun tidur rasanya enak gak pada sakit dan pegel, dan bikin tidur jadi nyenyak banget.',
   },
 };
 
