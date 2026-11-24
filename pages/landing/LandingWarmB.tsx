@@ -34,7 +34,7 @@ const LandingWarmB: React.FC = () => {
         pill="Beli baru atau perbaiki?"
         title={<>Mau beli kasur baru? <Serif>Bandingin</Serif> aja dulu</>}
         lead={`Kasur lamamu bisa dibikin kokoh lagi. Service mulai dari ${FACTS.priceService}, dijemput gratis.`}
-        checks={['Antar-jemput gratis', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
+        checks={['Antar-jemput gratis Jabodetabek & Bandung', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
         actions={<>
           <WaButton buttonId="ortho-warm-b-hero" placement="hero" eventLabel="Landing Ortho Warm B - Hero" label="Bandingin buat kasurku" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#banding">Lihat perbandingannya</HeroSecondaryLink>

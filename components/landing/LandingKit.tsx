@@ -556,7 +556,7 @@ export const Faq: React.FC<{ items: Array<[string, string]> }> = ({ items }) => 
 
 const KONSEP: Array<{ key: 'tenggelam' | 'sehat' | 'keras'; title: string; text: string; alt: string; h720: number; hi?: boolean }> = [
   { key: 'tenggelam', title: 'Terlalu tenggelam', text: 'Badan melengkung, tulang nggak di posisi natural.', alt: 'Ilustrasi orang berbaring di kasur yang terlalu empuk, tulang belakang melengkung', h720: 200 },
-  { key: 'sehat', title: 'Matras Sehat', text: 'Fondasi kokoh + lapisan sesuai berat badanmu. Tulang tetap lurus, tanpa tekanan.', alt: 'Ilustrasi orang berbaring di kasur yang pas, tulang belakang lurus', h720: 220, hi: true },
+  { key: 'sehat', title: 'Matras Sehat', text: 'Fondasi kokoh + lapisan sesuai berat badanmu. Tulang tetap lurus, tekanannya merata.', alt: 'Ilustrasi orang berbaring di kasur yang pas, tulang belakang lurus', h720: 220, hi: true },
   { key: 'keras', title: 'Terlalu keras', text: 'Leher, bahu, dan pinggang tertekan. Bangun jadi kaku.', alt: 'Ilustrasi orang berbaring di kasur yang terlalu keras, bahu dan pinggul tertekan', h720: 195 },
 ];
 

@@ -34,7 +34,7 @@ const LandingColdA: React.FC = () => {
         pill="Service dan upgrade kasur"
         title={<>Bangun tidur badan pegal &amp; sakit pinggang? Coba <Serif>cek kasurmu dulu</Serif></>}
         lead="Kirim foto kasurmu, kami bantu cek lewat WA."
-        checks={['Antar-jemput gratis', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
+        checks={['Antar-jemput gratis Jabodetabek & Bandung', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
         actions={<>
           <WaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#hasil">Lihat hasilnya</HeroSecondaryLink>
@@ -78,7 +78,7 @@ const LandingColdA: React.FC = () => {
         <ServiceCards cards={[
           { photo: 'service', alt: 'Kasur lama dengan kain kusam di workshop sebelum diservice', title: 'Service', line: 'Fondasi yang amblas kami perbaiki. Kasurnya tetap kasurmu.', badge: `Garansi ${FACTS.warrantyService}`,
             cta: <WaButton buttonId="ortho-cold-a-service" placement="service-card" eventLabel="Landing Ortho Cold A - Service" label="Tanya Service" message={MSG} className="w-full sm:w-auto" /> },
-          { photo: 'upgrade', alt: 'Kasur yang sudah diupgrade, rapi dan tegak di workshop', title: 'Upgrade', line: 'Kasur lamamu dirombak jadi lebih kokoh dan lebih menopang badan. Otomatis paket Premium.', badge: `Garansi ${FACTS.warrantyUpgrade}`, hi: true,
+          { photo: 'upgrade', alt: 'Kasur yang sudah diupgrade, rapi dan tegak di workshop', title: 'Upgrade', line: 'Kasur lamamu dirombak jadi lebih kokoh. Garansi sampai 20 tahun. Harga setelah kami lihat kondisi kasurmu.', badge: `Garansi ${FACTS.warrantyUpgrade}`, hi: true,
             cta: <HeroWaButton buttonId="ortho-cold-a-upgrade" placement="service-card" eventLabel="Landing Ortho Cold A - Upgrade" label="Tanya Upgrade" message={MSG} className="w-full sm:w-auto" /> },
         ]} />
         <div className="mt-5"><PriceCard /></div>

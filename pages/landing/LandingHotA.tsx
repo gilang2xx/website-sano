@@ -46,7 +46,7 @@ const LandingHotA: React.FC = () => {
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff]">Upgrade</p>
                 <p className="mt-2 text-3xl md:text-4xl font-bold tracking-tight leading-tight">Garansi Klinik Matras {FACTS.warrantyUpgrade}</p>
-                <p className="mt-3 text-lg text-[#6e6e73] dark:text-[#a1a1a6] leading-snug">Kasur lamamu dirombak jadi lebih kokoh. Otomatis paket Premium. Harga setelah kami lihat kondisi kasurmu.</p>
+                <p className="mt-3 text-lg text-[#6e6e73] dark:text-[#a1a1a6] leading-snug">Kasur lamamu dirombak jadi lebih kokoh. Garansi sampai 20 tahun. Harga setelah kami lihat kondisi kasurmu.</p>
               </div>
               <p className="text-base font-semibold">Service: garansi {FACTS.warrantyService}</p>
             </BentoCard>
