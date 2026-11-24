@@ -310,6 +310,7 @@ const builtOn = await esbuild.build({
   stdin: {
     contents: `
       export { buildWaHref, captureAdReferral, getVisitCode, hurufKanal, beginAttributionHydration, endAttributionHydration, KODE_PREFIX } from './utils/attribution';
+      export { trackWhatsAppClick } from './utils/tracking';
       export { openWhatsAppChat, WA_PHONE_CS1, WA_DEFAULT_CHAT_MESSAGE } from './utils/whatsapp';
     `,
     resolveDir: ROOT,
@@ -431,6 +432,33 @@ ok(calls.open.length === 1 && KODE_RE.exec(teks(calls.open[0][0]))?.[1][0] === '
   ok(!!k1 && k1 === k2 && k1[0] === 'W', 'storage gagal: kode cadangan W konsisten, tanpa error');
   globalThis.sessionStorage = asli; window.sessionStorage = asli;
 }
+store.clear();
+
+// L1: landing -- UTM/click-id per sesi terbawa ke event click_whatsapp, + landing_id & audience
+store.clear(); reset();
+kunjungi('?utm_source=google&utm_medium=cpc&utm_campaign=ortho-cold&utm_content=v1&utm_term=kasur+amblas&gclid=RAHASIA123');
+on.trackWhatsAppClick('Landing Uji', { buttonId: 'lp-uji', placement: 'hero', cs: 'cs1', landingId: 'LP-COLD-A', audience: 'cold', pixels: false });
+{
+  const e = window.dataLayer.filter((x) => x && x.event === 'click_whatsapp').pop();
+  ok(e && e.landing_id === 'LP-COLD-A' && e.audience === 'cold', 'landing: event membawa landing_id dan audience');
+  ok(e.utm_source === 'google' && e.utm_medium === 'cpc' && e.utm_campaign === 'ortho-cold' && e.utm_content === 'v1' && e.utm_term === 'kasur amblas', 'landing: 5 parameter UTM terbawa ke event');
+  ok(e.click_id_type === 'gclid', 'landing: jenis click-id (gclid) tercatat');
+  ok(!JSON.stringify(e).includes('RAHASIA123') && !teks(on.buildWaHref('Halo')).includes('RAHASIA123'), 'landing: nilai mentah gclid tidak ada di event maupun di teks WA');
+}
+// L2: halaman berikutnya tanpa UTM tidak menghapus parameter sesi; payload lama utuh
+reset();
+kunjungi('');
+on.trackWhatsAppClick('Landing Uji 2', { landingId: 'LP-HOT-A', audience: 'hot', pixels: false });
+{
+  const e = window.dataLayer.filter((x) => x && x.event === 'click_whatsapp').pop();
+  ok(e.utm_source === 'google' && e.landing_id === 'LP-HOT-A' && e.audience === 'hot', 'landing: parameter sesi bertahan di navigasi tanpa UTM');
+  ok(e.event_category === 'Kontak' && e.value === 1 && e.event_label === 'Landing Uji 2', 'landing: payload lama tetap utuh');
+}
+// L3: tanpa UTM sama sekali -> tidak ada key utm_* mengada-ada
+store.clear(); reset();
+kunjungi('');
+on.trackWhatsAppClick('Tanpa UTM', { pixels: false });
+ok(!Object.keys(window.dataLayer.filter((x) => x && x.event === 'click_whatsapp').pop()).some((k) => k.startsWith('utm_') || k === 'click_id_type'), 'tanpa UTM: tidak ada key utm_* / click_id_type');
 store.clear();
 
 console.log(`\nHasil: ${pass} lulus, ${fail} gagal`);

@@ -21,7 +21,7 @@ const LandingHotA: React.FC = () => {
   const hero = useHeroRef();
 
   return (
-    <LandingShell>
+    <LandingShell landingId="LP-HOT-A" audience="hot">
       <PhotoHero
         ref={hero}
         pill="Jabodetabek & Bandung"

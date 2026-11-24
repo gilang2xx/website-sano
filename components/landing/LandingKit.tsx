@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Star, ArrowRight, ArrowUpRight, ChevronsLeftRight, ShieldCheck, Clock, Truck, MapPin, Check, Plus } from 'lucide-react';
 import WhatsAppLink from '../WhatsAppLink';
@@ -94,13 +94,17 @@ export const Reveal: React.FC<{ children: React.ReactNode; className?: string; d
 
 /* ───────────── Cangkang halaman ───────────── */
 
-export const LandingShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+/** Identitas halaman landing: kode sumber di teks WA ([LP-COLD-A]) dan parameter landing_id/audience di event click_whatsapp. */
+const LandingCtx = createContext<{ landingId: string; audience: string } | null>(null);
+
+export const LandingShell: React.FC<{ children: React.ReactNode; landingId: string; audience: 'cold' | 'warm' | 'hot' }> = ({ children, landingId, audience }) => {
   const location = useLocation();
   useEffect(() => { captureAdReferral(); }, [location]);
   useEffect(() => { endAttributionHydration(); }, []);
   useEffect(() => { window.scrollTo(0, 0); }, [location]);
 
   return (
+    <LandingCtx.Provider value={{ landingId, audience }}>
     <div style={{ fontFamily: FONT }} className="min-h-screen flex flex-col text-[#1d1d1f] dark:text-[#f5f5f7] bg-white dark:bg-black antialiased">
       <style>{CSS}</style>
       <header className="sticky top-0 z-40 bg-white/70 dark:bg-black/60 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5 dark:border-white/10">
@@ -128,6 +132,7 @@ export const LandingShell: React.FC<{ children: React.ReactNode }> = ({ children
         </div>
       </footer>
     </div>
+    </LandingCtx.Provider>
   );
 };
 
@@ -151,12 +156,16 @@ interface WaProps {
 }
 
 /** Tombol utama = WhatsApp: pil biru SANO (hover navy), ikon WA putih monokrom di kiri teks. Tone lime = di atas pita biru. */
-export const WaButton: React.FC<Omit<WaProps, 'label'> & { label: React.ReactNode }> = ({ buttonId, placement, label, message, eventLabel, className = '', tone = 'blue' }) => (
+export const WaButton: React.FC<Omit<WaProps, 'label'> & { label: React.ReactNode }> = ({ buttonId, placement, label, message, eventLabel, className = '', tone = 'blue' }) => {
+  const lp = useContext(LandingCtx);
+  return (
   <WhatsAppLink
-    message={message}
+    message={lp ? `${message} [${lp.landingId}]` : message}
     eventLabel={eventLabel}
     buttonId={buttonId}
     placement={placement}
+    landingId={lp?.landingId}
+    audience={lp?.audience}
     target="_blank"
     rel="noopener noreferrer"
     className={`inline-flex items-center justify-center gap-2 md:gap-2.5 min-h-[56px] px-5 md:px-7 rounded-full whitespace-nowrap text-base md:text-[17px] font-semibold tracking-tight shadow-lg shadow-black/20 transition-colors active:scale-[.98] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40 ${tone === 'blue' ? 'bg-[#1660cf] hover:bg-[#0b2a6f] text-white' : 'bg-[#c8f53c] hover:bg-[#b6e22a] text-black'} ${className}`}
@@ -164,7 +173,8 @@ export const WaButton: React.FC<Omit<WaProps, 'label'> & { label: React.ReactNod
     <WaIcon size={20} />
     {label}
   </WhatsAppLink>
-);
+  );
+};
 
 /** Tombol WA lime di atas pita biru (CTA penutup). */
 export const HeroWaButton: React.FC<Omit<WaProps, 'tone'>> = (p) => <WaButton {...p} tone="lime" />;
