@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Star, ArrowRight, ChevronsLeftRight, ShieldCheck, Clock, Truck, MapPin, Check, Plus } from 'lucide-react';
+import { Star, ArrowRight, ArrowUpRight, ChevronsLeftRight, ShieldCheck, Clock, Truck, MapPin, Check, Plus } from 'lucide-react';
 import WhatsAppLink from '../WhatsAppLink';
 import ThemeToggle from '../ThemeToggle';
 import type { WhatsAppPlacement } from '../../utils/tracking';
@@ -132,6 +132,13 @@ export const LandingShell: React.FC<{ children: React.ReactNode }> = ({ children
 
 /* ───────────── Tombol ───────────── */
 
+/** Ikon WhatsApp monokrom (mengikuti warna teks: putih di tombol biru, hitam/navy di tombol lime). */
+const WaIcon: React.FC<{ size?: number }> = ({ size = 20 }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" className="shrink-0">
+    <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z" />
+  </svg>
+);
+
 interface WaProps {
   buttonId: string;
   placement: WhatsAppPlacement;
@@ -142,8 +149,8 @@ interface WaProps {
   tone?: 'blue' | 'lime';
 }
 
-/** Tombol utama = WhatsApp (pil biru, panah di lingkaran). */
-export const WaButton: React.FC<WaProps> = ({ buttonId, placement, label, message, eventLabel, className = '', tone = 'blue' }) => (
+/** Tombol utama = WhatsApp: pil biru SANO (hover navy), ikon WA putih monokrom di kiri teks. Tone lime = di atas pita biru. */
+export const WaButton: React.FC<Omit<WaProps, 'label'> & { label: React.ReactNode }> = ({ buttonId, placement, label, message, eventLabel, className = '', tone = 'blue' }) => (
   <WhatsAppLink
     message={message}
     eventLabel={eventLabel}
@@ -151,11 +158,10 @@ export const WaButton: React.FC<WaProps> = ({ buttonId, placement, label, messag
     placement={placement}
     target="_blank"
     rel="noopener noreferrer"
-    style={tone === 'blue' ? { backgroundColor: ACCENT } : { backgroundColor: LIME, color: NAVY }}
-    className={`inline-flex items-center justify-center gap-3 min-h-[56px] pl-7 pr-2 rounded-full text-[17px] font-semibold tracking-tight transition-all hover:brightness-110 active:scale-[.98] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40 ${tone === 'blue' ? 'text-white' : ''} ${className}`}
+    className={`inline-flex items-center justify-center gap-2.5 min-h-[56px] px-7 rounded-full text-[17px] font-semibold tracking-tight shadow-lg shadow-black/20 transition-colors active:scale-[.98] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40 ${tone === 'blue' ? 'bg-[#1660cf] hover:bg-[#0b2a6f] text-white' : 'bg-[#c8f53c] hover:bg-[#b6e22a] text-black'} ${className}`}
   >
+    <WaIcon size={20} />
     {label}
-    <span className={`w-10 h-10 rounded-full flex items-center justify-center ${tone === 'blue' ? 'bg-white/20' : 'bg-[#0b2a6f]/10'}`} aria-hidden="true"><ArrowRight size={20} /></span>
   </WhatsAppLink>
 );
 
@@ -170,27 +176,34 @@ export const TextLink: React.FC<{ to?: string; href?: string; children: React.Re
     : <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>{children}<ArrowRight size={17} aria-hidden="true" /></a>;
 };
 
-export const FloatingWa: React.FC<WaProps & { sentinelRef?: React.RefObject<HTMLElement | null>; mode: 'after-hero' | 'bar' }> = ({ mode, sentinelRef, ...wa }) => {
-  const [show, setShow] = useState(mode === 'bar');
+/**
+ * Satu-satunya tombol WA melayang. HP: bar bawah sticky selebar layar. Desktop: pil kecil kanan bawah.
+ * Muncul hanya setelah hero keluar layar dan sembunyi saat pita CTA biru terlihat (IntersectionObserver),
+ * jadi tidak pernah ada dua tombol WA berdampingan. Animasi geser halus, mati bila pengguna memilih kurangi gerakan.
+ */
+export const FloatingWa: React.FC<Omit<WaProps, 'label' | 'tone' | 'className'> & { sentinelRef: React.RefObject<HTMLElement | null> }> = ({ sentinelRef, ...wa }) => {
+  const [heroIn, setHeroIn] = useState(true);
+  const [ribbonIn, setRibbonIn] = useState(false);
   useEffect(() => {
-    if (mode === 'bar') return;
-    const el = sentinelRef?.current;
-    if (!el || typeof IntersectionObserver === 'undefined') { setShow(true); return; }
-    const io = new IntersectionObserver(([e]) => setShow(!e.isIntersecting), { threshold: 0 });
-    io.observe(el);
-    return () => io.disconnect();
-  }, [mode, sentinelRef]);
+    if (typeof IntersectionObserver === 'undefined') { setHeroIn(false); return; }
+    const watch = (el: Element | null, set: (v: boolean) => void) => {
+      if (!el) return () => undefined;
+      const io = new IntersectionObserver(([e]) => set(e.isIntersecting), { threshold: 0 });
+      io.observe(el);
+      return () => io.disconnect();
+    };
+    const off1 = watch(sentinelRef.current, setHeroIn);
+    const off2 = watch(document.getElementById('cta-ribbon'), setRibbonIn);
+    return () => { off1(); off2(); };
+  }, [sentinelRef]);
 
-  if (mode === 'bar') {
-    return (
-      <div className="fixed bottom-0 inset-x-0 z-40 bg-white/75 dark:bg-black/70 backdrop-blur-xl border-t border-black/5 dark:border-white/10 px-4 py-3">
-        <div className="max-w-md mx-auto"><WaButton {...wa} className="w-full" /></div>
-      </div>
-    );
-  }
+  const show = !heroIn && !ribbonIn;
   return (
-    <div className={`fixed bottom-5 right-5 z-40 transition-all duration-500 ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'}`} aria-hidden={!show}>
-      <WaButton {...wa} className="shadow-xl shadow-black/20" />
+    <div
+      aria-hidden={!show}
+      className={`fixed z-40 inset-x-0 bottom-0 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] bg-white/80 dark:bg-black/75 backdrop-blur-md border-t border-black/5 dark:border-white/10 md:inset-x-auto md:right-5 md:bottom-5 md:p-0 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 transition-[transform,opacity,visibility] duration-500 ease-out motion-reduce:transition-none ${show ? 'translate-y-0 opacity-100 visible' : 'translate-y-full opacity-0 invisible'}`}
+    >
+      <WaButton {...wa} label={<><span className="md:hidden">Chat WA sekarang</span><span className="hidden md:inline">Chat WA</span></>} className="w-full md:w-auto" />
     </div>
   );
 };
@@ -260,13 +273,13 @@ export const PhotoHero = React.forwardRef<HTMLElement, {
         </div>
         {/* teks rapat di atas */}
         <div className="relative z-10 px-5 md:px-12 pt-5 md:pt-14 pb-2 md:pb-14 md:max-w-[50%] md:min-h-[600px] md:flex md:flex-col md:justify-center">
-          <span className="md:hidden lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold">
+          <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" aria-label={`Rating ${FACTS.rating} dari ${FACTS.reviewCount} ulasan Google, buka Google Maps di tab baru`} className="md:hidden lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold">
             <Star size={12} className="fill-amber-300 text-amber-300" aria-hidden="true" />{FACTS.rating} · {FACTS.reviewCount} ulasan Google · {pill}
-          </span>
+          </a>
           <div className="hidden md:flex flex-wrap items-center gap-2">
-            <span className="lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold">
-              <Star size={14} className="fill-amber-300 text-amber-300" aria-hidden="true" />{FACTS.rating} · {FACTS.reviewCount} ulasan Google
-            </span>
+            <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" aria-label={`Rating ${FACTS.rating} dari ${FACTS.reviewCount} ulasan Google, buka Google Maps di tab baru`} className="lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold hover:bg-white/25 transition-colors">
+              <Star size={14} className="fill-amber-300 text-amber-300" aria-hidden="true" />{FACTS.rating} · {FACTS.reviewCount} ulasan Google <ArrowUpRight size={14} aria-hidden="true" />
+            </a>
             <span className="lp-glass inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold">
               <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: LIME }} aria-hidden="true" />{pill}
             </span>
@@ -488,9 +501,24 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
 export const ReviewBlock: React.FC<{ reviews: Review[]; title: React.ReactNode }> = ({ reviews, title }) => (
   <div>
     <h2 className="lp-h2 max-w-3xl">{title}</h2>
-    <div className="mt-5 flex items-center gap-3 flex-wrap">
-      <span className="text-4xl font-bold tracking-tight">{FACTS.rating}</span>
-      <div><Stars size={20} /><p className="text-sm text-[#6e6e73] dark:text-[#a1a1a6]">{FACTS.reviewCount} ulasan Google (data {FACTS.ratingDate})</p></div>
+    <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+      <div className="flex items-center gap-4">
+        <span className="lp-num !text-[clamp(3.2rem,12vw,4.5rem)]">{FACTS.rating}</span>
+        <div>
+          <Stars size={22} />
+          <p className="mt-1 text-base md:text-lg font-semibold tracking-tight">dari {FACTS.reviewCount} ulasan di Google</p>
+          <p className="text-xs md:text-sm text-[#6e6e73] dark:text-[#a1a1a6]">data {FACTS.ratingDate}</p>
+        </div>
+      </div>
+      <a
+        href={GOOGLE_MAPS_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 rounded-full border-2 border-[#1660cf] text-[#1660cf] dark:border-[#4d94ff] dark:text-[#4d94ff] text-[17px] font-semibold tracking-tight hover:bg-[#1660cf] hover:text-white dark:hover:bg-[#4d94ff] dark:hover:text-black transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40"
+      >
+        Cek sendiri di Google Maps <ArrowUpRight size={20} aria-hidden="true" />
+        <span className="sr-only"> (buka di tab baru)</span>
+      </a>
     </div>
     <ul className="mt-6 flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pb-2 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible list-none m-0">
       {reviews.map((r) => (
@@ -498,12 +526,14 @@ export const ReviewBlock: React.FC<{ reviews: Review[]; title: React.ReactNode }
           <figure className="m-0 h-full rounded-[24px] bg-[#f5f5f7] dark:bg-[#1c1c1e] p-6 flex flex-col">
             <span className="flex mb-3" aria-label="5 dari 5 bintang"><Stars size={16} /></span>
             <blockquote className="m-0 text-[17px] leading-relaxed tracking-tight flex-grow">&ldquo;{r.text}&rdquo;</blockquote>
-            <figcaption className="mt-4 text-sm font-semibold text-[#6e6e73] dark:text-[#a1a1a6]">{r.name}, ulasan Google</figcaption>
+            <figcaption className="mt-4 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">
+              <span className="font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">{r.name}</span>
+              <span aria-hidden="true"> · </span>Ulasan Google{r.date ? ` · ${r.date}` : ''}
+            </figcaption>
           </figure>
         </li>
       ))}
     </ul>
-    <div className="mt-3"><TextLink href={GOOGLE_MAPS_URL}>Lihat semua ulasan di Google Maps</TextLink></div>
   </div>
 );
 
@@ -582,7 +612,7 @@ export const ConceptLine: React.FC = () => (
 /* ───────────── Pita CTA berwarna di dasar halaman ───────────── */
 
 export const CtaRibbon: React.FC<{ title: React.ReactNode; sub?: string; children: React.ReactNode; note?: React.ReactNode }> = ({ title, sub, children, note }) => (
-  <section className="bg-white dark:bg-black py-10 md:py-16">
+  <section id="cta-ribbon" className="bg-white dark:bg-black py-10 md:py-16">
     <div className="max-w-5xl mx-auto px-5">
       <Reveal>
         <div className="lp-ribbon text-white rounded-[32px] md:rounded-[44px] px-6 py-10 md:py-16 text-center">

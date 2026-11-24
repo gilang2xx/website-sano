@@ -98,7 +98,7 @@ const LandingWarmB: React.FC = () => {
         <HeroWaButton buttonId="ortho-warm-b-cta" placement="cta" eventLabel="Landing Ortho Warm B - CTA" label="Chat WA sekarang" message={MSG} className="w-full sm:w-auto" />
       </CtaRibbon>
 
-      <FloatingWa mode="after-hero" sentinelRef={hero} buttonId="ortho-warm-b-floating" placement="floating" eventLabel="Landing Ortho Warm B - Floating" label="Chat WA" message={MSG} />
+      <FloatingWa sentinelRef={hero} buttonId="ortho-warm-b-floating" placement="floating" eventLabel="Landing Ortho Warm B - Floating" message={MSG} />
     </LandingShell>
   );
 };

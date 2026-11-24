@@ -101,7 +101,7 @@ const LandingColdA: React.FC = () => {
         <HeroWaButton buttonId="ortho-cold-a-closing" placement="cta" eventLabel="Landing Ortho Cold A - CTA Penutup" label="Kirim foto kasurku" message={MSG} className="w-full sm:w-auto" />
       </CtaRibbon>
 
-      <FloatingWa mode="after-hero" sentinelRef={hero} buttonId="ortho-cold-a-floating" placement="floating" eventLabel="Landing Ortho Cold A - Floating" label="Chat WA" message={MSG} />
+      <FloatingWa sentinelRef={hero} buttonId="ortho-cold-a-floating" placement="floating" eventLabel="Landing Ortho Cold A - Floating" message={MSG} />
     </LandingShell>
   );
 };

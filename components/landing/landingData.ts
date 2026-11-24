@@ -61,6 +61,8 @@ export const PAIRS: Record<'world' | 'culm' | 'thera' | 'heir', PhotoPair> = {
 export interface Review {
   name: string;
   text: string;
+  /** Bulan/tahun ulasan, hanya bila datanya ada (jangan dikarang). */
+  date?: string;
 }
 
 // Ulasan Google asli, dipilih Gilang (SANO_DESIGNER, signage-tv-loop/testimoni). Nama disingkat (nama depan + inisial).

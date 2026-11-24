@@ -3,7 +3,7 @@ import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, PhotoHero, TrustStrip, BigCase,
   Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PriceCard, NumbersRow, ReviewBlock, Faq, ConceptLine,
-  CtaRibbon, HealthNote, Serif, Hl, BentoCard,
+  CtaRibbon, HealthNote, Serif, Hl, BentoCard, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
@@ -18,9 +18,12 @@ const LandingHotA: React.FC = () => {
     noindex: true,
   });
 
+  const hero = useHeroRef();
+
   return (
     <LandingShell>
       <PhotoHero
+        ref={hero}
         pill="Depok, Jabodetabek, Bandung"
         title={<>Service kasur di Depok? Cek <Serif>harga</Serif> dan slot jemput</>}
         lead={`Service kasur mulai dari ${FACTS.priceService}. Dijemput gratis, dikerjakan ${FACTS.days}.`}
@@ -82,7 +85,7 @@ const LandingHotA: React.FC = () => {
         <HeroWaButton buttonId="ortho-hot-a-closing" placement="cta" eventLabel="Landing Ortho Hot A - CTA Penutup" label="Tanya harga dan jadwal" message={MSG} className="w-full sm:w-auto" />
       </CtaRibbon>
 
-      <FloatingWa mode="bar" buttonId="ortho-hot-a-floating" placement="floating" eventLabel="Landing Ortho Hot A - Floating" label="Chat WA: harga dan jadwal" message={MSG} />
+      <FloatingWa sentinelRef={hero} buttonId="ortho-hot-a-floating" placement="floating" eventLabel="Landing Ortho Hot A - Floating" message={MSG} />
     </LandingShell>
   );
 };
