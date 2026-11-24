@@ -158,7 +158,7 @@ export const WaButton: React.FC<Omit<WaProps, 'label'> & { label: React.ReactNod
     placement={placement}
     target="_blank"
     rel="noopener noreferrer"
-    className={`inline-flex items-center justify-center gap-2.5 min-h-[56px] px-7 rounded-full text-[17px] font-semibold tracking-tight shadow-lg shadow-black/20 transition-colors active:scale-[.98] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40 ${tone === 'blue' ? 'bg-[#1660cf] hover:bg-[#0b2a6f] text-white' : 'bg-[#c8f53c] hover:bg-[#b6e22a] text-black'} ${className}`}
+    className={`inline-flex items-center justify-center gap-2 md:gap-2.5 min-h-[56px] px-5 md:px-7 rounded-full whitespace-nowrap text-base md:text-[17px] font-semibold tracking-tight shadow-lg shadow-black/20 transition-colors active:scale-[.98] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40 ${tone === 'blue' ? 'bg-[#1660cf] hover:bg-[#0b2a6f] text-white' : 'bg-[#c8f53c] hover:bg-[#b6e22a] text-black'} ${className}`}
   >
     <WaIcon size={20} />
     {label}
@@ -273,8 +273,8 @@ export const PhotoHero = React.forwardRef<HTMLElement, {
         </div>
         {/* teks rapat di atas */}
         <div className="relative z-10 px-5 md:px-12 pt-5 md:pt-14 pb-2 md:pb-14 md:max-w-[50%] md:min-h-[600px] md:flex md:flex-col md:justify-center">
-          <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" aria-label={`Rating ${FACTS.rating} dari ${FACTS.reviewCount} ulasan Google, buka Google Maps di tab baru`} className="md:hidden lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold">
-            <Star size={12} className="fill-amber-300 text-amber-300" aria-hidden="true" />{FACTS.rating} · {FACTS.reviewCount} ulasan Google · {pill}
+          <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" aria-label={`Rating ${FACTS.rating} dari ${FACTS.reviewCount} ulasan Google, buka Google Maps di tab baru`} className="md:hidden lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold whitespace-nowrap">
+            <Star size={12} className="fill-amber-300 text-amber-300" aria-hidden="true" />{FACTS.rating} · {FACTS.reviewCount} ulasan Google
           </a>
           <div className="hidden md:flex flex-wrap items-center gap-2">
             <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" aria-label={`Rating ${FACTS.rating} dari ${FACTS.reviewCount} ulasan Google, buka Google Maps di tab baru`} className="lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold hover:bg-white/25 transition-colors">
@@ -286,7 +286,7 @@ export const PhotoHero = React.forwardRef<HTMLElement, {
           </div>
           <h1 className="lp-big mt-3 md:mt-5 max-w-3xl !text-[clamp(1.6rem,7.6vw,1.9rem)] md:!text-[clamp(2.4rem,4vw,3.6rem)]">{title}</h1>
           <p className="mt-2 md:mt-3 text-sm md:text-xl leading-snug tracking-tight text-white/85 max-w-xl">{lead}</p>
-          <div className="mt-3 md:mt-5 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6 w-[66%] sm:w-auto">{actions}</div>
+          <div className="mt-3 md:mt-5 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6 w-fit max-w-[84%] sm:max-w-none">{actions}</div>
           {checks && (
             <ul className="hidden md:flex mt-5 flex-wrap gap-x-5 gap-y-1 list-none p-0 m-0 text-sm text-white/85">
               {checks.map((c) => <li key={c} className="inline-flex items-center gap-1.5"><Check size={15} style={{ color: LIME }} aria-hidden="true" />{c}</li>)}
