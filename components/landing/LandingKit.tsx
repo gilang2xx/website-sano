@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { MessageCircle, Star, Check, ShieldCheck, Truck, Clock, MapPin, ArrowRight } from 'lucide-react';
+import { MessageCircle, Star, ArrowRight, ChevronsLeftRight } from 'lucide-react';
 import WhatsAppLink from '../WhatsAppLink';
 import ThemeToggle from '../ThemeToggle';
 import type { WhatsAppPlacement } from '../../utils/tracking';
@@ -8,31 +8,65 @@ import { captureAdReferral, endAttributionHydration } from '../../utils/attribut
 import { FACTS, GOOGLE_MAPS_URL, HEALTH_NOTE } from './landingData';
 import type { PhotoPair, Review } from './landingData';
 
-// Kit tampilan untuk landing sample. Satu halaman, satu tujuan: klik WA.
-// Semua WA lewat WhatsAppLink (event click_whatsapp), tanpa event/tag baru.
+// MOCKUP visual landing (gaya bersih, lega, satu pesan per layar).
+// Semua WA lewat WhatsAppLink (event click_whatsapp yang sudah ada), tanpa tag/event baru.
+// Palet: putih/abu muda, teks hampir hitam, aksen biru #1660cf (navy #0b2a6f), lime #c8f53c sangat sedikit.
 
-/* ───────────── Cangkang halaman (tanpa menu & footer penuh) ───────────── */
+export const ACCENT = '#1660cf';
+export const NAVY = '#0b2a6f';
+export const LIME = '#c8f53c';
+
+const FONT = 'system-ui, -apple-system, "Segoe UI", Roboto, Inter, "Helvetica Neue", Arial, sans-serif';
+
+const CSS = `
+.lp-rv{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
+.lp-rv.in{opacity:1;transform:none}
+.lp-big{font-size:clamp(2.1rem,8.4vw,4.75rem);line-height:1.04;letter-spacing:-.035em;font-weight:800}
+.lp-h2{font-size:clamp(1.9rem,6.4vw,3.5rem);line-height:1.06;letter-spacing:-.03em;font-weight:800}
+.lp-num{font-size:clamp(3rem,13vw,6rem);line-height:1;letter-spacing:-.04em;font-weight:800}
+.lp-range{-webkit-appearance:none;appearance:none;background:transparent;margin:0;cursor:ew-resize;touch-action:pan-y}
+.lp-range::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:100vh;background:transparent;border:0}
+.lp-range::-moz-range-thumb{width:44px;height:100vh;background:transparent;border:0}
+@media (prefers-reduced-motion:reduce){.lp-rv{opacity:1;transform:none;transition:none}}
+`;
+
+/* ───────────── Muncul perlahan saat scroll ───────────── */
+
+export const Reveal: React.FC<{ children: React.ReactNode; className?: string; delay?: number }> = ({ children, className = '', delay = 0 }) => {
+  const ref = useRef<HTMLDivElement>(null);
+  const [on, setOn] = useState(false);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el || typeof IntersectionObserver === 'undefined' || window.matchMedia('(prefers-reduced-motion: reduce)').matches) { setOn(true); return; }
+    const io = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setOn(true); io.disconnect(); } }, { threshold: 0.12 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  return <div ref={ref} style={{ transitionDelay: `${delay}ms` }} className={`lp-rv ${on ? 'in' : ''} ${className}`}>{children}</div>;
+};
+
+/* ───────────── Cangkang halaman ───────────── */
 
 export const LandingShell: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation();
-  // Sama seperti Layout: tangkap UTM/gclid tiap kedatangan, lalu selesaikan hydration atribusi.
   useEffect(() => { captureAdReferral(); }, [location]);
   useEffect(() => { endAttributionHydration(); }, []);
   useEffect(() => { window.scrollTo(0, 0); }, [location]);
 
   return (
-    <div className="min-h-screen flex flex-col font-sans text-slate-800 dark:text-text-dark bg-bg-light dark:bg-bg-dark transition-colors duration-300">
-      <header className="sticky top-0 z-40 bg-white/90 dark:bg-bg-dark/90 backdrop-blur border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
+    <div style={{ fontFamily: FONT }} className="min-h-screen flex flex-col text-[#1d1d1f] dark:text-[#f5f5f7] bg-white dark:bg-black antialiased">
+      <style>{CSS}</style>
+      <header className="sticky top-0 z-40 bg-white/70 dark:bg-black/60 backdrop-blur-xl backdrop-saturate-150 border-b border-black/5 dark:border-white/10">
+        <div className="max-w-6xl mx-auto px-5 h-14 flex items-center justify-between">
           <span className="select-none">
-            <img src="/klinikmatras-light.png" alt="Klinik Matras by SANO CARE" className="h-8 w-auto block dark:hidden" width={140} height={32} />
-            <img src="/klinikmatras-dark.png" alt="Klinik Matras by SANO CARE" className="h-8 w-auto hidden dark:block" width={140} height={32} />
+            <img src="/klinikmatras-light.png" alt="Klinik Matras by SANO CARE" className="h-7 w-auto block dark:hidden" width={140} height={28} />
+            <img src="/klinikmatras-dark.png" alt="Klinik Matras by SANO CARE" className="h-7 w-auto hidden dark:block" width={140} height={28} />
           </span>
           <ThemeToggle />
         </div>
       </header>
       <main className="flex-grow">{children}</main>
-      <footer className="py-8 pb-28 text-center text-xs text-slate-500 dark:text-text-muted">
+      <footer className="py-10 pb-28 text-center text-xs text-[#6e6e73] dark:text-[#86868b] bg-[#f5f5f7] dark:bg-[#0a0a0a]">
         <p>Klinik Matras by SANO CARE. Workshop dan kantor di Depok.</p>
         <Link to="/kebijakan-privasi" className="inline-block mt-2 underline min-h-[44px] leading-[44px]">Kebijakan Privasi</Link>
       </footer>
@@ -40,7 +74,7 @@ export const LandingShell: React.FC<{ children: React.ReactNode }> = ({ children
   );
 };
 
-/* ───────────── Tombol WA ───────────── */
+/* ───────────── Tombol ───────────── */
 
 interface WaProps {
   buttonId: string;
@@ -49,9 +83,11 @@ interface WaProps {
   message: string;
   eventLabel: string;
   className?: string;
+  tone?: 'blue' | 'lime';
 }
 
-export const WaButton: React.FC<WaProps> = ({ buttonId, placement, label, message, eventLabel, className = '' }) => (
+/** Tombol utama = WhatsApp (pil). */
+export const WaButton: React.FC<WaProps> = ({ buttonId, placement, label, message, eventLabel, className = '', tone = 'blue' }) => (
   <WhatsAppLink
     message={message}
     eventLabel={eventLabel}
@@ -59,20 +95,23 @@ export const WaButton: React.FC<WaProps> = ({ buttonId, placement, label, messag
     placement={placement}
     target="_blank"
     rel="noopener noreferrer"
-    className={`inline-flex items-center justify-center gap-2 min-h-[52px] px-7 rounded-full bg-green-700 hover:bg-green-800 text-white text-base font-bold shadow-lg shadow-green-900/20 transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-green-400/60 ${className}`}
+    style={tone === 'blue' ? { backgroundColor: ACCENT } : { backgroundColor: LIME, color: NAVY }}
+    className={`inline-flex items-center justify-center gap-2 min-h-[56px] px-8 rounded-full text-[17px] font-semibold tracking-tight transition-all hover:brightness-110 active:scale-[.98] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40 ${tone === 'blue' ? 'text-white' : ''} ${className}`}
   >
-    <MessageCircle size={22} aria-hidden="true" />
+    <MessageCircle size={20} aria-hidden="true" />
     {label}
   </WhatsAppLink>
 );
 
-/**
- * Tombol melayang. mode="after-hero": muncul setelah elemen sentinel (hero)
- * lewat layar. mode="bar": bar penuh yang selalu kelihatan di bawah.
- */
-export const FloatingWa: React.FC<WaProps & { sentinelRef?: React.RefObject<HTMLElement | null>; mode: 'after-hero' | 'bar' }> = ({
-  mode, sentinelRef, ...wa
-}) => {
+/** Tombol kedua = tautan teks. */
+export const TextLink: React.FC<{ to?: string; href?: string; children: React.ReactNode; className?: string }> = ({ to, href, children, className = '' }) => {
+  const cls = `inline-flex items-center gap-1 min-h-[44px] text-[17px] font-medium text-[#1660cf] dark:text-[#4d94ff] hover:underline ${className}`;
+  return to
+    ? <Link to={to} className={cls}>{children}<ArrowRight size={17} aria-hidden="true" /></Link>
+    : <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>{children}<ArrowRight size={17} aria-hidden="true" /></a>;
+};
+
+export const FloatingWa: React.FC<WaProps & { sentinelRef?: React.RefObject<HTMLElement | null>; mode: 'after-hero' | 'bar' }> = ({ mode, sentinelRef, ...wa }) => {
   const [show, setShow] = useState(mode === 'bar');
   useEffect(() => {
     if (mode === 'bar') return;
@@ -85,175 +124,172 @@ export const FloatingWa: React.FC<WaProps & { sentinelRef?: React.RefObject<HTML
 
   if (mode === 'bar') {
     return (
-      <div className="fixed bottom-0 inset-x-0 z-40 bg-white/95 dark:bg-bg-surface/95 backdrop-blur border-t border-slate-200 dark:border-slate-700 px-4 py-3">
-        <div className="max-w-md mx-auto">
-          <WaButton {...wa} className="w-full" />
-        </div>
+      <div className="fixed bottom-0 inset-x-0 z-40 bg-white/75 dark:bg-black/70 backdrop-blur-xl border-t border-black/5 dark:border-white/10 px-4 py-3">
+        <div className="max-w-md mx-auto"><WaButton {...wa} className="w-full" /></div>
       </div>
     );
   }
   return (
-    <div className={`fixed bottom-4 right-4 z-40 transition-all duration-300 ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'}`} aria-hidden={!show}>
-      <WaButton {...wa} className="!px-5" />
+    <div className={`fixed bottom-5 right-5 z-40 transition-all duration-500 ${show ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6 pointer-events-none'}`} aria-hidden={!show}>
+      <WaButton {...wa} className="!px-6 shadow-xl shadow-black/20" />
     </div>
   );
 };
 
-/* ───────────── Blok-blok isi ───────────── */
+/* ───────────── Tata letak ───────────── */
 
-export const Section: React.FC<{ children: React.ReactNode; tone?: 'plain' | 'soft'; id?: string; className?: string }> = ({ children, tone = 'plain', id, className = '' }) => (
-  <section id={id} className={`py-10 md:py-16 ${tone === 'soft' ? 'bg-white dark:bg-bg-surface' : ''} ${className}`}>
-    <div className="max-w-5xl mx-auto px-5">{children}</div>
-  </section>
+/** Satu layar, satu pesan. tone: putih / abu muda / navy. */
+export const Screen: React.FC<{ children: React.ReactNode; tone?: 'white' | 'grey' | 'navy'; className?: string; id?: string }> = ({ children, tone = 'white', className = '', id }) => {
+  const bg = tone === 'grey' ? 'bg-[#f5f5f7] dark:bg-[#0a0a0a]' : tone === 'navy' ? 'text-white' : 'bg-white dark:bg-black';
+  return (
+    <section id={id} style={tone === 'navy' ? { backgroundColor: NAVY } : undefined} className={`py-16 md:py-28 ${bg} ${className}`}>
+      <div className="max-w-5xl mx-auto px-5">{children}</div>
+    </section>
+  );
+};
+
+export const Eyebrow: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <p className="text-sm font-semibold uppercase tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff] mb-3">{children}</p>
 );
 
-export const H2: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
-  <h2 className={`text-2xl md:text-3xl font-extrabold leading-tight text-slate-900 dark:text-white ${className}`}>{children}</h2>
+export const Lead: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+  <p className={`text-lg md:text-2xl leading-snug tracking-tight text-[#6e6e73] dark:text-[#a1a1a6] ${className}`}>{children}</p>
 );
 
-export const Muted: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
-  <p className={`text-base md:text-lg text-slate-600 dark:text-slate-300 leading-relaxed ${className}`}>{children}</p>
-);
+/* ───────────── Before-after: slider geser ───────────── */
 
-/** Sepasang foto sebelum/sesudah. Seluruhnya bisa diklik ke /before-after. */
-export const PairCard: React.FC<{ pair: PhotoPair; eager?: boolean; caption?: boolean }> = ({ pair, eager = false, caption = true }) => (
-  <Link
-    to="/before-after"
-    aria-label={`Lihat galeri before-after lengkap. Contoh: ${pair.title}`}
-    className="group block rounded-2xl overflow-hidden bg-white dark:bg-bg-surface border border-slate-200 dark:border-slate-700 shadow-sm focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/50"
-  >
-    <div className="grid grid-cols-2 gap-0.5 bg-slate-200 dark:bg-slate-700">
-      {([['Sebelum', pair.before, pair.altBefore], ['Sesudah', pair.after, pair.altAfter]] as const).map(([lbl, src, alt]) => (
-        <figure key={lbl} className="relative m-0 bg-slate-100 dark:bg-slate-800">
-          <img
-            src={src}
-            alt={alt}
-            width={pair.w}
-            height={pair.h}
-            loading={eager ? 'eager' : 'lazy'}
-            decoding="async"
-            {...(eager ? { fetchPriority: 'high' as const } : {})}
-            className="w-full h-auto block aspect-[4/3] object-cover"
-          />
-          <figcaption className={`absolute left-2 top-2 text-xs font-bold px-2.5 py-1 rounded-full ${lbl === 'Sesudah' ? 'bg-green-700 text-white' : 'bg-slate-900/80 text-white'}`}>{lbl}</figcaption>
-        </figure>
-      ))}
-    </div>
-    {caption && (
-      <div className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
-        <span className="font-semibold text-slate-800 dark:text-slate-100">{pair.title}</span>
-        <ArrowRight size={18} className="shrink-0 text-primary dark:text-primary-light transition-transform group-hover:translate-x-1" aria-hidden="true" />
-      </div>
-    )}
-  </Link>
-);
+const big = (src: string) => src.replace('/landing/', '/landing/lg-');
 
-export const GalleryLink: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <Link
-    to="/before-after"
-    className={`inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full border-2 border-primary text-primary dark:border-primary-light dark:text-primary-light font-bold hover:bg-primary hover:text-white dark:hover:bg-primary-light dark:hover:text-slate-900 transition-colors ${className}`}
-  >
-    Lihat semua hasil before-after <ArrowRight size={18} aria-hidden="true" />
-  </Link>
-);
-
-/** Baris rating statis (tanpa widget pihak ketiga). */
-export const RatingLine: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <p className={`flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-slate-700 dark:text-slate-200 ${className}`}>
-    <span className="inline-flex" aria-hidden="true">
-      {[0, 1, 2, 3, 4].map((i) => <Star key={i} size={16} className="fill-amber-400 text-amber-400" />)}
-    </span>
-    <strong>{FACTS.rating}</strong> di Google dari {FACTS.reviewCount} ulasan
-  </p>
-);
-
-export const ReviewBlock: React.FC<{ reviews: Review[]; title?: string }> = ({ reviews, title = 'Kata mereka yang sudah pakai' }) => (
-  <div>
-    <H2>{title}</H2>
-    <div className="mt-4 flex items-center gap-3 flex-wrap">
-      <span className="text-4xl font-extrabold text-slate-900 dark:text-white">{FACTS.rating}</span>
-      <div>
-        <span className="flex" aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={20} className="fill-amber-400 text-amber-400" />)}</span>
-        <span className="text-sm text-slate-600 dark:text-slate-300">{FACTS.reviewCount} ulasan Google (data {FACTS.ratingDate})</span>
-      </div>
-    </div>
-    <div className="mt-6 grid gap-4 md:grid-cols-3">
-      {reviews.map((r) => (
-        <figure key={r.name} className="m-0 p-5 rounded-2xl bg-white dark:bg-bg-surface border border-slate-200 dark:border-slate-700 shadow-sm">
-          <span className="flex mb-2" aria-label="5 dari 5 bintang">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={16} className="fill-amber-400 text-amber-400" aria-hidden="true" />)}</span>
-          <blockquote className="m-0 text-slate-700 dark:text-slate-200 leading-relaxed">&ldquo;{r.text}&rdquo;</blockquote>
-          <figcaption className="mt-3 text-sm font-semibold text-slate-900 dark:text-white">{r.name}, ulasan Google</figcaption>
-        </figure>
-      ))}
-    </div>
-    <a
-      href={GOOGLE_MAPS_URL}
-      target="_blank"
-      rel="noopener noreferrer"
-      className="mt-6 inline-flex items-center gap-2 min-h-[48px] px-5 rounded-full border-2 border-slate-300 dark:border-slate-600 font-bold text-slate-800 dark:text-slate-100 hover:border-primary hover:text-primary dark:hover:border-primary-light dark:hover:text-primary-light transition-colors"
-    >
-      Lihat semua ulasan di Google Maps <ArrowRight size={18} aria-hidden="true" />
-    </a>
-  </div>
-);
-
-/** Badge garansi berlabel Klinik Matras. */
-export const WarrantyBadges: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <div className={`flex flex-wrap gap-3 ${className}`}>
-    {[['Upgrade', FACTS.warrantyUpgrade], ['Service', FACTS.warrantyService]].map(([name, yrs]) => (
-      <div key={name} className="flex items-center gap-3 rounded-2xl border-2 border-primary/30 dark:border-primary-light/40 bg-primary-light/40 dark:bg-primary-dark/30 px-4 py-3">
-        <ShieldCheck size={28} className="text-primary dark:text-primary-light shrink-0" aria-hidden="true" />
-        <div className="leading-tight">
-          <div className="text-xs font-bold uppercase tracking-wide text-primary dark:text-primary-light">Garansi Klinik Matras</div>
-          <div className="text-lg font-extrabold text-slate-900 dark:text-white">{name} {yrs}</div>
+export const BeforeAfterSlider: React.FC<{ pair: PhotoPair; eager?: boolean }> = ({ pair, eager = false }) => {
+  const [pos, setPos] = useState(50);
+  return (
+    <figure className="m-0">
+      <div
+        className="relative w-full overflow-hidden select-none bg-[#e8e8ed] dark:bg-[#1c1c1e] md:rounded-[28px]"
+        style={{ aspectRatio: `${pair.w} / ${pair.h}` }}
+      >
+        <img src={big(pair.after)} alt={pair.altAfter} width={pair.w} height={pair.h} loading={eager ? 'eager' : 'lazy'} decoding="async"
+          {...(eager ? { fetchPriority: 'high' as const } : {})} className="absolute inset-0 w-full h-full object-cover" draggable={false} />
+        <img src={big(pair.before)} alt={pair.altBefore} width={pair.w} height={pair.h} loading={eager ? 'eager' : 'lazy'} decoding="async"
+          className="absolute inset-0 w-full h-full object-cover" draggable={false} style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }} />
+        <span className="absolute left-4 top-4 text-xs font-semibold px-3 py-1.5 rounded-full bg-black/60 text-white backdrop-blur">Sebelum</span>
+        <span className="absolute right-4 top-4 text-xs font-semibold px-3 py-1.5 rounded-full text-white backdrop-blur" style={{ backgroundColor: 'rgba(22,96,207,.85)' }}>Sesudah</span>
+        <div className="absolute top-0 bottom-0 w-0.5 bg-white shadow-[0_0_12px_rgba(0,0,0,.4)] pointer-events-none" style={{ left: `${pos}%` }}>
+          <span className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white shadow-lg flex items-center justify-center text-[#0b2a6f]">
+            <ChevronsLeftRight size={22} aria-hidden="true" />
+          </span>
         </div>
+        <input
+          type="range" min={0} max={100} step={0.5} value={pos}
+          onChange={(e) => setPos(Number(e.target.value))}
+          aria-label={`Geser untuk membandingkan sebelum dan sesudah: ${pair.title}`}
+          className="lp-range absolute inset-0 w-full h-full opacity-0"
+        />
       </div>
-    ))}
+      <figcaption className="mt-3 px-5 md:px-0 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">{pair.title}. Geser untuk membandingkan.</figcaption>
+    </figure>
+  );
+};
+
+/* ───────────── Bento ───────────── */
+
+export const BentoCard: React.FC<{ children: React.ReactNode; className?: string; tone?: 'white' | 'blue' | 'navy' | 'lime' }> = ({ children, className = '', tone = 'white' }) => {
+  const style = tone === 'blue' ? { backgroundColor: ACCENT, color: '#fff' } : tone === 'navy' ? { backgroundColor: NAVY, color: '#fff' } : tone === 'lime' ? { backgroundColor: LIME, color: NAVY } : undefined;
+  return (
+    <div style={style} className={`rounded-[24px] md:rounded-[28px] p-6 md:p-8 flex flex-col justify-between ${tone === 'white' ? 'bg-[#f5f5f7] dark:bg-[#1c1c1e]' : ''} ${className}`}>
+      {children}
+    </div>
+  );
+};
+
+const Stars: React.FC<{ size?: number }> = ({ size = 18 }) => (
+  <span className="inline-flex" aria-hidden="true">{[0, 1, 2, 3, 4].map((i) => <Star key={i} size={size} className="fill-amber-400 text-amber-400" />)}</span>
+);
+
+/** Bento fakta: rating, garansi, 2-3 hari, antar-jemput, area. */
+export const FactsBento: React.FC = () => (
+  <div className="grid gap-3 md:gap-4 grid-cols-2 md:grid-cols-6">
+    <Reveal className="col-span-2 md:col-span-3">
+      <BentoCard tone="navy" className="h-full min-h-[200px]">
+        <Stars />
+        <div>
+          <div className="lp-num">{FACTS.rating}</div>
+          <p className="mt-2 text-base md:text-lg opacity-80">rating Google dari {FACTS.reviewCount} ulasan</p>
+          <p className="text-xs opacity-60 mt-1">Data {FACTS.ratingDate}</p>
+        </div>
+      </BentoCard>
+    </Reveal>
+    <Reveal className="col-span-2 md:col-span-3" delay={80}>
+      <BentoCard className="h-full min-h-[200px]">
+        <p className="text-sm font-semibold uppercase tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff]">Garansi Klinik Matras</p>
+        <div className="flex gap-6 mt-4">
+          <div><div className="lp-num !text-[clamp(2.6rem,10vw,4.5rem)]">20</div><p className="text-base opacity-70">tahun, Upgrade</p></div>
+          <div><div className="lp-num !text-[clamp(2.6rem,10vw,4.5rem)]">10</div><p className="text-base opacity-70">tahun, Service</p></div>
+        </div>
+      </BentoCard>
+    </Reveal>
+    <Reveal className="col-span-1 md:col-span-2" delay={0}>
+      <BentoCard tone="lime" className="h-full min-h-[170px]">
+        <p className="text-sm font-semibold">Pengerjaan</p>
+        <div className="lp-num !text-[clamp(2.4rem,9vw,4rem)]">2-3<span className="text-xl font-bold ml-1">hari</span></div>
+      </BentoCard>
+    </Reveal>
+    <Reveal className="col-span-1 md:col-span-2" delay={80}>
+      <BentoCard className="h-full min-h-[170px]">
+        <p className="text-sm font-semibold text-[#6e6e73] dark:text-[#a1a1a6]">Antar-jemput</p>
+        <p className="text-2xl md:text-3xl font-bold tracking-tight leading-tight">Gratis</p>
+      </BentoCard>
+    </Reveal>
+    <Reveal className="col-span-2 md:col-span-2" delay={160}>
+      <BentoCard className="h-full min-h-[170px]">
+        <p className="text-sm font-semibold text-[#6e6e73] dark:text-[#a1a1a6]">Area</p>
+        <p className="text-xl md:text-2xl font-bold tracking-tight leading-tight">Jabodetabek dan Bandung. Workshop dan kantor di Depok.</p>
+      </BentoCard>
+    </Reveal>
   </div>
 );
+
+/* ───────────── Review statis ───────────── */
+
+export const ReviewBlock: React.FC<{ reviews: Review[]; title: string }> = ({ reviews, title }) => (
+  <div>
+    <h2 className="lp-h2 max-w-3xl">{title}</h2>
+    <div className="mt-10 grid gap-3 md:gap-4 md:grid-cols-3">
+      {reviews.map((r, i) => (
+        <Reveal key={r.name} delay={i * 80}>
+          <figure className="m-0 h-full rounded-[24px] md:rounded-[28px] bg-white dark:bg-[#1c1c1e] p-6 md:p-7 flex flex-col">
+            <span className="flex mb-3" aria-label="5 dari 5 bintang"><Stars size={16} /></span>
+            <blockquote className="m-0 text-[17px] leading-relaxed tracking-tight text-[#1d1d1f] dark:text-[#f5f5f7] flex-grow">&ldquo;{r.text}&rdquo;</blockquote>
+            <figcaption className="mt-4 text-sm font-semibold text-[#6e6e73] dark:text-[#a1a1a6]">{r.name}, ulasan Google</figcaption>
+          </figure>
+        </Reveal>
+      ))}
+    </div>
+    <div className="mt-6">
+      <TextLink href={GOOGLE_MAPS_URL}>Lihat semua ulasan di Google Maps</TextLink>
+    </div>
+  </div>
+);
+
+/* ───────────── Langkah & catatan ───────────── */
 
 export const Steps: React.FC<{ steps: string[] }> = ({ steps }) => (
-  <ol className="mt-6 grid gap-4 md:grid-cols-3 list-none p-0 m-0">
+  <ol className="mt-10 grid gap-3 md:gap-4 md:grid-cols-3 list-none p-0 m-0">
     {steps.map((s, i) => (
-      <li key={i} className="flex gap-4 items-start p-5 rounded-2xl bg-white dark:bg-bg-surface border border-slate-200 dark:border-slate-700">
-        <span className="shrink-0 w-10 h-10 rounded-full bg-primary text-white font-extrabold flex items-center justify-center" aria-hidden="true">{i + 1}</span>
-        <p className="m-0 text-slate-700 dark:text-slate-200 leading-relaxed pt-1.5">{s}</p>
-      </li>
+      <Reveal key={i} delay={i * 80}>
+        <li className="h-full rounded-[24px] md:rounded-[28px] bg-[#f5f5f7] dark:bg-[#1c1c1e] p-6 md:p-8">
+          <span className="lp-num !text-[clamp(2.4rem,9vw,3.5rem)] text-[#1660cf] dark:text-[#4d94ff]" aria-hidden="true">{i + 1}</span>
+          <p className="m-0 mt-3 text-xl tracking-tight leading-snug font-medium">{s}</p>
+        </li>
+      </Reveal>
     ))}
   </ol>
 );
 
-export const FactChips: React.FC<{ className?: string }> = ({ className = '' }) => (
-  <ul className={`flex flex-wrap gap-2 list-none p-0 m-0 ${className}`}>
-    {[
-      [Truck, `Jemput-antar gratis ${FACTS.freeShipArea}`],
-      [Clock, `Selesai ${FACTS.days}`],
-      [MapPin, 'Workshop dan kantor di Depok'],
-    ].map(([Icon, text]) => {
-      const I = Icon as typeof Truck;
-      return (
-        <li key={text as string} className="inline-flex items-center gap-2 rounded-full bg-white dark:bg-bg-surface border border-slate-200 dark:border-slate-700 px-3.5 py-2 text-sm font-medium text-slate-700 dark:text-slate-200">
-          <I size={16} className="text-primary dark:text-primary-light shrink-0" aria-hidden="true" />{text as string}
-        </li>
-      );
-    })}
-  </ul>
-);
-
 export const HealthNote: React.FC<{ short?: boolean; className?: string }> = ({ short, className = '' }) => (
-  <p className={`text-sm text-slate-600 dark:text-slate-400 leading-relaxed ${className}`}>
+  <p className={`text-sm leading-relaxed text-[#6e6e73] dark:text-[#a1a1a6] ${className}`}>
     {short ? 'Kasur amblas bisa ikut berperan bikin badan pegal. Nyeri berat atau menetap? Periksa ke dokter.' : HEALTH_NOTE}
   </p>
 );
 
-export const CheckItem: React.FC<{ children: React.ReactNode }> = ({ children }) => (
-  <li className="flex gap-3 items-start">
-    <span className="shrink-0 mt-0.5 w-6 h-6 rounded-full bg-secondary-light dark:bg-secondary-dark flex items-center justify-center" aria-hidden="true">
-      <Check size={16} className="text-green-800 dark:text-secondary-light" />
-    </span>
-    <span className="text-slate-800 dark:text-slate-100 text-base md:text-lg leading-snug">{children}</span>
-  </li>
-);
-
-/** Ref untuk sentinel hero. */
 export const useHeroRef = () => useRef<HTMLElement | null>(null);
