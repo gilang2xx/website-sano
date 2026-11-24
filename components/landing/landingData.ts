@@ -62,22 +62,30 @@ export interface Review {
   text: string;
 }
 
-// Ulasan Google asli, dipilih Gilang (SANO_DESIGNER, signage-tv-loop/testimoni). Hanya nama depan.
+// Ulasan Google asli, dipilih Gilang (SANO_DESIGNER, signage-tv-loop/testimoni). Nama disingkat (nama depan + inisial).
 // Teks disalin apa adanya, kecuali salah ketik, spasi, tanda baca dan emoji dirapikan.
 export const REVIEWS: Record<'sudarsono' | 'hidajat' | 'rifky', Review> = {
   sudarsono: {
-    name: 'Sudarsono',
+    name: 'Sudarsono S.',
     text: 'Analisa masalahnya dikomunikasikan dengan detail dan terbuka. Hasil pekerjaan memuaskan. Springbed KingKoil berumur 20 tahun saya bisa menjadi nyaman kembali. Sangat recommended untuk coba repair dulu di sini sebelum memutuskan beli yang baru karena lebih ekonomis.',
   },
   hidajat: {
-    name: 'Hidajat',
+    name: 'Hidajat W.',
     text: 'Servicenya sangat bagus. Respondnya sangat cepat. Pengerjaannya juga cepat sekali, 2 hari kerja sudah kelar. Saya service 4 kasur sekali gus dalam 2 hari kerja kelar semua. Kasurnya sekarang jauh lebih bagus dibandingin yang dulu.',
   },
   rifky: {
-    name: 'Rifky',
+    name: 'Rifky M.',
     text: 'Mantap servicenya, kasur ambles saya jadi kaya baru lagi. Bangun tidur rasanya enak gak pada sakit dan pegel, dan bikin tidur jadi nyenyak banget.',
   },
 };
 
 export const HEALTH_NOTE =
   'Kasur yang amblas bisa ikut berperan bikin badan pegal, tapi bukan satu-satunya penyebab. Kalau nyerinya berat atau nggak hilang-hilang, tetap periksa ke dokter ya.';
+
+export const FAQ: Array<[string, string]> = [
+  ['Berapa lama pengerjaannya?', `Dikerjakan ${FACTS.days}.`],
+  ['Antar-jemputnya sampai mana?', `Gratis untuk ${FACTS.freeShipArea}.`],
+  ['Garansinya bagaimana?', `Garansi Klinik Matras: Upgrade ${FACTS.warrantyUpgrade}, Service ${FACTS.warrantyService}.`],
+  ['Cara mulainya gimana?', 'Chat WA dan kirim foto kasurmu. Kami cek, kasih saran dan harga pastinya.'],
+  ['Bisa datang langsung ke workshop?', 'Bisa. Workshop dan kantor kami di Depok. Kabari dulu lewat WA ya.'],
+];

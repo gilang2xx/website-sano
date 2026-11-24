@@ -1,12 +1,12 @@
 import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
-  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase, CaseStrip,
-  Screen, Eyebrow, Reveal, ZigZag, PriceCard, FactsBento, ReviewBlock, CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
+  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
+  Screen, Eyebrow, Reveal, ZigZag, PriceCard, ReviewBlock, Faq, CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
-import { FACTS, PAIRS, REVIEWS } from '../../components/landing/landingData';
+import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
-// WARM B (MOCKUP): beli baru atau perbaiki? Satu tujuan: klik WA.
+// WARM B (MOCKUP v5): beli baru atau perbaiki? Satu tujuan: klik WA.
 const MSG = 'Halo Klinik Matras, saya lagi bandingin beli kasur baru atau perbaiki kasur lama. Boleh dibantu hitung untuk kasur saya?';
 
 // Hanya fakta yang kami pegang. Kolom "beli baru" sengaja tanpa angka.
@@ -47,7 +47,7 @@ const LandingWarmB: React.FC = () => {
       <Screen tone="grey" id="banding">
         <Reveal><Eyebrow>Perbandingan</Eyebrow><h2 className="lp-h2 max-w-3xl">Beli baru vs perbaiki, apa <Serif>bedanya?</Serif></h2></Reveal>
         <Reveal>
-          <div className="mt-10 overflow-x-auto rounded-[24px] md:rounded-[28px] bg-white dark:bg-[#1c1c1e]">
+          <div className="mt-7 overflow-x-auto rounded-[24px] md:rounded-[28px] bg-white dark:bg-[#1c1c1e]">
             <table className="w-full min-w-[540px] text-left text-base md:text-lg">
               <caption className="sr-only">Perbandingan beli kasur baru dan memperbaiki kasur di Klinik Matras</caption>
               <thead>
@@ -69,14 +69,12 @@ const LandingWarmB: React.FC = () => {
             </table>
           </div>
         </Reveal>
-        <div className="mt-6"><PriceCard>
+        <div className="mt-5"><PriceCard>
           <WaButton buttonId="ortho-warm-b-banding" placement="pricing" eventLabel="Landing Ortho Warm B - Banding" label="Hitung punyaku" message={MSG} className="w-full sm:w-auto !bg-white !text-[#0b2a6f]" />
         </PriceCard></div>
       </Screen>
 
-      <div className="pt-16 md:pt-24"><BigCase pair={PAIRS.p10} /></div>
-
-      <CaseStrip pairs={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title={<>Kasur yang sudah kami <Serif>benerin.</Serif></>} />
+      <div className="pt-12 md:pt-20 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title={<>Kasur yang sudah kami <Serif>benerin.</Serif></>} /></div>
 
       <Screen tone="grey"><ReviewBlock reviews={[REVIEWS.sudarsono, REVIEWS.hidajat, REVIEWS.rifky]} title={<>Yang tadinya mau beli baru, <Serif>bilang apa?</Serif></>} /></Screen>
 
@@ -89,7 +87,10 @@ const LandingWarmB: React.FC = () => {
         ]} />
       </Screen>
 
-      <Screen tone="grey"><FactsBento /></Screen>
+      <Screen tone="grey">
+        <Reveal><Eyebrow>Pertanyaan umum</Eyebrow><h2 className="lp-h2 max-w-3xl">Masih <Serif>ragu?</Serif></h2></Reveal>
+        <Faq items={FAQ} />
+      </Screen>
 
       <CtaRibbon title={<>Sebelum checkout kasur baru, <Serif>tanya kami dulu.</Serif></>} note={<HealthNote short className="!text-white/70" />}>
         <HeroWaButton buttonId="ortho-warm-b-cta" placement="cta" eventLabel="Landing Ortho Warm B - CTA" label="Chat WA sekarang" message={MSG} className="w-full sm:w-auto" />

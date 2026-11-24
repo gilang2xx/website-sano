@@ -36,7 +36,10 @@ const CSS = `
 .lp-hl{background:#1660cf;color:#fff;padding:0 .28em;border-radius:.3em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}
 details[open] .lp-plus{transform:rotate(45deg)}
-@media (prefers-reduced-motion:reduce){.lp-rv{opacity:1;transform:none;transition:none}}
+@keyframes lp-marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.lp-marq{animation:lp-marq 26s linear infinite}
+@media (min-width:768px){.lp-marq{animation:none}}
+@media (prefers-reduced-motion:reduce){.lp-rv{opacity:1;transform:none;transition:none}.lp-marq{animation:none}}
 `;
 
 /* ───────────── Gambar (srcset, width/height tetap) ───────────── */
@@ -195,7 +198,7 @@ export const FloatingWa: React.FC<WaProps & { sentinelRef?: React.RefObject<HTML
 /* ───────────── Tata letak ───────────── */
 
 export const Screen: React.FC<{ children: React.ReactNode; tone?: 'white' | 'grey'; className?: string; id?: string }> = ({ children, tone = 'white', className = '', id }) => (
-  <section id={id} className={`py-16 md:py-28 ${tone === 'grey' ? 'bg-[#f5f5f7] dark:bg-[#0a0a0a]' : 'bg-white dark:bg-black'} ${className}`}>
+  <section id={id} className={`py-12 md:py-20 ${tone === 'grey' ? 'bg-[#f5f5f7] dark:bg-[#0a0a0a]' : 'bg-white dark:bg-black'} ${className}`}>
     <div className="max-w-5xl mx-auto px-5">{children}</div>
   </section>
 );
@@ -283,29 +286,34 @@ export const HeroSecondaryLink: React.FC<{ href: string; children: React.ReactNo
   <a href={href} className="inline-flex items-center min-h-[44px] text-[17px] font-medium text-white hover:underline underline-offset-4">{children}</a>
 );
 
-/* ───────────── Strip kepercayaan (logo Canva SANO, abu) ───────────── */
+/* ───────────── Strip kepercayaan (logo Canva SANO, monokrom abu) ───────────── */
 
 const LOGOS: Array<[string, string]> = [
-  ['kingkoil', 'King Koil'], ['ladyamericana', 'Lady Americana'], ['florence', 'Florence'], ['romance', 'Romance'],
-  ['elite', 'Elite'], ['springair', 'Spring Air'], ['serta', 'Serta'], ['comforta', 'Comforta'],
-  ['alga', 'Alga'], ['simmons', 'Simmons'], ['therapedic', 'Therapedic'], ['slumberland', 'Slumberland'],
-  ['airland', 'Airland'], ['informasleep', 'informa Sleep'], ['inthebox', 'in.the.box'], ['sealy', 'Sealy'],
+  ['kingkoil', 'King Koil'], ['serta', 'Serta'], ['springair', 'Spring Air'], ['simmons', 'Simmons'],
+  ['sealy', 'Sealy'], ['therapedic', 'Therapedic'], ['ladyamericana', 'Lady Americana'], ['florence', 'Florence'],
 ];
 
+const LogoRow: React.FC<{ hidden?: boolean }> = ({ hidden }) => (
+  <ul aria-hidden={hidden || undefined} className={`flex items-center gap-10 md:gap-12 list-none p-0 m-0 shrink-0 ${hidden ? 'md:hidden' : ''}`}>
+    {LOGOS.map(([f, n]) => (
+      <li key={f} className="flex items-center">
+        <img src={`/landing/brand-${f}.webp`} alt={hidden ? '' : n} loading="lazy" decoding="async" height={28}
+          className="h-7 w-auto max-w-[120px] object-contain grayscale opacity-75 mix-blend-multiply dark:mix-blend-normal dark:invert dark:opacity-60" />
+      </li>
+    ))}
+  </ul>
+);
+
 export const TrustStrip: React.FC = () => (
-  <section className="bg-white dark:bg-black py-12 md:py-16">
+  <section className="bg-white dark:bg-black py-8 md:py-10">
     <div className="max-w-5xl mx-auto px-5 text-center">
-      <Reveal>
-        <p className="text-xs md:text-sm font-semibold uppercase tracking-[.14em] text-[#6e6e73] dark:text-[#a1a1a6]">Dipercaya merestorasi berbagai merek kasur ternama</p>
-        <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-5 list-none p-0 m-0">
-          {LOGOS.map(([f, n]) => (
-            <li key={f} className="flex items-center">
-              <img src={`/landing/brand-${f}.webp`} alt={n} loading="lazy" decoding="async" height={40}
-                className="h-8 md:h-10 w-auto max-w-[96px] md:max-w-[120px] object-contain opacity-70 mix-blend-multiply dark:mix-blend-normal dark:invert dark:opacity-60" />
-            </li>
-          ))}
-        </ul>
-      </Reveal>
+      <p className="text-xs md:text-sm font-semibold uppercase tracking-[.14em] text-[#6e6e73] dark:text-[#a1a1a6]">Dipercaya merestorasi berbagai merek kasur ternama</p>
+    </div>
+    <div className="mt-5 overflow-hidden md:flex md:justify-center [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)] md:[mask-image:none]">
+      <div className="lp-marq flex w-max gap-10 md:gap-0 md:w-auto px-5">
+        <LogoRow />
+        <LogoRow hidden />
+      </div>
     </div>
   </section>
 );
@@ -334,41 +342,37 @@ export const BeforeAfterSlider: React.FC<{ pair: PhotoPair }> = ({ pair }) => {
   );
 };
 
-/** Kasus terkuat: slider lebar penuh tepat di bawah hero/logo. */
-export const BigCase: React.FC<{ pair: PhotoPair }> = ({ pair }) => (
-  <section id="hasil" className="bg-white dark:bg-black pb-16 md:pb-24">
+/** Kasus terkuat: slider besar lebar penuh, lalu strip kasus lain yang lebih kecil. */
+export const BigCase: React.FC<{ pair: PhotoPair; others?: PhotoPair[]; title?: React.ReactNode }> = ({ pair, others, title = <>Geser, lihat <Serif>bedanya.</Serif></> }) => (
+  <section id="hasil" className="bg-white dark:bg-black pb-12 md:pb-16">
     <div className="max-w-6xl mx-auto md:px-5">
       <Reveal>
-        <div className="px-5 md:px-0 mb-6"><Eyebrow>Hasil asli</Eyebrow><h2 className="lp-h2 max-w-3xl">Geser, lihat <Serif>bedanya.</Serif></h2></div>
+        <div className="px-5 md:px-0 mb-6"><Eyebrow>Hasil asli</Eyebrow><h2 className="lp-h2 max-w-3xl">{title}</h2></div>
         <BeforeAfterSlider pair={pair} />
       </Reveal>
-    </div>
-  </section>
-);
-
-export const CaseStrip: React.FC<{ pairs: PhotoPair[]; title?: React.ReactNode }> = ({ pairs, title = <>Hasil lain, <Serif>kasur lain.</Serif></> }) => (
-  <section className="bg-white dark:bg-black pb-14 md:pb-24">
-    <div className="max-w-5xl mx-auto px-5"><Reveal><h2 className="lp-h2 max-w-3xl">{title}</h2></Reveal></div>
-    <div className="max-w-5xl mx-auto">
-      <ul className="mt-8 flex gap-3 overflow-x-auto snap-x snap-mandatory px-5 pb-2 md:grid md:grid-cols-3 md:overflow-visible list-none m-0">
-        {pairs.map((pair) => (
-          <li key={pair.id} className="snap-center shrink-0 w-[78%] sm:w-[46%] md:w-auto">
-            <Link to="/before-after" aria-label={`Lihat galeri before-after lengkap. Contoh: ${pair.title}`}
-              className="block rounded-[24px] overflow-hidden bg-[#f5f5f7] dark:bg-[#1c1c1e] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40">
-              <div className="grid grid-cols-2 gap-0.5">
-                {([['Sebelum', pair.before, pair.altBefore], ['Sesudah', pair.after, pair.altAfter]] as const).map(([lbl, src, alt]) => (
-                  <figure key={lbl} className="relative m-0">
-                    <img src={src} alt={alt} width={pair.w} height={pair.h} loading="lazy" decoding="async" className="w-full aspect-[4/5] object-cover block" />
-                    <figcaption className={`absolute left-2 top-2 text-[11px] font-semibold px-2 py-1 rounded-full text-white ${lbl === 'Sesudah' ? '' : 'bg-black/60'}`} style={lbl === 'Sesudah' ? { backgroundColor: ACCENT } : undefined}>{lbl}</figcaption>
-                  </figure>
-                ))}
-              </div>
-              <p className="px-4 py-3 text-sm font-semibold">{pair.title}</p>
-            </Link>
-          </li>
-        ))}
-      </ul>
-      <div className="px-5 mt-4"><TextLink to="/before-after">Lihat semua hasil</TextLink></div>
+      {others && (
+        <>
+          <ul className="mt-5 flex gap-3 overflow-x-auto snap-x snap-mandatory px-5 md:px-0 pb-2 md:grid md:grid-cols-3 md:overflow-visible list-none m-0">
+            {others.map((o) => (
+              <li key={o.id} className="snap-center shrink-0 w-[72%] sm:w-[40%] md:w-auto">
+                <Link to="/before-after" aria-label={`Lihat galeri before-after lengkap. Contoh: ${o.title}`}
+                  className="block rounded-[20px] overflow-hidden bg-[#f5f5f7] dark:bg-[#1c1c1e] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40">
+                  <div className="grid grid-cols-2 gap-0.5">
+                    {([['Sebelum', o.before, o.altBefore], ['Sesudah', o.after, o.altAfter]] as const).map(([lbl, src, alt]) => (
+                      <figure key={lbl} className="relative m-0">
+                        <img src={src} alt={alt} width={o.w} height={o.h} loading="lazy" decoding="async" className="w-full aspect-[4/3] object-cover block" />
+                        <figcaption className={`absolute left-2 top-2 text-[11px] font-semibold px-2 py-0.5 rounded-full text-white ${lbl === 'Sesudah' ? '' : 'bg-black/60'}`} style={lbl === 'Sesudah' ? { backgroundColor: ACCENT } : undefined}>{lbl}</figcaption>
+                      </figure>
+                    ))}
+                  </div>
+                  <p className="px-4 py-2.5 text-sm font-semibold">{o.title}</p>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          <div className="px-5 md:px-0 mt-2"><TextLink to="/before-after">Lihat semua hasil</TextLink></div>
+        </>
+      )}
     </div>
   </section>
 );
@@ -377,7 +381,7 @@ export const CaseStrip: React.FC<{ pairs: PhotoPair[]; title?: React.ReactNode }
 
 /** Foto di satu sisi, teks di sisi lain. */
 export const Split: React.FC<{ photo: React.ReactNode; reverse?: boolean; children: React.ReactNode }> = ({ photo, reverse, children }) => (
-  <div className="grid gap-8 md:gap-14 md:grid-cols-2 md:items-center">
+  <div className="grid gap-5 md:gap-12 md:grid-cols-2 md:items-center">
     <Reveal className={reverse ? 'md:order-2' : ''}><div className="rounded-[24px] md:rounded-[32px] overflow-hidden bg-[#e8e8ed] dark:bg-[#1c1c1e]">{photo}</div></Reveal>
     <Reveal delay={80} className={reverse ? 'md:order-1' : ''}>{children}</Reveal>
   </div>
@@ -385,7 +389,7 @@ export const Split: React.FC<{ photo: React.ReactNode; reverse?: boolean; childr
 
 /** Cara kerja bernomor, zig-zag foto kiri/kanan. */
 export const ZigZag: React.FC<{ steps: Array<{ title: React.ReactNode; text: string; photo: PhotoName; alt: string }> }> = ({ steps }) => (
-  <ol className="mt-12 grid gap-14 md:gap-20 list-none p-0 m-0">
+  <ol className="mt-8 grid gap-10 md:gap-14 list-none p-0 m-0">
     {steps.map((s, i) => (
       <li key={i}>
         <Split reverse={i % 2 === 1} photo={<Photo name={s.photo} alt={s.alt} sizes="(min-width:768px) 480px, 92vw" />}>
@@ -433,42 +437,22 @@ const IconBox: React.FC<{ children: React.ReactNode; hi?: boolean }> = ({ childr
   <span className={`w-11 h-11 rounded-2xl flex items-center justify-center ${hi ? 'bg-white/20 text-white' : 'bg-[#1660cf]/10 text-[#1660cf] dark:bg-[#4d94ff]/15 dark:text-[#4d94ff]'}`} aria-hidden="true">{children}</span>
 );
 
-export const FactsBento: React.FC = () => (
-  <div className="grid gap-3 md:gap-4 grid-cols-2 md:grid-cols-6">
-    <Reveal className="col-span-2 md:col-span-3">
-      <div className="lp-ribbon text-white rounded-[24px] md:rounded-[28px] p-6 md:p-8 h-full min-h-[210px] flex flex-col justify-between">
-        <IconBox hi><ShieldCheck size={24} /></IconBox>
-        <div>
-          <p className="text-sm font-semibold uppercase tracking-[.14em] opacity-80">Garansi Klinik Matras</p>
-          <div className="flex gap-8 mt-3">
-            <div><div className="lp-num !text-[clamp(2.8rem,11vw,4.6rem)]">20</div><p className="opacity-85">tahun, Upgrade</p></div>
-            <div><div className="lp-num !text-[clamp(2.8rem,11vw,4.6rem)]">10</div><p className="opacity-85">tahun, Service</p></div>
-          </div>
+/** Baris angka (garis aksen tipis di atas tiap angka). */
+export const NumbersRow: React.FC = () => (
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8">
+    {[
+      [FACTS.rating, `rating Google, ${FACTS.reviewCount} ulasan`],
+      ['20 / 10', 'tahun garansi Klinik Matras (Upgrade / Service)'],
+      ['2-3', 'hari pengerjaan'],
+      ['Gratis', `antar-jemput ${FACTS.freeShipArea}`],
+    ].map(([n, l], i) => (
+      <Reveal key={l} delay={i * 70}>
+        <div className="border-t-2 pt-4" style={{ borderColor: ACCENT }}>
+          <p className="lp-num !text-[clamp(2.2rem,8vw,3.5rem)]">{n}</p>
+          <p className="mt-2 text-sm md:text-base text-[#6e6e73] dark:text-[#a1a1a6] leading-snug">{l}</p>
         </div>
-      </div>
-    </Reveal>
-    <Reveal className="col-span-2 md:col-span-3" delay={80}>
-      <BentoCard className="h-full min-h-[210px]">
-        <IconBox><Star size={24} /></IconBox>
-        <div>
-          <Stars />
-          <div className="lp-num !text-[clamp(2.8rem,11vw,4.6rem)] mt-1">{FACTS.rating}</div>
-          <p className="opacity-70">rating Google dari {FACTS.reviewCount} ulasan (data {FACTS.ratingDate})</p>
-        </div>
-      </BentoCard>
-    </Reveal>
-    <Reveal className="col-span-1 md:col-span-2">
-      <BentoCard className="h-full min-h-[170px]"><IconBox><Clock size={24} /></IconBox>
-        <div><p className="text-3xl font-bold tracking-tight">2-3 hari</p><p className="text-sm opacity-70 mt-1">Pengerjaan</p></div></BentoCard>
-    </Reveal>
-    <Reveal className="col-span-1 md:col-span-2" delay={80}>
-      <BentoCard className="h-full min-h-[170px]"><IconBox><Truck size={24} /></IconBox>
-        <div><p className="text-3xl font-bold tracking-tight">Gratis</p><p className="text-sm opacity-70 mt-1">Antar-jemput</p></div></BentoCard>
-    </Reveal>
-    <Reveal className="col-span-2 md:col-span-2" delay={160}>
-      <BentoCard className="h-full min-h-[170px]"><IconBox><MapPin size={24} /></IconBox>
-        <div><p className="text-xl font-bold tracking-tight leading-snug">Jabodetabek dan Bandung</p><p className="text-sm opacity-70 mt-1">Workshop dan kantor di Depok</p></div></BentoCard>
-    </Reveal>
+      </Reveal>
+    ))}
   </div>
 );
 
@@ -476,7 +460,7 @@ export const FactsBento: React.FC = () => (
 
 export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <Reveal className="h-full">
-    <div style={{ backgroundColor: ACCENT }} className="text-white rounded-[24px] md:rounded-[32px] p-8 md:p-10 h-full flex flex-col justify-between gap-6">
+    <div style={{ backgroundColor: ACCENT }} className="text-white rounded-[24px] md:rounded-[32px] p-7 md:p-9 h-full flex flex-col justify-between gap-5">
       <div>
         <p className="text-sm md:text-base font-semibold uppercase tracking-[.14em] opacity-85">Service kasur, mulai dari</p>
         <p className="lp-num mt-2 !text-[clamp(2.6rem,11vw,4.5rem)]">{FACTS.priceService}</p>
@@ -492,29 +476,29 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
 export const ReviewBlock: React.FC<{ reviews: Review[]; title: React.ReactNode }> = ({ reviews, title }) => (
   <div>
     <h2 className="lp-h2 max-w-3xl">{title}</h2>
-    <div className="mt-6 flex items-center gap-3 flex-wrap">
+    <div className="mt-5 flex items-center gap-3 flex-wrap">
       <span className="text-4xl font-bold tracking-tight">{FACTS.rating}</span>
       <div><Stars size={20} /><p className="text-sm text-[#6e6e73] dark:text-[#a1a1a6]">{FACTS.reviewCount} ulasan Google (data {FACTS.ratingDate})</p></div>
     </div>
-    <div className={`mt-8 grid gap-3 md:gap-4 ${reviews.length > 1 ? 'md:grid-cols-3' : 'max-w-xl'}`}>
-      {reviews.map((r, i) => (
-        <Reveal key={r.name} delay={i * 80}>
-          <figure className="m-0 h-full rounded-[24px] md:rounded-[28px] bg-[#f5f5f7] dark:bg-[#1c1c1e] p-6 md:p-7 flex flex-col">
+    <ul className="mt-6 flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pb-2 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible list-none m-0">
+      {reviews.map((r) => (
+        <li key={r.name} className="snap-center shrink-0 w-[84%] sm:w-[55%] md:w-auto">
+          <figure className="m-0 h-full rounded-[24px] bg-[#f5f5f7] dark:bg-[#1c1c1e] p-6 flex flex-col">
             <span className="flex mb-3" aria-label="5 dari 5 bintang"><Stars size={16} /></span>
             <blockquote className="m-0 text-[17px] leading-relaxed tracking-tight flex-grow">&ldquo;{r.text}&rdquo;</blockquote>
             <figcaption className="mt-4 text-sm font-semibold text-[#6e6e73] dark:text-[#a1a1a6]">{r.name}, ulasan Google</figcaption>
           </figure>
-        </Reveal>
+        </li>
       ))}
-    </div>
-    <div className="mt-6"><TextLink href={GOOGLE_MAPS_URL}>Lihat semua ulasan di Google Maps</TextLink></div>
+    </ul>
+    <div className="mt-3"><TextLink href={GOOGLE_MAPS_URL}>Lihat semua ulasan di Google Maps</TextLink></div>
   </div>
 );
 
 /* ───────────── FAQ ───────────── */
 
 export const Faq: React.FC<{ items: Array<[string, string]> }> = ({ items }) => (
-  <div className="mt-10 grid gap-3 md:grid-cols-2 md:gap-x-6 md:items-start">
+  <div className="mt-7 grid gap-3 md:grid-cols-2 md:gap-x-6 md:items-start">
     {items.map(([q, a]) => (
       <details key={q} className="group rounded-[20px] bg-[#f5f5f7] dark:bg-[#1c1c1e] px-6 py-1">
         <summary className="flex items-center justify-between gap-4 min-h-[56px] cursor-pointer text-lg font-semibold tracking-tight">
@@ -529,10 +513,10 @@ export const Faq: React.FC<{ items: Array<[string, string]> }> = ({ items }) => 
 /* ───────────── Pita CTA berwarna di dasar halaman ───────────── */
 
 export const CtaRibbon: React.FC<{ title: React.ReactNode; sub?: string; children: React.ReactNode; note?: React.ReactNode }> = ({ title, sub, children, note }) => (
-  <section className="bg-white dark:bg-black py-14 md:py-24">
+  <section className="bg-white dark:bg-black py-10 md:py-16">
     <div className="max-w-5xl mx-auto px-5">
       <Reveal>
-        <div className="lp-ribbon text-white rounded-[32px] md:rounded-[44px] px-6 py-12 md:py-20 text-center">
+        <div className="lp-ribbon text-white rounded-[32px] md:rounded-[44px] px-6 py-10 md:py-16 text-center">
           <h2 className="lp-h2 max-w-3xl mx-auto">{title}</h2>
           {sub && <p className="mt-4 text-xl text-white/80">{sub}</p>}
           <div className="mt-8">{children}</div>

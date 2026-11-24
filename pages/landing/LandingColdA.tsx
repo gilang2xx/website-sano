@@ -2,13 +2,13 @@ import React from 'react';
 import { Check } from 'lucide-react';
 import { useSEO } from '../../hooks/useSEO';
 import {
-  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase, CaseStrip,
-  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, ServiceCards, PriceCard, FactsBento, ReviewBlock,
+  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
+  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, ServiceCards, PriceCard, NumbersRow, ReviewBlock, Faq,
   CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
-import { FACTS, PAIRS, REVIEWS } from '../../components/landing/landingData';
+import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
-// COLD A (MOCKUP): pegal dulu, baru kasur. Satu tujuan: klik WA.
+// COLD A (MOCKUP v5): pegal dulu, baru kasur. Satu tujuan: klik WA.
 const MSG = 'Halo Klinik Matras, badan saya sering pegal waktu bangun tidur. Saya mau cek kondisi kasur saya, ini fotonya.';
 
 const CHECKS = [
@@ -44,39 +44,25 @@ const LandingColdA: React.FC = () => {
 
       <TrustStrip />
 
-      <BigCase pair={PAIRS.p10} />
-
       <Screen tone="grey">
         <Split photo={<Photo name="masalah" alt="Kasur lama yang kusam dan cekung sebelum dikerjakan" />}>
           <Eyebrow>Kenali tandanya</Eyebrow>
           <h2 className="lp-h2">Kasurmu <Hl>begini nggak?</Hl></h2>
-          <ul className="mt-6 grid gap-3 list-none p-0 m-0">
+          <ul className="mt-5 grid gap-3 list-none p-0 m-0">
             {CHECKS.map((c) => (
               <li key={c} className="flex gap-3 items-start text-lg leading-snug">
                 <span className="mt-0.5 shrink-0 w-6 h-6 rounded-full bg-[#1660cf] text-white flex items-center justify-center" aria-hidden="true"><Check size={15} /></span>{c}
               </li>
             ))}
           </ul>
-          <p className="mt-5 text-lg font-semibold">Kalau kamu centang dua atau lebih, kasurmu layak dicek.</p>
+          <p className="mt-4 text-lg font-semibold">Kalau kamu centang dua atau lebih, kasurmu layak dicek.</p>
           <div className="mt-5"><WaButton buttonId="ortho-cold-a-cta" placement="cta" eventLabel="Landing Ortho Cold A - CTA" label="Kirim foto kasurku" message={MSG} className="w-full sm:w-auto" /></div>
         </Split>
       </Screen>
 
-      <CaseStrip pairs={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} />
+      <div className="pt-12 md:pt-20 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} /></div>
 
       <Screen tone="grey">
-        <Reveal><Eyebrow>Dua pilihan</Eyebrow><h2 className="lp-h2 max-w-3xl">Service atau Upgrade? Kami bantu <Serif>pilihkan.</Serif></h2></Reveal>
-        <ServiceCards cards={[
-          { photo: 'service', alt: 'Kasur lama dengan kain kusam di workshop sebelum diservice', title: 'Service', line: 'Fondasi yang amblas kami perbaiki. Kasurnya tetap kasurmu.', badge: `Garansi ${FACTS.warrantyService}`,
-            cta: <WaButton buttonId="ortho-cold-a-service" placement="service-card" eventLabel="Landing Ortho Cold A - Service" label="Tanya Service" message={MSG} className="w-full sm:w-auto" /> },
-          { photo: 'upgrade', alt: 'Kasur yang sudah diupgrade, rapi dan tegak di workshop', title: 'Upgrade', line: 'Kasur lamamu dirombak jadi lebih kokoh dan lebih menopang badan. Otomatis paket Premium.', badge: `Garansi ${FACTS.warrantyUpgrade}`, hi: true,
-            cta: <HeroWaButton buttonId="ortho-cold-a-upgrade" placement="service-card" eventLabel="Landing Ortho Cold A - Upgrade" label="Tanya Upgrade" message={MSG} className="w-full sm:w-auto" /> },
-        ]} />
-        <div className="mt-6"><PriceCard /></div>
-        <Reveal><Lead className="mt-5">Bingung pilih yang mana? Wajar kok. Dari foto kasurmu, tim kami bantu pilih.</Lead></Reveal>
-      </Screen>
-
-      <Screen>
         <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2">Gampang, <Serif>tiga langkah.</Serif></h2></Reveal>
         <ZigZag steps={[
           { title: <><Hl>Kirim foto</Hl> kasurmu lewat WA</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Kasur di ruangan rumah yang difoto untuk dikirim ke tim' },
@@ -85,16 +71,24 @@ const LandingColdA: React.FC = () => {
         ]} />
       </Screen>
 
-      <Screen tone="grey"><FactsBento /></Screen>
+      <Screen>
+        <Reveal><Eyebrow>Dua pilihan</Eyebrow><h2 className="lp-h2 max-w-3xl">Service atau Upgrade? Kami bantu <Serif>pilihkan.</Serif></h2></Reveal>
+        <ServiceCards cards={[
+          { photo: 'service', alt: 'Kasur lama dengan kain kusam di workshop sebelum diservice', title: 'Service', line: 'Fondasi yang amblas kami perbaiki. Kasurnya tetap kasurmu.', badge: `Garansi ${FACTS.warrantyService}`,
+            cta: <WaButton buttonId="ortho-cold-a-service" placement="service-card" eventLabel="Landing Ortho Cold A - Service" label="Tanya Service" message={MSG} className="w-full sm:w-auto" /> },
+          { photo: 'upgrade', alt: 'Kasur yang sudah diupgrade, rapi dan tegak di workshop', title: 'Upgrade', line: 'Kasur lamamu dirombak jadi lebih kokoh dan lebih menopang badan. Otomatis paket Premium.', badge: `Garansi ${FACTS.warrantyUpgrade}`, hi: true,
+            cta: <HeroWaButton buttonId="ortho-cold-a-upgrade" placement="service-card" eventLabel="Landing Ortho Cold A - Upgrade" label="Tanya Upgrade" message={MSG} className="w-full sm:w-auto" /> },
+        ]} />
+        <div className="mt-5"><PriceCard /></div>
+        <Reveal><Lead className="mt-4">Bingung pilih yang mana? Wajar kok. Dari foto kasurmu, tim kami bantu pilih.</Lead></Reveal>
+        <div className="mt-10"><NumbersRow /></div>
+      </Screen>
 
-      <Screen><ReviewBlock reviews={[REVIEWS.rifky, REVIEWS.sudarsono, REVIEWS.hidajat]} title={<>Kata mereka yang <Serif>sudah pakai.</Serif></>} /></Screen>
+      <Screen tone="grey"><ReviewBlock reviews={[REVIEWS.rifky, REVIEWS.sudarsono, REVIEWS.hidajat]} title={<>Kata mereka yang <Serif>sudah pakai.</Serif></>} /></Screen>
 
-      <Screen tone="grey">
-        <Split reverse photo={<Photo name="workshop" alt="Workshop Klinik Matras di Depok, kasur selesai dan tim bekerja" />}>
-          <Eyebrow>Workshop</Eyebrow>
-          <h2 className="lp-h2">Dikerjakan di <Serif>Depok.</Serif></h2>
-          <Lead className="mt-4">Workshop dan kantor kami di Depok. Mau lihat langsung? Bisa, kabari dulu lewat WA.</Lead>
-        </Split>
+      <Screen>
+        <Reveal><Eyebrow>Pertanyaan umum</Eyebrow><h2 className="lp-h2 max-w-3xl">Masih <Serif>ragu?</Serif></h2></Reveal>
+        <Faq items={FAQ} />
       </Screen>
 
       <CtaRibbon
