@@ -319,74 +319,94 @@ export const HealthNote: React.FC<{ short?: boolean; className?: string }> = ({ 
 
 export const useHeroRef = () => useRef<HTMLElement | null>(null);
 
-/* ───────────── Hero gradien + kartu kaca melayang ───────────── */
+/* ───────────── Hero terang (tanpa gradien biru) ───────────── */
 
-export const Pill: React.FC<{ children: React.ReactNode; dark?: boolean }> = ({ children, dark }) => (
-  <span className={`inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold ${dark ? 'bg-white/15 text-white border border-white/25' : 'bg-[#1660cf]/10 text-[#1660cf]'}`}>
-    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: LIME }} aria-hidden="true" />{children}
+export const Pill: React.FC<{ children: React.ReactNode }> = ({ children }) => (
+  <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold bg-[#1660cf]/10 text-[#1660cf] dark:bg-[#4d94ff]/15 dark:text-[#4d94ff]">
+    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: LIME, boxShadow: '0 0 0 1px rgba(11,42,111,.25)' }} aria-hidden="true" />{children}
   </span>
 );
 
-/** Satu kata kunci berwarna aksen di judul hero. */
-export const Kw: React.FC<{ children: React.ReactNode }> = ({ children }) => <span style={{ color: LIME }}>{children}</span>;
+/** Satu kata kunci berwarna aksen biru di judul hero. */
+export const Kw: React.FC<{ children: React.ReactNode }> = ({ children }) => <span className="text-[#1660cf] dark:text-[#4d94ff]">{children}</span>;
 
-const GlassChip: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
-  <div className={`lp-glass rounded-2xl px-4 py-3 text-white text-left ${className}`}>{children}</div>
+const Chip: React.FC<{ children: React.ReactNode; className?: string }> = ({ children, className = '' }) => (
+  <div className={`rounded-2xl bg-white dark:bg-[#1c1c1e] shadow-xl shadow-black/10 dark:shadow-black/40 border border-black/5 dark:border-white/10 px-4 py-3 text-left ${className}`}>{children}</div>
 );
 
-/**
- * Hero: gradien CSS biru (atau varian gelap), judul + tombol di atas,
- * lalu kartu before-after utama dengan kartu kaca melayang yang bertumpuk.
- * Blur hanya dipakai di sini.
- */
-export const GradientHero = React.forwardRef<HTMLElement, {
-  pill: string; title: React.ReactNode; lead: React.ReactNode; actions: React.ReactNode;
-  pair: PhotoPair; night?: boolean; extraChip?: React.ReactNode;
-}>(({ pill, title, lead, actions, pair, night, extraChip }, ref) => (
-  <section ref={ref} className={`${night ? 'lp-hero-night' : 'lp-hero'} text-white rounded-b-[36px] md:rounded-b-[56px] overflow-hidden`}>
-    <div className="max-w-5xl mx-auto px-5 pt-10 md:pt-16 pb-14 md:pb-20 text-center">
-      <Pill dark>{pill}</Pill>
-      <h1 className="lp-big mt-5 mx-auto max-w-4xl">{title}</h1>
-      <p className="mt-4 text-lg md:text-2xl leading-snug tracking-tight text-white/80 max-w-2xl mx-auto">{lead}</p>
-      <div className="mt-7 flex flex-col sm:flex-row items-center justify-center gap-1 sm:gap-6">{actions}</div>
+export interface HeroImage { src: string; alt: string; w: number; h: number; fit?: 'cover' | 'contain' }
 
-      <div className="relative mt-12 md:mt-16 max-w-2xl mx-auto">
-        <div className="lp-glass rounded-[28px] p-2 md:p-3">
-          <BeforeAfterSlider pair={pair} eager inCard />
-        </div>
-        <div className="flex flex-wrap justify-center gap-2 -mt-6 relative z-10 px-1 md:contents">
-          <GlassChip className="md:absolute md:-left-20 md:top-1/2 lp-float">
-            <div className="flex items-center gap-1.5"><Star size={15} className="fill-amber-300 text-amber-300" aria-hidden="true" /><span className="font-extrabold text-lg leading-none">{FACTS.rating}</span></div>
-            <p className="text-xs text-white/80 mt-1">{FACTS.reviewCount} ulasan Google</p>
-          </GlassChip>
-          <GlassChip className="md:absolute md:-right-16 md:top-24">
-            <div className="flex items-center gap-2"><ShieldCheck size={18} aria-hidden="true" /><span className="text-xs font-semibold text-white/80 leading-tight">Garansi Klinik Matras</span></div>
+/**
+ * Hero terang: teks di kiri, visual Canva SANO di kanan (kartu bulat),
+ * dengan kartu putih melayang (rating, garansi, 2-3 hari). Tanpa blur, tanpa gradien.
+ */
+export const LightHero = React.forwardRef<HTMLElement, {
+  pill: string; title: React.ReactNode; lead: React.ReactNode; actions: React.ReactNode;
+  image?: HeroImage; visual?: React.ReactNode; belowActions?: React.ReactNode;
+}>(({ pill, title, lead, actions, image, visual, belowActions }, ref) => {
+  const floatChips = !!image && image.h > image.w;
+  return (
+  <section ref={ref} className="bg-[#f5f5f7] dark:bg-[#0a0a0a] rounded-b-[36px] md:rounded-b-[56px]">
+    <div className="max-w-6xl mx-auto px-5 pt-10 md:pt-16 pb-12 md:pb-20 grid gap-10 md:grid-cols-2 md:items-center">
+      <div className="text-center md:text-left">
+        <Pill>{pill}</Pill>
+        <h1 className="lp-big mt-5 md:!text-[clamp(2.4rem,4.2vw,3.6rem)]">{title}</h1>
+        <p className="mt-4 text-lg md:text-2xl leading-snug tracking-tight text-[#6e6e73] dark:text-[#a1a1a6] max-w-xl mx-auto md:mx-0">{lead}</p>
+        <div className="mt-7 flex flex-col sm:flex-row md:flex-col lg:flex-row items-center md:items-start lg:items-center justify-center md:justify-start gap-1 sm:gap-6 md:gap-2 lg:gap-6">{actions}</div>
+        {belowActions}
+      </div>
+      <div className={`relative max-w-md mx-auto w-full ${image && image.h > image.w ? 'md:max-w-sm' : 'md:max-w-none'}`}>
+        {visual ?? (image && (
+          <div className="rounded-[28px] md:rounded-[36px] overflow-hidden bg-[#e4eefb] dark:bg-[#16202e]">
+            <img src={image.src} alt={image.alt} width={image.w} height={image.h} loading="eager" decoding="async" {...{ fetchPriority: 'high' as const }}
+              className={`w-full h-auto block ${image.fit === 'contain' ? 'object-contain' : 'object-cover'}`} />
+          </div>
+        ))}
+        <div className={`flex flex-wrap justify-center gap-2 -mt-5 relative z-10 px-1 ${floatChips ? 'md:contents' : 'md:mt-4 md:justify-start'}`}>
+          <Chip className={floatChips ? 'md:absolute md:-left-8 md:top-6 lp-float' : ''}>
+            <div className="flex items-center gap-1.5"><Star size={15} className="fill-amber-400 text-amber-400" aria-hidden="true" /><span className="font-extrabold text-lg leading-none">{FACTS.rating}</span></div>
+            <p className="text-xs text-[#6e6e73] dark:text-[#a1a1a6] mt-1">{FACTS.reviewCount} ulasan Google</p>
+          </Chip>
+          <Chip className={floatChips ? 'md:absolute md:-right-4 md:bottom-16' : ''}>
+            <div className="flex items-center gap-2 text-[#1660cf] dark:text-[#4d94ff]"><ShieldCheck size={18} aria-hidden="true" /><span className="text-xs font-semibold leading-tight">Garansi Klinik Matras</span></div>
             <p className="text-sm font-bold mt-1">Upgrade {FACTS.warrantyUpgrade}, Service {FACTS.warrantyService}</p>
-          </GlassChip>
-          <GlassChip className="md:absolute md:-left-10 md:bottom-4">
-            <div className="flex items-center gap-2"><Clock size={16} aria-hidden="true" /><span className="font-extrabold text-lg leading-none">{FACTS.days}</span></div>
-            <p className="text-xs text-white/80 mt-1">pengerjaan</p>
-          </GlassChip>
-          {extraChip}
+          </Chip>
+          <Chip className={floatChips ? 'md:absolute md:-left-6 md:bottom-6' : ''}>
+            <div className="flex items-center gap-2"><Clock size={16} className="text-[#1660cf] dark:text-[#4d94ff]" aria-hidden="true" /><span className="font-extrabold text-lg leading-none">{FACTS.days}</span></div>
+            <p className="text-xs text-[#6e6e73] dark:text-[#a1a1a6] mt-1">pengerjaan</p>
+          </Chip>
         </div>
       </div>
     </div>
   </section>
-));
-GradientHero.displayName = 'GradientHero';
+  );
+});
+LightHero.displayName = 'LightHero';
 
 export const HeroSecondaryLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-  <a href={href} className="inline-flex items-center min-h-[44px] text-[17px] font-medium text-white/90 hover:text-white underline-offset-4 hover:underline">{children}</a>
+  <a href={href} className="inline-flex items-center min-h-[44px] text-[17px] font-medium text-[#1660cf] dark:text-[#4d94ff] hover:underline">{children}</a>
 );
 
-/** Tombol WA di atas gradien: lime supaya kontras (satu-satunya pemakaian lime besar). */
-export const HeroWaButton: React.FC<Omit<WaProps, 'tone'>> = (p) => <WaButton {...p} tone="lime" />;
+/** Slider before-after besar (kasus terkuat), lebar penuh tepat di bawah hero. */
+export const BigCase: React.FC<{ pair: PhotoPair }> = ({ pair }) => (
+  <section id="hasil" className="bg-white dark:bg-black pt-14 md:pt-24">
+    <div className="max-w-6xl mx-auto md:px-5">
+      <Reveal>
+        <div className="px-5 md:px-0 mb-6"><Eyebrow>Hasil asli</Eyebrow><h2 className="lp-h2 max-w-3xl">Geser, lihat bedanya.</h2></div>
+        <BeforeAfterSlider pair={pair} />
+      </Reveal>
+    </div>
+  </section>
+);
 
 /* ───────────── Strip kepercayaan ───────────── */
 
+// Logo dari Canva Gilang (SANO-Credentials, halaman Portfolio), dipotong dan dijadikan abu (monokrom) WebP kecil.
 const LOGOS: Array<[string, string]> = [
-  ['kingkoil', 'King Koil'], ['serta', 'Serta'], ['ladyamericana', 'Lady Americana'],
-  ['elite', 'Elite'], ['florence', 'Florence'], ['springair', 'Spring Air'],
+  ['kingkoil', 'King Koil'], ['ladyamericana', 'Lady Americana'], ['florence', 'Florence'], ['romance', 'Romance'],
+  ['elite', 'Elite'], ['springair', 'Spring Air'], ['serta', 'Serta'], ['comforta', 'Comforta'],
+  ['alga', 'Alga'], ['simmons', 'Simmons'], ['therapedic', 'Therapedic'], ['slumberland', 'Slumberland'],
+  ['airland', 'Airland'], ['informasleep', 'informa Sleep'], ['inthebox', 'in.the.box'], ['sealy', 'Sealy'],
 ];
 
 export const TrustStrip: React.FC = () => (
@@ -397,14 +417,61 @@ export const TrustStrip: React.FC = () => (
           <Stars /> <span><strong>{FACTS.rating}</strong> di Google dari {FACTS.reviewCount} ulasan</span>
         </p>
         <p className="mt-8 text-xs md:text-sm font-semibold uppercase tracking-[.14em] text-[#6e6e73] dark:text-[#a1a1a6]">Dipercaya merestorasi berbagai merek kasur ternama</p>
-        <ul className="mt-5 flex flex-wrap items-center justify-center gap-3 list-none p-0 m-0">
+        <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-7 gap-y-5 list-none p-0 m-0">
           {LOGOS.map(([f, n]) => (
-            <li key={f} className="bg-white rounded-2xl border border-black/5 dark:border-white/10 px-4 py-3 h-16 w-28 md:w-32 flex items-center justify-center">
-              <img src={`/landing/logo-${f}.webp`} alt={n} loading="lazy" decoding="async" height={40} className="max-h-10 w-auto max-w-full object-contain" />
+            <li key={f} className="flex items-center">
+              <img src={`/landing/brand-${f}.webp`} alt={n} loading="lazy" decoding="async" height={40}
+                className="h-8 md:h-10 w-auto max-w-[96px] md:max-w-[120px] object-contain opacity-70 mix-blend-multiply dark:mix-blend-normal dark:invert dark:opacity-60" />
             </li>
           ))}
         </ul>
       </Reveal>
+    </div>
+  </section>
+);
+
+/* ───────────── Kartu harga (sorotan) ───────────── */
+
+export const PriceCard: React.FC<{ big?: boolean; children?: React.ReactNode }> = ({ big, children }) => (
+  <Reveal>
+    <div style={{ backgroundColor: ACCENT }} className={`text-white rounded-[24px] md:rounded-[32px] ${big ? 'p-8 md:p-12' : 'p-6 md:p-8'} flex flex-col md:flex-row md:items-end md:justify-between gap-6`}>
+      <div>
+        <p className="text-sm md:text-base font-semibold uppercase tracking-[.14em] opacity-85">Service kasur, mulai dari</p>
+        <p className={`lp-num mt-2 ${big ? '!text-[clamp(2.2rem,8.5vw,3.4rem)]' : '!text-[clamp(3rem,13vw,6.5rem)]'}`}>{FACTS.priceService}</p>
+        <p className="mt-3 text-base md:text-lg opacity-85 max-w-md leading-snug">Harga pasti setelah kami lihat foto kasurmu.</p>
+      </div>
+      {children && <div className="md:shrink-0">{children}</div>}
+    </div>
+  </Reveal>
+);
+
+/* ───────────── Strip kasus lain: kartu kecil before/after ───────────── */
+
+export const CaseStrip: React.FC<{ pairs: PhotoPair[]; title?: string }> = ({ pairs, title = 'Hasil lain, kasur lain.' }) => (
+  <section className="bg-white dark:bg-black pb-14 md:pb-24">
+    <div className="max-w-5xl mx-auto px-5">
+      <Reveal><h2 className="lp-h2 max-w-3xl">{title}</h2></Reveal>
+    </div>
+    <div className="max-w-5xl mx-auto">
+      <ul className="mt-8 flex gap-3 overflow-x-auto snap-x snap-mandatory px-5 pb-2 md:grid md:grid-cols-3 md:overflow-visible list-none m-0">
+        {pairs.map((pair) => (
+          <li key={pair.id} className="snap-center shrink-0 w-[78%] sm:w-[46%] md:w-auto">
+            <Link to="/before-after" aria-label={`Lihat galeri before-after lengkap. Contoh: ${pair.title}`}
+              className="block rounded-[24px] overflow-hidden bg-[#f5f5f7] dark:bg-[#1c1c1e] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40">
+              <div className="grid grid-cols-2 gap-0.5 bg-[#f5f5f7] dark:bg-[#1c1c1e]">
+                {([['Sebelum', pair.before, pair.altBefore], ['Sesudah', pair.after, pair.altAfter]] as const).map(([lbl, src, alt]) => (
+                  <figure key={lbl} className="relative m-0">
+                    <img src={src} alt={alt} width={pair.w} height={pair.h} loading="lazy" decoding="async" className="w-full aspect-[4/5] object-cover block" />
+                    <figcaption className={`absolute left-2 top-2 text-[11px] font-semibold px-2 py-1 rounded-full text-white ${lbl === 'Sesudah' ? '' : 'bg-black/60'}`} style={lbl === 'Sesudah' ? { backgroundColor: ACCENT } : undefined}>{lbl}</figcaption>
+                  </figure>
+                ))}
+              </div>
+              <p className="px-4 py-3 text-sm font-semibold">{pair.title}</p>
+            </Link>
+          </li>
+        ))}
+      </ul>
+      <div className="px-5 mt-4"><TextLink to="/before-after">Lihat semua hasil</TextLink></div>
     </div>
   </section>
 );
@@ -425,3 +492,6 @@ export const CtaRibbon: React.FC<{ title: string; sub?: string; children: React.
     </div>
   </section>
 );
+
+/** Tombol WA lime di atas pita biru (CTA penutup). */
+export const HeroWaButton: React.FC<Omit<WaProps, 'tone'>> = (p) => <WaButton {...p} tone="lime" />;

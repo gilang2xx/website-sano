@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
-  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, GradientHero, Kw, TrustStrip, CtaRibbon,
-  TextLink, Screen, Eyebrow, Reveal, BeforeAfterSlider, FactsBento, ReviewBlock, Steps, HealthNote, useHeroRef,
+  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, LightHero, BigCase, Kw, TrustStrip, CtaRibbon,
+  Screen, Eyebrow, Reveal, CaseStrip, PriceCard, FactsBento, ReviewBlock, Steps, HealthNote, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
@@ -29,17 +29,19 @@ const LandingWarmB: React.FC = () => {
 
   return (
     <LandingShell>
-      <GradientHero
+      <LightHero
         ref={hero}
         pill="Beli baru atau perbaiki?"
         title={<>Mau beli kasur baru? <Kw>Bandingin</Kw> aja dulu</>}
         lead={`Kasur lamamu bisa dibikin kokoh lagi. Service mulai dari ${FACTS.priceService}, dijemput gratis.`}
-        pair={PAIRS.p11}
+        image={{ src: '/landing/hero-sfs.webp', alt: 'Susunan lapisan fondasi kasur: busa, frame guard dan pocket spring', w: 1200, h: 460, fit: 'contain' }}
         actions={<>
-          <HeroWaButton buttonId="ortho-warm-b-hero" placement="hero" eventLabel="Landing Ortho Warm B - Hero" label="Bandingin buat kasurku" message={MSG} className="w-full sm:w-auto" />
+          <WaButton buttonId="ortho-warm-b-hero" placement="hero" eventLabel="Landing Ortho Warm B - Hero" label="Bandingin buat kasurku" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#banding">Lihat perbandingannya</HeroSecondaryLink>
         </>}
       />
+
+      <BigCase pair={PAIRS.p10} />
 
       <TrustStrip />
 
@@ -68,17 +70,11 @@ const LandingWarmB: React.FC = () => {
             </table>
           </div>
         </Reveal>
+        <div className="mt-6"><PriceCard /></div>
         <Reveal><div className="mt-8"><WaButton buttonId="ortho-warm-b-banding" placement="pricing" eventLabel="Landing Ortho Warm B - Banding" label="Hitung punyaku" message={MSG} className="w-full sm:w-auto" /></div></Reveal>
       </Screen>
 
-      <Screen>
-        <Reveal><Eyebrow>Kasur pelanggan</Eyebrow><h2 className="lp-h2 max-w-3xl">Kasur yang sudah kami benerin.</h2></Reveal>
-        <div className="mt-10 grid gap-8 md:grid-cols-2 -mx-5 md:mx-0">
-          <Reveal><BeforeAfterSlider pair={PAIRS.p10} /></Reveal>
-          <Reveal delay={100}><BeforeAfterSlider pair={PAIRS.p7} /></Reveal>
-        </div>
-        <div className="mt-6"><TextLink to="/before-after">Lihat semua hasil before-after</TextLink></div>
-      </Screen>
+      <CaseStrip pairs={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title="Kasur yang sudah kami benerin." />
 
       <Screen tone="grey"><FactsBento /></Screen>
 

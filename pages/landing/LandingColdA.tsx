@@ -1,8 +1,8 @@
 import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
-  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, GradientHero, Kw, TrustStrip, CtaRibbon,
-  TextLink, Screen, Eyebrow, Lead, Reveal, BeforeAfterSlider, FactsBento, ReviewBlock, Steps, HealthNote, BentoCard, useHeroRef,
+  LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, LightHero, BigCase, Kw, TrustStrip, CtaRibbon,
+  Screen, Eyebrow, Lead, Reveal, CaseStrip, PriceCard, FactsBento, ReviewBlock, Steps, HealthNote, BentoCard, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
@@ -27,17 +27,19 @@ const LandingColdA: React.FC = () => {
 
   return (
     <LandingShell>
-      <GradientHero
+      <LightHero
         ref={hero}
         pill="Service dan upgrade kasur"
         title={<>Bangun tidur badan pegal &amp; sakit pinggang? Coba <Kw>cek kasurmu dulu</Kw></>}
         lead="Kirim foto kasurmu, kami bantu cek lewat WA."
-        pair={PAIRS.p10}
+        image={{ src: '/landing/hero-nyeri.webp', alt: 'Ilustrasi orang berbaring di kasur dengan nyeri di pinggang', w: 612, h: 784 }}
         actions={<>
-          <HeroWaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />
+          <WaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#hasil">Lihat hasilnya</HeroSecondaryLink>
         </>}
       />
+
+      <BigCase pair={PAIRS.p10} />
 
       <TrustStrip />
 
@@ -54,14 +56,7 @@ const LandingColdA: React.FC = () => {
         <Reveal><div className="mt-4"><WaButton buttonId="ortho-cold-a-cta" placement="cta" eventLabel="Landing Ortho Cold A - CTA" label="Kirim foto kasurku" message={MSG} className="w-full sm:w-auto" /></div></Reveal>
       </Screen>
 
-      <Screen id="hasil">
-        <Reveal><Eyebrow>Kasur pelanggan</Eyebrow><h2 className="lp-h2 max-w-3xl">Sebelum dan sesudah, hasil asli.</h2></Reveal>
-        <div className="mt-10 grid gap-8 md:grid-cols-2 -mx-5 md:mx-0">
-          <Reveal><BeforeAfterSlider pair={PAIRS.p11} /></Reveal>
-          <Reveal delay={100}><BeforeAfterSlider pair={PAIRS.p6} /></Reveal>
-        </div>
-        <div className="mt-6"><TextLink to="/before-after">Lihat semua hasil before-after</TextLink></div>
-      </Screen>
+      <div><CaseStrip pairs={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} /></div>
 
       <Screen tone="grey">
         <Reveal><Eyebrow>Dua pilihan</Eyebrow><h2 className="lp-h2 max-w-3xl">Service atau Upgrade? Kami bantu pilihkan.</h2></Reveal>
@@ -77,8 +72,8 @@ const LandingColdA: React.FC = () => {
             <p className="mt-8 text-lg font-semibold">Garansi Klinik Matras {FACTS.warrantyUpgrade}</p>
           </BentoCard></Reveal>
         </div>
-        <Reveal><p className="mt-10 text-2xl md:text-4xl font-bold tracking-tight">Service kasur mulai dari <span className="text-[#1660cf] dark:text-[#4d94ff]">{FACTS.priceService}</span></p>
-          <Lead className="mt-2">Bingung pilih yang mana? Wajar kok. Dari foto kasurmu, tim kami bantu pilih.</Lead></Reveal>
+        <div className="mt-6"><PriceCard /></div>
+        <Reveal><Lead className="mt-5">Bingung pilih yang mana? Wajar kok. Dari foto kasurmu, tim kami bantu pilih.</Lead></Reveal>
       </Screen>
 
       <Screen><FactsBento /></Screen>
