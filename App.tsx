@@ -28,7 +28,7 @@ const PAGE_LOADERS: Record<StaticRoutePath, PageLoader> = {
 const LANDING_PAGES: Record<(typeof LANDING_ROUTES)[number], React.LazyExoticComponent<React.ComponentType>> = {
   '/kasur-orthopedic': lazy(() => import('./pages/landing/LandingColdA')),
   '/kasur-orthopedic/banding': lazy(() => import('./pages/landing/LandingWarmB')),
-  '/service-kasur-depok': lazy(() => import('./pages/landing/LandingHotA')),
+  '/service-kasur': lazy(() => import('./pages/landing/LandingHotA')),
 };
 const landingFor = (pathname: string) => {
   const p = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;

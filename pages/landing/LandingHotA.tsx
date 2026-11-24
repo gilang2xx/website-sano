@@ -7,14 +7,14 @@ import {
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
-// HOT A (MOCKUP v5): harga mulai dan slot. Satu tujuan: klik WA.
-const MSG = 'Halo Klinik Matras, saya mau tanya harga service kasur dan slot jemput terdekat.';
+// HOT A (MOCKUP): harga mulai dan booking. Satu tujuan: klik WA.
+const MSG = 'Halo Klinik Matras, saya mau booking service kasur di Jabodetabek. Boleh tanya harganya?';
 
 const LandingHotA: React.FC = () => {
   useSEO({
-    title: 'Service Kasur Depok, Cek Harga dan Slot Jemput',
-    description: `Service kasur mulai dari ${FACTS.priceService}. Jemput-antar gratis, dikerjakan ${FACTS.days}. Tanya harga dan slot lewat WhatsApp.`,
-    path: '/service-kasur-depok',
+    title: 'Service Kasur Jabodetabek',
+    description: `Service kasur mulai dari ${FACTS.priceService}. Antar-jemput gratis ${FACTS.freeShipArea}, dikerjakan ${FACTS.days}. Booking lewat WhatsApp.`,
+    path: '/service-kasur',
     noindex: true,
   });
 
@@ -24,11 +24,11 @@ const LandingHotA: React.FC = () => {
     <LandingShell>
       <PhotoHero
         ref={hero}
-        pill="Depok, Jabodetabek, Bandung"
-        title={<>Service kasur di Depok? Cek <Serif>harga</Serif> dan slot jemput</>}
-        lead={`Service kasur mulai dari ${FACTS.priceService}. Dijemput gratis, dikerjakan ${FACTS.days}.`}
+        pill="Jabodetabek & Bandung"
+        title={<>Service kasur di Jabodetabek? <Serif>Kami jemput</Serif>, kamu tinggal tunggu nyaman.</>}
+        lead={`Mulai ${FACTS.priceService}. Antar-jemput gratis ${FACTS.freeShipArea}. ${FACTS.days}, kasurmu pulang nyaman lagi.`}
         checks={['Antar-jemput gratis', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
-        actions={<WaButton buttonId="ortho-hot-a-hero" placement="hero" eventLabel="Landing Ortho Hot A - Hero" label="Tanya harga dan jadwal" message={MSG} className="w-full sm:w-auto" />}
+        actions={<WaButton buttonId="ortho-hot-a-hero" placement="hero" eventLabel="Landing Ortho Hot A - Hero" label="Booking lewat WA" message={MSG} className="w-full sm:w-auto" />}
       />
 
       <div className="pt-10 md:pt-16 bg-white dark:bg-black"><BigCase pair={PAIRS.world} others={[PAIRS.culm, PAIRS.thera, PAIRS.heir]} title={<>Sudah banyak yang <Serif>pakai.</Serif></>} /></div>
@@ -57,12 +57,11 @@ const LandingHotA: React.FC = () => {
 
 
       <Screen tone="grey">
-        <Reveal><Eyebrow>Jadwal</Eyebrow><h2 className="lp-h2 max-w-3xl">Slot jemput <Serif>terdekat?</Serif></h2>
-          <Lead className="mt-3 max-w-2xl">Jadwal menyesuaikan antrean workshop. Tanya lewat WA, kami kabari yang masih kosong.</Lead></Reveal>
+        <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2 max-w-3xl">Dari chat sampai <Serif>kasur pulang.</Serif></h2></Reveal>
         <ZigZag steps={[
-          { title: <>Chat dan <Hl>kirim foto</Hl> kasur</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Ibu memeriksa kasurnya sebelum mengirim foto ke tim' },
-          { title: <>Sepakat <Hl>harga dan jadwal</Hl></>, text: 'Tim kami mengerjakan di workshop setelah semuanya cocok.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop', badge: 'Pernah diliput CUANBOS Trans7' },
-          { title: <>Dikerjakan, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur ke rumah pelanggan' },
+          { title: <><Hl>Kirim foto</Hl> kasurmu lewat WA</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Ibu memeriksa kasurnya sebelum mengirim foto ke tim' },
+          { title: <>Kami <Hl>cek dan kerjakan</Hl></>, text: 'Dapat saran dan harga pastinya. Setelah cocok, tim kami mengerjakan di workshop.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop', badge: 'Pernah diliput CUANBOS Trans7' },
+          { title: <>Dijemput, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur ke rumah pelanggan' },
         ]} />
       </Screen>
 
@@ -81,11 +80,11 @@ const LandingHotA: React.FC = () => {
         </Split>
       </Screen>
 
-      <CtaRibbon title={<>Siap jadwalkan <Serif>jemput?</Serif></>} sub="Tanya harga dan slot, kami balas di jam kerja." note={<HealthNote short className="!text-white/70" />}>
-        <HeroWaButton buttonId="ortho-hot-a-closing" placement="cta" eventLabel="Landing Ortho Hot A - CTA Penutup" label="Tanya harga dan jadwal" message={MSG} className="w-full sm:w-auto" />
+      <CtaRibbon title={<>Kasurmu kami <Serif>jemput</Serif> minggu ini?</>} sub={`Chat dibalas ${FACTS.hours}.`} note={<HealthNote short className="!text-white/70" />}>
+        <HeroWaButton buttonId="ortho-hot-a-closing" placement="cta" eventLabel="Landing Ortho Hot A - CTA Penutup" label="Booking lewat WA" message={MSG} className="w-full sm:w-auto" />
       </CtaRibbon>
 
-      <FloatingWa sentinelRef={hero} buttonId="ortho-hot-a-floating" placement="floating" eventLabel="Landing Ortho Hot A - Floating" message={MSG} />
+      <FloatingWa sentinelRef={hero} labelMobile="Booking lewat WA" labelDesktop="Booking lewat WA" buttonId="ortho-hot-a-floating" placement="floating" eventLabel="Landing Ortho Hot A - Floating" message={MSG} />
     </LandingShell>
   );
 };

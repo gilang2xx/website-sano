@@ -181,7 +181,7 @@ export const TextLink: React.FC<{ to?: string; href?: string; children: React.Re
  * Muncul hanya setelah hero keluar layar dan sembunyi saat pita CTA biru terlihat (IntersectionObserver),
  * jadi tidak pernah ada dua tombol WA berdampingan. Animasi geser halus, mati bila pengguna memilih kurangi gerakan.
  */
-export const FloatingWa: React.FC<Omit<WaProps, 'label' | 'tone' | 'className'> & { sentinelRef: React.RefObject<HTMLElement | null> }> = ({ sentinelRef, ...wa }) => {
+export const FloatingWa: React.FC<Omit<WaProps, 'label' | 'tone' | 'className'> & { sentinelRef: React.RefObject<HTMLElement | null>; labelMobile?: string; labelDesktop?: string }> = ({ sentinelRef, labelMobile = 'Chat WA sekarang', labelDesktop = 'Chat WA', ...wa }) => {
   const [heroIn, setHeroIn] = useState(true);
   const [ribbonIn, setRibbonIn] = useState(false);
   useEffect(() => {
@@ -203,7 +203,7 @@ export const FloatingWa: React.FC<Omit<WaProps, 'label' | 'tone' | 'className'> 
       aria-hidden={!show}
       className={`fixed z-40 inset-x-0 bottom-0 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] bg-white/80 dark:bg-black/75 backdrop-blur-md border-t border-black/5 dark:border-white/10 md:inset-x-auto md:right-5 md:bottom-5 md:p-0 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 transition-[transform,opacity,visibility] duration-500 ease-out motion-reduce:transition-none ${show ? 'translate-y-0 opacity-100 visible' : 'translate-y-full opacity-0 invisible'}`}
     >
-      <WaButton {...wa} label={<><span className="md:hidden">Chat WA sekarang</span><span className="hidden md:inline">Chat WA</span></>} className="w-full md:w-auto" />
+      <WaButton {...wa} label={<><span className="md:hidden">{labelMobile}</span><span className="hidden md:inline">{labelDesktop}</span></>} className="w-full md:w-auto" />
     </div>
   );
 };

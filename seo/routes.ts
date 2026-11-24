@@ -41,7 +41,7 @@ export const STATIC_ROUTES = [
 export const LANDING_ROUTES = [
   '/kasur-orthopedic',
   '/kasur-orthopedic/banding',
-  '/service-kasur-depok',
+  '/service-kasur',
 ] as const;
 
 /**
