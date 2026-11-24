@@ -25,7 +25,7 @@ const CSS = `
 .lp-rv{opacity:0;transform:translateY(24px);transition:opacity .8s ease,transform .8s cubic-bezier(.2,.7,.2,1)}
 .lp-rv.in{opacity:1;transform:none}
 .lp-big{font-size:clamp(2.1rem,8.4vw,4.5rem);line-height:1.04;letter-spacing:-.03em;font-weight:700}
-.lp-h2{font-size:clamp(1.8rem,6.2vw,3.25rem);line-height:1.08;letter-spacing:-.028em;font-weight:700}
+.lp-h2{font-size:clamp(1.8rem,6.2vw,3.25rem);line-height:1.18;letter-spacing:-.028em;font-weight:700}
 .lp-num{font-size:clamp(3rem,13vw,6rem);line-height:1;letter-spacing:-.04em;font-weight:700}
 .lp-ribbon{background:linear-gradient(120deg,#0b2a6f 0%,#1660cf 55%,#2f86ea 100%)}
 .lp-glass{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.34);box-shadow:0 18px 40px rgba(5,10,42,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
@@ -33,7 +33,7 @@ const CSS = `
 .lp-range{-webkit-appearance:none;appearance:none;background:transparent;margin:0;cursor:ew-resize;touch-action:pan-y}
 .lp-range::-webkit-slider-thumb{-webkit-appearance:none;width:44px;height:100vh;background:transparent;border:0}
 .lp-range::-moz-range-thumb{width:44px;height:100vh;background:transparent;border:0}
-.lp-hl{background:#1660cf;color:#fff;padding:0 .28em;border-radius:.3em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
+.lp-hl{background:#1660cf;color:#fff;white-space:nowrap;padding:.04em .2em;border-radius:.28em;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 details>summary{list-style:none}details>summary::-webkit-details-marker{display:none}
 details[open] .lp-plus{transform:rotate(45deg)}
 @keyframes lp-marq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
@@ -312,7 +312,7 @@ export const HeroSecondaryLink: React.FC<{ href: string; children: React.ReactNo
   <a href={href} className="hidden sm:inline-flex items-center min-h-[44px] text-[17px] font-medium text-white hover:underline underline-offset-4">{children}</a>
 );
 
-/* ───────────── Strip kepercayaan (logo Canva SANO, monokrom abu) ───────────── */
+/* ───────────── Strip kepercayaan (logo Canva SANO, warna asli) ───────────── */
 
 const LOGOS: Array<[string, string]> = [
   ['kingkoil', 'King Koil'], ['serta', 'Serta'], ['springair', 'Spring Air'], ['simmons', 'Simmons'],
@@ -322,9 +322,9 @@ const LOGOS: Array<[string, string]> = [
 const LogoRow: React.FC<{ hidden?: boolean }> = ({ hidden }) => (
   <ul aria-hidden={hidden || undefined} className={`flex items-center gap-10 md:gap-12 list-none p-0 m-0 shrink-0 ${hidden ? 'md:hidden' : ''}`}>
     {LOGOS.map(([f, n]) => (
-      <li key={f} className="flex items-center">
+      <li key={f} className="flex items-center dark:bg-white dark:rounded-xl dark:px-2.5 dark:py-1.5">
         <img src={`/landing/brand-${f}.webp`} alt={hidden ? '' : n} loading="lazy" decoding="async" height={28}
-          className="h-7 w-auto max-w-[120px] object-contain grayscale opacity-75 mix-blend-multiply dark:mix-blend-normal dark:invert dark:opacity-60" />
+          className="h-7 w-auto max-w-[120px] object-contain" />
       </li>
     ))}
   </ul>
