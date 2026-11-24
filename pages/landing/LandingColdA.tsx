@@ -3,7 +3,7 @@ import { Check } from 'lucide-react';
 import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
-  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, ServiceCards, PriceCard, NumbersRow, ReviewBlock, Faq,
+  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, ServiceCards, PriceCard, NumbersRow, ReviewBlock, Faq, ConceptSection,
   CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
@@ -62,11 +62,13 @@ const LandingColdA: React.FC = () => {
       </Screen>
 
 
+      <Screen><ConceptSection /></Screen>
+
       <Screen tone="grey">
         <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2">Gampang, <Serif>tiga langkah.</Serif></h2></Reveal>
         <ZigZag steps={[
           { title: <><Hl>Kirim foto</Hl> kasurmu lewat WA</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Ibu memeriksa kasurnya sebelum mengirim foto ke tim' },
-          { title: <>Kami <Hl>cek dan kerjakan</Hl></>, text: 'Dapat saran dan harga pastinya. Setelah cocok, tim kami mengerjakan di workshop.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop' },
+          { title: <>Kami <Hl>cek dan kerjakan</Hl></>, text: 'Dapat saran dan harga pastinya. Setelah cocok, tim kami mengerjakan di workshop.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop', badge: 'Pernah diliput CUANBOS Trans7' },
           { title: <>Dijemput, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur ke rumah pelanggan' },
         ]} />
       </Screen>

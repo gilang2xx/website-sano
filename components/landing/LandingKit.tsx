@@ -47,7 +47,7 @@ details[open] .lp-plus{transform:rotate(45deg)}
 const IMG = {
   masalah: { w: [360, 720, 1000], r: 4 / 5 },
   langkah1: { w: [360, 720, 1000], r: 1 },
-  langkah2: { w: [360, 720, 1000], r: 1 },
+  langkah2: { w: [360, 720, 970], r: 1 },
   langkah3: { w: [360, 720], r: 1 },
   service: { w: [360, 720], r: 4 / 5 },
   upgrade: { w: [360, 720], r: 4 / 5 },
@@ -400,11 +400,11 @@ export const Split: React.FC<{ photo: React.ReactNode; reverse?: boolean; childr
 );
 
 /** Cara kerja bernomor, zig-zag foto kiri/kanan. */
-export const ZigZag: React.FC<{ steps: Array<{ title: React.ReactNode; text: string; photo: PhotoName; alt: string }> }> = ({ steps }) => (
+export const ZigZag: React.FC<{ steps: Array<{ title: React.ReactNode; text: string; photo: PhotoName; alt: string; badge?: string }> }> = ({ steps }) => (
   <ol className="mt-8 grid gap-10 md:gap-14 list-none p-0 m-0">
     {steps.map((s, i) => (
       <li key={i}>
-        <Split reverse={i % 2 === 1} photo={<Photo name={s.photo} alt={s.alt} sizes="(min-width:768px) 480px, 92vw" />}>
+        <Split reverse={i % 2 === 1} photo={<div className="relative"><Photo name={s.photo} alt={s.alt} sizes="(min-width:768px) 480px, 92vw" />{s.badge && <span className="absolute left-3 top-3 text-xs font-semibold px-3 py-1.5 rounded-full bg-white text-[#0b2a6f] shadow">{s.badge}</span>}</div>}>
           <p className="text-sm font-semibold tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff]">/0{i + 1}</p>
           <h3 className="mt-2 text-3xl md:text-4xl font-bold tracking-tight leading-tight">{s.title}</h3>
           <p className="mt-3 text-lg md:text-xl text-[#6e6e73] dark:text-[#a1a1a6] leading-snug">{s.text}</p>
@@ -520,6 +520,63 @@ export const Faq: React.FC<{ items: Array<[string, string]> }> = ({ items }) => 
       </details>
     ))}
   </div>
+);
+
+/* ───────────── Konsep Matras Sehat (3 kartu, tengah disorot) ───────────── */
+
+const KONSEP: Array<{ key: 'tenggelam' | 'sehat' | 'keras'; title: string; text: string; alt: string; h720: number; hi?: boolean }> = [
+  { key: 'tenggelam', title: 'Terlalu tenggelam', text: 'Badan melengkung, tulang nggak di posisi natural.', alt: 'Ilustrasi orang berbaring di kasur yang terlalu empuk, tulang belakang melengkung', h720: 200 },
+  { key: 'sehat', title: 'Matras Sehat', text: 'Fondasi kokoh + lapisan sesuai berat badanmu. Tulang tetap lurus, tanpa tekanan.', alt: 'Ilustrasi orang berbaring di kasur yang pas, tulang belakang lurus', h720: 220, hi: true },
+  { key: 'keras', title: 'Terlalu keras', text: 'Leher, bahu, dan pinggang tertekan. Bangun jadi kaku.', alt: 'Ilustrasi orang berbaring di kasur yang terlalu keras, bahu dan pinggul tertekan', h720: 195 },
+];
+
+export const ConceptSection: React.FC = () => {
+  const listRef = useRef<HTMLUListElement>(null);
+  // HP: kartu tengah (Matras Sehat) muncul duluan
+  useEffect(() => {
+    const ul = listRef.current;
+    if (!ul || window.matchMedia('(min-width: 768px)').matches) return;
+    const mid = ul.children[1] as HTMLElement | undefined;
+    if (mid) ul.scrollLeft = mid.offsetLeft - (ul.clientWidth - mid.clientWidth) / 2;
+  }, []);
+
+  return (
+    <div>
+      <Reveal>
+        <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-sm font-semibold bg-[#1660cf]/10 text-[#1660cf] dark:bg-[#4d94ff]/15 dark:text-[#4d94ff]">
+          <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: LIME, boxShadow: '0 0 0 1px rgba(11,42,111,.25)' }} aria-hidden="true" />Konsep Matras Sehat
+        </span>
+        <h2 className="lp-h2 mt-4 max-w-3xl">Kasur sehat itu bukan yang paling keras. Tapi yang <Serif>pas.</Serif></h2>
+      </Reveal>
+      <ul ref={listRef} className="mt-8 flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pb-2 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:items-stretch md:overflow-visible list-none m-0">
+        {KONSEP.map((k) => (
+          <li key={k.key} className="snap-center shrink-0 w-[82%] sm:w-[58%] md:w-auto">
+            <article className={`h-full rounded-[28px] p-5 md:p-6 flex flex-col gap-4 ${k.hi ? 'text-white' : 'bg-[#f5f5f7] dark:bg-[#1c1c1e]'}`} style={k.hi ? { backgroundColor: ACCENT } : undefined}>
+              <div className={`rounded-[20px] px-3 py-5 flex items-center ${k.hi ? 'bg-white/15' : 'bg-[#dfe9f8] dark:bg-[#16202e]'}`}>
+                <img src={`/landing/p-konsep-${k.key}-720.webp`} srcSet={`/landing/p-konsep-${k.key}-360.webp 360w, /landing/p-konsep-${k.key}-720.webp 720w`} sizes="(min-width:768px) 300px, 80vw"
+                  width={720} height={k.h720} alt={k.alt} loading="lazy" decoding="async" className="block w-full h-auto" />
+              </div>
+              <div>
+                <h3 className="text-2xl md:text-3xl font-bold tracking-tight">{k.title}</h3>
+                <p className={`mt-2 text-base md:text-lg leading-snug ${k.hi ? 'text-white/90' : 'text-[#6e6e73] dark:text-[#a1a1a6]'}`}>{k.text}</p>
+              </div>
+            </article>
+          </li>
+        ))}
+      </ul>
+      <Reveal>
+        <p className="mt-6 text-lg md:text-xl font-semibold tracking-tight max-w-2xl">Kami cek fondasi, lapisan, dan kainnya, lalu perbaiki yang perlu saja.</p>
+        <TextLink to="/artikel/konsep-matras-sehat" className="mt-1">Baca konsep lengkapnya</TextLink>
+      </Reveal>
+    </div>
+  );
+};
+
+/** Versi ringkas satu baris (HOT). */
+export const ConceptLine: React.FC = () => (
+  <Reveal>
+    <p className="text-xl md:text-2xl font-semibold tracking-tight max-w-3xl">Kasur sehat itu bukan yang paling keras, tapi yang <Serif>pas.</Serif> <TextLink to="/artikel/konsep-matras-sehat" className="ml-1">Baca konsep lengkapnya</TextLink></p>
+  </Reveal>
 );
 
 /* ───────────── Pita CTA berwarna di dasar halaman ───────────── */

@@ -2,7 +2,7 @@ import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
-  Screen, Eyebrow, Reveal, ZigZag, PriceCard, ReviewBlock, Faq, CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
+  Screen, Eyebrow, Reveal, ZigZag, PriceCard, ReviewBlock, Faq, ConceptSection, CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
@@ -78,16 +78,18 @@ const LandingWarmB: React.FC = () => {
 
       <Screen tone="grey"><ReviewBlock reviews={[REVIEWS.sudarsono, REVIEWS.hidajat, REVIEWS.rifky]} title={<>Yang tadinya mau beli baru, <Serif>bilang apa?</Serif></>} /></Screen>
 
-      <Screen>
+      <Screen><ConceptSection /></Screen>
+
+      <Screen tone="grey">
         <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2">Gampang, <Serif>tiga langkah.</Serif></h2></Reveal>
         <ZigZag steps={[
           { title: <><Hl>Kirim foto</Hl> kasurmu lewat WA</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Ibu memeriksa kasurnya sebelum mengirim foto ke tim' },
-          { title: <>Dapat <Hl>saran dan harga</Hl> pastinya</>, text: 'Bandingkan dulu dengan kasur baru yang kamu incar. Tanpa paksaan.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop' },
+          { title: <>Dapat <Hl>saran dan harga</Hl> pastinya</>, text: 'Bandingkan dulu dengan kasur baru yang kamu incar. Tanpa paksaan.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop', badge: 'Pernah diliput CUANBOS Trans7' },
           { title: <>Dijemput, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur ke rumah pelanggan' },
         ]} />
       </Screen>
 
-      <Screen tone="grey">
+      <Screen>
         <Reveal><Eyebrow>Pertanyaan umum</Eyebrow><h2 className="lp-h2 max-w-3xl">Masih <Serif>ragu?</Serif></h2></Reveal>
         <Faq items={FAQ} />
       </Screen>

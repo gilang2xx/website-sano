@@ -2,7 +2,7 @@ import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, PhotoHero, TrustStrip, BigCase,
-  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PriceCard, NumbersRow, ReviewBlock, Faq,
+  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PriceCard, NumbersRow, ReviewBlock, Faq, ConceptLine,
   CtaRibbon, HealthNote, Serif, Hl, BentoCard,
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
@@ -58,12 +58,12 @@ const LandingHotA: React.FC = () => {
           <Lead className="mt-3 max-w-2xl">Jadwal menyesuaikan antrean workshop. Tanya lewat WA, kami kabari yang masih kosong.</Lead></Reveal>
         <ZigZag steps={[
           { title: <>Chat dan <Hl>kirim foto</Hl> kasur</>, text: 'Foto dari samping dan dari atas sudah cukup.', photo: 'langkah1', alt: 'Ibu memeriksa kasurnya sebelum mengirim foto ke tim' },
-          { title: <>Sepakat <Hl>harga dan jadwal</Hl></>, text: 'Tim kami mengerjakan di workshop setelah semuanya cocok.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop' },
+          { title: <>Sepakat <Hl>harga dan jadwal</Hl></>, text: 'Tim kami mengerjakan di workshop setelah semuanya cocok.', photo: 'langkah2', alt: 'Tim Klinik Matras memeriksa kasur di workshop', badge: 'Pernah diliput CUANBOS Trans7' },
           { title: <>Dikerjakan, <Hl>diantar lagi</Hl></>, text: `Dikerjakan ${FACTS.days}. Antar-jemput gratis untuk ${FACTS.freeShipArea}.`, photo: 'langkah3', alt: 'Mobil Klinik Matras mengantar kasur ke rumah pelanggan' },
         ]} />
       </Screen>
 
-      <Screen><ReviewBlock reviews={[REVIEWS.hidajat, REVIEWS.sudarsono, REVIEWS.rifky]} title={<>Kata <Serif>pelanggan.</Serif></>} /></Screen>
+      <Screen><ReviewBlock reviews={[REVIEWS.hidajat, REVIEWS.sudarsono, REVIEWS.rifky]} title={<>Kata <Serif>pelanggan.</Serif></>} /><div className="mt-12"><ConceptLine /></div></Screen>
 
       <Screen tone="grey">
         <Reveal><Eyebrow>Pertanyaan umum</Eyebrow><h2 className="lp-h2 max-w-3xl">Masih <Serif>ragu?</Serif></h2></Reveal>
