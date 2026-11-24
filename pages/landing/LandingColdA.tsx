@@ -34,13 +34,14 @@ const LandingColdA: React.FC = () => {
         pill="Service dan upgrade kasur"
         title={<>Bangun tidur badan pegal &amp; sakit pinggang? Coba <Serif>cek kasurmu dulu</Serif></>}
         lead="Kirim foto kasurmu, kami bantu cek lewat WA."
-        thumb={PAIRS.p10}
         checks={['Antar-jemput gratis', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
         actions={<>
           <WaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#hasil">Lihat hasilnya</HeroSecondaryLink>
         </>}
       />
+
+      <div className="pt-10 md:pt-16 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} /></div>
 
       <TrustStrip />
 
@@ -60,7 +61,6 @@ const LandingColdA: React.FC = () => {
         </Split>
       </Screen>
 
-      <div className="pt-12 md:pt-20 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} /></div>
 
       <Screen tone="grey">
         <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2">Gampang, <Serif>tiga langkah.</Serif></h2></Reveal>

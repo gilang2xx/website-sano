@@ -45,7 +45,6 @@ details[open] .lp-plus{transform:rotate(45deg)}
 /* ───────────── Gambar (srcset, width/height tetap) ───────────── */
 
 const IMG = {
-  hero: { w: [720, 1280], r: 1.6 },
   masalah: { w: [360, 720, 1000], r: 4 / 3 },
   langkah1: { w: [360, 515], r: 4 / 3 },
   langkah2: { w: [360, 720, 1080], r: 4 / 3 },
@@ -223,13 +222,17 @@ export const HealthNote: React.FC<{ short?: boolean; className?: string }> = ({ 
   </p>
 );
 
-/* ───────────── Hero: foto asli full-bleed, sudut membulat, overlay gelap ───────────── */
+/* ───────────── Hero: gambar penuh (ibu + kasur sebelum/sesudah), teks di area biru kosong ───────────── */
 
+// Gambar hero tanpa label ilustrasi = keputusan owner 25 Nov 2026.
+// Syarat dari owner: tidak ada teks/caption/alt yang menyatakan gambar ini "hasil kerja kami" atau foto pelanggan;
+// bukti nyata ada di slider before-after FOTO ASLI tepat di bawah hero (BigCase).
+// <picture>: portrait untuk <=767px, landscape untuk >=768px.
 export const PhotoHero = React.forwardRef<HTMLElement, {
   pill: string; title: React.ReactNode; lead: React.ReactNode; actions: React.ReactNode;
-  checks?: string[]; thumb?: PhotoPair;
-}>(({ pill, title, lead, actions, checks, thumb }, ref) => {
-  // Preload foto hero + font serif (halaman ini dirender di sisi klien; saat diprerender, pindahkan ke <head>).
+  checks?: string[];
+}>(({ pill, title, lead, actions, checks }, ref) => {
+  // Preload gambar hero sesuai lebar layar + font serif (halaman ini dirender di sisi klien; saat diprerender, pindahkan ke <head>).
   useEffect(() => {
     const links: HTMLLinkElement[] = [];
     const add = (attrs: Record<string, string>) => {
@@ -237,44 +240,48 @@ export const PhotoHero = React.forwardRef<HTMLElement, {
       Object.entries(attrs).forEach(([k, v]) => l.setAttribute(k, v));
       document.head.appendChild(l); links.push(l);
     };
-    add({ rel: 'preload', as: 'image', href: '/landing/p-hero-1280.webp', imagesrcset: '/landing/p-hero-720.webp 720w, /landing/p-hero-1280.webp 1280w', imagesizes: '100vw' });
+    add({ rel: 'preload', as: 'image', href: '/landing/hero-portrait.webp', media: '(max-width: 767px)' });
+    add({ rel: 'preload', as: 'image', href: '/landing/hero-landscape.webp', media: '(min-width: 768px)' });
     add({ rel: 'preload', as: 'font', type: 'font/woff2', href: '/landing/fonts/is-italic.woff2', crossorigin: 'anonymous' });
     return () => links.forEach((l) => l.remove());
   }, []);
 
   return (
     <section ref={ref} className="px-3 md:px-5 pt-3 md:pt-4 bg-white dark:bg-black">
-      <div className="relative max-w-7xl mx-auto overflow-hidden rounded-[28px] md:rounded-[44px] min-h-[600px] md:min-h-[640px] flex flex-col justify-end text-white">
-        <Photo name="hero" alt="Kasur yang sudah selesai dikerjakan di workshop Klinik Matras, tim bekerja di belakang" sizes="100vw" eager className="!absolute inset-0 !h-full object-cover" />
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(180deg,rgba(4,10,32,.55) 0%,rgba(4,10,32,.50) 45%,rgba(4,10,32,.82) 100%)' }} aria-hidden="true" />
-        <div className="relative px-5 md:px-12 pt-6 pb-8 md:pb-12 grid gap-6 md:grid-cols-[1fr_auto] md:items-end">
-          <div>
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold">
-                <Star size={14} className="fill-amber-300 text-amber-300" aria-hidden="true" />{FACTS.rating} · {FACTS.reviewCount} ulasan Google
-              </span>
-              <span className="lp-glass inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold">
-                <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: LIME }} aria-hidden="true" />{pill}
-              </span>
-            </div>
-            <h1 className="lp-big mt-5 max-w-3xl">{title}</h1>
-            <p className="mt-4 text-lg md:text-xl leading-snug tracking-tight text-white/85 max-w-xl">{lead}</p>
-            <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">{actions}</div>
-            {checks && (
-              <ul className="mt-5 flex flex-wrap gap-x-5 gap-y-1 list-none p-0 m-0 text-sm text-white/85">
-                {checks.map((c) => <li key={c} className="inline-flex items-center gap-1.5"><Check size={15} style={{ color: LIME }} aria-hidden="true" />{c}</li>)}
-              </ul>
-            )}
+      <div className="relative max-w-7xl mx-auto overflow-hidden rounded-[28px] md:rounded-[44px] text-white flex flex-col md:block md:min-h-[640px]" style={{ backgroundColor: '#02388a' }}>
+        <div className="relative z-10 px-5 md:px-12 pt-6 md:pt-14 pb-2 md:pb-14 md:max-w-[50%] md:min-h-[640px] md:flex md:flex-col md:justify-center">
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="lp-glass inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-semibold">
+              <Star size={14} className="fill-amber-300 text-amber-300" aria-hidden="true" />{FACTS.rating} · {FACTS.reviewCount} ulasan Google
+            </span>
+            <span className="lp-glass inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-sm font-semibold">
+              <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: LIME }} aria-hidden="true" />{pill}
+            </span>
           </div>
-          {thumb && (
-            <div className="lp-glass rounded-2xl p-2.5 flex items-center gap-3 w-fit">
-              <div className="flex gap-0.5 rounded-xl overflow-hidden">
-                <img src={thumb.before} alt={thumb.altBefore} width={64} height={64} loading="lazy" decoding="async" className="w-14 h-14 object-cover" />
-                <img src={thumb.after} alt={thumb.altAfter} width={64} height={64} loading="lazy" decoding="async" className="w-14 h-14 object-cover" />
-              </div>
-              <div className="pr-2"><p className="text-xl font-bold leading-none">{FACTS.days}</p><p className="text-xs text-white/80 mt-1">pengerjaan</p></div>
-            </div>
+          <h1 className="lp-big mt-4 md:mt-5 max-w-3xl !text-[clamp(1.9rem,8vw,2.2rem)] md:!text-[clamp(2.4rem,4vw,3.6rem)]">{title}</h1>
+          <p className="mt-3 md:mt-4 text-base md:text-xl leading-snug tracking-tight text-white/85 max-w-xl">{lead}</p>
+          <div className="mt-5 md:mt-6 flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-6">{actions}</div>
+          {checks && (
+            <ul className="hidden md:flex mt-5 flex-wrap gap-x-5 gap-y-1 list-none p-0 m-0 text-sm text-white/85">
+              {checks.map((c) => <li key={c} className="inline-flex items-center gap-1.5"><Check size={15} style={{ color: LIME }} aria-hidden="true" />{c}</li>)}
+            </ul>
           )}
+        </div>
+        <div className="relative z-0 pointer-events-none md:absolute md:top-0 md:bottom-0 md:left-[24%] md:right-0 [mask-image:linear-gradient(to_bottom,transparent,#000_20%)] md:[mask-image:linear-gradient(to_right,transparent,#000_14%)]">
+          <picture>
+            <source media="(min-width: 768px)" srcSet="/landing/hero-landscape.webp" width={1920} height={1080} />
+            <img src="/landing/hero-portrait.webp" width={1152} height={1440} alt="Ibu tersenyum menekan kasur putih yang sudah diperbarui, di sebelah kasur lama yang kusam" loading="eager" decoding="async" {...{ fetchPriority: 'high' as const }}
+              className="block w-full h-auto md:h-full md:object-cover md:object-center" />
+          </picture>
+        </div>
+        {checks && (
+          <ul className="md:hidden relative z-10 -mt-2 px-5 pb-5 flex flex-wrap gap-x-4 gap-y-1 list-none m-0 text-sm text-white/85">
+            {checks.map((c) => <li key={c} className="inline-flex items-center gap-1.5"><Check size={15} style={{ color: LIME }} aria-hidden="true" />{c}</li>)}
+          </ul>
+        )}
+        <div className="hidden md:flex absolute top-8 right-8 z-10 lp-glass rounded-2xl px-4 py-3 items-center gap-3">
+          <Clock size={20} aria-hidden="true" />
+          <div><p className="text-xl font-bold leading-none">{FACTS.days}</p><p className="text-xs text-white/80 mt-1">pengerjaan</p></div>
         </div>
       </div>
     </section>
@@ -283,7 +290,7 @@ export const PhotoHero = React.forwardRef<HTMLElement, {
 PhotoHero.displayName = 'PhotoHero';
 
 export const HeroSecondaryLink: React.FC<{ href: string; children: React.ReactNode }> = ({ href, children }) => (
-  <a href={href} className="inline-flex items-center min-h-[44px] text-[17px] font-medium text-white hover:underline underline-offset-4">{children}</a>
+  <a href={href} className="hidden sm:inline-flex items-center min-h-[44px] text-[17px] font-medium text-white hover:underline underline-offset-4">{children}</a>
 );
 
 /* ───────────── Strip kepercayaan (logo Canva SANO, monokrom abu) ───────────── */

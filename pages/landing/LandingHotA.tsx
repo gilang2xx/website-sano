@@ -24,10 +24,11 @@ const LandingHotA: React.FC = () => {
         pill="Depok, Jabodetabek, Bandung"
         title={<>Service kasur di Depok? Cek <Serif>harga</Serif> dan slot jemput</>}
         lead={`Service kasur mulai dari ${FACTS.priceService}. Dijemput gratis, dikerjakan ${FACTS.days}.`}
-        thumb={PAIRS.p10}
         checks={['Antar-jemput gratis', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
         actions={<WaButton buttonId="ortho-hot-a-hero" placement="hero" eventLabel="Landing Ortho Hot A - Hero" label="Tanya harga dan jadwal" message={MSG} className="w-full sm:w-auto" />}
       />
+
+      <div className="pt-10 md:pt-16 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title={<>Sudah banyak yang <Serif>pakai.</Serif></>} /></div>
 
       <TrustStrip />
 
@@ -51,7 +52,6 @@ const LandingHotA: React.FC = () => {
         <div className="mt-10"><NumbersRow /></div>
       </Screen>
 
-      <div className="pt-12 md:pt-20 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title={<>Sudah banyak yang <Serif>pakai.</Serif></>} /></div>
 
       <Screen tone="grey">
         <Reveal><Eyebrow>Jadwal</Eyebrow><h2 className="lp-h2 max-w-3xl">Slot jemput <Serif>terdekat?</Serif></h2>

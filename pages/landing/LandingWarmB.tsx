@@ -34,13 +34,14 @@ const LandingWarmB: React.FC = () => {
         pill="Beli baru atau perbaiki?"
         title={<>Mau beli kasur baru? <Serif>Bandingin</Serif> aja dulu</>}
         lead={`Kasur lamamu bisa dibikin kokoh lagi. Service mulai dari ${FACTS.priceService}, dijemput gratis.`}
-        thumb={PAIRS.p10}
         checks={['Antar-jemput gratis', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
         actions={<>
           <WaButton buttonId="ortho-warm-b-hero" placement="hero" eventLabel="Landing Ortho Warm B - Hero" label="Bandingin buat kasurku" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#banding">Lihat perbandingannya</HeroSecondaryLink>
         </>}
       />
+
+      <div className="pt-10 md:pt-16 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title={<>Kasur yang sudah kami <Serif>benerin.</Serif></>} /></div>
 
       <TrustStrip />
 
@@ -74,7 +75,6 @@ const LandingWarmB: React.FC = () => {
         </PriceCard></div>
       </Screen>
 
-      <div className="pt-12 md:pt-20 bg-white dark:bg-black"><BigCase pair={PAIRS.p10} others={[PAIRS.p11, PAIRS.p6, PAIRS.p7]} title={<>Kasur yang sudah kami <Serif>benerin.</Serif></>} /></div>
 
       <Screen tone="grey"><ReviewBlock reviews={[REVIEWS.sudarsono, REVIEWS.hidajat, REVIEWS.rifky]} title={<>Yang tadinya mau beli baru, <Serif>bilang apa?</Serif></>} /></Screen>
 
