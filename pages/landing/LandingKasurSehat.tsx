@@ -43,7 +43,7 @@ const KASUR_SEHAT_FAQ: Array<[string, string]> = [
 const LandingKasurSehat: React.FC = () => {
   useSEO({
     title: 'Konsep Kasur Sehat',
-    description: 'Kasur empuk atau keras belum tentu sehat buat tubuh. Kenali fondasi kokoh dan lapisan yang pas berat badan, lewat service atau upgrade kasur yang sudah kamu punya.',
+    description: 'Kasur empuk atau keras belum tentu sehat buat tubuh. Yang pas itu fondasi kokoh dan lapisan sesuai badanmu. Kasur lamamu bisa dibikin begitu lewat service atau upgrade kasur sehat.',
     path: '/kasur-sehat',
     noindex: true,
   });
@@ -56,7 +56,7 @@ const LandingKasurSehat: React.FC = () => {
         ref={hero}
         pill="Jabodetabek & Bandung"
         title={<>Kasur empuk atau keras <Serif>belum tentu sehat</Serif> buat tubuh.</>}
-        lead="Terlalu empuk, badan tenggelam. Terlalu keras, sendi dan titik tumpu tubuh bisa ikut tertekan. Kasur yang sehat itu fondasinya kokoh dan lapisannya pas buat tiap orang. Kasurmu yang sekarang bisa dibikin begitu lewat service atau upgrade."
+        lead="Terlalu empuk, badan tenggelam. Terlalu keras, sendi bisa ikut tertekan. Yang pas itu fondasi kokoh dan lapisan sesuai badanmu. Kasur lamamu bisa dibikin begitu lewat service atau upgrade kasur sehat."
         checks={['Antar-jemput gratis', 'Garansi hingga 10-20 tahun', `Selesai ${FACTS.days}`]}
         actions={<WaButton buttonId="kasur-sehat-hero" placement="hero" eventLabel="Landing Kasur Sehat - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />}
       />
