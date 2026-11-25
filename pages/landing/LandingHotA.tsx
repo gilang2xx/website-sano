@@ -52,7 +52,7 @@ const LandingHotA: React.FC = () => {
             </BentoCard>
           </Reveal>
         </div>
-        <div className="mt-10"><NumbersRow /></div>
+        <div className="mt-3 md:mt-5"><NumbersRow /></div>
       </Screen>
 
 

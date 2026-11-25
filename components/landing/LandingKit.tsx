@@ -464,17 +464,20 @@ const IconBox: React.FC<{ children: React.ReactNode; hi?: boolean }> = ({ childr
 
 /** Baris angka (garis aksen tipis di atas tiap angka). */
 export const NumbersRow: React.FC = () => (
-  <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8">
-    {[
-      [FACTS.rating, `rating Google, ${FACTS.reviewCount} ulasan`],
-      ['20 / 10', 'tahun garansi maksimal Klinik Matras (Upgrade / Service)'],
-      ['2-3', 'hari pengerjaan'],
-      ['Gratis', `antar-jemput ${FACTS.freeShipArea}`],
-    ].map(([n, l], i) => (
-      <Reveal key={l} delay={i * 70}>
-        <div className="border-t-2 pt-4" style={{ borderColor: ACCENT }}>
-          <p className="lp-num !text-[clamp(2.2rem,8vw,3.5rem)]">{n}</p>
-          <p className="mt-2 text-sm md:text-base text-[#6e6e73] dark:text-[#a1a1a6] leading-snug">{l}</p>
+  <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
+    {([
+      [Star, FACTS.rating, `rating Google, ${FACTS.reviewCount} ulasan`],
+      [ShieldCheck, '20 / 10', 'tahun garansi maksimal Klinik Matras (Upgrade / Service)'],
+      [Clock, '2-3', 'hari pengerjaan'],
+      [Truck, 'Gratis', `antar-jemput ${FACTS.freeShipArea}`],
+    ] as const).map(([Icon, n, l], i) => (
+      <Reveal key={l} delay={i * 70} className="h-full">
+        <div className="h-full rounded-[20px] md:rounded-[24px] border border-[#1660cf]/15 dark:border-white/10 bg-gradient-to-b from-white to-[#e8f1fd] dark:from-[#1c1c1e] dark:to-[#132238] p-4 md:p-6">
+          <span aria-hidden="true" style={{ backgroundColor: Icon === Star ? '#fbbf24' : ACCENT }} className="w-11 h-11 rounded-full inline-flex items-center justify-center text-white">
+            <Icon size={22} className={Icon === Star ? 'fill-current' : ''} />
+          </span>
+          <p className="lp-num mt-4 !text-[clamp(2rem,8vw,3.25rem)]">{n}</p>
+          <p className="mt-2 text-sm md:text-base text-[#515154] dark:text-[#a1a1a6] leading-snug">{l}</p>
         </div>
       </Reveal>
     ))}
@@ -485,13 +488,17 @@ export const NumbersRow: React.FC = () => (
 
 export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <Reveal className="h-full">
-    <div style={{ backgroundColor: ACCENT }} className="text-white rounded-[24px] md:rounded-[32px] p-7 md:p-9 h-full flex flex-col justify-between gap-5">
-      <div>
-        <p className="text-sm md:text-base font-semibold uppercase tracking-[.14em] opacity-85">Service kasur, mulai dari</p>
-        <p className="lp-num mt-2 !text-[clamp(2.6rem,11vw,4.5rem)]">{FACTS.priceService}</p>
-        <p className="mt-3 text-base md:text-lg opacity-85 max-w-md leading-snug">Harga pasti setelah kami lihat foto kasurmu.</p>
+    <div style={{ backgroundImage: `linear-gradient(135deg, #1d74e8 0%, ${ACCENT} 45%, #0b2a6f 100%)` }} className="relative overflow-hidden text-white rounded-[24px] md:rounded-[32px] p-7 md:p-9 h-full flex flex-col justify-between gap-5">
+      <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 w-52 h-52 rounded-full border-[30px] border-white/10" />
+      <div className="relative">
+        <p className="inline-flex rounded-full bg-white/15 px-3.5 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-[.12em]">Service kasur, mulai dari</p>
+        <p className="lp-num mt-5 !text-[clamp(3rem,13vw,5rem)]"><span className="relative top-[.28em] align-top text-[.45em] mr-1 opacity-85">Rp</span>{FACTS.priceService.replace(/^Rp/, '')}</p>
+        <p className="mt-5 flex items-start gap-3 border-t border-white/20 pt-4 text-base md:text-lg leading-snug">
+          <span aria-hidden="true" className="mt-0.5 w-6 h-6 shrink-0 rounded-full bg-white text-[#0b2a6f] inline-flex items-center justify-center"><Check size={15} strokeWidth={3} /></span>
+          <span>Harga pasti setelah kami lihat foto kasurmu.</span>
+        </p>
       </div>
-      {children && <div>{children}</div>}
+      {children && <div className="relative">{children}</div>}
     </div>
   </Reveal>
 );

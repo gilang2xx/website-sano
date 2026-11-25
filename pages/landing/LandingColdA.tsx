@@ -81,7 +81,7 @@ const LandingColdA: React.FC = () => {
           <div className="mt-6"><WaButton buttonId="ortho-cold-a-service" placement="service-card" eventLabel="Landing Ortho Cold A - Konsultasi" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto" /></div>
         </Split>
         <div className="mt-10"><PriceCard /></div>
-        <div className="mt-10"><NumbersRow /></div>
+        <div className="mt-3 md:mt-5"><NumbersRow /></div>
       </Screen>
 
       <Screen tone="grey"><ReviewBlock reviews={REVIEWS} title={<>Kata mereka yang <Serif>sudah pakai.</Serif></>} /></Screen>
