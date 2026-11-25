@@ -499,11 +499,26 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
 /* ───────────── Review statis (ulasan Google asli) ───────────── */
 
 // Teks utuh selalu ada di HTML (hanya dipotong secara visual), jadi aman untuk prerender/aksesibilitas.
+// Avatar huruf awal (gaya Google). Foto asli hanya bila r.photo diisi (sumber resmi / izin pelanggan).
+const AVATAR_BG = ['#1660cf', '#0f9d58', '#db4437', '#f4b400', '#8e24aa', '#00897b', '#e8710a', '#5c6bc0'];
+const avatarBg = (name: string) => AVATAR_BG[[...name].reduce((n, c) => n + c.charCodeAt(0), 0) % AVATAR_BG.length];
+
 const ReviewCard: React.FC<{ r: Review }> = ({ r }) => {
   const [open, setOpen] = useState(false);
   return (
     <li className="snap-start shrink-0 w-[84%] sm:w-[55%] md:w-[calc((100%-2rem)/3)]">
       <figure className="m-0 h-full rounded-[24px] bg-[#f5f5f7] dark:bg-[#1c1c1e] p-6 flex flex-col">
+        <figcaption className="flex items-center gap-3 mb-3">
+          {r.photo ? (
+            <img src={r.photo} alt="" width={40} height={40} loading="lazy" decoding="async" referrerPolicy="no-referrer" className="w-10 h-10 rounded-full object-cover shrink-0" />
+          ) : (
+            <span aria-hidden="true" style={{ backgroundColor: avatarBg(r.name) }} className="w-10 h-10 rounded-full shrink-0 inline-flex items-center justify-center text-white text-lg font-semibold">{r.name.trim().charAt(0).toUpperCase()}</span>
+          )}
+          <span className="min-w-0 leading-tight">
+            <span className="block font-semibold text-[15px] text-[#1d1d1f] dark:text-[#f5f5f7] truncate">{r.name}</span>
+            <span className="block text-[13px] text-[#6e6e73] dark:text-[#a1a1a6]">Ulasan Google{r.date ? ` · ${r.date}` : ''}</span>
+          </span>
+        </figcaption>
         <span className="flex mb-3" role="img" aria-label="5 dari 5 bintang"><Stars size={16} /></span>
         <blockquote className="m-0 text-[17px] leading-relaxed tracking-tight">
           <p className={`m-0 ${open ? '' : 'line-clamp-6'}`}>&ldquo;<span data-review-text>{r.text}</span>&rdquo;</p>
@@ -511,10 +526,6 @@ const ReviewCard: React.FC<{ r: Review }> = ({ r }) => {
         <button type="button" aria-expanded={open} onClick={() => setOpen(!open)} className="self-start min-h-[44px] text-[15px] font-semibold text-[#1660cf] dark:text-[#4d94ff]">
           {open ? 'Tutup' : 'Baca selengkapnya'}<span className="sr-only"> ulasan {r.name}</span>
         </button>
-        <figcaption className="mt-auto pt-2 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">
-          <span className="font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">{r.name}</span>
-          <span aria-hidden="true"> · </span>Ulasan Google{r.date ? ` · ${r.date}` : ''}
-        </figcaption>
       </figure>
     </li>
   );

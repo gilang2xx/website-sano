@@ -63,6 +63,8 @@ export interface Review {
   text: string;
   /** Bulan/tahun ulasan, hanya bila datanya ada (jangan dikarang). */
   date?: string;
+  /** URL foto profil, hanya dari sumber resmi (Places API) atau dengan izin pelanggan. */
+  photo?: string;
 }
 
 // Ulasan Google asli (DRAF pilihan Gilang 25 Nov 2026, masih didiskusikan dengan RWP).
