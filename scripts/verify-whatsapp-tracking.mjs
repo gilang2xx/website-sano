@@ -461,5 +461,22 @@ on.trackWhatsAppClick('Tanpa UTM', { pixels: false });
 ok(!Object.keys(window.dataLayer.filter((x) => x && x.event === 'click_whatsapp').pop()).some((k) => k.startsWith('utm_') || k === 'click_id_type'), 'tanpa UTM: tidak ada key utm_* / click_id_type');
 store.clear();
 
+// ── Penundaan tag pihak ketiga di landing (scripts/prerender.mjs) ──
+console.log('\n[L4] Penundaan tag pihak ketiga (landing)');
+{
+  const pre = fs.readFileSync(path.join(ROOT, 'scripts/prerender.mjs'), 'utf8');
+  const kit = fs.readFileSync(path.join(ROOT, 'components/landing/LandingKit.tsx'), 'utf8');
+  const waBtn = kit.slice(kit.indexOf('export const WaButton'), kit.indexOf('export const HeroWaButton'));
+  ok(/target="_blank"/.test(waBtn), 'WaButton landing target="_blank" (halaman tetap hidup setelah klik, tag boleh ditunda)');
+  ok(!/pixels/.test(waBtn), 'WaButton landing tidak mengubah default pixels (Meta/TikTok tidak dipicu klik WA, sama seperti sebelumnya)');
+  const ev = (pre.match(/const DEFER_LOADER = `\(function\(\)\{var d=0,E=\[([^\]]*)\]/) || [])[1] || '';
+  for (const e of ['pointerdown', 'touchstart', 'scroll', 'keydown', 'click']) ok(ev.includes(`'${e}'`), `loader tag: pemicu ${e}`);
+  const ms = Number((pre.match(/const DEFER_TAGS_MS = (\d+)/) || [])[1]);
+  ok(ms >= 3000 && ms <= 4000, `batas waktu penundaan tag ${ms} ms (3000-4000)`);
+  for (const id of ['GTM-PSDWS88V', 'AW-18575989292', '934367175857999', 'D6NMKNBC77UBBJ4JSLG0']) ok(pre.includes(id) && fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').includes(id), `ID tag ${id} masih ada di index.html dan dijaga prerender`);
+  const idx = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  ok(!/data-defer-tag/.test(idx), 'index.html global tidak diubah (penundaan hanya di HTML prerender landing)');
+}
+
 console.log(`\nHasil: ${pass} lulus, ${fail} gagal`);
 process.exit(fail === 0 ? 0 : 1);

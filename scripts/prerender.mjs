@@ -84,6 +84,54 @@ function useBuiltTailwind(page, route) {
   return page.replace(cfg, '').replace(cdn, () => `<style data-tw="build">${css}</style>`);
 }
 
+// Landing: tunda tag pihak ketiga (GTM, gtag AW, Meta Pixel, TikTok) sampai interaksi
+// pertama (pointerdown/touchstart/scroll/keydown) atau batas DEFER_TAGS_MS, mana yang
+// lebih dulu. ISI tiap script, ID, dan URUTAN init TIDAK diubah: blok asli hanya diberi
+// type="text/plain" lalu dijalankan loader dengan urutan dokumen yang sama.
+// Semua tombol WA landing berupa target="_blank" (halaman tetap hidup setelah klik),
+// dan pointerdown/touchstart/keydown sebelum klik sudah memicu pemuatan.
+const DEFER_TAGS_MS = 3500;
+const DEFER_LOADER = `(function(){var d=0,E=['pointerdown','touchstart','scroll','keydown','click'];
+function h(e){if(e.type==='scroll'&&!window.scrollY)return;run()}
+function run(){if(d)return;d=1;window.__tagsLoadedAt=Date.now();
+E.forEach(function(e){removeEventListener(e,h,true)});
+var n=document.querySelectorAll('script[data-defer-tag]');
+for(var i=0;i<n.length;i++){var o=n[i],s=document.createElement('script');
+if(o.getAttribute('data-src')){s.async=true;s.src=o.getAttribute('data-src')}else{s.text=o.text}
+o.parentNode.insertBefore(s,o);o.parentNode.removeChild(o)}}
+window.__loadTags=run;
+E.forEach(function(e){addEventListener(e,h,{capture:true,passive:true})});
+setTimeout(run,${DEFER_TAGS_MS})})();`;
+const TAG_BLOCKS = [
+  ['GTM', /<script>(\(function\(w,d,s,l,i\)\{w\[l\]=w\[l\]\|\|\[\];[\s\S]*?)<\/script>/, 'GTM-PSDWS88V'],
+  ['gtag.js', /<script async src="(https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=AW-18575989292)">\s*<\/script>/, 'AW-18575989292'],
+  ['gtag init', /<script>(\s*window\.dataLayer = window\.dataLayer \|\| \[\];[\s\S]*?)<\/script>/, "gtag('config', 'AW-18575989292')"],
+  ['Meta Pixel', /<script>(\s*!function\(f,b,e,v,n,t,s\)[\s\S]*?)<\/script>/, "fbq('init', '934367175857999')"],
+  ['TikTok', /<script>(\s*!function \(w, d, t\) \{[\s\S]*?)<\/script>/, "ttq.load('D6NMKNBC77UBBJ4JSLG0')"],
+];
+function deferThirdPartyTags(page, route) {
+  let out = page;
+  TAG_BLOCKS.forEach(([name, re, needle], i) => {
+    const m = out.match(re);
+    if (!m) { err(`${route} (landing): blok tag ${name} tidak ditemukan di template`); return; }
+    if (!m[1].includes(needle) && !needle.startsWith('GTM') && !m[0].includes(needle)) err(`${route} (landing): blok tag ${name} tidak memuat "${needle}"`);
+    const isSrc = m[1].startsWith('https://');
+    const repl = (isSrc
+      ? `<script type="text/plain" data-defer-tag data-src="${m[1]}"></script>`
+      : `<script type="text/plain" data-defer-tag>${m[1]}</script>`);
+    out = out.replace(re, () => (i === 0 ? `<script>${DEFER_LOADER}</script>\n    ${repl}` : repl));
+  });
+  // ID wajib tetap ada tepat 1x di blok yang ditunda dan tidak ada tag yang masih langsung (non-deferred).
+  for (const id of ['GTM-PSDWS88V', 'AW-18575989292', '934367175857999', 'D6NMKNBC77UBBJ4JSLG0']) {
+    if (!out.includes(id)) err(`${route} (landing): ID ${id} hilang setelah penundaan tag`);
+  }
+  const live = out.replace(/<script type="text\/plain" data-defer-tag[\s\S]*?<\/script>/g, '').replace(/<noscript>[\s\S]*?<\/noscript>/g, '');
+  for (const id of ['googletagmanager.com/gtm.js', 'gtag/js', 'fbevents.js', 'analytics.tiktok.com']) {
+    if (live.includes(id)) err(`${route} (landing): ${id} masih dimuat langsung, bukan lewat penundaan`);
+  }
+  return out;
+}
+
 function outputFileFor(route) {
   return route === '/'
     ? path.join(DIST, 'index.html')
@@ -252,7 +300,7 @@ for (const r of LANDING_ROUTES) {
   if (head.path !== r) err(`${r} (landing): useSEO path "${head.path}" tidak sama dengan route`);
   if (html.includes('h-16 w-16 border-t-4 border-b-4')) err(`${r} (landing): HTML masih berisi spinner Suspense`);
   if (count(html, /<h1[\s>]/g) !== 1) err(`${r} (landing): harus tepat 1 <h1>`);
-  const page = useBuiltTailwind(buildPage(template, r, html, renderHeadTags(head)), r);
+  const page = deferThirdPartyTags(useBuiltTailwind(buildPage(template, r, html, renderHeadTags(head)), r), r);
   if (page.includes('cdn.tailwindcss.com')) err(`${r} (landing): HTML landing masih memuat cdn.tailwindcss.com`);
   if (count(page, /<meta name="robots" content="noindex, nofollow"/g) !== 1) err(`${r} (landing): harus tepat 1 meta robots noindex di HTML final`);
   if (count(page, /<link rel="canonical"/g) !== 0) err(`${r} (landing): tidak boleh ada canonical`);
