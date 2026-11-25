@@ -502,7 +502,7 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
 const ReviewCard: React.FC<{ r: Review }> = ({ r }) => {
   const [open, setOpen] = useState(false);
   return (
-    <li>
+    <li className="snap-start shrink-0 w-[84%] sm:w-[55%] md:w-[calc((100%-2rem)/3)]">
       <figure className="m-0 h-full rounded-[24px] bg-[#f5f5f7] dark:bg-[#1c1c1e] p-6 flex flex-col">
         <span className="flex mb-3" role="img" aria-label="5 dari 5 bintang"><Stars size={16} /></span>
         <blockquote className="m-0 text-[17px] leading-relaxed tracking-tight">
@@ -520,46 +520,46 @@ const ReviewCard: React.FC<{ r: Review }> = ({ r }) => {
   );
 };
 
-const REVIEW_GRID = 'grid gap-3 md:gap-4 md:grid-cols-3 md:items-start list-none m-0 p-0';
-
-export const ReviewBlock: React.FC<{ reviews: Review[]; title: React.ReactNode }> = ({ reviews, title }) => (
-  <div>
-    <h2 className="lp-h2 max-w-3xl">{title}</h2>
-    <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
-      <div className="flex items-center gap-4">
-        <span className="lp-num !text-[clamp(3.2rem,12vw,4.5rem)]">{FACTS.rating}</span>
-        <div>
-          <Stars size={22} />
-          <p className="mt-1 text-base md:text-lg font-semibold tracking-tight">dari {FACTS.reviewCount} ulasan di Google</p>
-          <p className="text-xs md:text-sm text-[#6e6e73] dark:text-[#a1a1a6]">data {FACTS.ratingDate}</p>
+export const ReviewBlock: React.FC<{ reviews: Review[]; title: React.ReactNode }> = ({ reviews, title }) => {
+  const rail = useRef<HTMLUListElement>(null);
+  const geser = (arah: number) => rail.current?.scrollBy({ left: arah * rail.current.clientWidth * 0.9, behavior: 'smooth' });
+  const tombolGeser = 'w-11 h-11 rounded-full inline-flex items-center justify-center border-2 border-[#1660cf] text-[#1660cf] dark:border-[#4d94ff] dark:text-[#4d94ff] hover:bg-[#1660cf] hover:text-white dark:hover:bg-[#4d94ff] dark:hover:text-black transition-colors';
+  return (
+    <div>
+      <h2 className="lp-h2 max-w-3xl">{title}</h2>
+      <div className="mt-6 flex flex-col sm:flex-row sm:items-center gap-5 sm:gap-8">
+        <div className="flex items-center gap-4">
+          <span className="lp-num !text-[clamp(3.2rem,12vw,4.5rem)]">{FACTS.rating}</span>
+          <div>
+            <Stars size={22} />
+            <p className="mt-1 text-base md:text-lg font-semibold tracking-tight">dari {FACTS.reviewCount} ulasan di Google</p>
+            <p className="text-xs md:text-sm text-[#6e6e73] dark:text-[#a1a1a6]">data {FACTS.ratingDate}</p>
+          </div>
+        </div>
+        <a
+          href={GOOGLE_MAPS_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 rounded-full border-2 border-[#1660cf] text-[#1660cf] dark:border-[#4d94ff] dark:text-[#4d94ff] text-[17px] font-semibold tracking-tight hover:bg-[#1660cf] hover:text-white dark:hover:bg-[#4d94ff] dark:hover:text-black transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40"
+        >
+          Cek sendiri di Google Maps <ArrowUpRight size={20} aria-hidden="true" />
+          <span className="sr-only"> (buka di tab baru)</span>
+        </a>
+      </div>
+      {/* Geser ke samping (permintaan owner 25 Nov): halaman tidak memanjang; yang panjang tetap di depan. */}
+      <ul ref={rail} aria-label={`${reviews.length} ulasan Google`} className="relative mt-6 flex items-start gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pb-2 md:mx-0 md:px-0 list-none m-0">
+        {reviews.map((r) => <ReviewCard key={r.name} r={r} />)}
+      </ul>
+      <div className="mt-3 flex items-center justify-between gap-4">
+        <p className="m-0 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">Geser untuk lihat {reviews.length} ulasan &rarr;</p>
+        <div className="hidden md:flex gap-2">
+          <button type="button" onClick={() => geser(-1)} aria-label="Ulasan sebelumnya" className={tombolGeser}><ArrowRight size={20} className="rotate-180" aria-hidden="true" /></button>
+          <button type="button" onClick={() => geser(1)} aria-label="Ulasan berikutnya" className={tombolGeser}><ArrowRight size={20} aria-hidden="true" /></button>
         </div>
       </div>
-      <a
-        href={GOOGLE_MAPS_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex items-center justify-center gap-2 min-h-[52px] px-6 rounded-full border-2 border-[#1660cf] text-[#1660cf] dark:border-[#4d94ff] dark:text-[#4d94ff] text-[17px] font-semibold tracking-tight hover:bg-[#1660cf] hover:text-white dark:hover:bg-[#4d94ff] dark:hover:text-black transition-colors focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40"
-      >
-        Cek sendiri di Google Maps <ArrowUpRight size={20} aria-hidden="true" />
-        <span className="sr-only"> (buka di tab baru)</span>
-      </a>
     </div>
-    <ul className={`mt-6 ${REVIEW_GRID}`}>
-      {reviews.slice(0, 3).map((r) => <ReviewCard key={r.name} r={r} />)}
-    </ul>
-    {reviews.length > 3 && (
-      <details className="group mt-3 md:mt-4">
-        <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-center min-h-[52px] px-6 rounded-full border-2 border-[#1660cf] text-[#1660cf] dark:border-[#4d94ff] dark:text-[#4d94ff] text-[17px] font-semibold">
-          <span className="group-open:hidden">Lihat semua {reviews.length} ulasan</span>
-          <span className="hidden group-open:inline">Tutup ulasan tambahan</span>
-        </summary>
-        <ul className={`mt-3 md:mt-4 ${REVIEW_GRID}`}>
-          {reviews.slice(3).map((r) => <ReviewCard key={r.name} r={r} />)}
-        </ul>
-      </details>
-    )}
-  </div>
-);
+  );
+};
 
 /* ───────────── FAQ ───────────── */
 
