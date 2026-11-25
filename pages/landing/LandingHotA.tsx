@@ -2,7 +2,7 @@ import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, PhotoHero, TrustStrip, BigCase,
-  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PricePlans, ReviewBlock, Faq, ConceptLine,
+  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PriceCard, ReviewBlock, Faq, ConceptLine,
   CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
@@ -37,9 +37,9 @@ const LandingHotA: React.FC = () => {
 
       <Screen tone="grey">
         <Reveal><Eyebrow>Harga</Eyebrow><h2 className="lp-h2 max-w-3xl">Harga <Hl>jelas</Hl> dari awal.</h2></Reveal>
-        <div className="mt-7"><PricePlans>
+        <div className="mt-7"><PriceCard>
           <WaButton buttonId="ortho-hot-a-pricing" placement="pricing" eventLabel="Landing Ortho Hot A - Pricing" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto !bg-white !text-[#0b2a6f]" />
-        </PricePlans></div>
+        </PriceCard></div>
       </Screen>
 
 

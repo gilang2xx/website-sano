@@ -462,47 +462,32 @@ const IconBox: React.FC<{ children: React.ReactNode; hi?: boolean }> = ({ childr
   <span className={`w-11 h-11 rounded-2xl flex items-center justify-center ${hi ? 'bg-white/20 text-white' : 'bg-[#1660cf]/10 text-[#1660cf] dark:bg-[#4d94ff]/15 dark:text-[#4d94ff]'}`} aria-hidden="true">{children}</span>
 );
 
-/* ───────────── Dua paket: Service (disorot) dan Upgrade ───────────── */
+/* ───────────── Kartu harga (satu kartu) ───────────── */
 
-const PlanList: React.FC<{ items: string[]; featured?: boolean }> = ({ items, featured }) => (
-  <ul className={`m-0 mt-5 p-0 list-none flex flex-col gap-3 border-t pt-5 ${featured ? 'border-white/20' : 'border-black/10 dark:border-white/10'}`}>
-    {items.map((t) => (
-      <li key={t} className="flex items-start gap-3 text-base md:text-[17px] leading-snug">
-        <span aria-hidden="true" className={`mt-0.5 w-5 h-5 shrink-0 rounded-full inline-flex items-center justify-center ${featured ? 'bg-white text-[#0b2a6f]' : 'bg-[#1660cf] text-white'}`}><Check size={13} strokeWidth={3.5} /></span>
-        <span>{t}</span>
-      </li>
-    ))}
-  </ul>
-);
-
-const PLAN_PILL = 'self-start inline-flex rounded-full px-3.5 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-[.12em]';
-
-/** `children` = tombol WA di kartu Service (halaman yang sudah punya tombol di atasnya tidak mengisinya). */
-export const PricePlans: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
-  <div className="grid gap-3 md:gap-5 md:grid-cols-2">
-    <Reveal className="h-full">
-      <div style={{ backgroundImage: `linear-gradient(135deg, #1d74e8 0%, ${ACCENT} 45%, #0b2a6f 100%)` }} className="relative overflow-hidden h-full flex flex-col text-white rounded-[24px] md:rounded-[32px] p-7 md:p-9">
-        <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 w-52 h-52 rounded-full border-[30px] border-white/10" />
-        <div className="relative flex flex-col">
-          <p className={`${PLAN_PILL} bg-white/15`}>Service kasur</p>
-          <p className="mt-5 text-sm font-medium opacity-85">Mulai dari</p>
-          <p className="lp-num mt-1 !text-[clamp(2.75rem,12vw,4rem)]"><span className="relative top-[.28em] align-top text-[.45em] mr-1 opacity-85">Rp</span>{FACTS.priceService.replace(/^Rp/, '')}</p>
+/** `children` = tombol WA di kartu (halaman yang sudah punya tombol di atasnya tidak mengisinya). */
+export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
+  <Reveal>
+    <div style={{ backgroundImage: `linear-gradient(135deg, #1d74e8 0%, ${ACCENT} 45%, #0b2a6f 100%)` }} className="relative overflow-hidden text-white rounded-[24px] md:rounded-[32px] p-7 md:p-10">
+      <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 w-52 h-52 rounded-full border-[30px] border-white/10" />
+      <div className="relative grid md:grid-cols-2 md:gap-x-10 md:items-center">
+        <div className="flex flex-col">
+          <p className="self-start inline-flex rounded-full bg-white/15 px-3.5 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-[.12em]">Service &amp; upgrade kasur</p>
+          <p className="mt-5 text-sm font-medium opacity-85">Service mulai dari</p>
+          <p className="lp-num mt-1 !text-[clamp(2.75rem,12vw,4.5rem)] md:!text-[4rem]"><span className="relative top-[.28em] align-top text-[.45em] mr-1 opacity-85">Rp</span>{FACTS.priceService.replace(/^Rp/, '')}</p>
           <p className="mt-3 text-base opacity-85 leading-snug">Harga pasti setelah kami lihat foto kasurmu.</p>
-          <PlanList featured items={[`Garansi Klinik Matras hingga ${FACTS.warrantyService}`, `Dikerjakan ${FACTS.days}`, `Antar-jemput gratis ${FACTS.freeShipArea}`]} />
         </div>
-        {children && <div className="relative mt-auto pt-6">{children}</div>}
+        <ul className="m-0 mt-5 p-0 list-none flex flex-col gap-3 border-t border-white/20 pt-5 md:row-span-2 md:col-start-2 md:row-start-1 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-10">
+          {[`Garansi hingga ${FACTS.warrantyUpgrade} untuk Upgrade`, `Dikerjakan ${FACTS.days}`, `Antar-jemput gratis ${FACTS.freeShipArea}`].map((t) => (
+            <li key={t} className="flex items-start gap-3 text-base md:text-lg leading-snug">
+              <span aria-hidden="true" className="mt-0.5 w-5 h-5 shrink-0 rounded-full inline-flex items-center justify-center bg-white text-[#0b2a6f]"><Check size={13} strokeWidth={3.5} /></span>
+              <span>{t}</span>
+            </li>
+          ))}
+        </ul>
+        {children && <div className="pt-6 md:col-start-1">{children}</div>}
       </div>
-    </Reveal>
-    <Reveal delay={90} className="h-full">
-      <div className="h-full flex flex-col rounded-[24px] md:rounded-[32px] border border-[#1660cf]/15 dark:border-white/10 bg-gradient-to-b from-white to-[#e8f1fd] dark:from-[#1c1c1e] dark:to-[#132238] p-7 md:p-9">
-        <p className={`${PLAN_PILL} bg-[#1660cf]/10 text-[#1660cf] dark:bg-[#4d94ff]/15 dark:text-[#4d94ff]`}>Upgrade kasur sehat</p>
-        <p className="mt-5 text-sm font-medium text-[#515154] dark:text-[#a1a1a6]">Harga</p>
-        <p className="lp-num mt-1 !text-[clamp(2rem,8.5vw,3rem)]">Sesuai kondisi</p>
-        <p className="mt-3 text-base text-[#515154] dark:text-[#a1a1a6] leading-snug">Kasur lamamu dirombak jadi lebih kokoh. Harga setelah kami lihat kondisi kasurmu.</p>
-        <PlanList items={[`Garansi Klinik Matras hingga ${FACTS.warrantyUpgrade}`, `Dikerjakan ${FACTS.days}`, `Antar-jemput gratis ${FACTS.freeShipArea}`]} />
-      </div>
-    </Reveal>
-  </div>
+    </div>
+  </Reveal>
 );
 
 /* ───────────── Review statis (ulasan Google asli) ───────────── */

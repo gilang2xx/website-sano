@@ -3,7 +3,7 @@ import { Check } from 'lucide-react';
 import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
-  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PricePlans, ReviewBlock, Faq, ConceptSection,
+  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PriceCard, ReviewBlock, Faq, ConceptSection,
   CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
@@ -80,7 +80,7 @@ const LandingColdA: React.FC = () => {
           <Lead className="mt-4">Ceritakan keluhanmu dan kirim foto kasurnya. Tim kami dengarkan dulu, cek kondisinya, lalu sarankan perbaikan yang paling pas.</Lead>
           <div className="mt-6"><WaButton buttonId="ortho-cold-a-service" placement="service-card" eventLabel="Landing Ortho Cold A - Konsultasi" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto" /></div>
         </Split>
-        <div className="mt-10"><PricePlans /></div>
+        <div className="mt-10"><PriceCard /></div>
       </Screen>
 
       <Screen tone="grey"><ReviewBlock reviews={REVIEWS} title={<>Kata mereka yang <Serif>sudah pakai.</Serif></>} /></Screen>
