@@ -84,7 +84,7 @@ const LandingColdA: React.FC = () => {
         <div className="mt-10"><NumbersRow /></div>
       </Screen>
 
-      <Screen tone="grey"><ReviewBlock reviews={[REVIEWS.rifky, REVIEWS.sudarsono, REVIEWS.hidajat]} title={<>Kata mereka yang <Serif>sudah pakai.</Serif></>} /></Screen>
+      <Screen tone="grey"><ReviewBlock reviews={REVIEWS} title={<>Kata mereka yang <Serif>sudah pakai.</Serif></>} /></Screen>
 
       <Screen>
         <Reveal><Eyebrow>Pertanyaan umum</Eyebrow><h2 className="lp-h2 max-w-3xl">Masih <Serif>ragu?</Serif></h2></Reveal>

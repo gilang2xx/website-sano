@@ -65,7 +65,7 @@ const LandingHotA: React.FC = () => {
         ]} />
       </Screen>
 
-      <Screen><ReviewBlock reviews={[REVIEWS.hidajat, REVIEWS.sudarsono, REVIEWS.rifky]} title={<>Kata <Serif>pelanggan.</Serif></>} /><div className="mt-12"><ConceptLine /></div></Screen>
+      <Screen><ReviewBlock reviews={REVIEWS} title={<>Kata <Serif>pelanggan.</Serif></>} /><div className="mt-12"><ConceptLine /></div></Screen>
 
       <Screen tone="grey">
         <Reveal><Eyebrow>Pertanyaan umum</Eyebrow><h2 className="lp-h2 max-w-3xl">Masih <Serif>ragu?</Serif></h2></Reveal>

@@ -76,7 +76,7 @@ const LandingWarmB: React.FC = () => {
       </Screen>
 
 
-      <Screen tone="grey"><ReviewBlock reviews={[REVIEWS.sudarsono, REVIEWS.hidajat, REVIEWS.rifky]} title={<>Yang tadinya mau beli baru, <Serif>bilang apa?</Serif></>} /></Screen>
+      <Screen tone="grey"><ReviewBlock reviews={REVIEWS} title={<>Yang tadinya mau beli baru, <Serif>bilang apa?</Serif></>} /></Screen>
 
       <Screen><ConceptSection /></Screen>
 

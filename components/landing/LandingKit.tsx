@@ -498,6 +498,30 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
 
 /* ───────────── Review statis (ulasan Google asli) ───────────── */
 
+// Teks utuh selalu ada di HTML (hanya dipotong secara visual), jadi aman untuk prerender/aksesibilitas.
+const ReviewCard: React.FC<{ r: Review }> = ({ r }) => {
+  const [open, setOpen] = useState(false);
+  return (
+    <li>
+      <figure className="m-0 h-full rounded-[24px] bg-[#f5f5f7] dark:bg-[#1c1c1e] p-6 flex flex-col">
+        <span className="flex mb-3" role="img" aria-label="5 dari 5 bintang"><Stars size={16} /></span>
+        <blockquote className="m-0 text-[17px] leading-relaxed tracking-tight">
+          <p className={`m-0 ${open ? '' : 'line-clamp-6'}`}>&ldquo;<span data-review-text>{r.text}</span>&rdquo;</p>
+        </blockquote>
+        <button type="button" aria-expanded={open} onClick={() => setOpen(!open)} className="self-start min-h-[44px] text-[15px] font-semibold text-[#1660cf] dark:text-[#4d94ff]">
+          {open ? 'Tutup' : 'Baca selengkapnya'}<span className="sr-only"> ulasan {r.name}</span>
+        </button>
+        <figcaption className="mt-auto pt-2 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">
+          <span className="font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">{r.name}</span>
+          <span aria-hidden="true"> · </span>Ulasan Google{r.date ? ` · ${r.date}` : ''}
+        </figcaption>
+      </figure>
+    </li>
+  );
+};
+
+const REVIEW_GRID = 'grid gap-3 md:gap-4 md:grid-cols-3 md:items-start list-none m-0 p-0';
+
 export const ReviewBlock: React.FC<{ reviews: Review[]; title: React.ReactNode }> = ({ reviews, title }) => (
   <div>
     <h2 className="lp-h2 max-w-3xl">{title}</h2>
@@ -520,20 +544,20 @@ export const ReviewBlock: React.FC<{ reviews: Review[]; title: React.ReactNode }
         <span className="sr-only"> (buka di tab baru)</span>
       </a>
     </div>
-    <ul className="mt-6 flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pb-2 md:mx-0 md:px-0 md:grid md:grid-cols-3 md:overflow-visible list-none m-0">
-      {reviews.map((r) => (
-        <li key={r.name} className="snap-center shrink-0 w-[84%] sm:w-[55%] md:w-auto">
-          <figure className="m-0 h-full rounded-[24px] bg-[#f5f5f7] dark:bg-[#1c1c1e] p-6 flex flex-col">
-            <span className="flex mb-3" aria-label="5 dari 5 bintang"><Stars size={16} /></span>
-            <blockquote className="m-0 text-[17px] leading-relaxed tracking-tight flex-grow">&ldquo;{r.text}&rdquo;</blockquote>
-            <figcaption className="mt-4 text-sm text-[#6e6e73] dark:text-[#a1a1a6]">
-              <span className="font-semibold text-[#1d1d1f] dark:text-[#f5f5f7]">{r.name}</span>
-              <span aria-hidden="true"> · </span>Ulasan Google{r.date ? ` · ${r.date}` : ''}
-            </figcaption>
-          </figure>
-        </li>
-      ))}
+    <ul className={`mt-6 ${REVIEW_GRID}`}>
+      {reviews.slice(0, 3).map((r) => <ReviewCard key={r.name} r={r} />)}
     </ul>
+    {reviews.length > 3 && (
+      <details className="group mt-3 md:mt-4">
+        <summary className="cursor-pointer list-none [&::-webkit-details-marker]:hidden flex items-center justify-center min-h-[52px] px-6 rounded-full border-2 border-[#1660cf] text-[#1660cf] dark:border-[#4d94ff] dark:text-[#4d94ff] text-[17px] font-semibold">
+          <span className="group-open:hidden">Lihat semua {reviews.length} ulasan</span>
+          <span className="hidden group-open:inline">Tutup ulasan tambahan</span>
+        </summary>
+        <ul className={`mt-3 md:mt-4 ${REVIEW_GRID}`}>
+          {reviews.slice(3).map((r) => <ReviewCard key={r.name} r={r} />)}
+        </ul>
+      </details>
+    )}
   </div>
 );
 

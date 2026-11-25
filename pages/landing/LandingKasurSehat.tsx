@@ -164,7 +164,7 @@ const LandingKasurSehat: React.FC = () => {
 
       <TrustStrip />
 
-      <Screen><ReviewBlock reviews={[REVIEWS.hidajat, REVIEWS.sudarsono, REVIEWS.rifky]} title={<>Kata <Serif>pelanggan.</Serif></>} /></Screen>
+      <Screen><ReviewBlock reviews={REVIEWS} title={<>Kata <Serif>pelanggan.</Serif></>} /></Screen>
 
       <Screen tone="grey">
         <Reveal><Eyebrow>Pertanyaan umum</Eyebrow><h2 className="lp-h2 max-w-3xl">Masih <Serif>ragu?</Serif></h2></Reveal>
