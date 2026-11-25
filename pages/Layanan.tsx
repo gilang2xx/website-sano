@@ -129,7 +129,7 @@ const Layanan: React.FC = () => {
                 to="/pricelist"
                 className="inline-flex items-center gap-2 font-bold text-primary dark:text-blue-300 hover:underline"
               >
-                Lihat estimasi harga service &amp; upgrade kasur <ArrowRight size={18} aria-hidden="true" />
+                Lihat harga upgrade kasur sehat <ArrowRight size={18} aria-hidden="true" />
               </Link>
             </div>
           </ScrollReveal>

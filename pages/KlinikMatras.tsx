@@ -58,7 +58,7 @@ const faqs = [
   },
   {
     q: 'Berapa biaya service kasur?',
-    a: 'Estimasi harga paket utama tersedia di halaman daftar harga. Penawaran untuk pekerjaan lain disampaikan setelah kondisi kasur dipahami lewat konsultasi.',
+    a: 'Harga mulai upgrade kasur sehat tersedia di halaman daftar harga. Penawaran untuk pekerjaan lain disampaikan setelah kondisi kasur dipahami lewat konsultasi.',
   },
   {
     q: 'Apakah ada garansi?',
@@ -357,8 +357,8 @@ const KlinikMatras: React.FC = () => {
         <h2 id="harga" className="text-2xl md:text-3xl font-extrabold text-slate-900 dark:text-white mb-6">Harga, Contoh Hasil, dan Bacaan Lanjutan</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Link to="/pricelist" className="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 transition-colors">
-            <h3 className="font-bold text-slate-900 dark:text-white mb-1">Estimasi harga service &amp; upgrade</h3>
-            <p className="text-sm text-slate-600 dark:text-slate-400">Lihat estimasi paket utama. Harga akhir mengikuti hasil pemeriksaan kondisi kasur.</p>
+            <h3 className="font-bold text-slate-900 dark:text-white mb-1">Harga upgrade kasur sehat</h3>
+            <p className="text-sm text-slate-600 dark:text-slate-400">Harga akhir mengikuti hasil pemeriksaan ukuran dan kondisi kasur.</p>
           </Link>
           <Link to="/before-after" className="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-blue-500 transition-colors">
             <h3 className="font-bold text-slate-900 dark:text-white mb-1">Galeri before &amp; after</h3>

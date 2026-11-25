@@ -77,7 +77,7 @@ const faqs = [
   },
   {
     q: 'Berapa biayanya?',
-    a: 'Estimasi harga paket utama ada di halaman daftar harga. Rekomendasi pekerjaan dan penawaran mengikuti hasil pemeriksaan kondisi kasur.',
+    a: 'Harga mulai upgrade kasur sehat ada di halaman daftar harga. Rekomendasi pekerjaan dan penawaran mengikuti hasil pemeriksaan kondisi kasur.',
   },
   {
     q: 'Apakah ada garansi?',
@@ -225,8 +225,8 @@ const PerbaikanKasurAmblas: React.FC = () => {
             ))}
           </div>
           <p className="mt-6 text-slate-600 dark:text-slate-300">
-            Estimasi harga paket utama tersedia di{' '}
-            <Link to="/pricelist" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">daftar harga service &amp; upgrade kasur</Link>
+            Lihat{' '}
+            <Link to="/pricelist" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">harga upgrade kasur sehat</Link>
             , dan seluruh layanan lain ada di{' '}
             <Link to="/klinik-matras" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">halaman service kasur &amp; springbed</Link>.
           </p>
