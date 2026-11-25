@@ -27,7 +27,7 @@ const BeforeAfter: React.FC = () => {
           Galeri <span className="text-[#3B62AA]">Transformasi</span>
         </h1>
         <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
-          Lihat bukti nyata pengerjaan kami. (Halaman ini menggunakan placeholder sementara menunggu dokumentasi proyek terbaru).
+          Lihat bukti nyata pengerjaan kami.
         </p>
       </div>
 
