@@ -2,8 +2,8 @@ import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, PhotoHero, TrustStrip, BigCase,
-  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PriceCard, NumbersRow, ReviewBlock, Faq, ConceptLine,
-  CtaRibbon, HealthNote, Serif, Hl, BentoCard, useHeroRef,
+  Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PricePlans, ReviewBlock, Faq, ConceptLine,
+  CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
@@ -37,22 +37,9 @@ const LandingHotA: React.FC = () => {
 
       <Screen tone="grey">
         <Reveal><Eyebrow>Harga</Eyebrow><h2 className="lp-h2 max-w-3xl">Harga <Hl>jelas</Hl> dari awal.</h2></Reveal>
-        <div className="mt-7 grid gap-3 md:gap-5 md:grid-cols-2">
-          <PriceCard>
-            <WaButton buttonId="ortho-hot-a-pricing" placement="pricing" eventLabel="Landing Ortho Hot A - Pricing" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto !bg-white !text-[#0b2a6f]" />
-          </PriceCard>
-          <Reveal delay={90} className="h-full">
-            <BentoCard className="h-full gap-5 !bg-white dark:!bg-[#1c1c1e]">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff]">Upgrade</p>
-                <p className="mt-2 text-3xl md:text-4xl font-bold tracking-tight leading-tight">Garansi Klinik Matras hingga {FACTS.warrantyUpgrade}</p>
-                <p className="mt-3 text-lg text-[#6e6e73] dark:text-[#a1a1a6] leading-snug">Kasur lamamu dirombak jadi lebih kokoh. Harga setelah kami lihat kondisi kasurmu.</p>
-              </div>
-              <p className="text-base font-semibold">Service: garansi hingga {FACTS.warrantyService}</p>
-            </BentoCard>
-          </Reveal>
-        </div>
-        <div className="mt-3 md:mt-5"><NumbersRow /></div>
+        <div className="mt-7"><PricePlans>
+          <WaButton buttonId="ortho-hot-a-pricing" placement="pricing" eventLabel="Landing Ortho Hot A - Pricing" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto !bg-white !text-[#0b2a6f]" />
+        </PricePlans></div>
       </Screen>
 
 

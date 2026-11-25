@@ -2,7 +2,7 @@ import React from 'react';
 import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
-  Screen, Eyebrow, Reveal, ZigZag, PriceCard, ReviewBlock, Faq, ConceptSection, CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
+  Screen, Eyebrow, Reveal, ZigZag, PricePlans, ReviewBlock, Faq, ConceptSection, CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
 } from '../../components/landing/LandingKit';
 import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
@@ -70,9 +70,9 @@ const LandingWarmB: React.FC = () => {
             </table>
           </div>
         </Reveal>
-        <div className="mt-5"><PriceCard>
+        <div className="mt-5"><PricePlans>
           <WaButton buttonId="ortho-warm-b-banding" placement="pricing" eventLabel="Landing Ortho Warm B - Banding" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto !bg-white !text-[#0b2a6f]" />
-        </PriceCard></div>
+        </PricePlans></div>
       </Screen>
 
 
