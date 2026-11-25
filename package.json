@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --ssr entry-server.tsx --outDir dist-ssr && tailwindcss -c tailwind.landing.config.cjs -i scripts/landing.css -o dist-ssr/landing.css --minify && node scripts/prerender.mjs && node scripts/generate-sitemap.mjs",
+    "build": "node scripts/fetch-review-photos.mjs && vite build && vite build --ssr entry-server.tsx --outDir dist-ssr && tailwindcss -c tailwind.landing.config.cjs -i scripts/landing.css -o dist-ssr/landing.css --minify && node scripts/prerender.mjs && node scripts/generate-sitemap.mjs",
     "build:spa": "vite build",
     "preview": "vite preview"
   },

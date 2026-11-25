@@ -29,3 +29,6 @@ dist-ssr
 *.sw?
 
 .vercel
+
+# Foto penulis ulasan Google, diambil ulang tiap build (scripts/fetch-review-photos.mjs)
+components/landing/reviewPhotos.generated.json

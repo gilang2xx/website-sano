@@ -515,7 +515,11 @@ const ReviewCard: React.FC<{ r: Review }> = ({ r }) => {
             <span aria-hidden="true" style={{ backgroundColor: avatarBg(r.name) }} className="w-10 h-10 rounded-full shrink-0 inline-flex items-center justify-center text-white text-lg font-semibold">{r.name.trim().charAt(0).toUpperCase()}</span>
           )}
           <span className="min-w-0 leading-tight">
-            <span className="block font-semibold text-[15px] text-[#1d1d1f] dark:text-[#f5f5f7] truncate">{r.name}</span>
+            {r.authorUri ? (
+              <a href={r.authorUri} target="_blank" rel="noopener noreferrer" className="block font-semibold text-[15px] text-[#1d1d1f] dark:text-[#f5f5f7] truncate hover:underline">{r.name}</a>
+            ) : (
+              <span className="block font-semibold text-[15px] text-[#1d1d1f] dark:text-[#f5f5f7] truncate">{r.name}</span>
+            )}
             <span className="block text-[13px] text-[#6e6e73] dark:text-[#a1a1a6]">Ulasan Google{r.date ? ` · ${r.date}` : ''}</span>
           </span>
         </figcaption>

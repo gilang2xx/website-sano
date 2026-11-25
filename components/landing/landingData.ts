@@ -65,12 +65,14 @@ export interface Review {
   date?: string;
   /** URL foto profil, hanya dari sumber resmi (Places API) atau dengan izin pelanggan. */
   photo?: string;
+  /** Tautan profil Google penulis (wajib ditampilkan bila foto dari Places API). */
+  authorUri?: string;
 }
 
 // Ulasan Google asli (DRAF pilihan Gilang 25 Nov 2026, masih didiskusikan dengan RWP).
 // Sumber: projects/landing-review-kandidat-2026-11-25.md bagian A, urutan sama. Teks VERBATIM
 // (typo, emoji, "...", tanda pisah dari customer dibiarkan): jangan dirapikan.
-export const REVIEWS: Review[] = [
+const REVIEWS_BASE: Review[] = [
   {
     name: "Bima Kawindra",
     text: "Saya sangat puas dengan pelayanan Klinik Matras by Sano Care. Matras saya sebelumnya sudah amblas, tidak nyaman dipakai, dan setiap bangun tidur pinggang terasa sakit. Awalnya saya sempat berpikir harus beli matras baru, tapi setelah direstorasi di sini hasilnya benar-benar di luar ekspektasi. Matras kembali terasa padat, nyaman, dan seperti baru lagi. Tidur jadi jauh lebih nyenyak dan bangun pagi sudah tidak pegal-pegal seperti sebelumnya. Proses pengerjaannya juga rapi, profesional, dan hasilnya terlihat berkualitas. Dan yang paling memuaskan free biaya jemput dan antar matrasnya. Suatu solusi maksimal buat yg kasurnya berat dan besar. Apalagi matras saya di lantai 2 😁 Terima kasih untuk tim Klinik Matras by Sano yang sudah membantu mengembalikan kenyamanan tidur saya. Sangat direkomendasikan untuk siapa pun yang punya masalah matras amblas tapi belum ingin beli baru 👍",
@@ -108,6 +110,14 @@ export const REVIEWS: Review[] = [
     text: "Kasur saya dulu benar-benar amblas — sekarang jauh lebih kokoh, nyaman, dan rasanya bahkan lebih baik dari kasur baru di mall karena saya sempat cari-cari kasur baru di mall dan sempat tergoda kasur in thebox di online tapi ga yakin. sano mantap pokonya, sukses terus",
   },
 ];
+
+// Foto penulis dari Places API, diambil saat build (scripts/fetch-review-photos.mjs). Tidak ada file = avatar huruf.
+const photoFiles = import.meta.glob('./reviewPhotos.generated.json', { eager: true, import: 'default' }) as Record<string, Record<string, { photo: string; uri: string }>>;
+const PHOTOS = Object.values(photoFiles)[0] || {};
+export const REVIEWS: Review[] = REVIEWS_BASE.map((r) => {
+  const p = PHOTOS[r.name.trim()];
+  return p ? { ...r, photo: p.photo, authorUri: p.uri || undefined } : r;
+});
 
 export const HEALTH_NOTE =
   'Kasur yang amblas bisa ikut berperan bikin badan pegal, tapi bukan satu-satunya penyebab. Kalau nyerinya berat atau nggak hilang-hilang, tetap periksa ke dokter ya.';
