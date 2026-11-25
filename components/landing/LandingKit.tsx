@@ -94,7 +94,7 @@ export const Reveal: React.FC<{ children: React.ReactNode; className?: string; d
 
 /* ───────────── Cangkang halaman ───────────── */
 
-/** Identitas halaman landing: kode sumber di teks WA ([LP-COLD-A]) dan parameter landing_id/audience di event click_whatsapp. */
+/** Identitas halaman landing: parameter landing_id/audience di event click_whatsapp. Tidak ditulis ke teks WA yang dilihat customer. */
 const LandingCtx = createContext<{ landingId: string; audience: string } | null>(null);
 
 export const LandingShell: React.FC<{ children: React.ReactNode; landingId: string; audience: 'cold' | 'warm' | 'hot' }> = ({ children, landingId, audience }) => {
@@ -160,7 +160,7 @@ export const WaButton: React.FC<Omit<WaProps, 'label'> & { label: React.ReactNod
   const lp = useContext(LandingCtx);
   return (
   <WhatsAppLink
-    message={lp ? `${message} [${lp.landingId}]` : message}
+    message={message}
     eventLabel={eventLabel}
     buttonId={buttonId}
     placement={placement}
