@@ -166,6 +166,7 @@ export const WaButton: React.FC<Omit<WaProps, 'label'> & { label: React.ReactNod
     placement={placement}
     landingId={lp?.landingId}
     audience={lp?.audience}
+    data-wa="1"
     target="_blank"
     rel="noopener noreferrer"
     className={`inline-flex items-center justify-center gap-2 md:gap-2.5 min-h-[56px] px-5 md:px-7 rounded-full whitespace-nowrap text-base md:text-[17px] font-semibold tracking-tight shadow-lg shadow-black/20 transition-colors active:scale-[.98] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40 ${tone === 'blue' ? 'bg-[#1660cf] hover:bg-[#0b2a6f] text-white' : 'bg-[#c8f53c] hover:bg-[#b6e22a] text-black'} ${className}`}
@@ -195,6 +196,7 @@ export const TextLink: React.FC<{ to?: string; href?: string; children: React.Re
 export const FloatingWa: React.FC<Omit<WaProps, 'label' | 'tone' | 'className'> & { sentinelRef: React.RefObject<HTMLElement | null>; labelMobile?: string; labelDesktop?: string }> = ({ sentinelRef, labelMobile = 'Konsultasi lewat WA', labelDesktop = 'Konsultasi lewat WA', ...wa }) => {
   const [heroIn, setHeroIn] = useState(true);
   const [ribbonIn, setRibbonIn] = useState(false);
+  const [btnIn, setBtnIn] = useState(false);
   useEffect(() => {
     if (typeof IntersectionObserver === 'undefined') { setHeroIn(false); return; }
     const watch = (el: Element | null, set: (v: boolean) => void) => {
@@ -205,12 +207,20 @@ export const FloatingWa: React.FC<Omit<WaProps, 'label' | 'tone' | 'className'> 
     };
     const off1 = watch(sentinelRef.current, setHeroIn);
     const off2 = watch(document.getElementById('cta-ribbon'), setRibbonIn);
-    return () => { off1(); off2(); };
+    // Sembunyi juga saat tombol WA lain di halaman sedang terlihat: tidak pernah dua tombol WA bersamaan.
+    const live = new Set<Element>();
+    const io = new IntersectionObserver((es) => {
+      es.forEach((e) => (e.isIntersecting ? live.add(e.target) : live.delete(e.target)));
+      setBtnIn(live.size > 0);
+    });
+    document.querySelectorAll('main a[data-wa]').forEach((a) => { if (!a.closest('[data-floating]')) io.observe(a); });
+    return () => { off1(); off2(); io.disconnect(); };
   }, [sentinelRef]);
 
-  const show = !heroIn && !ribbonIn;
+  const show = !heroIn && !ribbonIn && !btnIn;
   return (
     <div
+      data-floating="wa"
       aria-hidden={!show}
       className={`fixed z-40 inset-x-0 bottom-0 px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] bg-white/80 dark:bg-black/75 backdrop-blur-md border-t border-black/5 dark:border-white/10 md:inset-x-auto md:right-5 md:bottom-5 md:p-0 md:bg-transparent md:dark:bg-transparent md:backdrop-blur-none md:border-0 transition-[transform,opacity,visibility] duration-500 ease-out motion-reduce:transition-none ${show ? 'translate-y-0 opacity-100 visible' : 'translate-y-full opacity-0 invisible'}`}
     >
@@ -457,7 +467,7 @@ export const NumbersRow: React.FC = () => (
   <div className="grid grid-cols-2 md:grid-cols-4 gap-x-6 gap-y-8">
     {[
       [FACTS.rating, `rating Google, ${FACTS.reviewCount} ulasan`],
-      ['20 / 10', 'tahun garansi Klinik Matras (Upgrade / Service)'],
+      ['20 / 10', 'tahun garansi maksimal Klinik Matras (Upgrade / Service)'],
       ['2-3', 'hari pengerjaan'],
       ['Gratis', `antar-jemput ${FACTS.freeShipArea}`],
     ].map(([n, l], i) => (
@@ -542,11 +552,11 @@ export const Faq: React.FC<{ items: Array<[string, string]> }> = ({ items }) => 
   </div>
 );
 
-/* ───────────── Konsep Matras Sehat (3 kartu, tengah disorot) ───────────── */
+/* ───────────── Konsep Kasur Sehat (3 kartu, tengah disorot) ───────────── */
 
 const KONSEP: Array<{ key: 'tenggelam' | 'sehat' | 'keras'; title: string; text: string; alt: string; h720: number; hi?: boolean }> = [
-  { key: 'tenggelam', title: 'Terlalu tenggelam', text: 'Badan melengkung, tulang nggak di posisi natural.', alt: 'Ilustrasi orang berbaring di kasur yang terlalu empuk, tulang belakang melengkung', h720: 200 },
-  { key: 'sehat', title: 'Matras Sehat', text: 'Fondasi kokoh + lapisan sesuai berat badanmu. Tulang tetap lurus, tekanannya merata.', alt: 'Ilustrasi orang berbaring di kasur yang pas, tulang belakang lurus', h720: 220, hi: true },
+  { key: 'tenggelam', title: 'Terlalu tenggelam', text: 'Badan bisa ikut melengkung dan tidak tertopang rata.', alt: 'Ilustrasi orang berbaring di kasur yang terlalu empuk, tulang belakang melengkung', h720: 200 },
+  { key: 'sehat', title: 'Matras Sehat', text: 'Fondasi kokoh + lapisan sesuai berat badanmu. Badan tertopang, tekanannya lebih merata.', alt: 'Ilustrasi orang berbaring di kasur yang pas, tulang belakang lurus', h720: 220, hi: true },
   { key: 'keras', title: 'Terlalu keras', text: 'Leher, bahu, dan pinggang tertekan. Bangun jadi kaku.', alt: 'Ilustrasi orang berbaring di kasur yang terlalu keras, bahu dan pinggul tertekan', h720: 195 },
 ];
 

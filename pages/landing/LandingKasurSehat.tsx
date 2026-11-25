@@ -56,13 +56,13 @@ const LandingKasurSehat: React.FC = () => {
         ref={hero}
         pill="Jabodetabek & Bandung"
         title={<>Kasur empuk atau keras <Serif>belum tentu sehat</Serif> buat tubuh.</>}
-        lead="Terlalu empuk, badan tenggelam. Terlalu keras, sendi dan titik tumpu tubuh bisa ikut tertekan. Kasurmu yang sekarang bisa dibikin pas lewat service atau upgrade."
+        lead="Terlalu empuk, badan tenggelam. Terlalu keras, sendi dan titik tumpu tubuh bisa ikut tertekan. Kasur yang sehat itu fondasinya kokoh dan lapisannya pas buat tiap orang. Kasurmu yang sekarang bisa dibikin begitu lewat service atau upgrade."
         checks={['Antar-jemput gratis', 'Garansi hingga 10-20 tahun', `Selesai ${FACTS.days}`]}
         actions={<WaButton buttonId="kasur-sehat-hero" placement="hero" eventLabel="Landing Kasur Sehat - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />}
       />
 
       <Screen>
-        <Split photo={<Photo name="masalah" alt="Orang menekan kasur yang permukaannya sudah cekung" sizes="(min-width:768px) 420px, 92vw" />}>
+        <Split photo={<Photo name="masalah" alt="Kasur lama yang kusam di meja workshop sebelum dikerjakan" className="aspect-[4/5]" />}>
           <Eyebrow>Yang sering terjadi</Eyebrow>
           <h2 className="lp-h2">Udah pilih yang empuk, kok tetap <Serif>nggak enak?</Serif></h2>
           <Lead className="mt-4">Ceritanya sering mirip. Waktu dicoba di toko, kasurnya empuk banget. Setahun dua tahun kemudian tengahnya mulai cekung, dan kasur dibalik tiap bulan biar rata lagi.</Lead>
@@ -121,10 +121,10 @@ const LandingKasurSehat: React.FC = () => {
           <div className="mt-5 overflow-x-auto rounded-2xl bg-white dark:bg-[#1c1c1e]">
             <table className="w-full text-left text-base md:text-lg">
               <caption className="sr-only">Lima tier lapisan nyaman: berat badan dan tebal lapisan</caption>
-              <thead><tr className="text-sm uppercase tracking-wide text-[#6e6e73] dark:text-[#a1a1a6]"><th scope="col" className="px-5 py-3 font-semibold">Tier</th><th scope="col" className="px-5 py-3 font-semibold">Berat badan</th><th scope="col" className="px-5 py-3 font-semibold">Tebal lapisan (cm)</th></tr></thead>
+              <thead><tr className="text-sm uppercase tracking-wide text-[#6e6e73] dark:text-[#a1a1a6]"><th scope="col" className="px-4 py-3 font-semibold">Tier</th><th scope="col" className="px-4 py-3 font-semibold">Berat badan</th><th scope="col" className="px-4 py-3 font-semibold">Tebal lapisan (cm)</th></tr></thead>
               <tbody>
                 {TIERS.map(([tier, kg, cm]) => (
-                  <tr key={tier} className="border-t border-black/5 dark:border-white/10"><th scope="row" className="px-5 py-3 font-bold tracking-tight">{tier}</th><td className="px-5 py-3">{kg}</td><td className="px-5 py-3">{cm}</td></tr>
+                  <tr key={tier} className="border-t border-black/5 dark:border-white/10"><th scope="row" className="px-4 py-3 font-bold tracking-tight">{tier}</th><td className="px-4 py-3 whitespace-nowrap">{kg}</td><td className="px-4 py-3 whitespace-nowrap">{cm}</td></tr>
                 ))}
               </tbody>
             </table>
