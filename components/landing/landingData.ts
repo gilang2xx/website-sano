@@ -21,12 +21,6 @@ export const FACTS = {
 export interface UspCard { q: string; title: string; body: string; vs: string }
 
 export const USP = {
-  harga: {
-    q: 'Mahal nggak sih?',
-    title: `Mulai ${FACTS.priceUpgrade}`,
-    body: 'Service atau upgrade kasur sehat. Harga pasti setelah konsultasi. Bandingin sendiri sama kasur baru incaranmu.',
-    vs: 'bayar kasur utuh dari nol.',
-  },
   berat: {
     q: 'Cocok nggak buat badanku?',
     title: 'Lapisannya pas sama berat badanmu',

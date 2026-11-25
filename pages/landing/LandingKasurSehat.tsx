@@ -140,7 +140,7 @@ const LandingKasurSehat: React.FC = () => {
         <UspCards cards={[
           { ...USP.berat, body: 'Pakai 5 tier tadi. Tidur berdua? Kirim berat badan masing-masing.' },
           { ...USP.lama, body: 'Selama rangkanya masih bisa dipakai, fondasi dan lapisannya diganti ke susunan SFS.' },
-          USP.harga, USP.garansi, USP.antar,
+          USP.garansi, USP.antar,
         ]} />
       </Screen>
 

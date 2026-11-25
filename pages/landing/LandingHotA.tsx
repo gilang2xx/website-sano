@@ -46,7 +46,7 @@ const LandingHotA: React.FC = () => {
 
       <Screen>
         <Reveal><Eyebrow>Yang kamu dapat</Eyebrow><h2 className="lp-h2 max-w-3xl">Bayar segitu, <Serif>dapat apa{' '}aja?</Serif></h2></Reveal>
-        <UspCards cards={[{ ...USP.antar, body: `${USP.antar.body} Kamu tinggal tunggu di rumah.` }, USP.garansi, USP.harga, USP.lama]} />
+        <UspCards cards={[USP.garansi, USP.lama]} />
       </Screen>
 
       <Screen tone="grey">

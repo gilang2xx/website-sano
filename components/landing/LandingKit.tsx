@@ -492,27 +492,27 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
 
 /* ───────────── Kartu USP tanya-jawab ───────────── */
 
-/** Kartu pertama jadi sorotan (selebar grid). `onGrey` = section abu, jadi kartunya putih. HP satu kolom, desktop dua. */
+/** Kartu pertama jadi sorotan (selebar grid). `onGrey` = section abu, jadi kartunya putih. HP geser ke samping, desktop dua kolom. */
 export const UspCards: React.FC<{ cards: UspCard[]; onGrey?: boolean }> = ({ cards, onGrey }) => (
-  <ul className="mt-7 md:mt-9 mb-0 p-0 list-none grid gap-3 md:gap-4 md:grid-cols-2">
+  <Reveal>
+  <ul aria-label="Kartu tanya jawab, geser untuk lihat lainnya" className="relative list-none m-0 mt-7 md:mt-9 flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pb-2 md:mx-0 md:px-0 md:pb-0 md:grid md:grid-cols-2 md:overflow-visible">
     {cards.map((c, i) => {
       const hi = i === 0;
       const lone = !hi && i === cards.length - 1 && (cards.length - 1) % 2 === 1; // kartu ganjil terakhir tidak menggantung
       return (
-        <li key={c.q} className={hi || lone ? 'md:col-span-2' : ''}>
-          <Reveal className="h-full">
+        <li key={c.q} className={`snap-center shrink-0 w-[84%] sm:w-[58%] md:w-auto ${hi || lone ? 'md:col-span-2' : ''}`}>
             <article style={hi ? { backgroundImage: `linear-gradient(135deg, #1d74e8 0%, ${ACCENT} 45%, #0b2a6f 100%)` } : undefined}
               className={`h-full flex flex-col rounded-[24px] md:rounded-[28px] px-6 pt-6 md:px-8 md:pt-8 ${hi ? 'text-white' : onGrey ? 'bg-white dark:bg-[#1c1c1e]' : 'bg-[#f5f5f7] dark:bg-[#1c1c1e]'}`}>
               <p className={`self-start rounded-full px-3 py-1.5 text-sm italic ${hi ? 'bg-white/15 text-white/90' : `text-[#6e6e73] dark:text-[#a1a1a6] ${onGrey ? 'bg-[#f5f5f7] dark:bg-black' : 'bg-white dark:bg-black'}`}`}>&ldquo;{c.q}&rdquo;</p>
-              <h3 className={`mt-3 [text-wrap:balance] font-bold tracking-tight leading-tight ${hi ? 'text-[clamp(1.75rem,7vw,2.5rem)]' : 'text-[1.375rem] md:text-2xl'}`}>{c.title}</h3>
+              <h3 className={`mt-3 [text-wrap:balance] font-bold tracking-tight leading-tight ${hi ? 'text-2xl md:text-[2.5rem]' : 'text-[1.375rem] md:text-2xl'}`}>{c.title}</h3>
               <p className={`mt-2 mb-5 text-[1.0625rem] leading-snug max-w-2xl ${hi ? 'text-white/85' : 'text-[#6e6e73] dark:text-[#a1a1a6]'}`}>{c.body}</p>
               <p className={`mt-auto -mx-6 md:-mx-8 px-6 md:px-8 py-3 border-t text-[.9375rem] leading-snug ${hi ? 'border-white/20 text-white/85' : 'border-black/5 dark:border-white/10 text-[#6e6e73] dark:text-[#a1a1a6]'}`}><b className="font-semibold">Beli baru:</b> {c.vs}</p>
             </article>
-          </Reveal>
         </li>
       );
     })}
   </ul>
+  </Reveal>
 );
 
 /* ───────────── Review statis (ulasan Google asli) ───────────── */

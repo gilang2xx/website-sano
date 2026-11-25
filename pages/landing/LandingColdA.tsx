@@ -63,6 +63,11 @@ const LandingColdA: React.FC = () => {
       </Screen>
 
 
+      <Screen>
+        <Reveal><Eyebrow>Harga</Eyebrow><h2 className="lp-h2 max-w-3xl">Harga <Hl>jelas</Hl> dari awal.</h2></Reveal>
+        <div className="mt-7"><PriceCard /></div>
+      </Screen>
+
       <Screen><ConceptSection /></Screen>
 
       <Screen>
@@ -86,7 +91,6 @@ const LandingColdA: React.FC = () => {
           <Lead className="mt-4">Ceritakan keluhanmu dan kirim foto kasurnya. Tim kami dengarkan dulu, cek kondisinya, lalu sarankan penanganan yang paling pas.</Lead>
           <div className="mt-6"><WaButton buttonId="ortho-cold-a-service" placement="service-card" eventLabel="Landing Ortho Cold A - Konsultasi" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto" /></div>
         </Split>
-        <div className="mt-10"><PriceCard /></div>
       </Screen>
 
       <Screen tone="grey"><ReviewBlock reviews={REVIEWS} title={<>Kata mereka yang <Serif>sudah pakai.</Serif></>} /></Screen>
