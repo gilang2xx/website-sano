@@ -38,8 +38,8 @@ const LandingWarmB: React.FC = () => {
       <TrustStrip />
 
       <Screen tone="grey" id="banding">
-        <Reveal><Eyebrow>Perbandingan</Eyebrow><h2 className="lp-h2 max-w-3xl">Sebelum beli kasur baru, <Serif>lihat ini dulu.</Serif></h2></Reveal>
-        <UspCards onGrey cards={[USP.harga, USP.berat, { ...USP.garansi, body: `${USP.garansi.body} Garansinya dari Klinik Matras langsung.` }, USP.lama, USP.antar]} />
+        <Reveal><Eyebrow>Perbandingan</Eyebrow><h2 className="lp-h2 max-w-3xl">Mau beli baru? <Serif>Tunggu, baca ini dulu.</Serif></h2></Reveal>
+        <UspCards onGrey cards={[USP.harga, USP.berat, USP.garansi, USP.lama, USP.antar]} />
         <div className="mt-5"><PriceCard>
           <WaButton buttonId="ortho-warm-b-banding" placement="pricing" eventLabel="Landing Ortho Warm B - Banding" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto !bg-white !text-[#0b2a6f]" />
         </PriceCard></div>

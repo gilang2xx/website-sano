@@ -66,8 +66,8 @@ const LandingColdA: React.FC = () => {
       <Screen><ConceptSection /></Screen>
 
       <Screen>
-        <Reveal><Eyebrow>Kenapa nggak beli baru aja?</Eyebrow><h2 className="lp-h2 max-w-3xl">Pegal pas bangun? <Serif>Kasurmu dulu yang dibenerin.</Serif></h2></Reveal>
-        <UspCards cards={[USP.keluhan, { ...USP.berat, body: 'Ada 5 tier lapisan nyaman, dari LIGHT sampai EXTRA HEAVY.' }, USP.lama, USP.garansi, USP.antar]} />
+        <Reveal><Eyebrow>Kenapa nggak beli baru aja?</Eyebrow><h2 className="lp-h2 max-w-3xl">Bangun kok pegal? <Serif>Cek kasurmu dulu.</Serif></h2></Reveal>
+        <UspCards cards={[USP.keluhan, USP.berat, USP.lama, USP.garansi, USP.antar]} />
       </Screen>
 
       <Screen tone="grey">

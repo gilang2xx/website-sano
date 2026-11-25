@@ -138,7 +138,7 @@ const LandingKasurSehat: React.FC = () => {
       <Screen>
         <Reveal><Eyebrow>Kenapa bikin ulang, bukan beli baru</Eyebrow><h2 className="lp-h2 max-w-3xl">Kasur sehat nggak harus <Serif>kasur baru.</Serif></h2></Reveal>
         <UspCards cards={[
-          { ...USP.berat, body: 'Pakai 5 tier tadi. Tidur berdua? Kirim berat badan masing-masing, nanti kami bantu pilih.' },
+          { ...USP.berat, body: 'Pakai 5 tier tadi. Tidur berdua? Kirim berat badan masing-masing.' },
           { ...USP.lama, body: 'Selama rangkanya masih bisa dipakai, fondasi dan lapisannya diganti ke susunan SFS.' },
           USP.harga, USP.garansi, USP.antar,
         ]} />
