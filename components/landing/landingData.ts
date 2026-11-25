@@ -17,41 +17,19 @@ export const FACTS = {
   ratingDate: '24 Nov 2026',
 } as const;
 
-/* Kartu USP tanya-jawab (26 Nov 2026). Klaim persen hemat SENGAJA tidak ada: menunggu bukti harga. */
-export interface UspCard { q: string; title: string; body: string; vs: string }
+/* Tabel perbandingan: copy dari owner (26 Nov 2026), dipakai di 4 landing. `hl` = potongan yang disorot kuning.
+   Angka 50-80%, garansi kenyamanan, klaim lewat WA, dan pendampingan: pastikan benar sebelum iklan jalan. */
+export interface CompareRow { icon: 'bed' | 'pegal' | 'cocok' | 'garansi' | 'klaim' | 'tanya' | 'harga'; q: string; kami: string; hl?: string; baru: string }
 
-export const USP = {
-  berat: {
-    q: 'Cocok nggak buat badanku?',
-    title: 'Lapisannya pas sama berat badanmu',
-    body: '5 tier lapisan, dari LIGHT sampai EXTRA HEAVY. Tidur berdua? Kirim berat badan masing-masing.',
-    vs: 'biasanya dipilih dari label soft atau firm.',
-  },
-  garansi: {
-    q: 'Garansinya berapa lama?',
-    title: `Garansi sampai ${FACTS.warrantyUpgrade}`,
-    body: `Upgrade ${FACTS.warrantyUpgrade}, Service ${FACTS.warrantyService}.`,
-    vs: 'syaratnya beda-beda, cek dulu.',
-  },
-  lama: {
-    q: 'Kasur lamaku dibuang?',
-    title: 'Jangan. Kami bikin kokoh lagi.',
-    body: 'Selama rangkanya masih bisa dipakai, fondasi dan lapisannya kami bikin ulang.',
-    vs: 'kasur lama dibuang atau dijual murah.',
-  },
-  antar: {
-    q: 'Ngangkutnya gimana?',
-    title: `Dijemput, ${FACTS.days.replace('-', '-⁠').replace(' ', ' ')}, balik lagi`,
-    body: `Antar-jemput gratis ${FACTS.freeShipArea}.`,
-    vs: 'ongkir dan lama kirim, tanya dulu.',
-  },
-  keluhan: {
-    q: 'Bangun tidur kok pegal?',
-    title: 'Cerita dulu, pegalnya di mana?',
-    body: 'Kirim foto kasur lewat WA. Kami sarankan service atau upgrade yang cocok.',
-    vs: 'rebahan sebentar di toko, lalu pilih.',
-  },
-} satisfies Record<string, UspCard>;
+export const COMPARE: CompareRow[] = [
+  { icon: 'bed', q: 'Kasur amblas/terlalu keras, harus bagaimana?', kami: 'Fondasi kokoh + lapisan nyaman.', baru: 'Kasur baru, belum tentu cocok.' },
+  { icon: 'pegal', q: 'Kenapa bangun selalu pegal/sakit?', kami: 'Solusi sesuai keluhan + garansi.', baru: 'Pilih sendiri, berdasarkan saran.' },
+  { icon: 'cocok', q: 'Cocok untuk saya?', kami: 'Disesuaikan dengan keluhan, berat badan, dan kebiasaan tidur.', baru: 'Standar umum, satu model untuk semua.' },
+  { icon: 'garansi', q: 'Kalau tetap tidak nyaman?', kami: 'Garansi lengkap: kerusakan + kenyamanan (10–20 tahun).', hl: '(10–20 tahun)', baru: 'Umumnya hanya garansi kerusakan.' },
+  { icon: 'klaim', q: 'Takut ribet kalau klaim?', kami: 'Cukup lewat WA, proses mudah.', baru: 'Ikuti prosedur toko/pabrik.' },
+  { icon: 'tanya', q: 'Mau tanya ke siapa?', kami: 'Konsultasi & pendampingan sebelum dan sesudah.', baru: 'Fokus ke fitur dan spesifikasi.' },
+  { icon: 'harga', q: 'Mahal atau lebih hemat?', kami: 'Hemat 50–80%* dengan solusi yang tepat.', hl: 'Hemat 50–80%*', baru: 'Harga penuh, belum tentu tepat.' },
+];
 
 export interface PhotoPair {
   id: number;

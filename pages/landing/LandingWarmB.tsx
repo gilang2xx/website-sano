@@ -3,9 +3,9 @@ import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
   Screen, Eyebrow, Reveal, ZigZag, PriceCard, ReviewBlock, Faq, ConceptSection, CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
-  UspCards,
+  CompareSection,
 } from '../../components/landing/LandingKit';
-import { FACTS, FAQ, PAIRS, REVIEWS, USP } from '../../components/landing/landingData';
+import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
 // WARM B (MOCKUP v5): beli baru atau perbaiki? Satu tujuan: klik WA.
 const MSG = 'Halo Klinik Matras, saya mau konsultasi soal kasur saya. Lagi bandingin beli kasur baru atau perbaiki kasur lama.';
@@ -38,8 +38,7 @@ const LandingWarmB: React.FC = () => {
       <TrustStrip />
 
       <Screen tone="grey" id="banding">
-        <Reveal><Eyebrow>Perbandingan</Eyebrow><h2 className="lp-h2 max-w-3xl">Mau beli baru? <Serif>Tunggu, baca ini dulu.</Serif></h2></Reveal>
-        <UspCards onGrey cards={[USP.berat, USP.garansi, USP.lama]} />
+        <CompareSection />
         <div className="mt-5"><PriceCard>
           <WaButton buttonId="ortho-warm-b-banding" placement="pricing" eventLabel="Landing Ortho Warm B - Banding" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto !bg-white !text-[#0b2a6f]" />
         </PriceCard></div>

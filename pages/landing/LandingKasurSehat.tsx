@@ -4,9 +4,9 @@ import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, PhotoHero, TrustStrip, BigCase,
   Screen, Eyebrow, Lead, Reveal, Photo, Split, ReviewBlock, Faq,
   CtaRibbon, HealthNote, Serif, Hl, BentoCard, useHeroRef,
-  UspCards,
+  CompareSection,
 } from '../../components/landing/LandingKit';
-import { FACTS, PAIRS, REVIEWS, USP } from '../../components/landing/landingData';
+import { FACTS, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
 // Halaman ke-4 (MOCKUP): penjelas Konsep Kasur Sehat. Satu tujuan tetap klik WA.
 // Acuan: DIRA_landing-kasur-sehat-paper-2026-11-25.html. Contoh "bahu dan pinggul waktu tidur miring"
@@ -136,12 +136,7 @@ const LandingKasurSehat: React.FC = () => {
       </Screen>
 
       <Screen>
-        <Reveal><Eyebrow>Kenapa bikin ulang, bukan beli baru</Eyebrow><h2 className="lp-h2 max-w-3xl">Kasur sehat nggak harus <Serif>kasur baru.</Serif></h2></Reveal>
-        <UspCards cards={[
-          { ...USP.berat, body: 'Pakai 5 tier tadi. Tidur berdua? Kirim berat badan masing-masing.' },
-          { ...USP.lama, body: 'Selama rangkanya masih bisa dipakai, fondasi dan lapisannya diganti ke susunan SFS.' },
-          USP.garansi, USP.antar,
-        ]} />
+        <CompareSection />
       </Screen>
 
       <Screen>

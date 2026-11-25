@@ -5,9 +5,9 @@ import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
   Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PriceCard, ReviewBlock, Faq, ConceptSection,
   CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
-  UspCards,
+  CompareSection,
 } from '../../components/landing/LandingKit';
-import { FACTS, FAQ, PAIRS, REVIEWS, USP } from '../../components/landing/landingData';
+import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
 
 // COLD A (MOCKUP v5): pegal dulu, baru kasur. Satu tujuan: klik WA.
 const MSG = 'Halo Klinik Matras, saya mau konsultasi soal kasur saya. Badan sering pegal waktu bangun tidur, ini fotonya.';
@@ -71,8 +71,7 @@ const LandingColdA: React.FC = () => {
       <Screen><ConceptSection /></Screen>
 
       <Screen>
-        <Reveal><Eyebrow>Kenapa nggak beli baru aja?</Eyebrow><h2 className="lp-h2 max-w-3xl">Bangun kok pegal? <Serif>Cek kasurmu dulu.</Serif></h2></Reveal>
-        <UspCards cards={[USP.keluhan, USP.berat, USP.lama, USP.garansi, USP.antar]} />
+        <CompareSection />
       </Screen>
 
       <Screen tone="grey">

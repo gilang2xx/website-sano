@@ -1,12 +1,12 @@
 import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Star, ArrowRight, ArrowUpRight, ChevronsLeftRight, ShieldCheck, Clock, Truck, MapPin, Check, Plus } from 'lucide-react';
+import { Star, ArrowRight, ArrowUpRight, ChevronsLeftRight, ShieldCheck, Clock, Truck, MapPin, Check, Plus, X, BedDouble, Activity, UserCheck, MessageCircle, Headphones, Coins } from 'lucide-react';
 import WhatsAppLink from '../WhatsAppLink';
 import ThemeToggle from '../ThemeToggle';
 import type { WhatsAppPlacement } from '../../utils/tracking';
 import { captureAdReferral, endAttributionHydration } from '../../utils/attribution';
-import { FACTS, GOOGLE_MAPS_URL, HEALTH_NOTE } from './landingData';
-import type { PhotoPair, Review, UspCard } from './landingData';
+import { COMPARE, FACTS, GOOGLE_MAPS_URL, HEALTH_NOTE } from './landingData';
+import type { PhotoPair, Review } from './landingData';
 
 // MOCKUP visual landing: hero foto asli, satu pesan per layar, satu foto per pesan.
 // Semua WA lewat WhatsAppLink (event click_whatsapp yang sudah ada), tanpa tag/event baru.
@@ -490,29 +490,61 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
   </Reveal>
 );
 
-/* ───────────── Kartu USP tanya-jawab ───────────── */
+/* ───────────── Tabel perbandingan: Upgrade/Service vs Beli Kasur Baru ───────────── */
 
-/** Kartu pertama jadi sorotan (selebar grid). `onGrey` = section abu, jadi kartunya putih. HP geser ke samping, desktop dua kolom. */
-export const UspCards: React.FC<{ cards: UspCard[]; onGrey?: boolean }> = ({ cards, onGrey }) => (
-  <Reveal>
-  <ul aria-label="Kartu tanya jawab, geser untuk lihat lainnya" className="relative list-none m-0 mt-7 md:mt-9 flex gap-3 md:gap-4 overflow-x-auto snap-x snap-mandatory -mx-5 px-5 pb-2 md:mx-0 md:px-0 md:pb-0 md:grid md:grid-cols-2 md:overflow-visible">
-    {cards.map((c, i) => {
-      const hi = i === 0;
-      const lone = !hi && i === cards.length - 1 && (cards.length - 1) % 2 === 1; // kartu ganjil terakhir tidak menggantung
-      return (
-        <li key={c.q} className={`snap-center shrink-0 w-[84%] sm:w-[58%] md:w-auto ${hi || lone ? 'md:col-span-2' : ''}`}>
-            <article style={hi ? { backgroundImage: `linear-gradient(135deg, #1d74e8 0%, ${ACCENT} 45%, #0b2a6f 100%)` } : undefined}
-              className={`h-full flex flex-col rounded-[24px] md:rounded-[28px] px-6 pt-6 md:px-8 md:pt-8 ${hi ? 'text-white' : onGrey ? 'bg-white dark:bg-[#1c1c1e]' : 'bg-[#f5f5f7] dark:bg-[#1c1c1e]'}`}>
-              <p className={`self-start rounded-full px-3 py-1.5 text-sm italic ${hi ? 'bg-white/15 text-white/90' : `text-[#6e6e73] dark:text-[#a1a1a6] ${onGrey ? 'bg-[#f5f5f7] dark:bg-black' : 'bg-white dark:bg-black'}`}`}>&ldquo;{c.q}&rdquo;</p>
-              <h3 className={`mt-3 [text-wrap:balance] font-bold tracking-tight leading-tight ${hi ? 'text-2xl md:text-[2.5rem]' : 'text-[1.375rem] md:text-2xl'}`}>{c.title}</h3>
-              <p className={`mt-2 mb-5 text-[1.0625rem] leading-snug max-w-2xl ${hi ? 'text-white/85' : 'text-[#6e6e73] dark:text-[#a1a1a6]'}`}>{c.body}</p>
-              <p className={`mt-auto -mx-6 md:-mx-8 px-6 md:px-8 py-3 border-t text-[.9375rem] leading-snug ${hi ? 'border-white/20 text-white/85' : 'border-black/5 dark:border-white/10 text-[#6e6e73] dark:text-[#a1a1a6]'}`}><b className="font-semibold">Beli baru:</b> {c.vs}</p>
-            </article>
-        </li>
-      );
-    })}
-  </ul>
-  </Reveal>
+const COMPARE_ICON = { bed: BedDouble, pegal: Activity, cocok: UserCheck, garansi: ShieldCheck, klaim: MessageCircle, tanya: Headphones, harga: Coins } as const;
+const KOLOM = 'md:grid md:grid-cols-[1.1fr_1.2fr_1fr] md:gap-2';
+
+const Sorot: React.FC<{ text: string; hl?: string }> = ({ text, hl }) => {
+  if (!hl || !text.includes(hl)) return <>{text}</>;
+  const [a, b] = text.split(hl);
+  return <>{a}<mark className={`rounded px-1 bg-[#ffd53d] text-[#111] font-bold ${hl.length < 20 ? 'whitespace-nowrap' : ''}`}>{hl}</mark>{b}</>;
+};
+
+/** HP: pertanyaan di atas, dua jawaban bersebelahan. Desktop: tiga kolom berjudul. Judul section ikut di sini supaya sama di semua landing. */
+export const CompareSection: React.FC = () => (
+  <>
+    <Reveal>
+      <div className="text-center">
+        <p className="inline-block rounded-full bg-[#ffd53d] px-4 py-1.5 text-sm md:text-base font-bold text-[#0b2a6f]">Upgrade/Service Kasur</p>
+        <h2 className="lp-h2 mx-auto mt-3 max-w-3xl">Solusi Nyaman &amp; <Serif>Tepat</Serif></h2>
+        <p className="mt-2 text-base md:text-xl text-[#6e6e73] dark:text-[#a1a1a6] [text-wrap:balance]">Sesuai Keluhan dan Kebutuhan Tidur Anda</p>
+      </div>
+    </Reveal>
+    <Reveal>
+      <div className="mt-6 md:mt-9" role="table" aria-label="Perbandingan upgrade atau service dengan beli kasur baru">
+        <div role="row" className={`grid grid-cols-2 gap-2 ${KOLOM}`}>
+          <p role="columnheader" className="hidden md:flex m-0 items-center justify-center rounded-2xl bg-[#0b2a6f] px-3 py-4 text-center font-bold text-white">Pertanyaan yang Sering Dipikirkan</p>
+          <p role="columnheader" className="m-0 flex items-center justify-center gap-1.5 rounded-2xl bg-[#15803d] px-1 py-3 md:py-4 whitespace-nowrap text-center text-sm md:text-lg font-bold text-white"><Check size={18} strokeWidth={3} aria-hidden="true" />Upgrade / Service</p>
+          <p role="columnheader" data-baru className="m-0 flex items-center justify-center rounded-2xl bg-[#d9d9de] dark:bg-[#2c2c2e] px-2 py-3 md:py-4 text-center text-sm md:text-lg font-bold text-[#48484a] dark:text-[#d1d1d6]">Beli Kasur Baru</p>
+        </div>
+        {COMPARE.map((r) => {
+          const Ikon = COMPARE_ICON[r.icon];
+          return (
+            <div role="row" key={r.q} className={`mt-3 md:mt-2 grid grid-cols-2 gap-2 ${KOLOM}`}>
+              <p role="rowheader" className="col-span-2 md:col-span-1 m-0 flex items-center gap-2.5 text-[.9375rem] md:text-base font-semibold leading-snug md:rounded-2xl md:bg-[#eaf1fd] md:dark:bg-[#0f1b33] md:px-4 md:py-3">
+                <Ikon size={20} className="shrink-0 text-[#1660cf] dark:text-[#4d94ff]" aria-hidden="true" />{r.q}
+              </p>
+              <p role="cell" className="m-0 flex items-start gap-2 rounded-2xl bg-[#e7f6ec] dark:bg-[#0f2a1a] px-3 py-3 text-sm md:text-base font-medium leading-snug text-[#14532d] dark:text-[#bbf7d0]">
+                <span aria-hidden="true" className="mt-px inline-flex h-4 w-4 md:h-5 md:w-5 shrink-0 items-center justify-center rounded-full bg-[#15803d] text-white"><Check size={11} strokeWidth={4} /></span>
+                <span><Sorot text={r.kami} hl={r.hl} /></span>
+              </p>
+              <p role="cell" data-baru className="m-0 flex items-start gap-2 rounded-2xl bg-[#e8e8ed] dark:bg-[#1c1c1e] px-3 py-3 text-sm md:text-base leading-snug text-[#55555a] dark:text-[#a1a1a6]">
+                <span aria-hidden="true" data-silang className="mt-px inline-flex h-4 w-4 md:h-5 md:w-5 shrink-0 items-center justify-center rounded-full bg-[#8e8e93] text-white"><X size={11} strokeWidth={4} /></span>
+                <span>{r.baru}</span>
+              </p>
+            </div>
+          );
+        })}
+      </div>
+    </Reveal>
+    <Reveal>
+      <p style={{ backgroundImage: `linear-gradient(135deg, #1d74e8 0%, ${ACCENT} 45%, #0b2a6f 100%)` }} className="mt-4 mb-0 rounded-[24px] px-5 py-5 md:px-8 md:py-6 text-base md:text-xl leading-relaxed text-white">
+        <b className="mr-1">Kesimpulan:</b>Upgrade/Service = solusi <Sorot text="lebih tepat, nyaman, personal, dan hemat" hl="lebih tepat, nyaman, personal, dan hemat" /> untuk tidur yang lebih sehat.
+      </p>
+      <p className="mt-2 mb-0 text-xs text-[#6e6e73] dark:text-[#a1a1a6]">*Perkiraan. Harga bergantung ukuran dan masalah kasur setelah konsultasi.</p>
+    </Reveal>
+  </>
 );
 
 /* ───────────── Review statis (ulasan Google asli) ───────────── */
