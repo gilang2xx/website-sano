@@ -101,7 +101,7 @@ export const REVIEWS: Review[] = [
   },
   {
     name: "rizka anugerahwaty",
-    text: "sukaaaa bgt sama pelayanannya, informatif, edukatif bgt juga, dan bisa kasih solusi terbaik buat tidur lebih nyaman, maju mundur buat reborn kasur, tapi ternyata super worth it karna kasurnya bisa custom based on berat badan yang akan tidur dikasur itu, makasih Klinik Matrasss!🫶🏻🫶🏻🫶🏻 …",
+    text: "sukaaaa bgt sama pelayanannya, informatif, edukatif bgt juga, dan bisa kasih solusi terbaik buat tidur lebih nyaman, maju mundur buat reborn kasur, tapi ternyata super worth it karna kasurnya bisa custom based on berat badan yang akan tidur dikasur itu, makasih Klinik Matrasss!🫶🏻🫶🏻🫶🏻",
   },
   {
     name: "Farhan. A",
