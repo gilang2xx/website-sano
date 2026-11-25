@@ -34,7 +34,7 @@ const LandingColdA: React.FC = () => {
         pill="Service dan upgrade kasur"
         title={<>Bangun tidur badan pegal &amp; sakit pinggang? Coba <Serif>cek kasurmu dulu</Serif></>}
         lead="Kirim foto kasurmu, kami bantu cek lewat WA."
-        checks={['Antar-jemput gratis Jabodetabek & Bandung', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
+        checks={['Antar-jemput gratis Jabodetabek & Bandung', 'Garansi hingga 10-20 tahun', `Selesai ${FACTS.days}`]}
         actions={<>
           <WaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Konsultasi lewat WA" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#hasil">Lihat hasilnya</HeroSecondaryLink>

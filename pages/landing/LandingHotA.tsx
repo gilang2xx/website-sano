@@ -27,7 +27,7 @@ const LandingHotA: React.FC = () => {
         pill="Jabodetabek & Bandung"
         title={<>Service kasur di Jabodetabek? <Serif>Kami jemput</Serif>, kamu tinggal tunggu nyaman.</>}
         lead={`Mulai ${FACTS.priceService}. Antar-jemput gratis ${FACTS.freeShipArea}. ${FACTS.days}, kasurmu pulang nyaman lagi.`}
-        checks={['Antar-jemput gratis', 'Garansi sampai 20 tahun', `Selesai ${FACTS.days}`]}
+        checks={['Antar-jemput gratis', 'Garansi hingga 10-20 tahun', `Selesai ${FACTS.days}`]}
         actions={<WaButton buttonId="ortho-hot-a-hero" placement="hero" eventLabel="Landing Ortho Hot A - Hero" label="Konsultasi lewat WA" message={MSG} className="w-full sm:w-auto" />}
       />
 
@@ -45,10 +45,10 @@ const LandingHotA: React.FC = () => {
             <BentoCard className="h-full gap-5 !bg-white dark:!bg-[#1c1c1e]">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff]">Upgrade</p>
-                <p className="mt-2 text-3xl md:text-4xl font-bold tracking-tight leading-tight">Garansi Klinik Matras {FACTS.warrantyUpgrade}</p>
-                <p className="mt-3 text-lg text-[#6e6e73] dark:text-[#a1a1a6] leading-snug">Kasur lamamu dirombak jadi lebih kokoh. Garansi sampai 20 tahun. Harga setelah kami lihat kondisi kasurmu.</p>
+                <p className="mt-2 text-3xl md:text-4xl font-bold tracking-tight leading-tight">Garansi Klinik Matras hingga {FACTS.warrantyUpgrade}</p>
+                <p className="mt-3 text-lg text-[#6e6e73] dark:text-[#a1a1a6] leading-snug">Kasur lamamu dirombak jadi lebih kokoh. Harga setelah kami lihat kondisi kasurmu.</p>
               </div>
-              <p className="text-base font-semibold">Service: garansi {FACTS.warrantyService}</p>
+              <p className="text-base font-semibold">Service: garansi hingga {FACTS.warrantyService}</p>
             </BentoCard>
           </Reveal>
         </div>

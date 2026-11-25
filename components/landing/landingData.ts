@@ -88,7 +88,7 @@ export const HEALTH_NOTE =
 export const FAQ: Array<[string, string]> = [
   ['Berapa lama pengerjaannya?', `Dikerjakan ${FACTS.days}.`],
   ['Antar-jemputnya sampai mana?', `Gratis untuk ${FACTS.freeShipArea}.`],
-  ['Garansinya bagaimana?', `Garansi Klinik Matras: Upgrade ${FACTS.warrantyUpgrade}, Service ${FACTS.warrantyService}.`],
+  ['Garansinya bagaimana?', `Garansi Klinik Matras hingga ${FACTS.warrantyUpgrade} untuk Upgrade dan ${FACTS.warrantyService} untuk Service.`],
   ['Cara mulainya gimana?', 'Chat WA dan kirim foto kasurmu. Kami cek, kasih saran dan harga pastinya.'],
   ['Bisa datang langsung ke workshop?', 'Bisa. Workshop dan kantor kami di Depok. Kabari dulu lewat WA ya.'],
 ];
