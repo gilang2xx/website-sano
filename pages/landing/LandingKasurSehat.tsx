@@ -147,8 +147,8 @@ const LandingKasurSehat: React.FC = () => {
           <Reveal delay={90} className="h-full">
             <BentoCard className="h-full gap-3">
               <p className="text-sm font-semibold uppercase tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff]">Upgrade</p>
-              <p className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">Susunan SFS</p>
-              <p className="text-lg leading-snug text-[#6e6e73] dark:text-[#a1a1a6]">Fondasi dan lapisan diganti ke susunan SFS. Garansi Klinik Matras hingga {FACTS.warrantyUpgrade}. Harga setelah kami lihat kondisi kasurmu.</p>
+              <p className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">Mulai {FACTS.priceUpgrade}</p>
+              <p className="text-lg leading-snug text-[#6e6e73] dark:text-[#a1a1a6]">Fondasi dan lapisan diganti ke susunan SFS. Garansi Klinik Matras hingga {FACTS.warrantyUpgrade}. Harga pasti setelah cek ukuran dan kondisi kasurmu.</p>
             </BentoCard>
           </Reveal>
         </div>

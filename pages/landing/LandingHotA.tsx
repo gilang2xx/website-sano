@@ -26,7 +26,7 @@ const LandingHotA: React.FC = () => {
         ref={hero}
         pill="Jabodetabek & Bandung"
         title={<>Service kasur di Jabodetabek? <Serif>Kami jemput</Serif>, kamu tinggal tunggu nyaman.</>}
-        lead={`Mulai ${FACTS.priceService}. Antar-jemput gratis ${FACTS.freeShipArea}. ${FACTS.days}, kasurmu pulang nyaman lagi.`}
+        lead={`Service mulai ${FACTS.priceService}. Antar-jemput gratis ${FACTS.freeShipArea}. ${FACTS.days}, kasurmu pulang nyaman lagi.`}
         checks={['Antar-jemput gratis', 'Garansi hingga 10-20 tahun', `Selesai ${FACTS.days}`]}
         actions={<WaButton buttonId="ortho-hot-a-hero" placement="hero" eventLabel="Landing Ortho Hot A - Hero" label="Konsultasi lewat WA" message={MSG} className="w-full sm:w-auto" />}
       />

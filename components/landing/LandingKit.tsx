@@ -472,9 +472,9 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
       <div className="relative grid md:grid-cols-2 md:gap-x-10 md:items-center">
         <div className="flex flex-col">
           <p className="self-start inline-flex rounded-full bg-white/15 px-3.5 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-[.07em] md:tracking-[.12em]">Service &amp; upgrade kasur sehat</p>
-          <p className="mt-5 text-sm font-medium opacity-85">Service mulai dari</p>
-          <p className="lp-num mt-1 !text-[clamp(2.75rem,12vw,4.5rem)] md:!text-[4rem]"><span className="relative top-[.28em] align-top text-[.45em] mr-1 opacity-85">Rp</span>{FACTS.priceService.replace(/^Rp/, '')}</p>
-          <p className="mt-3 text-base opacity-85 leading-snug">Harga pasti setelah kami lihat foto kasurmu.</p>
+          <p className="mt-5 text-sm font-medium opacity-85">Upgrade kasur sehat mulai dari</p>
+          <p className="lp-num mt-1 !text-[clamp(2.75rem,12vw,4.5rem)] md:!text-[4rem]"><span className="relative top-[.28em] align-top text-[.45em] mr-1 opacity-85">Rp</span>{FACTS.priceUpgrade.replace(/^Rp/, '')}</p>
+          <p className="mt-3 text-base opacity-85 leading-snug">Harga pasti setelah cek ukuran dan kondisi kasurmu.</p>
         </div>
         <ul className="m-0 mt-5 p-0 list-none flex flex-col gap-3 border-t border-white/20 pt-5 md:row-span-2 md:col-start-2 md:row-start-1 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-10">
           {[`Garansi hingga ${FACTS.warrantyUpgrade} untuk Upgrade`, `Dikerjakan ${FACTS.days}`, `Antar-jemput gratis ${FACTS.freeShipArea}`].map((t) => (

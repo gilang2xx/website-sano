@@ -7,6 +7,7 @@ export const GOOGLE_MAPS_URL = 'https://share.google/KHN37lWodhSGKPYkY';
 
 export const FACTS = {
   priceService: 'Rp1.500.000',
+  priceUpgrade: 'Rp2.090.000',
   warrantyUpgrade: '20 tahun',
   warrantyService: '10 tahun',
   days: '2-3 hari',
