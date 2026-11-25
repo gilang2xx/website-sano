@@ -64,17 +64,20 @@
     }
     </script>
 
+    <!-- Pustaka tag (GTM, gtag Ads/GA4, Meta Pixel, TikTok) HANYA dimuat di domain produksi, supaya tes di lokal & preview
+         Vercel tidak masuk ke akun iklan/analitik. dataLayer tetap terisi di semua host (event bisa diuji). -->
+    <script>window.SANO_TRACK=/^(www\.)?sanomatrassehat\.com$/.test(location.hostname);</script>
+
     <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    new Date().getTime(),event:'gtm.js'});if(!w.SANO_TRACK)return;var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-PSDWS88V');</script>
     <!-- End Google Tag Manager -->
 
     <!-- Google tag (gtag.js) -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-18575989292">
-    </script>
+    <script>(function(w,d){if(!w.SANO_TRACK)return;var s=d.createElement('script');s.async=true;s.src='https://www.googletagmanager.com/gtag/js?id=AW-18575989292';d.head.appendChild(s)})(window,document);</script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
@@ -84,6 +87,7 @@
     </script>
 
     <script>
+    if(window.SANO_TRACK){
     !function(f,b,e,v,n,t,s)
     {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
     n.callMethod.apply(n,arguments):n.queue.push(arguments)};
@@ -94,6 +98,7 @@
     'https://connect.facebook.net/en_US/fbevents.js');
     fbq('init', '934367175857999');
     fbq('track', 'PageView');
+    }
     </script>
     <!-- Terapkan tema gelap tersimpan SEBELUM paint. HTML hasil prerender selalu
          terang (server tak punya localStorage); tanpa ini pengguna mode gelap
@@ -149,6 +154,7 @@
 
 
     <script>
+    if(window.SANO_TRACK){
     !function (w, d, t) {
       w.TiktokAnalyticsObject=t;var ttq=w[t]=w[t]||[];ttq.methods=["page","track","identify","instances","debug","on","off","once","ready","alias","group","enableCookie","disableCookie","holdConsent","revokeConsent","grantConsent"],ttq.setAndDefer=function(t,e){t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}};for(var i=0;i<ttq.methods.length;i++)ttq.setAndDefer(ttq,ttq.methods[i]);ttq.instance=function(t){for(
     var e=ttq._i[t]||[],n=0;n<ttq.methods.length;n++)ttq.setAndDefer(e,ttq.methods[n]);return e},ttq.load=function(e,n){var r="https://analytics.tiktok.com/i18n/pixel/events.js",o=n&&n.partner;ttq._i=ttq._i||{},ttq._i[e]=[],ttq._i[e]._u=r,ttq._t=ttq._t||{},ttq._t[e]=+new Date,ttq._o=ttq._o||{},ttq._o[e]=n||{};n=document.createElement("script")
@@ -157,6 +163,7 @@
       ttq.load('D6NMKNBC77UBBJ4JSLG0');
       ttq.page();
     }(window, document, 'ttq');
+    }
     </script>
     </head>
   <body class="bg-bg-light dark:bg-bg-dark text-slate-800 dark:text-text-dark transition-colors duration-300 antialiased selection:bg-primary selection:text-white">

@@ -478,5 +478,33 @@ console.log('\n[L4] Penundaan tag pihak ketiga (landing)');
   ok(!/data-defer-tag/.test(idx), 'index.html global tidak diubah (penundaan hanya di HTML prerender landing)');
 }
 
+// ── Gerbang host: pustaka tag HANYA dimuat di domain produksi (index.html) ──
+console.log('\n[L5] Tag pelacakan hanya di domain produksi');
+{
+  const vm = await import('node:vm');
+  const html = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').replace(/<!--[\s\S]*?-->/g, '').replace(/<noscript>[\s\S]*?<\/noscript>/g, '');
+  const pelacak = /googletagmanager|connect\.facebook|analytics\.tiktok/;
+  ok(![...html.matchAll(/<script[^>]*\ssrc="([^"]+)"/g)].some((m) => pelacak.test(m[1])), 'tidak ada <script src> pelacak statis di index.html');
+  const skrip = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map((m) => m[1]).filter((c) => /SANO_TRACK|dataLayer|fbq|ttq/.test(c));
+  const jalankan = (hostname) => {
+    const dimuat = [];
+    const el = () => ({ set src(v) { dimuat.push(v); }, get src() { return ''; } });
+    const induk = { insertBefore() {}, appendChild() {} };
+    const document = { createElement: el, getElementsByTagName: () => [{ parentNode: induk }], head: induk };
+    const ctx = vm.createContext({ document, location: { hostname }, Date });
+    ctx.window = ctx;
+    for (const c of skrip) vm.runInContext(c, ctx);
+    return { dimuat, ctx };
+  };
+  for (const h of ['sanomatrassehat.com', 'www.sanomatrassehat.com']) {
+    const { dimuat } = jalankan(h);
+    ok(['gtm.js?id=GTM-PSDWS88V', 'gtag/js?id=AW-18575989292', 'fbevents.js', 'analytics.tiktok.com'].every((k) => dimuat.filter((u) => u.includes(k)).length === 1) && dimuat.length === 4, `${h}: 4 pustaka tag dimuat, masing-masing sekali`, dimuat.join(' '));
+  }
+  for (const h of ['localhost', '127.0.0.1', 'website-sano-abc123-rigss-projects.vercel.app', 'sano-website.vercel.app', 'sanomatrassehat.com.contoh.test', 'staging.sanomatrassehat.com']) {
+    const { dimuat, ctx } = jalankan(h);
+    ok(dimuat.length === 0 && Array.isArray(ctx.dataLayer) && typeof ctx.gtag === 'function' && !ctx.fbq, `${h}: tidak ada pustaka tag dimuat, dataLayer tetap ada`, dimuat.join(' '));
+  }
+}
+
 console.log(`\nHasil: ${pass} lulus, ${fail} gagal`);
 process.exit(fail === 0 ? 0 : 1);

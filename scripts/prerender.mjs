@@ -104,10 +104,10 @@ E.forEach(function(e){addEventListener(e,h,{capture:true,passive:true})});
 setTimeout(run,${DEFER_TAGS_MS})})();`;
 const TAG_BLOCKS = [
   ['GTM', /<script>(\(function\(w,d,s,l,i\)\{w\[l\]=w\[l\]\|\|\[\];[\s\S]*?)<\/script>/, 'GTM-PSDWS88V'],
-  ['gtag.js', /<script async src="(https:\/\/www\.googletagmanager\.com\/gtag\/js\?id=AW-18575989292)">\s*<\/script>/, 'AW-18575989292'],
+  ['gtag.js', /<script>(\(function\(w,d\)\{if\(!w\.SANO_TRACK\)return;[\s\S]*?)<\/script>/, 'AW-18575989292'],
   ['gtag init', /<script>(\s*window\.dataLayer = window\.dataLayer \|\| \[\];[\s\S]*?)<\/script>/, "gtag('config', 'AW-18575989292')"],
-  ['Meta Pixel', /<script>(\s*!function\(f,b,e,v,n,t,s\)[\s\S]*?)<\/script>/, "fbq('init', '934367175857999')"],
-  ['TikTok', /<script>(\s*!function \(w, d, t\) \{[\s\S]*?)<\/script>/, "ttq.load('D6NMKNBC77UBBJ4JSLG0')"],
+  ['Meta Pixel', /<script>(\s*if\(window\.SANO_TRACK\)\{\s*!function\(f,b,e,v,n,t,s\)[\s\S]*?)<\/script>/, "fbq('init', '934367175857999')"],
+  ['TikTok', /<script>(\s*if\(window\.SANO_TRACK\)\{\s*!function \(w, d, t\) \{[\s\S]*?)<\/script>/, "ttq.load('D6NMKNBC77UBBJ4JSLG0')"],
 ];
 function deferThirdPartyTags(page, route) {
   let out = page;
