@@ -11,8 +11,8 @@ const MSG = 'Halo Klinik Matras, saya mau konsultasi soal kasur saya. Lagi bandi
 
 // Hanya fakta yang kami pegang. Kolom "beli baru" sengaja tanpa angka.
 const ROWS: Array<[string, string, string]> = [
-  ['Harga', 'Bandingin sendiri dengan kasur yang kamu incar', `Service kasur mulai dari ${FACTS.priceService}`],
-  ['Garansi', 'Cek syaratnya, beda tiap toko dan merek', `Garansi Klinik Matras hingga ${FACTS.warrantyUpgrade} (Upgrade) dan ${FACTS.warrantyService} (Service)`],
+  ['Harga', 'Bandingin sendiri dengan kasur yang kamu incar', `Upgrade kasur sehat mulai dari ${FACTS.priceUpgrade}`],
+  ['Garansi', 'Cek syaratnya, beda tiap toko dan merek', `Garansi Klinik Matras hingga ${FACTS.warrantyUpgrade} untuk Upgrade`],
   ['Kasur lama', 'Dibuang atau dijual murah', 'Dipakai lagi, dibuat kokoh'],
   ['Antar', 'Tanya ongkirnya dulu', `Jemput-antar gratis ${FACTS.freeShipArea}`],
   ['Waktu', 'Tanya lama kirimnya', `Dikerjakan ${FACTS.days}`],
@@ -33,8 +33,8 @@ const LandingWarmB: React.FC = () => {
         ref={hero}
         pill="Beli baru atau perbaiki?"
         title={<>Mau beli kasur baru? <Serif>Bandingin</Serif> aja dulu</>}
-        lead={`Kasur lamamu bisa dibikin kokoh lagi. Service mulai dari ${FACTS.priceService}, dijemput gratis.`}
-        checks={['Antar-jemput gratis Jabodetabek & Bandung', 'Garansi hingga 10-20 tahun', `Selesai ${FACTS.days}`]}
+        lead={`Kasur lamamu bisa dibikin kokoh lagi. Upgrade mulai dari ${FACTS.priceUpgrade}, dijemput gratis.`}
+        checks={['Antar-jemput gratis Jabodetabek & Bandung', `Garansi hingga ${FACTS.warrantyUpgrade}`, `Selesai ${FACTS.days}`]}
         actions={<>
           <WaButton buttonId="ortho-warm-b-hero" placement="hero" eventLabel="Landing Ortho Warm B - Hero" label="Konsultasi lewat WA" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#banding">Lihat perbandingannya</HeroSecondaryLink>

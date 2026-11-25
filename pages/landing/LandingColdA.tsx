@@ -31,10 +31,10 @@ const LandingColdA: React.FC = () => {
     <LandingShell landingId="LP-COLD-A" audience="cold">
       <PhotoHero
         ref={hero}
-        pill="Service dan upgrade kasur"
+        pill="Upgrade kasur sehat"
         title={<>Bangun tidur badan pegal &amp; sakit pinggang? Coba <Serif>cek kasurmu dulu</Serif></>}
         lead="Kirim foto kasurmu, kami bantu cek lewat WA."
-        checks={['Antar-jemput gratis Jabodetabek & Bandung', 'Garansi hingga 10-20 tahun', `Selesai ${FACTS.days}`]}
+        checks={['Antar-jemput gratis Jabodetabek & Bandung', `Garansi hingga ${FACTS.warrantyUpgrade}`, `Selesai ${FACTS.days}`]}
         actions={<>
           <WaButton buttonId="ortho-cold-a-hero" placement="hero" eventLabel="Landing Ortho Cold A - Hero" label="Konsultasi lewat WA" message={MSG} className="w-full sm:w-auto" />
           <HeroSecondaryLink href="#hasil">Lihat hasilnya</HeroSecondaryLink>
@@ -75,9 +75,9 @@ const LandingColdA: React.FC = () => {
 
       <Screen>
         <Split photo={<Photo name="konsul" alt="Teknisi Klinik Matras mengecek kasur di rumah pelanggan" />}>
-          <Eyebrow>Dua pilihan</Eyebrow>
-          <h2 className="lp-h2">Service, Upgrade Kasur Sehat, atau layanan lain? Kami bantu <Serif>pilih</Serif> sesuai keluhanmu.</h2>
-          <Lead className="mt-4">Ceritakan keluhanmu dan kirim foto kasurnya. Tim kami dengarkan dulu, cek kondisinya, lalu sarankan perbaikan yang paling pas.</Lead>
+          <Eyebrow>Konsultasi dulu</Eyebrow>
+          <h2 className="lp-h2">Upgrade Kasur Sehat yang mana? Kami bantu <Serif>pilih</Serif> sesuai keluhanmu.</h2>
+          <Lead className="mt-4">Ceritakan keluhanmu dan kirim foto kasurnya. Tim kami dengarkan dulu, cek kondisinya, lalu sarankan upgrade yang paling pas.</Lead>
           <div className="mt-6"><WaButton buttonId="ortho-cold-a-service" placement="service-card" eventLabel="Landing Ortho Cold A - Konsultasi" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto" /></div>
         </Split>
         <div className="mt-10"><PriceCard /></div>

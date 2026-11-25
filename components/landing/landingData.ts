@@ -6,10 +6,8 @@
 export const GOOGLE_MAPS_URL = 'https://share.google/KHN37lWodhSGKPYkY';
 
 export const FACTS = {
-  priceService: 'Rp1.500.000',
   priceUpgrade: 'Rp2.090.000',
   warrantyUpgrade: '20 tahun',
-  warrantyService: '10 tahun',
   days: '2-3 hari',
   freeShipArea: 'Jabodetabek dan Bandung',
   hours: '08.00-22.00 WIB, Senin-Minggu',
@@ -126,7 +124,7 @@ export const HEALTH_NOTE =
 export const FAQ: Array<[string, string]> = [
   ['Berapa lama pengerjaannya?', `Dikerjakan ${FACTS.days}.`],
   ['Antar-jemputnya sampai mana?', `Gratis untuk ${FACTS.freeShipArea}.`],
-  ['Garansinya bagaimana?', `Garansi Klinik Matras hingga ${FACTS.warrantyUpgrade} untuk Upgrade dan ${FACTS.warrantyService} untuk Service.`],
+  ['Garansinya bagaimana?', `Garansi Klinik Matras hingga ${FACTS.warrantyUpgrade} untuk Upgrade Kasur Sehat.`],
   ['Cara mulainya gimana?', 'Chat WA dan kirim foto kasurmu. Kami cek, kasih saran dan harga pastinya.'],
   ['Bisa datang langsung ke workshop?', 'Bisa. Workshop dan kantor kami di Depok. Kabari dulu lewat WA ya.'],
 ];
