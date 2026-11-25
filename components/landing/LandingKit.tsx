@@ -471,7 +471,7 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
       <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 w-52 h-52 rounded-full border-[30px] border-white/10" />
       <div className="relative grid md:grid-cols-2 md:gap-x-10 md:items-center">
         <div className="flex flex-col">
-          <p className="self-start inline-flex rounded-full bg-white/15 px-3.5 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-[.12em]">Service &amp; upgrade kasur</p>
+          <p className="self-start inline-flex rounded-full bg-white/15 px-3.5 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-[.07em] md:tracking-[.12em]">Service &amp; upgrade kasur sehat</p>
           <p className="mt-5 text-sm font-medium opacity-85">Service mulai dari</p>
           <p className="lp-num mt-1 !text-[clamp(2.75rem,12vw,4.5rem)] md:!text-[4rem]"><span className="relative top-[.28em] align-top text-[.45em] mr-1 opacity-85">Rp</span>{FACTS.priceService.replace(/^Rp/, '')}</p>
           <p className="mt-3 text-base opacity-85 leading-snug">Harga pasti setelah kami lihat foto kasurmu.</p>
