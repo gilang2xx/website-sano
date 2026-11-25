@@ -21,6 +21,9 @@ export interface WhatsAppLinkProps extends AnchorProps {
    * tidak boleh memperluas pengiriman event pixel iklan.
    */
   pixels?: boolean;
+  /** Hanya halaman landing: ikut dikirim di event click_whatsapp. */
+  landingId?: string;
+  audience?: string;
 }
 
 /**
@@ -37,6 +40,8 @@ const WhatsAppLink: React.FC<WhatsAppLinkProps> = ({
   buttonId,
   placement,
   pixels = false,
+  landingId,
+  audience,
   onClick,
   children,
   ...anchorProps
@@ -46,6 +51,8 @@ const WhatsAppLink: React.FC<WhatsAppLinkProps> = ({
     placement,
     cs: csIdForPhone(phone),
     pixels,
+    landingId,
+    audience,
   });
 
   return (

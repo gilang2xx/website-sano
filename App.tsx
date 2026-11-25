@@ -1,7 +1,7 @@
 import React, { Suspense, lazy } from 'react'; // Tambah Suspense & lazy
-import { Routes, Route, matchPath } from 'react-router-dom';
+import { Routes, Route, matchPath, useLocation } from 'react-router-dom';
 import Layout from './components/Layout';
-import { STATIC_ROUTES, ARTICLE_ROUTE_PATTERN } from './seo/routes';
+import { STATIC_ROUTES, LANDING_ROUTES, ARTICLE_ROUTE_PATTERN } from './seo/routes';
 
 type StaticRoutePath = (typeof STATIC_ROUTES)[number];
 type PageLoader = () => Promise<{ default: React.ComponentType }>;
@@ -24,6 +24,20 @@ const PAGE_LOADERS: Record<StaticRoutePath, PageLoader> = {
   '/klinik-sofa': () => import('./pages/KlinikSofa'),
   '/kebijakan-privasi': () => import('./pages/KebijakanPrivasi'),
 };
+// Landing iklan sample (noindex, tanpa Layout). Lihat LANDING_ROUTES.
+const LANDING_LOADERS: Record<(typeof LANDING_ROUTES)[number], PageLoader> = {
+  '/kasur-orthopedic': () => import('./pages/landing/LandingColdA'),
+  '/kasur-orthopedic/banding': () => import('./pages/landing/LandingWarmB'),
+  '/service-kasur': () => import('./pages/landing/LandingHotA'),
+  '/kasur-sehat': () => import('./pages/landing/LandingKasurSehat'),
+};
+const LANDING_PAGES = Object.fromEntries(
+  LANDING_ROUTES.map((path) => [path, lazy(LANDING_LOADERS[path])]),
+) as Record<(typeof LANDING_ROUTES)[number], React.LazyExoticComponent<React.ComponentType>>;
+const landingFor = (pathname: string) => {
+  const p = pathname.length > 1 ? pathname.replace(/\/+$/, '') : pathname;
+  return (LANDING_PAGES as Record<string, React.LazyExoticComponent<React.ComponentType> | undefined>)[p];
+};
 const loadArtikelDetail: PageLoader = () => import('./pages/ArtikelDetail');
 const loadNotFound: PageLoader = () => import('./pages/NotFound');
 
@@ -38,6 +52,7 @@ const NotFound = lazy(loadNotFound);
 // HTML hasil prerender. Turunan dari daftar route yang sama dengan <Routes>.
 const PRELOADERS: Array<[string, PageLoader]> = [
   ...STATIC_ROUTES.map((path): [string, PageLoader] => [path, PAGE_LOADERS[path]]),
+  ...LANDING_ROUTES.map((path): [string, PageLoader] => [path, LANDING_LOADERS[path]]),
   [ARTICLE_ROUTE_PATTERN, loadArtikelDetail],
 ];
 
@@ -62,6 +77,15 @@ const LoadingSpinner = () => (
 );
 
 const App: React.FC = () => {
+  const { pathname } = useLocation();
+  const Landing = landingFor(pathname);
+  if (Landing) {
+    return (
+      <Suspense fallback={<LoadingSpinner />}>
+        <Landing />
+      </Suspense>
+    );
+  }
   return (
     <Layout>
       {/* Bungkus Routes dengan Suspense */}

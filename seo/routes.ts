@@ -33,6 +33,19 @@ export const STATIC_ROUTES = [
 ] as const;
 
 /**
+ * Landing iklan (noindex). SENGAJA di luar STATIC_ROUTES: tidak masuk sitemap
+ * dan tidak lewat validasi halaman publik. scripts/prerender.mjs memprerender
+ * daftar eksplisit ini lewat jalur sempit (wajib noindex, tanpa canonical).
+ * Tanpa Layout (tanpa menu & footer penuh).
+ */
+export const LANDING_ROUTES = [
+  '/kasur-orthopedic',
+  '/kasur-orthopedic/banding',
+  '/service-kasur',
+  '/kasur-sehat',
+] as const;
+
+/**
  * Artikel lama (isi ditulis langsung di pages/ArtikelDetail.tsx, daftar
  * kartunya di pages/Artikel.tsx). `date` = tanggal terbit ISO, dipakai
  * sebagai lastmod. scripts/prerender.mjs membandingkan slug & tanggal ini

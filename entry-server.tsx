@@ -12,6 +12,7 @@ import { loadCmsArticles, loadBeforeAfterEntries, indoDateToIso } from './utils/
 import {
   ARTICLE_SLUG_PATTERN,
   ISO_DATE_PATTERN,
+  LANDING_ROUTES,
   LEGACY_ARTICLES,
   SITE_URL,
   STATIC_ROUTES,
@@ -63,7 +64,7 @@ export function listPublicRoutes(): PublicRoute[] {
   }));
 }
 
-export { renderHeadTags, canonicalUrl, SITE_URL, STATIC_ROUTES, LEGACY_ARTICLES, indoDateToIso };
+export { renderHeadTags, canonicalUrl, SITE_URL, STATIC_ROUTES, LANDING_ROUTES, LEGACY_ARTICLES, indoDateToIso };
 
 export interface RenderResult {
   html: string;

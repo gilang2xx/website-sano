@@ -9,6 +9,16 @@
       "permanent": true
     },
     {
+      "source": "/(kasur-orthopedic|service-kasur|kasur-sehat)/",
+      "destination": "/$1",
+      "permanent": true
+    },
+    {
+      "source": "/kasur-orthopedic/banding/",
+      "destination": "/kasur-orthopedic/banding",
+      "permanent": true
+    },
+    {
       "source": "/artikel/:slug/",
       "destination": "/artikel/:slug",
       "permanent": true

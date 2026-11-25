@@ -107,12 +107,52 @@ export function resolveReferrerChannel(referrer: string): RefInfo | null {
   }
 }
 
+// ─── Parameter iklan lengkap (UTM + jenis click-id), untuk event click_whatsapp ──
+//
+// Terpisah dari "sano_ref" (yang dipakai tag pesan WA + CRM, formatnya TIDAK
+// diubah). Disimpan per sesi; hanya ditimpa bila URL baru membawa parameter iklan.
+// Nilai MENTAH gclid/gbraid/wbraid/fbclid TIDAK disimpan (kebijakan lama di
+// resolveAdReferral): hanya jenisnya (`click_id_type`).
+const PARAMS_KEY = "sano_ads";
+export type AdParams = Partial<Record<"utm_source" | "utm_medium" | "utm_campaign" | "utm_content" | "utm_term" | "click_id_type", string>>;
+const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"] as const;
+
+/** Murni (bisa diuji): ambil UTM + jenis click-id dari query. Kosong = {}. */
+export function parseAdParams(params: URLSearchParams): AdParams {
+  const out: AdParams = {};
+  for (const k of UTM_KEYS) {
+    const v = (params.get(k) || "").trim().slice(0, 100);
+    if (v) out[k] = v;
+  }
+  const id = (["gclid", "gbraid", "wbraid", "fbclid"] as const).find((k) => params.get(k));
+  if (id) out.click_id_type = id;
+  return out;
+}
+
+export function captureAdParams(): void {
+  if (typeof window === "undefined") return;
+  const baru = parseAdParams(new URLSearchParams(window.location.search));
+  if (Object.keys(baru).length === 0) return;
+  try { sessionStorage.setItem(PARAMS_KEY, JSON.stringify(baru)); } catch { /* gagal diam-diam */ }
+}
+
+export function getAdParams(): AdParams {
+  if (typeof window === "undefined") return {};
+  try {
+    const raw = sessionStorage.getItem(PARAMS_KEY);
+    return raw ? (JSON.parse(raw) as AdParams) : {};
+  } catch {
+    return {};
+  }
+}
+
 /**
  * Panggil SEKALI per navigasi di root app (Layout.tsx, yang mount sekali
  * dan tidak pernah unmount selama SPA ini hidup).
  */
 export function captureAdReferral(): void {
   if (typeof window === "undefined") return;
+  captureAdParams();
   const iklan = resolveAdReferral(new URLSearchParams(window.location.search));
 
   try {

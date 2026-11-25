@@ -1,3 +1,5 @@
+import { getAdParams } from './attribution';
+
 // Guard shared by every WhatsApp button so one real user click can never
 // push the click_whatsapp event to the dataLayer more than once, even if
 // called from multiple components or fired twice by a stray double event.
@@ -37,6 +39,10 @@ export interface WhatsAppTrackingMeta {
    * tidak boleh melebar sebagai efek samping.
    */
   pixels?: boolean;
+  /** Kode landing, mis. `LP-COLD-A`. Hanya halaman landing. */
+  landingId?: string;
+  /** `cold` | `warm` | `hot`. Hanya halaman landing. */
+  audience?: string;
 }
 
 // Single source of truth for the WhatsApp click conversion event.
@@ -65,6 +71,10 @@ export function trackWhatsAppClick(eventLabel: string, meta: WhatsAppTrackingMet
   if (meta.buttonId) payload.wa_button_id = meta.buttonId;
   if (meta.placement) payload.wa_placement = meta.placement;
   if (meta.cs) payload.wa_cs = meta.cs;
+  if (meta.landingId) payload.landing_id = meta.landingId;
+  if (meta.audience) payload.audience = meta.audience;
+  // UTM + jenis click-id sesi ini (tanpa nilai mentah gclid/fbclid).
+  Object.assign(payload, getAdParams());
   // Hanya pathname (tanpa query/hash): query bisa memuat gclid/UTM.
   const pathname = w.location && typeof w.location.pathname === 'string' ? w.location.pathname : '';
   if (pathname) payload.wa_page_path = pathname;

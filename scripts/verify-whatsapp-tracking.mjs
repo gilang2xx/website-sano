@@ -310,6 +310,7 @@ const builtOn = await esbuild.build({
   stdin: {
     contents: `
       export { buildWaHref, captureAdReferral, getVisitCode, hurufKanal, beginAttributionHydration, endAttributionHydration, KODE_PREFIX } from './utils/attribution';
+      export { trackWhatsAppClick } from './utils/tracking';
       export { openWhatsAppChat, WA_PHONE_CS1, WA_DEFAULT_CHAT_MESSAGE } from './utils/whatsapp';
     `,
     resolveDir: ROOT,
@@ -432,6 +433,50 @@ ok(calls.open.length === 1 && KODE_RE.exec(teks(calls.open[0][0]))?.[1][0] === '
   globalThis.sessionStorage = asli; window.sessionStorage = asli;
 }
 store.clear();
+
+// L1: landing -- UTM/click-id per sesi terbawa ke event click_whatsapp, + landing_id & audience
+store.clear(); reset();
+kunjungi('?utm_source=google&utm_medium=cpc&utm_campaign=ortho-cold&utm_content=v1&utm_term=kasur+amblas&gclid=RAHASIA123');
+on.trackWhatsAppClick('Landing Uji', { buttonId: 'lp-uji', placement: 'hero', cs: 'cs1', landingId: 'LP-COLD-A', audience: 'cold', pixels: false });
+{
+  const e = window.dataLayer.filter((x) => x && x.event === 'click_whatsapp').pop();
+  ok(e && e.landing_id === 'LP-COLD-A' && e.audience === 'cold', 'landing: event membawa landing_id dan audience');
+  ok(e.utm_source === 'google' && e.utm_medium === 'cpc' && e.utm_campaign === 'ortho-cold' && e.utm_content === 'v1' && e.utm_term === 'kasur amblas', 'landing: 5 parameter UTM terbawa ke event');
+  ok(e.click_id_type === 'gclid', 'landing: jenis click-id (gclid) tercatat');
+  ok(!JSON.stringify(e).includes('RAHASIA123') && !teks(on.buildWaHref('Halo')).includes('RAHASIA123'), 'landing: nilai mentah gclid tidak ada di event maupun di teks WA');
+}
+// L2: halaman berikutnya tanpa UTM tidak menghapus parameter sesi; payload lama utuh
+reset();
+kunjungi('');
+on.trackWhatsAppClick('Landing Uji 2', { landingId: 'LP-HOT-A', audience: 'hot', pixels: false });
+{
+  const e = window.dataLayer.filter((x) => x && x.event === 'click_whatsapp').pop();
+  ok(e.utm_source === 'google' && e.landing_id === 'LP-HOT-A' && e.audience === 'hot', 'landing: parameter sesi bertahan di navigasi tanpa UTM');
+  ok(e.event_category === 'Kontak' && e.value === 1 && e.event_label === 'Landing Uji 2', 'landing: payload lama tetap utuh');
+}
+// L3: tanpa UTM sama sekali -> tidak ada key utm_* mengada-ada
+store.clear(); reset();
+kunjungi('');
+on.trackWhatsAppClick('Tanpa UTM', { pixels: false });
+ok(!Object.keys(window.dataLayer.filter((x) => x && x.event === 'click_whatsapp').pop()).some((k) => k.startsWith('utm_') || k === 'click_id_type'), 'tanpa UTM: tidak ada key utm_* / click_id_type');
+store.clear();
+
+// ── Penundaan tag pihak ketiga di landing (scripts/prerender.mjs) ──
+console.log('\n[L4] Penundaan tag pihak ketiga (landing)');
+{
+  const pre = fs.readFileSync(path.join(ROOT, 'scripts/prerender.mjs'), 'utf8');
+  const kit = fs.readFileSync(path.join(ROOT, 'components/landing/LandingKit.tsx'), 'utf8');
+  const waBtn = kit.slice(kit.indexOf('export const WaButton'), kit.indexOf('export const HeroWaButton'));
+  ok(/target="_blank"/.test(waBtn), 'WaButton landing target="_blank" (halaman tetap hidup setelah klik, tag boleh ditunda)');
+  ok(!/pixels/.test(waBtn), 'WaButton landing tidak mengubah default pixels (Meta/TikTok tidak dipicu klik WA, sama seperti sebelumnya)');
+  const ev = (pre.match(/const DEFER_LOADER = `\(function\(\)\{var d=0,E=\[([^\]]*)\]/) || [])[1] || '';
+  for (const e of ['pointerdown', 'touchstart', 'scroll', 'keydown', 'click']) ok(ev.includes(`'${e}'`), `loader tag: pemicu ${e}`);
+  const ms = Number((pre.match(/const DEFER_TAGS_MS = (\d+)/) || [])[1]);
+  ok(ms >= 3000 && ms <= 4000, `batas waktu penundaan tag ${ms} ms (3000-4000)`);
+  for (const id of ['GTM-PSDWS88V', 'AW-18575989292', '934367175857999', 'D6NMKNBC77UBBJ4JSLG0']) ok(pre.includes(id) && fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8').includes(id), `ID tag ${id} masih ada di index.html dan dijaga prerender`);
+  const idx = fs.readFileSync(path.join(ROOT, 'index.html'), 'utf8');
+  ok(!/data-defer-tag/.test(idx), 'index.html global tidak diubah (penundaan hanya di HTML prerender landing)');
+}
 
 console.log(`\nHasil: ${pass} lulus, ${fail} gagal`);
 process.exit(fail === 0 ? 0 : 1);
