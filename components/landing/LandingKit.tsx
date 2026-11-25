@@ -121,7 +121,7 @@ export const LandingShell: React.FC<{ children: React.ReactNode; landingId: stri
         <div className="max-w-6xl mx-auto px-5 py-12 pb-28 grid gap-8 md:grid-cols-3">
           <div>
             <img src="/landing/logo-km-dark.webp" alt="Klinik Matras by SANO CARE" className="h-8 w-auto" width={90} height={32} loading="lazy" />
-            <p className="mt-4 text-sm leading-relaxed text-white/70 max-w-xs">Upgrade kasur sehat. Workshop dan kantor di Depok. Antar-jemput gratis Jabodetabek dan Bandung.</p>
+            <p className="mt-4 text-sm leading-relaxed text-white/70 max-w-xs">Service atau upgrade kasur sehat. Workshop dan kantor di Depok. Antar-jemput gratis Jabodetabek dan Bandung.</p>
           </div>
           <nav aria-label="Tautan" className="flex flex-col text-sm">
             <Link reloadDocument to="/before-after" className="min-h-[44px] flex items-center text-white/80 hover:text-white">Hasil before-after</Link>
@@ -471,10 +471,10 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
       <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 w-52 h-52 rounded-full border-[30px] border-white/10" />
       <div className="relative grid md:grid-cols-2 md:gap-x-10 md:items-center">
         <div className="flex flex-col">
-          <p className="self-start inline-flex rounded-full bg-white/15 px-3.5 py-1.5 text-xs md:text-sm font-semibold uppercase tracking-[.07em] md:tracking-[.12em]">Upgrade kasur sehat</p>
+          <p className="self-start inline-flex rounded-full bg-white/15 px-3 md:px-3.5 py-1.5 text-[10.5px] sm:text-xs md:text-sm font-semibold uppercase tracking-[.02em] md:tracking-[.12em]">Service atau upgrade kasur sehat</p>
           <p className="mt-5 text-sm font-medium opacity-85">Mulai dari</p>
           <p className="lp-num mt-1 !text-[clamp(2.75rem,12vw,4.5rem)] md:!text-[4rem]"><span className="relative top-[.28em] align-top text-[.45em] mr-1 opacity-85">Rp</span>{FACTS.priceUpgrade.replace(/^Rp/, '')}</p>
-          <p className="mt-3 text-base opacity-85 leading-snug">Harga pasti setelah cek ukuran dan kondisi kasurmu.</p>
+          <p className="mt-3 text-base opacity-85 leading-snug">Harga bergantung ukuran dan masalah kasur setelah konsultasi.</p>
         </div>
         <ul className="m-0 mt-5 p-0 list-none flex flex-col gap-3 border-t border-white/20 pt-5 md:row-span-2 md:col-start-2 md:row-start-1 md:mt-0 md:border-t-0 md:border-l md:pt-0 md:pl-10">
           {[`Garansi hingga ${FACTS.warrantyUpgrade} untuk Upgrade`, `Dikerjakan ${FACTS.days}`, `Antar-jemput gratis ${FACTS.freeShipArea}`].map((t) => (

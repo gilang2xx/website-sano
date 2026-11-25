@@ -10,7 +10,7 @@ import { FACTS, PAIRS, REVIEWS } from '../../components/landing/landingData';
 // Halaman ke-4 (MOCKUP): penjelas Konsep Kasur Sehat. Satu tujuan tetap klik WA.
 // Acuan: DIRA_landing-kasur-sehat-paper-2026-11-25.html. Contoh "bahu dan pinggul waktu tidur miring"
 // BELUM disetujui owner, sengaja tidak dipasang. Saraf dan pembuluh darah tidak disebut.
-const MSG = 'Halo Klinik Matras, saya baca konsep Kasur Sehat dan mau cek kasur saya. Bisa dibantu soal upgrade?';
+const MSG = 'Halo Klinik Matras, saya baca konsep Kasur Sehat dan mau cek kasur saya. Bisa dibantu pilih service atau upgrade?';
 
 const LAYERS: Array<[string, string]> = [
   ['Lapisan nyaman', 'Sesuai tier berat badan'],
@@ -35,7 +35,7 @@ const CAUSES: Array<[string, string]> = [
 ];
 
 const KASUR_SEHAT_FAQ: Array<[string, string]> = [
-  ['Harus beli kasur baru biar dapat kasur sehat?', 'Tidak. Selama rangkanya masih bisa dipakai, kasurmu yang sekarang kami bikin ulang lewat upgrade.'],
+  ['Harus beli kasur baru biar dapat kasur sehat?', 'Tidak. Selama rangkanya masih bisa dipakai, kasurmu yang sekarang kami bikin ulang lewat service atau upgrade.'],
   ['Upgrade Kasur Sehat itu apa yang diganti?', 'Fondasi dan lapisan diganti ke susunan SFS, garansinya hingga 20 tahun. Kirim foto kasurnya, kami bantu cek.'],
   ['Kasur sehat bisa menyembuhkan nyeri?', 'Tidak, kasur bukan obat. Kasur yang pas bisa ikut berperan bikin tidur lebih nyaman. Kalau nyerinya berat atau menetap, periksa ke dokter.'],
 ];
@@ -43,7 +43,7 @@ const KASUR_SEHAT_FAQ: Array<[string, string]> = [
 const LandingKasurSehat: React.FC = () => {
   useSEO({
     title: 'Konsep Kasur Sehat',
-    description: 'Kasur empuk atau keras belum tentu sehat buat tubuh. Yang pas itu fondasi kokoh dan lapisan sesuai badanmu. Kasur lamamu bisa dibikin begitu lewat upgrade kasur sehat.',
+    description: 'Kasur empuk atau keras belum tentu sehat buat tubuh. Yang pas itu fondasi kokoh dan lapisan sesuai badanmu. Kasur lamamu bisa dibikin begitu lewat service atau upgrade kasur sehat.',
     path: '/kasur-sehat',
     noindex: true,
   });
@@ -56,7 +56,7 @@ const LandingKasurSehat: React.FC = () => {
         ref={hero}
         pill="Jabodetabek & Bandung"
         title={<>Kasur empuk atau keras <Serif>belum tentu sehat</Serif> buat tubuh.</>}
-        lead="Terlalu empuk, badan tenggelam. Terlalu keras, sendi bisa ikut tertekan. Yang pas itu fondasi kokoh dan lapisan sesuai badanmu. Kasur lamamu bisa dibikin begitu lewat upgrade kasur sehat."
+        lead="Terlalu empuk, badan tenggelam. Terlalu keras, sendi bisa ikut tertekan. Yang pas itu fondasi kokoh dan lapisan sesuai badanmu. Kasur lamamu bisa dibikin begitu lewat service atau upgrade kasur sehat."
         checks={['Antar-jemput gratis', `Garansi hingga ${FACTS.warrantyUpgrade}`, `Selesai ${FACTS.days}`]}
         actions={<WaButton buttonId="kasur-sehat-hero" placement="hero" eventLabel="Landing Kasur Sehat - Hero" label="Cek kasurku lewat WA" message={MSG} className="w-full sm:w-auto" />}
       />
@@ -139,9 +139,9 @@ const LandingKasurSehat: React.FC = () => {
         <div className="mt-7 max-w-xl">
           <Reveal className="h-full">
             <BentoCard className="h-full gap-3">
-              <p className="text-sm font-semibold uppercase tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff]">Upgrade</p>
+              <p className="text-sm font-semibold uppercase tracking-[.14em] text-[#1660cf] dark:text-[#4d94ff]">Service atau upgrade</p>
               <p className="text-3xl md:text-4xl font-bold tracking-tight leading-tight">Mulai {FACTS.priceUpgrade}</p>
-              <p className="text-lg leading-snug text-[#6e6e73] dark:text-[#a1a1a6]">Fondasi dan lapisan diganti ke susunan SFS. Garansi Klinik Matras hingga {FACTS.warrantyUpgrade}. Harga pasti setelah cek ukuran dan kondisi kasurmu.</p>
+              <p className="text-lg leading-snug text-[#6e6e73] dark:text-[#a1a1a6]">Upgrade: fondasi dan lapisan diganti ke susunan SFS, garansi Klinik Matras hingga {FACTS.warrantyUpgrade}. Harga bergantung ukuran dan masalah kasur setelah konsultasi.</p>
             </BentoCard>
           </Reveal>
         </div>
@@ -150,7 +150,7 @@ const LandingKasurSehat: React.FC = () => {
           <li>Kami jemput gratis ({FACTS.freeShipArea}).</li>
           <li>Dikerjakan {FACTS.days} di workshop Depok, lalu diantar balik.</li>
         </ul>
-        <div className="mt-6"><WaButton buttonId="kasur-sehat-pricing" placement="pricing" eventLabel="Landing Kasur Sehat - Dua Jalan" label="Tanya soal upgrade" message={MSG} className="w-full sm:w-auto" /></div>
+        <div className="mt-6"><WaButton buttonId="kasur-sehat-pricing" placement="pricing" eventLabel="Landing Kasur Sehat - Dua Jalan" label="Tanya service atau upgrade" message={MSG} className="w-full sm:w-auto" /></div>
       </Screen>
 
       <div className="pt-4 md:pt-8 bg-white dark:bg-black"><BigCase pair={PAIRS.culm} others={[PAIRS.world, PAIRS.thera, PAIRS.heir]} title={<>Hasilnya bisa kamu <Serif>lihat sendiri.</Serif></>} /></div>

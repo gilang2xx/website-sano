@@ -354,7 +354,7 @@ const Home: React.FC = () => {
             {/* Tautan cepat layanan (kontekstual, anchor beragam) */}
             <div className="max-w-5xl mx-auto mt-10 flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm font-semibold">
               <NavLink to="/perbaikan-kasur-amblas" className="text-blue-600 dark:text-blue-400 hover:underline">Kasur amblas? Pelajari perbaikannya</NavLink>
-              <NavLink to="/pricelist" className="text-blue-600 dark:text-blue-400 hover:underline">Lihat harga upgrade kasur sehat</NavLink>
+              <NavLink to="/pricelist" className="text-blue-600 dark:text-blue-400 hover:underline">Lihat harga service kasur &amp; upgrade</NavLink>
               <NavLink to="/before-after" className="text-blue-600 dark:text-blue-400 hover:underline">Contoh hasil before &amp; after</NavLink>
               <NavLink to="/layanan" className="text-blue-600 dark:text-blue-400 hover:underline">Semua layanan kami</NavLink>
             </div>

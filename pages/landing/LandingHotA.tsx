@@ -13,7 +13,7 @@ const MSG = 'Halo Klinik Matras, saya mau konsultasi soal service kasur di Jabod
 const LandingHotA: React.FC = () => {
   useSEO({
     title: 'Service Kasur Jabodetabek',
-    description: `Upgrade kasur sehat mulai dari ${FACTS.priceUpgrade}. Antar-jemput gratis ${FACTS.freeShipArea}, dikerjakan ${FACTS.days}. Konsultasi lewat WhatsApp.`,
+    description: `Service atau upgrade kasur sehat mulai dari ${FACTS.priceUpgrade}. Antar-jemput gratis ${FACTS.freeShipArea}, dikerjakan ${FACTS.days}. Konsultasi lewat WhatsApp.`,
     path: '/service-kasur',
     noindex: true,
   });
@@ -26,7 +26,7 @@ const LandingHotA: React.FC = () => {
         ref={hero}
         pill="Jabodetabek & Bandung"
         title={<>Service kasur di Jabodetabek? <Serif>Kami jemput</Serif>, kamu tinggal tunggu nyaman.</>}
-        lead={`Upgrade kasur sehat mulai ${FACTS.priceUpgrade}. Antar-jemput gratis ${FACTS.freeShipArea}. ${FACTS.days}, kasurmu pulang nyaman lagi.`}
+        lead={`Service atau upgrade kasur sehat mulai ${FACTS.priceUpgrade}. Antar-jemput gratis ${FACTS.freeShipArea}. ${FACTS.days}, kasurmu pulang nyaman lagi.`}
         checks={['Antar-jemput gratis', `Garansi hingga ${FACTS.warrantyUpgrade}`, `Selesai ${FACTS.days}`]}
         actions={<WaButton buttonId="ortho-hot-a-hero" placement="hero" eventLabel="Landing Ortho Hot A - Hero" label="Konsultasi lewat WA" message={MSG} className="w-full sm:w-auto" />}
       />

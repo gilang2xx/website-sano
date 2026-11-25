@@ -173,7 +173,7 @@ const ArtikelDetail: React.FC = () => {
 type RelatedService = { to: string; lead: string; anchor: string };
 const KLINIK: RelatedService = { to: '/klinik-matras', lead: 'Ingin kasur lama diperbaiki tanpa beli baru? Kenali pilihan perbaikan dan upgrade di', anchor: 'layanan service kasur & springbed' };
 const AMBLAS: RelatedService = { to: '/perbaikan-kasur-amblas', lead: 'Kasur mulai amblas atau bergelombang? Pelajari penyebab dan langkah penanganannya di', anchor: 'panduan perbaikan kasur amblas' };
-const HARGA: RelatedService = { to: '/pricelist', lead: 'Ingin tahu biaya upgrade kasur sehat? Lihat', anchor: 'harga di daftar harga kami' };
+const HARGA: RelatedService = { to: '/pricelist', lead: 'Ingin tahu biaya service kasur atau upgrade? Lihat', anchor: 'harga di daftar harga kami' };
 // Title <title> yang berbeda dari H1 hanya bila H1 sudah memuat nama brand (suffix brand global akan menggandakannya).
 const SEO_TITLE_OVERRIDE: Record<string, string> = {
   'klinik-matras-by-sano-care': 'Solusi Kasur Sehat dari Akar Permasalahan: Dampak Kasur yang Salah',

@@ -9,8 +9,8 @@ import { useSEO } from '../hooks/useSEO';
 
 const Pricelist: React.FC = () => {
   useSEO({
-    title: 'Harga Upgrade Kasur Sehat',
-    description: `Upgrade Kasur Sehat di Klinik Matras by SANO CARE mulai ${FACTS.priceUpgrade}. Harga pasti setelah cek ukuran dan kondisi kasur.`,
+    title: 'Harga Service Kasur & Upgrade Kasur Sehat',
+    description: `Service kasur atau upgrade kasur sehat di Klinik Matras by SANO CARE mulai ${FACTS.priceUpgrade}. Harga bergantung ukuran dan masalah kasur setelah konsultasi.`,
     path: '/pricelist',
   });
 
@@ -33,14 +33,14 @@ const Pricelist: React.FC = () => {
         </div>
         
         <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white mb-4">
-          Harga Upgrade Kasur Sehat
+          Harga Service Kasur &amp; Upgrade Kasur Sehat
         </h1>
         
         <p className="text-slate-600 dark:text-slate-400 text-lg max-w-2xl mx-auto">
-          Upgrade kasur lama Kamu, tanpa harus beli baru.
+          Service atau upgrade kasur lama Kamu, tanpa harus beli baru.
         </p>
         <p className="text-slate-500 dark:text-slate-400 text-sm max-w-2xl mx-auto mt-4 leading-relaxed">
-          Harga pasti ditentukan setelah ukuran dan kondisi kasur dicek lewat konsultasi. Belum yakin kasur Kamu perlu apa? Baca dulu{' '}
+          Harga bergantung ukuran dan masalah kasur setelah konsultasi. Belum yakin kasur Kamu perlu apa? Baca dulu{' '}
           <Link to="/perbaikan-kasur-amblas" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">panduan perbaikan kasur amblas</Link>{' '}
           atau lihat{' '}
           <Link to="/klinik-matras" className="text-blue-600 dark:text-blue-400 font-semibold hover:underline">seluruh layanan service kasur &amp; springbed</Link>.
@@ -50,7 +50,7 @@ const Pricelist: React.FC = () => {
       {/* SATU PAKET: UPGRADE KASUR SEHAT (sama dengan landing) */}
       <div className="container mx-auto px-6 max-w-md mb-20">
         <WhatsAppLink
-          message="Halo Sano, saya tertarik dengan paket Upgrade Kasur Sehat"
+          message="Halo Sano, saya tertarik dengan service atau upgrade kasur sehat"
           eventLabel="Pricelist WA - Upgrade Kasur Sehat"
           buttonId="pricelist-paket-upgrade-kasur-sehat"
           placement="pricing"
@@ -62,14 +62,14 @@ const Pricelist: React.FC = () => {
             <div className="p-4 rounded-2xl text-white" style={{ backgroundColor: BRAND_BLUE }}><Crown /></div>
             <div className="p-2 rounded-full bg-white/10 text-blue-200"><ArrowRight size={20} /></div>
           </div>
-          <h2 className="text-2xl font-bold mb-3 leading-tight text-white">Upgrade Kasur Sehat</h2>
+          <h2 className="text-2xl font-bold mb-3 leading-tight text-white">Service atau Upgrade Kasur Sehat</h2>
           <p className="text-sm mb-8 leading-relaxed text-slate-300">
-            Fondasi dan lapisan diganti ke susunan SFS. Garansi Klinik Matras hingga {FACTS.warrantyUpgrade}.
+            Upgrade: fondasi dan lapisan diganti ke susunan SFS, garansi Klinik Matras hingga {FACTS.warrantyUpgrade}.
           </p>
           <div className="border-t border-white/10 pt-6">
             <p className="text-[10px] font-bold uppercase tracking-wide mb-1 text-blue-300">Mulai dari</p>
             <p className="text-4xl font-black text-[#FACC15] drop-shadow-sm">{FACTS.priceUpgrade}</p>
-            <p className="text-sm mt-3 text-slate-300">Harga pasti setelah cek ukuran dan kondisi kasurmu.</p>
+            <p className="text-sm mt-3 text-slate-300">Harga bergantung ukuran dan masalah kasur setelah konsultasi.</p>
           </div>
         </WhatsAppLink>
       </div>
