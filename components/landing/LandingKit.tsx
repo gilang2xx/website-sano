@@ -6,7 +6,7 @@ import ThemeToggle from '../ThemeToggle';
 import type { WhatsAppPlacement } from '../../utils/tracking';
 import { captureAdReferral, endAttributionHydration } from '../../utils/attribution';
 import { FACTS, GOOGLE_MAPS_URL, HEALTH_NOTE } from './landingData';
-import type { PhotoPair, Review } from './landingData';
+import type { PhotoPair, Review, UspCard } from './landingData';
 
 // MOCKUP visual landing: hero foto asli, satu pesan per layar, satu foto per pesan.
 // Semua WA lewat WhatsAppLink (event click_whatsapp yang sudah ada), tanpa tag/event baru.
@@ -488,6 +488,31 @@ export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }
       </div>
     </div>
   </Reveal>
+);
+
+/* ───────────── Kartu USP tanya-jawab ───────────── */
+
+/** Kartu pertama jadi sorotan (selebar grid). `onGrey` = section abu, jadi kartunya putih. HP satu kolom, desktop dua. */
+export const UspCards: React.FC<{ cards: UspCard[]; onGrey?: boolean }> = ({ cards, onGrey }) => (
+  <ul className="mt-7 md:mt-9 mb-0 p-0 list-none grid gap-3 md:gap-4 md:grid-cols-2">
+    {cards.map((c, i) => {
+      const hi = i === 0;
+      const lone = !hi && i === cards.length - 1 && (cards.length - 1) % 2 === 1; // kartu ganjil terakhir tidak menggantung
+      return (
+        <li key={c.q} className={hi || lone ? 'md:col-span-2' : ''}>
+          <Reveal className="h-full">
+            <article style={hi ? { backgroundImage: `linear-gradient(135deg, #1d74e8 0%, ${ACCENT} 45%, #0b2a6f 100%)` } : undefined}
+              className={`h-full flex flex-col rounded-[24px] md:rounded-[28px] px-6 pt-6 md:px-8 md:pt-8 ${hi ? 'text-white' : onGrey ? 'bg-white dark:bg-[#1c1c1e]' : 'bg-[#f5f5f7] dark:bg-[#1c1c1e]'}`}>
+              <p className={`self-start rounded-full px-3 py-1.5 text-sm italic ${hi ? 'bg-white/15 text-white/90' : `text-[#6e6e73] dark:text-[#a1a1a6] ${onGrey ? 'bg-[#f5f5f7] dark:bg-black' : 'bg-white dark:bg-black'}`}`}>&ldquo;{c.q}&rdquo;</p>
+              <h3 className={`mt-3 font-bold tracking-tight leading-tight ${hi ? 'text-[clamp(1.75rem,7vw,2.5rem)]' : 'text-[1.375rem] md:text-2xl'}`}>{c.title}</h3>
+              <p className={`mt-2 mb-5 text-[1.0625rem] leading-snug max-w-2xl ${hi ? 'text-white/85' : 'text-[#6e6e73] dark:text-[#a1a1a6]'}`}>{c.body}</p>
+              <p className={`mt-auto -mx-6 md:-mx-8 px-6 md:px-8 py-3 border-t text-[.9375rem] leading-snug ${hi ? 'border-white/20 text-white/85' : 'border-black/5 dark:border-white/10 text-[#6e6e73] dark:text-[#a1a1a6]'}`}><b className="font-semibold">Beli baru:</b> {c.vs}</p>
+            </article>
+          </Reveal>
+        </li>
+      );
+    })}
+  </ul>
 );
 
 /* ───────────── Review statis (ulasan Google asli) ───────────── */

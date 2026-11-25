@@ -8,6 +8,7 @@ export const GOOGLE_MAPS_URL = 'https://share.google/KHN37lWodhSGKPYkY';
 export const FACTS = {
   priceUpgrade: 'Rp2.090.000',
   warrantyUpgrade: '20 tahun',
+  warrantyService: '10 tahun',
   days: '2-3 hari',
   freeShipArea: 'Jabodetabek dan Bandung',
   hours: '08.00-22.00 WIB, Senin-Minggu',
@@ -15,6 +16,48 @@ export const FACTS = {
   reviewCount: '111',
   ratingDate: '24 Nov 2026',
 } as const;
+
+/* Kartu USP tanya-jawab (26 Nov 2026). Klaim persen hemat SENGAJA tidak ada: menunggu bukti harga. */
+export interface UspCard { q: string; title: string; body: string; vs: string }
+
+export const USP = {
+  harga: {
+    q: 'Mahal nggak?',
+    title: `Mulai ${FACTS.priceUpgrade}`,
+    body: 'Service atau upgrade kasur sehat. Harga bergantung ukuran dan masalah kasur setelah konsultasi. Bandingin sendiri sama harga kasur baru yang kamu incar.',
+    vs: 'bayar harga kasur baru penuh.',
+  },
+  berat: {
+    q: 'Cocok buat badanku nggak?',
+    title: 'Lapisannya disesuaikan sama berat badanmu',
+    body: 'Ada 5 tier lapisan nyaman, dari LIGHT sampai EXTRA HEAVY. Tidur berdua? Kirim berat badan masing-masing.',
+    vs: 'label soft, medium, firm, tanpa ukuran berat badan.',
+  },
+  garansi: {
+    q: 'Garansinya berapa lama?',
+    title: `Garansi hingga ${FACTS.warrantyUpgrade}`,
+    body: `${FACTS.warrantyUpgrade} untuk Upgrade, ${FACTS.warrantyService} untuk Service.`,
+    vs: 'cek syaratnya, beda tiap toko dan merek.',
+  },
+  lama: {
+    q: 'Sayang kasurnya, masih bisa dipakai?',
+    title: 'Kasur lamamu dipakai lagi, dibuat kokoh',
+    body: 'Selama rangkanya masih bisa dipakai, fondasi dan lapisannya kami bikin ulang.',
+    vs: 'kasur lama dibuang atau dijual murah.',
+  },
+  antar: {
+    q: 'Ribet nggak ngangkut kasurnya?',
+    title: `Dijemput, dikerjakan ${FACTS.days}, diantar lagi`,
+    body: `Antar-jemput gratis ${FACTS.freeShipArea}.`,
+    vs: 'tanya ongkir dan lama kirimnya dulu.',
+  },
+  keluhan: {
+    q: 'Kenapa bangun tidur badan pegal?',
+    title: 'Mulai dari keluhanmu saat bangun tidur',
+    body: 'Ceritain keluhanmu dan kirim foto kasur lewat WA. Kami kasih saran service atau upgrade yang pas.',
+    vs: 'pilih sendiri di toko, coba rebahan sebentar.',
+  },
+} satisfies Record<string, UspCard>;
 
 export interface PhotoPair {
   id: number;

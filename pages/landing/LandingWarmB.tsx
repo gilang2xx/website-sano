@@ -3,20 +3,12 @@ import { useSEO } from '../../hooks/useSEO';
 import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, HeroSecondaryLink, PhotoHero, TrustStrip, BigCase,
   Screen, Eyebrow, Reveal, ZigZag, PriceCard, ReviewBlock, Faq, ConceptSection, CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
+  UspCards,
 } from '../../components/landing/LandingKit';
-import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
+import { FACTS, FAQ, PAIRS, REVIEWS, USP } from '../../components/landing/landingData';
 
 // WARM B (MOCKUP v5): beli baru atau perbaiki? Satu tujuan: klik WA.
 const MSG = 'Halo Klinik Matras, saya mau konsultasi soal kasur saya. Lagi bandingin beli kasur baru atau perbaiki kasur lama.';
-
-// Hanya fakta yang kami pegang. Kolom "beli baru" sengaja tanpa angka.
-const ROWS: Array<[string, string, string]> = [
-  ['Harga', 'Bandingin sendiri dengan kasur yang kamu incar', `Service atau upgrade kasur sehat mulai dari ${FACTS.priceUpgrade}`],
-  ['Garansi', 'Cek syaratnya, beda tiap toko dan merek', `Garansi Klinik Matras hingga ${FACTS.warrantyUpgrade} untuk Upgrade`],
-  ['Kasur lama', 'Dibuang atau dijual murah', 'Dipakai lagi, dibuat kokoh'],
-  ['Antar', 'Tanya ongkirnya dulu', `Jemput-antar gratis ${FACTS.freeShipArea}`],
-  ['Waktu', 'Tanya lama kirimnya', `Dikerjakan ${FACTS.days}`],
-];
 
 const LandingWarmB: React.FC = () => {
   useSEO({
@@ -46,30 +38,8 @@ const LandingWarmB: React.FC = () => {
       <TrustStrip />
 
       <Screen tone="grey" id="banding">
-        <Reveal><Eyebrow>Perbandingan</Eyebrow><h2 className="lp-h2 max-w-3xl">Beli baru vs perbaiki, apa <Serif>bedanya?</Serif></h2></Reveal>
-        <Reveal>
-          <div className="mt-7 overflow-x-auto rounded-[24px] md:rounded-[28px] bg-white dark:bg-[#1c1c1e]">
-            <table className="w-full min-w-[540px] text-left text-base md:text-lg">
-              <caption className="sr-only">Perbandingan beli kasur baru dan memperbaiki kasur di Klinik Matras</caption>
-              <thead>
-                <tr>
-                  <th scope="col" className="p-5 w-[16%]"><span className="sr-only">Hal</span></th>
-                  <th scope="col" className="p-5 font-semibold text-[#6e6e73] dark:text-[#a1a1a6]">Beli kasur baru</th>
-                  <th scope="col" className="p-5 font-bold text-[#1660cf] dark:text-[#4d94ff]">Perbaiki di Klinik Matras</th>
-                </tr>
-              </thead>
-              <tbody>
-                {ROWS.map(([k, a, b]) => (
-                  <tr key={k} className="border-t border-black/5 dark:border-white/10 align-top">
-                    <th scope="row" className="p-5 font-semibold">{k}</th>
-                    <td className="p-5 text-[#6e6e73] dark:text-[#a1a1a6]">{a}</td>
-                    <td className="p-5 font-semibold">{b}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </Reveal>
+        <Reveal><Eyebrow>Perbandingan</Eyebrow><h2 className="lp-h2 max-w-3xl">Sebelum beli kasur baru, <Serif>lihat ini dulu.</Serif></h2></Reveal>
+        <UspCards onGrey cards={[USP.harga, USP.berat, { ...USP.garansi, body: `${USP.garansi.body} Garansinya dari Klinik Matras langsung.` }, USP.lama, USP.antar]} />
         <div className="mt-5"><PriceCard>
           <WaButton buttonId="ortho-warm-b-banding" placement="pricing" eventLabel="Landing Ortho Warm B - Banding" label="Konsultasi sekarang" message={MSG} className="w-full sm:w-auto !bg-white !text-[#0b2a6f]" />
         </PriceCard></div>

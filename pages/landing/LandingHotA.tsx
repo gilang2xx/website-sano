@@ -4,8 +4,9 @@ import {
   LandingShell, FloatingWa, WaButton, HeroWaButton, PhotoHero, TrustStrip, BigCase,
   Screen, Eyebrow, Lead, Reveal, Photo, Split, ZigZag, PriceCard, ReviewBlock, Faq, ConceptLine,
   CtaRibbon, HealthNote, Serif, Hl, useHeroRef,
+  UspCards,
 } from '../../components/landing/LandingKit';
-import { FACTS, FAQ, PAIRS, REVIEWS } from '../../components/landing/landingData';
+import { FACTS, FAQ, PAIRS, REVIEWS, USP } from '../../components/landing/landingData';
 
 // HOT A (MOCKUP): harga mulai dan booking. Satu tujuan: klik WA.
 const MSG = 'Halo Klinik Matras, saya mau konsultasi soal service kasur di Jabodetabek. Boleh tanya harganya?';
@@ -42,6 +43,11 @@ const LandingHotA: React.FC = () => {
         </PriceCard></div>
       </Screen>
 
+
+      <Screen>
+        <Reveal><Eyebrow>Yang kamu dapat</Eyebrow><h2 className="lp-h2 max-w-3xl">Bayar segitu, <Serif>dapat apa aja?</Serif></h2></Reveal>
+        <UspCards cards={[{ ...USP.antar, body: `${USP.antar.body} Kamu tinggal tunggu di rumah.` }, USP.garansi, USP.harga, USP.lama]} />
+      </Screen>
 
       <Screen tone="grey">
         <Reveal><Eyebrow>Caranya</Eyebrow><h2 className="lp-h2 max-w-3xl">Dari chat sampai <Serif>kasur pulang.</Serif></h2></Reveal>
