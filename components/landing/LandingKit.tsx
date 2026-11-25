@@ -124,9 +124,9 @@ export const LandingShell: React.FC<{ children: React.ReactNode; landingId: stri
             <p className="mt-4 text-sm leading-relaxed text-white/70 max-w-xs">Service dan upgrade kasur. Workshop dan kantor di Depok. Antar-jemput gratis Jabodetabek dan Bandung.</p>
           </div>
           <nav aria-label="Tautan" className="flex flex-col text-sm">
-            <Link to="/before-after" className="min-h-[44px] flex items-center text-white/80 hover:text-white">Hasil before-after</Link>
+            <Link reloadDocument to="/before-after" className="min-h-[44px] flex items-center text-white/80 hover:text-white">Hasil before-after</Link>
             <a href={GOOGLE_MAPS_URL} target="_blank" rel="noopener noreferrer" className="min-h-[44px] flex items-center text-white/80 hover:text-white">Ulasan di Google Maps</a>
-            <Link to="/kebijakan-privasi" className="min-h-[44px] flex items-center text-white/80 hover:text-white">Kebijakan Privasi</Link>
+            <Link reloadDocument to="/kebijakan-privasi" className="min-h-[44px] flex items-center text-white/80 hover:text-white">Kebijakan Privasi</Link>
           </nav>
           <p className="text-sm text-white/60 leading-relaxed">Chat dibalas {FACTS.hours}.<br />Klinik Matras by SANO CARE.</p>
         </div>
@@ -184,7 +184,7 @@ export const HeroWaButton: React.FC<Omit<WaProps, 'tone'>> = (p) => <WaButton {.
 export const TextLink: React.FC<{ to?: string; href?: string; children: React.ReactNode; className?: string }> = ({ to, href, children, className = '' }) => {
   const cls = `inline-flex items-center gap-1 min-h-[44px] text-[17px] font-medium text-[#1660cf] dark:text-[#4d94ff] hover:underline ${className}`;
   return to
-    ? <Link to={to} className={cls}>{children}<ArrowRight size={17} aria-hidden="true" /></Link>
+    ? <Link reloadDocument to={to} className={cls}>{children}<ArrowRight size={17} aria-hidden="true" /></Link>
     : <a href={href} target="_blank" rel="noopener noreferrer" className={cls}>{children}<ArrowRight size={17} aria-hidden="true" /></a>;
 };
 
@@ -400,7 +400,7 @@ export const BigCase: React.FC<{ pair: PhotoPair; others?: PhotoPair[]; title?: 
           <ul className="mt-5 flex gap-3 overflow-x-auto snap-x snap-mandatory px-5 md:px-0 pb-2 md:grid md:grid-cols-3 md:overflow-visible list-none m-0">
             {others.map((o) => (
               <li key={o.id} className="snap-center shrink-0 w-[72%] sm:w-[40%] md:w-auto">
-                <Link to="/before-after" aria-label={`Lihat galeri before-after lengkap. Contoh: ${o.title}`}
+                <Link reloadDocument to="/before-after" aria-label={`Lihat galeri before-after lengkap. Contoh: ${o.title}`}
                   className="block rounded-[20px] overflow-hidden bg-[#f5f5f7] dark:bg-[#1c1c1e] focus:outline-none focus-visible:ring-4 focus-visible:ring-[#1660cf]/40">
                   <div className="grid grid-cols-2 gap-0.5">
                     {([['Sebelum', o.before, o.altBefore], ['Sesudah', o.after, o.altAfter]] as const).map(([lbl, src, alt]) => (

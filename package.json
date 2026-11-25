@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "vite build && vite build --ssr entry-server.tsx --outDir dist-ssr && node scripts/prerender.mjs && node scripts/generate-sitemap.mjs",
+    "build": "vite build && vite build --ssr entry-server.tsx --outDir dist-ssr && tailwindcss -c tailwind.landing.config.cjs -i scripts/landing.css -o dist-ssr/landing.css --minify && node scripts/prerender.mjs && node scripts/generate-sitemap.mjs",
     "build:spa": "vite build",
     "preview": "vite preview"
   },
@@ -26,6 +26,7 @@
     "@types/react-dom": "^19.2.3",
     "@vercel/node": "^5.8.26",
     "@vitejs/plugin-react": "^5.0.0",
+    "tailwindcss": "^3.4.17",
     "typescript": "~5.8.2",
     "vite": "^6.2.0"
   }

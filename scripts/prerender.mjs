@@ -71,6 +71,19 @@ function buildPage(template, route, html, headTags) {
   return out;
 }
 
+// Landing: ganti Tailwind CDN (runtime JIT, ~124 KB JS) dengan CSS hasil build
+// (tailwind.landing.config.cjs -> dist-ssr/landing.css), di-inline ke <head>.
+// Halaman non-landing TIDAK disentuh (tetap memakai CDN seperti sebelumnya).
+const LANDING_CSS = path.join(ROOT, 'dist-ssr', 'landing.css');
+function useBuiltTailwind(page, route) {
+  if (!fs.existsSync(LANDING_CSS)) { err(`${route} (landing): dist-ssr/landing.css tidak ada (jalankan build CSS landing)`); return page; }
+  const cdn = /<script src="https:\/\/cdn\.tailwindcss\.com"><\/script>/;
+  const cfg = /<script>\s*tailwind\.config = [\s\S]*?<\/script>\s*/;
+  if (!cdn.test(page) || !cfg.test(page)) { err(`${route} (landing): pola script Tailwind CDN/config tidak ditemukan di template`); return page; }
+  const css = fs.readFileSync(LANDING_CSS, 'utf8').replace(/<\/style/gi, '<\/style');
+  return page.replace(cfg, '').replace(cdn, () => `<style data-tw="build">${css}</style>`);
+}
+
 function outputFileFor(route) {
   return route === '/'
     ? path.join(DIST, 'index.html')
@@ -239,7 +252,8 @@ for (const r of LANDING_ROUTES) {
   if (head.path !== r) err(`${r} (landing): useSEO path "${head.path}" tidak sama dengan route`);
   if (html.includes('h-16 w-16 border-t-4 border-b-4')) err(`${r} (landing): HTML masih berisi spinner Suspense`);
   if (count(html, /<h1[\s>]/g) !== 1) err(`${r} (landing): harus tepat 1 <h1>`);
-  const page = buildPage(template, r, html, renderHeadTags(head));
+  const page = useBuiltTailwind(buildPage(template, r, html, renderHeadTags(head)), r);
+  if (page.includes('cdn.tailwindcss.com')) err(`${r} (landing): HTML landing masih memuat cdn.tailwindcss.com`);
   if (count(page, /<meta name="robots" content="noindex, nofollow"/g) !== 1) err(`${r} (landing): harus tepat 1 meta robots noindex di HTML final`);
   if (count(page, /<link rel="canonical"/g) !== 0) err(`${r} (landing): tidak boleh ada canonical`);
   if (count(page, /<title>/g) !== 1) err(`${r} (landing): harus tepat 1 <title>`);
