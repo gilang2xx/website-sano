@@ -27,6 +27,10 @@ const CSS = `
 .lp-big{font-size:clamp(2.1rem,8.4vw,4.5rem);line-height:1.04;letter-spacing:-.03em;font-weight:700}
 .lp-h2{font-size:clamp(1.8rem,6.2vw,3.25rem);line-height:1.18;letter-spacing:-.028em;font-weight:700}
 .lp-num{font-size:clamp(3rem,13vw,6rem);line-height:1;letter-spacing:-.04em;font-weight:700}
+.lp-aura{background-color:#0a2f7a;background-image:radial-gradient(120% 95% at 0% 0%,#2474e0 0%,rgba(36,116,224,0) 58%),radial-gradient(90% 85% at 100% 0%,#4b3fd0 0%,rgba(75,63,208,0) 62%),radial-gradient(105% 95% at 92% 108%,#0d7f7c 0%,rgba(13,127,124,0) 56%),linear-gradient(160deg,#1660cf 0%,#08245c 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.24),inset 0 0 0 1px rgba(255,255,255,.08),0 24px 48px -26px rgba(11,42,111,.65)}
+.lp-go{background:radial-gradient(120% 160% at 0% 0%,#1d8a49 0%,rgba(29,138,73,0) 62%),linear-gradient(180deg,#167a40 0%,#0d6137 100%);box-shadow:inset 0 1px 0 rgba(255,255,255,.22),0 12px 24px -16px rgba(13,97,55,.7)}
+.lp-go-soft{background:linear-gradient(165deg,#f3fdf6 0%,#e4f7ea 55%,#d9f2e5 100%);box-shadow:inset 0 0 0 1px rgba(21,128,61,.14)}
+.dark .lp-go-soft{background:linear-gradient(165deg,#15351f 0%,#0f2a1b 55%,#0b231b 100%);box-shadow:inset 0 0 0 1px rgba(134,239,172,.14)}
 .lp-ribbon{background:linear-gradient(120deg,#0b2a6f 0%,#1660cf 55%,#2f86ea 100%)}
 .lp-glass{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.34);box-shadow:0 18px 40px rgba(5,10,42,.3);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
 @media (max-width:767px){.lp-glass{-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px)}}
@@ -467,11 +471,11 @@ const IconBox: React.FC<{ children: React.ReactNode; hi?: boolean }> = ({ childr
 /** `children` = tombol WA di kartu (halaman yang sudah punya tombol di atasnya tidak mengisinya). */
 export const PriceCard: React.FC<{ children?: React.ReactNode }> = ({ children }) => (
   <Reveal>
-    <div style={{ backgroundImage: `linear-gradient(135deg, #1d74e8 0%, ${ACCENT} 45%, #0b2a6f 100%)` }} className="relative overflow-hidden text-white rounded-[24px] md:rounded-[32px] p-7 md:p-10">
+    <div className="lp-aura relative overflow-hidden text-white rounded-[24px] md:rounded-[32px] p-7 md:p-10">
       <span aria-hidden="true" className="pointer-events-none absolute -right-16 -top-16 w-52 h-52 rounded-full border-[30px] border-white/10" />
       <div className="relative grid md:grid-cols-2 md:gap-x-10 md:items-center">
         <div className="flex flex-col">
-          <p className="self-start inline-flex rounded-full bg-white/15 px-3 md:px-3.5 py-1.5 text-[10.5px] sm:text-xs md:text-sm font-semibold uppercase tracking-[.02em] md:tracking-[.12em]">Service atau upgrade kasur sehat</p>
+          <p className="self-start inline-flex rounded-full bg-[#041a45]/35 ring-1 ring-white/20 px-3 md:px-3.5 py-1.5 text-[10.5px] sm:text-xs md:text-sm font-semibold uppercase tracking-[.02em] md:tracking-[.12em]">Service atau upgrade kasur sehat</p>
           <p className="mt-5 text-sm font-medium opacity-85">Mulai dari</p>
           <p className="lp-num mt-1 !text-[clamp(2.75rem,12vw,4.5rem)] md:!text-[4rem]"><span className="relative top-[.28em] align-top text-[.45em] mr-1 opacity-85">Rp</span>{FACTS.priceUpgrade.replace(/^Rp/, '')}</p>
           <p className="mt-3 text-base opacity-85 leading-snug">Harga bergantung ukuran dan masalah kasur setelah konsultasi.</p>
@@ -515,7 +519,7 @@ export const CompareSection: React.FC = () => (
       <div className="mt-6 md:mt-9" role="table" aria-label="Perbandingan upgrade atau service dengan beli kasur baru">
         <div role="row" className={`grid grid-cols-2 gap-2 ${KOLOM}`}>
           <p role="columnheader" className="hidden md:flex m-0 items-center justify-center rounded-2xl bg-[#0b2a6f] px-3 py-4 text-center font-bold text-white">Pertanyaan yang Sering Dipikirkan</p>
-          <p role="columnheader" className="m-0 flex items-center justify-center gap-1.5 rounded-2xl bg-[#15803d] px-1 py-3 md:py-4 whitespace-nowrap text-center text-sm md:text-lg font-bold text-white"><Check size={18} strokeWidth={3} aria-hidden="true" />Upgrade / Service</p>
+          <p role="columnheader" className="m-0 flex items-center justify-center gap-1.5 rounded-2xl lp-go px-1 py-3 md:py-4 whitespace-nowrap text-center text-sm md:text-lg font-bold text-white"><Check size={18} strokeWidth={3} aria-hidden="true" />Upgrade / Service</p>
           <p role="columnheader" data-baru className="m-0 flex items-center justify-center rounded-2xl bg-[#d9d9de] dark:bg-[#2c2c2e] px-2 py-3 md:py-4 text-center text-sm md:text-lg font-bold text-[#48484a] dark:text-[#d1d1d6]">Beli Kasur Baru</p>
         </div>
         {COMPARE.map((r) => {
@@ -525,7 +529,7 @@ export const CompareSection: React.FC = () => (
               <p role="rowheader" className="col-span-2 md:col-span-1 m-0 flex items-center gap-2.5 text-[.9375rem] md:text-base font-semibold leading-snug md:rounded-2xl md:bg-[#eaf1fd] md:dark:bg-[#0f1b33] md:px-4 md:py-3">
                 <Ikon size={20} className="shrink-0 text-[#1660cf] dark:text-[#4d94ff]" aria-hidden="true" />{r.q}
               </p>
-              <p role="cell" className="m-0 flex items-start gap-2 rounded-2xl bg-[#e7f6ec] dark:bg-[#0f2a1a] px-3 py-3 text-sm md:text-base font-medium leading-snug text-[#14532d] dark:text-[#bbf7d0]">
+              <p role="cell" className="m-0 flex items-start gap-2 rounded-2xl lp-go-soft px-3 py-3 text-sm md:text-base font-medium leading-snug text-[#14532d] dark:text-[#bbf7d0]">
                 <span aria-hidden="true" className="mt-px inline-flex h-4 w-4 md:h-5 md:w-5 shrink-0 items-center justify-center rounded-full bg-[#15803d] text-white"><Check size={11} strokeWidth={4} /></span>
                 <span><Sorot text={r.kami} hl={r.hl} /></span>
               </p>
@@ -539,7 +543,7 @@ export const CompareSection: React.FC = () => (
       </div>
     </Reveal>
     <Reveal>
-      <p style={{ backgroundImage: `linear-gradient(135deg, #1d74e8 0%, ${ACCENT} 45%, #0b2a6f 100%)` }} className="mt-4 mb-0 rounded-[24px] px-5 py-5 md:px-8 md:py-6 text-base md:text-xl leading-relaxed text-white">
+      <p className="lp-aura mt-4 mb-0 rounded-[24px] px-5 py-5 md:px-8 md:py-6 text-base md:text-xl leading-relaxed text-white">
         <b className="mr-1">Kesimpulan:</b>Upgrade/Service = solusi <Sorot text="lebih tepat, nyaman, personal, dan hemat" hl="lebih tepat, nyaman, personal, dan hemat" /> untuk tidur yang lebih sehat.
       </p>
       <p className="mt-2 mb-0 text-xs text-[#6e6e73] dark:text-[#a1a1a6]">*Perkiraan. Harga bergantung ukuran dan masalah kasur setelah konsultasi.</p>
